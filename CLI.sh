@@ -74,7 +74,7 @@ case $opt in
 	s) su-to-root -c /opt/Customizer/scripts/CreateSnapshot.sh ;;
 	i) su-to-root -c /opt/Customizer/scripts/ImportSnapshot.sh ;;
 	r) su-to-root -c /opt/Customizer/scripts/Build.sh ;;
-	q) /opt/Customizer/scripts/QEMU.sh ;;
+	q) su-to-root -c /opt/Customizer/scripts/QEMU.sh ;;
 	t) su-to-root -c /opt/Customizer/scripts/Clean.sh ;;
 	w) /opt/Customizer/scripts/Update.sh ;;
 	v) Version ;;

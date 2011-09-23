@@ -18,6 +18,9 @@ Red='\e[1;31m'
 Green='\e[1;32m'
 Yellow='\e[1;33m'
 
+echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
+check_for_X
+
 echo -e "${Yellow}#${Reset} ${Green}Getting the configs${Reset}"
 ARCH=`chroot "$WORK_DIR/FileSystem" uname -m` || arch_error
 DIST=`grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//'` || dist_error

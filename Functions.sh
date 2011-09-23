@@ -42,6 +42,13 @@ if [ "`cat "$WORK_DIR/FileSystem/etc/apt/sources.list" | grep deb`" = "" ];then
 fi
 }
 
+check_for_X () {
+if [ "`pgrep Xorg`" = "" ];then
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}X-server (Xorg) is not running.${Reset}"
+	read nada
+	exit
+fi
+}
 
 mount_sys () {
 echo -e "${Yellow}# ${Green}Mounting${Reset}"
@@ -52,8 +59,10 @@ mount --bind /sys "$WORK_DIR/FileSystem/sys" || { echo -ne "${Red}ERROR${Reset}:
 
 umount_sys () {
 echo -e "${Yellow}# ${Green}Unmounting${Reset}"
+# grep FileSystem /etc/mtab | awk '{print $2}' | sed 's/\\040/ /g'
+# df -a -l | grep "$WORK_DIR/FileSystem" | awk '{print $6}'
 for i in `df -a -l | grep "$WORK_DIR/FileSystem" | awk '{print $6}'`;do
-	umount -fl "$i" || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount $i. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"
+	umount -fl "$i" # || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount $i. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"
 done
 }
 

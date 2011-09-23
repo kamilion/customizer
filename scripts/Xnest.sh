@@ -25,12 +25,7 @@ exit
 }
 
 echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
-if [ "`pgrep Xorg`" = "" ];then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}X-server (Xorg) is not running.${Reset}"
-	read nada
-	exit
-fi
-
+check_for_X
 check_fs_dir
 check_sources_list
 
