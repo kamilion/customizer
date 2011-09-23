@@ -52,17 +52,17 @@ fi
 
 mount_sys () {
 echo -e "${Yellow}# ${Green}Mounting${Reset}"
-mount --rbind /dev "$WORK_DIR/FileSystem/dev" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /dev on $WORK_DIR/FileSystem/dev. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
-mount --bind /proc "$WORK_DIR/FileSystem/proc" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /proc on $WORK_DIR/FileSystem/proc. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
-mount --bind /sys "$WORK_DIR/FileSystem/sys" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /sys on $WORK_DIR/FileSystem/sys. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
+mount --rbind /dev "$WORK_DIR/FileSystem/dev" && echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/dev${Reset}" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /dev on $WORK_DIR/FileSystem/dev. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
+mount --bind /proc "$WORK_DIR/FileSystem/proc" && echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/proc${Reset}" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /proc on $WORK_DIR/FileSystem/proc. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
+mount --bind /sys "$WORK_DIR/FileSystem/sys" && echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/sys${Reset}" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /sys on $WORK_DIR/FileSystem/sys. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
 }
 
 umount_sys () {
 echo -e "${Yellow}# ${Green}Unmounting${Reset}"
-# grep FileSystem /etc/mtab | awk '{print $2}' | sed 's/\\040/ /g'
-# df -a -l | grep "$WORK_DIR/FileSystem" | awk '{print $6}'
-for i in `df -a -l | grep "$WORK_DIR/FileSystem" | awk '{print $6}'`;do
-	umount -fl "$i" # || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount $i. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"
+for i in `grep "FileSystem" /proc/mounts | cut -d' ' -f2`; do
+	i="`echo "$i" | sed 's/\\\040/ /g'`"
+	echo -e "   ${Yellow}* ${Green}Unmounting${Reset}: ${Yellow}$i${Reset}" 
+	umount -fl "$i" || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount $i. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"
 done
 }
 
