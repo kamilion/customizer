@@ -29,10 +29,10 @@ check_for_X
 check_fs_dir
 check_sources_list
 
-AVAILABLE=`(ls $WORK_DIR/FileSystem/usr/share/xsessions | wc -l) 2> /dev/null`
+AVAILABLE=`(ls "$WORK_DIR/FileSystem/usr/share/xsessions" | wc -l) 2> /dev/null`
 case $AVAILABLE in
 	0) echo -ne "${Red}ERROR${Reset}: ${Yellow}There are not X-session available, chroot and install Desktop Environment/Window Manager${Reset}"; read nada; exit ;;
-	1) XSESSION="`ls -F $WORK_DIR/FileSystem/usr/share/xsessions | sed 's/\.desktop//'`"
+	1) XSESSION="`ls -F "$WORK_DIR/FileSystem/usr/share/xsessions" | sed 's/\.desktop//'`"
 	   echo -e "${Red}OVERRIDE${Reset}: ${Yellow}There is only one X-session available:${Reset} ${Green}$XSESSION${Reset}"
 	   export XSESSION=$XSESSION ;;
 	*) echo -e "${Red}OVERRIDE${Reset}: ${Yellow}Multiple X-sessions available, choose which one to execute:${Reset}"
@@ -47,7 +47,7 @@ case $AVAILABLE in
 	echo -ne "${Yellow}What shall it be?${Reset}: "
 	read choise
 	
-	if [ ! -e $WORK_DIR/FileSystem/usr/share/xsessions/$choise.desktop ];then
+	if [ ! -e "$WORK_DIR/FileSystem/usr/share/xsessions/$choise.desktop" ];then
 		echo -e "${Red}ERROR${Reset}: ${Yellow}This is not an option.${Reset}"	
 	else
 		export XSESSION=$choise
@@ -74,6 +74,7 @@ export HOME=/root
 export LC_ALL=C
 dpkg-divert --local --rename --add /sbin/initctl
 ln -f -s /bin/true /sbin/initctl
+dbus-uuidgen --ensure
 
 echo -e "${Yellow}   *${Reset} ${Green}Making sure everything is configured${Reset}"
 dpkg --configure -a
@@ -110,11 +111,8 @@ Xephyr -ac -screen $RESOLUTION -terminate -br :9 &
 
 xhost +local:
 mount_sys
-mkdir -p "$WORK_DIR/FileSystem/var/lib/dbus"
-mount --bind /var/lib/dbus "$WORK_DIR/FileSystem/var/lib/dbus" || echo "error /var/run"
 echo -e "${Yellow}#${Reset} ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
-umount -fl "$WORK_DIR/FileSystem/var/lib/dbus"
 umount_sys
 xhost -local:
 
