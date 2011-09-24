@@ -177,7 +177,7 @@ fi
 #################### creting ISO image #####################
 
 echo -e "${Yellow}# ${Green}Creating squashed FileSystem${Reset}"
-mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -all-root || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to squash the filesystem.${Reset}"; read nada; exit; }
+mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to squash the filesystem.${Reset}"; read nada; exit; }
 
 if (( "`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`" > "4000000" ));then
 	echo -ne "${Red}ERROR${Reset}: ${Yellow}The squashed filesystem size is greater than 4GB. Reduce its size by removing packages, locales and/or other none-essentials and retry the build process.${Reset}"

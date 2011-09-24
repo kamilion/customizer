@@ -35,7 +35,7 @@ while true;do
 	7. Blackbox
 	8. IceWM"
 	echo
-	echo -ne "${Green}Which GUI (Desktop Environment/Window Manager) do you want to install?${Reset}: "
+	echo -ne "${Yellow}Which GUI (Desktop Environment/Window Manager) do you want to install?${Reset}: "
 	
 	read choise
 		case $choise in
