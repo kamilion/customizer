@@ -85,7 +85,7 @@ echo -e "${Yellow}   *${Reset} ${Green}Installing the latest Dbus${Reset}"
 apt-get install --yes dbus -qq
 
 echo -e "${Yellow}   *${Reset} ${Green}Executing X-Session:${Reset} ${Yellow}$XSESSION${Reset}"
-exec `grep -m 1 "Exec=" /usr/share/xsessions/$XSESSION.desktop | sed 's/Exec=//'` 2> /dev/null
+exec `grep -m 1 "Exec=" /usr/share/xsessions/$XSESSION.desktop | sed 's/Exec=//'`
 
 echo -e "${Yellow}   *${Reset} ${Green}Cleaning up${Reset}"
 apt-get clean
@@ -115,6 +115,7 @@ mount_dbus
 echo -e "${Yellow}#${Reset} ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
 umount_sys
+recursive_umount
 xhost -local:
 
 echo -e "${Yellow}#${Reset} ${Green}Stoping Xephyr${Reset}"

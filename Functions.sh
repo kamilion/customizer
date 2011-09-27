@@ -11,7 +11,6 @@
 # Jabber: xakepa@jabber.org
 # Skype: big-smoke10
 #
-
 source /opt/Customizer/settings.conf
 Reset='\e[0m'
 Red='\e[1;31m'
@@ -27,7 +26,7 @@ if [ ! -d "$WORK_DIR/FileSystem" ];then
 fi
 
 if [ ! -d "$WORK_DIR/FileSystem/etc" ] || [ ! -d "$WORK_DIR/FileSystem/usr" ] || [ ! -d "$WORK_DIR/FileSystem/root" ];then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}The filesystem path ($WORK_DIR/FileSystem) isn't usable or has been corruped.Cleaning and start all over again is recommended or use the your latest snapshot (if you've created one).${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}The filesystem path ($WORK_DIR/FileSystem) isn't usable or has been corruped. Cleaning and start all over again is recommended or use the your latest snapshot (if you've created one).${Reset}"
 	read nada
 	exit
 fi
@@ -36,7 +35,7 @@ fi
 check_sources_list () {
 if [ "`cat "$WORK_DIR/FileSystem/etc/apt/sources.list" | grep deb`" = "" ];then
 	echo -e "${Red}OVERRIDE${Reset}: ${Yellow}The sources.list has been corrupted or deleted, attempt to be fixed will be made${Reset}"
-	id=`cat $WORK_DIR/FileSystem/etc/lsb-release | grep DISTRIB_CODENAME=* | sed 's/DISTRIB_CODENAME=//'`  
+	id=`grep 'DISTRIB_CODENAME=' "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//'`  
 	echo "deb http://archive.ubuntu.com/ubuntu/ $id main" > "$WORK_DIR/FileSystem/etc/apt/sources.list" 
 	echo "deb-src http://archive.ubuntu.com/ubuntu/ $id main" >> "$WORK_DIR/FileSystem/etc/apt/sources.list"
 fi
@@ -59,11 +58,18 @@ echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/sys${Reset}" && mount
 
 umount_sys () {
 echo -e "${Yellow}# ${Green}Unmounting${Reset}"
-# FIXME: Unable to unmount when $WORK_DIR includes spaces!
-# for i in `grep "$WORK_DIR/FileSystem/[dev|proc|sys]" /proc/mounts | sed 's/\\\040/ /g'`; do
+echo -e "   ${Yellow}* ${Green}Unmounting${Reset}: ${Yellow}/sys${Reset}" 
+umount -fl "$WORK_DIR/FileSystem/sys" || { echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount /sys. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"; read nada; }
+echo -e "   ${Yellow}* ${Green}Unmounting${Reset}: ${Yellow}/proc${Reset}" 
+umount -fl "$WORK_DIR/FileSystem/proc" || { echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount /proc. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"; read nada; }
+echo -e "   ${Yellow}* ${Green}Unmounting${Reset}: ${Yellow}/dev${Reset}" 
+umount -fl "$WORK_DIR/FileSystem/dev" || { echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount /dev. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"; read nada; }
+}
 
-for i in `df -a | awk '{print $6}' | grep "$WORK_DIR/FileSystem" | sort -r`;do
-	echo -e "   ${Yellow}* ${Green}Unmounting${Reset}: ${Yellow}$i${Reset}" 
+recursive_umount () {
+# echo -e "${Yellow}# ${Green}Recursive unmounting${Reset}"
+for i in `grep "$WORK_DIR/FileSystem" /proc/mounts | cut -d' ' -f2 | sed 's/\\\040/ /g'`; do
+	echo -e "   ${Yellow}* ${Green}Unmounting${Reset}: ${Yellow}`echo $i | sed "s@$WORK_DIR/FileSystem@@g"`${Reset}" 
 	umount -fl "$i" || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount $i. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"
 done
 }

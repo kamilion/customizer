@@ -27,7 +27,7 @@ echo "
      -c   Chroot into the filesystem
      -x   Execute nested X-session
      -e   Edit sources.list
-     -p   Execute package manager
+     -a   Execute package manager
      -d   Install Debian package
      -k   Execute hook
      -g   Install GUI (DE/WM)
@@ -61,13 +61,13 @@ Michał Głowienka (a.k.a. eloaders)
 echo
 }
 
-while getopts "ucxepdkgsirqthwv" opt; do
+while getopts "ucxeadkgsirqthwv" opt; do
 case $opt in
 	u) su-to-root -c /opt/Customizer/scripts/Use.sh ;;
 	c) su-to-root -c /opt/Customizer/scripts/Chroot.sh ;;
 	x) su-to-root -c /opt/Customizer/scripts/Xnest.sh ;;
 	e) su-to-root -c /opt/Customizer/scripts/EditSources.sh ;;
-	p) su-to-root -c /opt/Customizer/scripts/PackageManager.sh ;;
+	a) su-to-root -c /opt/Customizer/scripts/Archive.sh ;;
 	d) su-to-root -c /opt/Customizer/scripts/InstallDEB.sh ;;
 	k) su-to-root -c /opt/Customizer/scripts/Hook.sh ;;
 	g) su-to-root -c /opt/Customizer/scripts/InstallGUI.sh ;;

@@ -13,7 +13,6 @@
 #
 source /opt/Customizer/Functions.sh
 source /opt/Customizer/settings.conf
-# source /opt/Customizer/ProgressBar.sh
 Reset='\e[0m'
 Red='\e[1;31m'
 Green='\e[1;32m'

@@ -31,6 +31,7 @@ case "$SNAPSHOT" in
 esac
 
 if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ]; then
+	recursive_umount
 	echo -e "${Yellow}#${Reset} ${Green}Cleaning up${Reset}"
 	rm -rf "$WORK_DIR/FileSystem"
 	rm -rf "$WORK_DIR/ISO"

@@ -163,6 +163,7 @@ mount_sys
 echo -e "${Yellow}# ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
 umount_sys
+recursive_umount
 
 echo -e "${Yellow}# ${Green}Copying boot files${Reset}"
 cp -f "$WORK_DIR/FileSystem/initrd.img" "$WORK_DIR/ISO/casper/initrd.lz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy the initrd.img file.${Reset}"; read nada; exit; }

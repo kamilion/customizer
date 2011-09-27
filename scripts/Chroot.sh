@@ -67,3 +67,4 @@ mount_sys
 echo -e "${Yellow}#${Reset} ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
 umount_sys
+recursive_umount

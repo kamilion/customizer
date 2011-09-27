@@ -56,13 +56,8 @@ if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ];then
 	echo -e "${Yellow}#${Reset} ${Green}Cleaning up temporary directories${Reset}"
 	
 	echo -e "   ${Yellow}*${Reset} ${Green}Unmounting${Reset}"
-	for i in `df -a | grep "$WORK_DIR/FileSystem" | awk '{print $6}'`;do
-		umount -fl $i || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to unmount $i. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"; read nada; exit; }
-	done
-	
-	if [ "`df -a | grep $MOUNT_PATH`" != "" ];then
-		umount -fl "$MOUNT_PATH"
-	fi
+	recursive_umount
+	umount -fl "$MOUNT_PATH" 2> /dev/null
 	
 	echo -e "   ${Yellow}*${Reset} ${Green}Cleaning up FileSystem${Reset}"
 	rm -rf "$WORK_DIR/FileSystem"

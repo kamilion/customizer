@@ -19,7 +19,7 @@ Green='\e[1;32m'
 Yellow='\e[1;33m'
 
 if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ];then
-	umount_sys
+	recursive_umount
 	echo -e "${Yellow}#${Reset} ${Green}Deleting FileSystem folder${Reset}"
 	rm -rf "$WORK_DIR/FileSystem"
 	echo -e "${Yellow}#${Reset} ${Green}Deleting up ISO folder${Reset}"
