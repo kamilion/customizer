@@ -111,6 +111,7 @@ Xephyr -ac -screen $RESOLUTION -terminate -br :9 &
 
 xhost +local:
 mount_sys
+mount_dbus
 echo -e "${Yellow}#${Reset} ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
 umount_sys

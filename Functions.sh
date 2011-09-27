@@ -52,18 +52,28 @@ fi
 
 mount_sys () {
 echo -e "${Yellow}# ${Green}Mounting${Reset}"
-mount --rbind /dev "$WORK_DIR/FileSystem/dev" && echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/dev${Reset}" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /dev on $WORK_DIR/FileSystem/dev. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
-mount --bind /proc "$WORK_DIR/FileSystem/proc" && echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/proc${Reset}" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /proc on $WORK_DIR/FileSystem/proc. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
-mount --bind /sys "$WORK_DIR/FileSystem/sys" && echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/sys${Reset}" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /sys on $WORK_DIR/FileSystem/sys. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
+echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/dev${Reset}" && mount --rbind /dev "$WORK_DIR/FileSystem/dev" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /dev on $WORK_DIR/FileSystem/dev. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
+echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/proc${Reset}" && mount --bind /proc "$WORK_DIR/FileSystem/proc" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /proc on $WORK_DIR/FileSystem/proc. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
+echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/sys${Reset}" && mount --bind /sys "$WORK_DIR/FileSystem/sys" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount /sys on $WORK_DIR/FileSystem/sys. Maybe it's already mounted and you are trying to double chroot.${Reset}"; read nada; exit; }
 }
 
 umount_sys () {
 echo -e "${Yellow}# ${Green}Unmounting${Reset}"
-for i in `grep "FileSystem" /proc/mounts | cut -d' ' -f2`; do
-	i="`echo "$i" | sed 's/\\\040/ /g'`"
+# FIXME: Unable to unmount when $WORK_DIR includes spaces!
+# for i in `grep "$WORK_DIR/FileSystem/[dev|proc|sys]" /proc/mounts | sed 's/\\\040/ /g'`; do
+
+for i in `df -a | awk '{print $6}' | grep "$WORK_DIR/FileSystem" | sort -r`;do
 	echo -e "   ${Yellow}* ${Green}Unmounting${Reset}: ${Yellow}$i${Reset}" 
 	umount -fl "$i" || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to unmount $i. Try to unmount it manualy or reboot so you don't harm your host OS.${Reset}"
 done
+}
+
+mount_dbus () {
+mkdir -p "$WORK_DIR/FileSystem/var/lib/dbus"
+mkdir -p "$WORK_DIR/FileSystem/var/run/dbus"
+
+echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/var/lib/dbus${Reset}" && mount --bind /var/lib/dbus "$WORK_DIR/FileSystem/var/lib/dbus" || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to mount /var/run/dbus.${Reset}"
+echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/var/run/dbus${Reset}" && mount --bind /var/run/dbus "$WORK_DIR/FileSystem/var/run/dbus" || echo -e "${Red}ERROR${Reset}: ${Yellow}Unable to mount /var/run/dbus.${Reset}"
 }
 
 ############# Errors #############
