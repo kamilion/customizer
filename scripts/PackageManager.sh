@@ -21,12 +21,12 @@ check_sources_list
 if [ "`pgrep Xorg`" = "" ];then
 	PACKAGE_MANAGERS="aptitude aptsh"
 else
-	PACKAGE_MANAGERS="synaptic aptitude aptsh"
+	PACKAGE_MANAGERS="software-center synaptic aptitude aptsh"
 fi
 
 PACKAGE_MANAGER=""
-if [ ! -e "$WORK_DIR/FileSystem/usr/sbin/synaptic" ] && [ ! -e "$WORK_DIR/FileSystem/usr/sbin/aptitude" ] && [ ! -e "$WORK_DIR/FileSystem/usr/sbin/aptsh" ];then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}No supported package manager were detected. Chroot and install synaptic, aptitude or aptsh.${Reset}"
+if [ ! -e "$WORK_DIR/FileSystem/usr/bin/software-center" ] && [ ! -e "$WORK_DIR/FileSystem/usr/sbin/synaptic" ] && [ ! -e "$WORK_DIR/FileSystem/usr/bin/aptitude" ] && [ ! -e "$WORK_DIR/FileSystem/usr/bin/aptsh" ];then
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}No supported package manager were detected. Chroot and install software-center, synaptic, aptitude or aptsh.${Reset}"
 	read nada
 	exit
 fi
@@ -79,7 +79,7 @@ echo -e "${Yellow}   *${Reset} ${Green}Installing the latest Dbus${Reset}"
 apt-get install --yes dbus -qq
 
 echo -e "${Yellow}   *${Reset} ${Green}Running package manager:${Reset} ${Yellow}$PACKAGE_MANAGER${Reset}"
-`which $PACKAGE_MANAGER`
+exec `which $PACKAGE_MANAGER`
 
 echo -e "${Yellow}   *${Reset} ${Green}Cleaning up${Reset}"
 apt-get clean
