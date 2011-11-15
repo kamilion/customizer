@@ -1,0 +1,57 @@
+' Gambas class file
+
+
+PUBLIC SUB Form_Open()
+  DIM TempFile AS File
+  DIM textLine AS String
+  DIM items AS String[]
+  DIM i AS Integer
+  DIM key AS Integer
+  DIM WorkDir AS String
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+
+  ME.Center
+  ME.Caption = "Installed Packages "
+
+  SHELL "chroot '" & Trim(WorkDir) & "/FileSystem' dpkg-query -W --showformat='${Package},${Version},${Priority},${Installed-Size}\n' | tee /tmp/PACKAGESLIST" WAIT
+
+  OPEN "/tmp/PACKAGESLIST" FOR READ AS #TempFile
+  ' Setup ColumnView
+  ColumnView1.Columns.Count = 4
+  ColumnView1.Columns[0].Text = "Package"
+  ColumnView1.Columns[1].Text = "Version"
+  ColumnView1.Columns[2].Text = "Priority"
+  ColumnView1.Columns[3].Text = "Installed-Size"
+  ' Loop through each line until the end of file.
+  ' Eof() returns true at the end of the file.
+  WHILE NOT Eof(TempFile)
+    LINE INPUT #TempFile, textLine
+    ' Split each line into fields
+    ' Note that we set the " char as an escape char
+    items = Split(textLine, ",", "\"")
+    INC key
+    ColumnView1.Add(key, items[0])
+    FOR i = 1 TO items.Count - 1
+      ColumnView1[key][i] = items[i]
+    NEXT
+  WEND
+  CLOSE #TempFile
+  CATCH
+    TRY CLOSE #TempFile
+END 
+
+PUBLIC SUB Quit_Click()
+  ME.Close
+END
+
+PUBLIC SUB Save_Click()
+  DIM WorkDir AS String
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  
+  Dialog.Title = "Select where to save the list"
+  Dialog.Filter = ["*.txt", "Text Files"]
+  Dialog.Path = Trim(WorkDir) & ""
+
+  IF Dialog.SaveFile() THEN RETURN
+  COPY "/tmp/PACKAGESLIST" TO Dialog.Path & ".txt"
+END

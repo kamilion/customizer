@@ -1,0 +1,227 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,56,44)
+  Text = ("")
+  Icon = Picture["logo.png"]
+  Border = Window.Fixed
+  { Menu Menu
+    Text = ("Main")
+    { Get_UMR Menu
+      Text = ("UMR Downloader")
+      Picture = Picture["icon:/small/earth"]
+      Visible = False
+    }
+    { Settings Menu
+      Text = ("Settings")
+      Picture = Picture["icon:/16/options"]
+      Shortcut = "Ctrl+S"
+    }
+    { Import_Snapshot Menu
+      Text = ("Import Snapshot")
+      Picture = Picture["icon:/16/open"]
+      Shortcut = "Ctrl+Z"
+    }
+    { Create_Snapshot Menu
+      Text = ("Create Snapshot")
+      Picture = Picture["icon:/16/save"]
+      Enabled = False
+      Shortcut = "Ctrl+X"
+    }
+    { Quit Menu
+      Text = ("Quit")
+      Picture = Picture["icon:/16/quit"]
+      Shortcut = "Ctrl+Q"
+    }
+  }
+  { Extras_Menu Menu
+    Text = ("Extras")
+    Enabled = False
+    { Tweaks Menu
+      Text = ("Tweaks")
+      Picture = Picture["icon:/16/tools"]
+    }
+    { Exec_Hook Menu
+      Text = ("Execute Hook")
+      Picture = Picture["icon:/16/exec"]
+    }
+    { Install_GUI Menu
+      Text = ("Install GUI")
+      Picture = Picture["icon:/16/system"]
+    }
+    { SysLinux Menu
+      Text = ("SysLinux")
+      Picture = Picture["icon:/16/properties"]
+    }
+    { Browse_FS Menu
+      Text = ("Browse FileSystem")
+      Picture = Picture["icon:/16/home"]
+    }
+    { Browse_ISO Menu
+      Text = ("Browse ISO")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { List_Packages Menu
+      Text = ("List Installed Packages")
+      Picture = Picture["icon:/16/text"]
+    }
+  }
+  { Help Menu
+    Text = ("Help")
+    { CheckForUpdates Menu
+      Text = ("Check for Updates")
+      Picture = Picture["icon:/16/find"]
+      Shortcut = "Ctrl+C"
+    }
+    { About Menu
+      Text = ("About")
+      Picture = Picture["icon:/16/info"]
+      Shortcut = "Ctrl+A"
+    }
+  }
+  { CustomizationFrame Frame
+    MoveScaled(37,12,18,23)
+    Text = (" Customization ")
+    { Terminal Button
+      MoveScaled(1,15,16,3)
+      Enabled = False
+      ToolTip = ("Modify distro with Terminal as root")
+      Text = ("Terminal")
+      Picture = Picture["icon:/16/terminal"]
+    }
+    { Desktop Button
+      MoveScaled(1,19,16,3)
+      Enabled = False
+      ToolTip = ("Modify distro GUI look as root in realtime")
+      Text = ("Desktop")
+      Picture = Picture["icon:/16/system"]
+    }
+    { Archive Button
+      MoveScaled(1,11,16,3)
+      Enabled = False
+      ToolTip = ("Run package manager to upgrade, install or purge packages")
+      Text = ("Archive")
+      Picture = Picture["icon:/16/archive"]
+    }
+    { Edit_Sources Button
+      MoveScaled(1,3,16,3)
+      Enabled = False
+      ToolTip = ("Edit the sources.list with your favourite text-editor")
+      Text = ("Edit Souces")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Install_DEB Button
+      MoveScaled(1,7,16,3)
+      Enabled = False
+      ToolTip = ("Install deb packages with a single click")
+      Text = ("Install DEB")
+      Picture = Picture["icon:/16/package"]
+    }
+  }
+  { Frame1 Frame
+    MoveScaled(1,12,35,23)
+    Text = (" Configuration ")
+    { ReleaseNotesURL TextBox
+      MoveScaled(1,19,33,3)
+      Enabled = False
+      Text = ("http://www.ubuntu.com/getubuntu/releasenotes")
+      Alignment = Align.Left
+    }
+    { Label3 Label
+      MoveScaled(1,16,33,3)
+      Text = ("Release notes URL")
+      Alignment = Align.Center
+    }
+    { Version TextBox
+      MoveScaled(18,5,16,3)
+      Enabled = False
+      Text = ("0.1")
+    }
+    { Label1 Label
+      MoveScaled(18,2,16,3)
+      Text = ("Version")
+      Alignment = Align.Center
+    }
+    { LiveCD_User TextBox
+      MoveScaled(18,12,16,3)
+      Enabled = False
+      ToolTip = ("Set LiveCD User name for your distro")
+      Text = ("live")
+    }
+    { Label4 Label
+      MoveScaled(18,9,16,3)
+      Text = ("LiveCD User name")
+      Alignment = Align.Center
+    }
+    { DistName TextBox
+      MoveScaled(1,5,16,3)
+      Enabled = False
+      Mouse = Mouse.Text
+      ToolTip = ("Enter name for your distro")
+      Text = ("Distro Name")
+    }
+    { Label6 Label
+      MoveScaled(1,2,16,3)
+      Text = ("Distribution Name")
+      Alignment = Align.Center
+    }
+    { HostName TextBox
+      MoveScaled(1,12,16,3)
+      Enabled = False
+      ToolTip = ("Enter Hostname for your distro")
+      Text = ("hostname")
+    }
+    { Label5 Label
+      MoveScaled(1,9,16,3)
+      Text = ("Hostname")
+      Alignment = Align.Center
+    }
+  }
+  { QEMU Button
+    MoveScaled(29,36,13,3)
+    Enabled = False
+    ToolTip = ("Emulate ISO with QEMU")
+    Text = ("QEMU")
+    Picture = Picture["icon:/16/cdrom"]
+  }
+  { Build_ISO Button
+    MoveScaled(15,36,13,3)
+    Enabled = False
+    ToolTip = ("Build the ISO Image")
+    Text = ("Build ISO")
+    Picture = Picture["icon:/16/save"]
+  }
+  { Clean Button
+    MoveScaled(43,36,12,3)
+    Enabled = False
+    ToolTip = ("Clean all temp files and dirs")
+    Text = ("Clean")
+    Picture = Picture["icon:/16/clear"]
+  }
+  { UseImage Button
+    MoveScaled(1,36,13,3)
+    ToolTip = ("Select ISO image to be used as base for your distro")
+    Text = ("Select ISO")
+    Picture = Picture["icon:/16/open"]
+  }
+  { Separator1 Separator
+    MoveScaled(12,5,43,1)
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(1,1,10,10)
+    Picture = Picture["logo.png"]
+    Stretch = True
+  }
+  { Label8 Label
+    MoveScaled(12,1,43,4)
+    Font = Font["Bold,+6"]
+    Text = ("Customizer v3.0.6")
+    Alignment = Align.Center
+  }
+  { Label9 Label
+    MoveScaled(12,7,43,3)
+    Font = Font["DejaVu Sans,+2"]
+    Text = ("Advanced LiveCD Customization Tool")
+    Alignment = Align.Center
+  }
+}

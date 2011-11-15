@@ -1,0 +1,19 @@
+# Gambas Project File 2.0
+# Compiled with Gambas 2.21.0
+Title=Customizer
+Startup=FMain
+Icon=logo.png
+Version=3.0.309
+Library=gb.gui
+Library=gb.form
+Description=GUI for Customizer (previuosly known as U-Customizer)
+Authors=SmiL3y
+TabSize=2
+State=2
+ControlPublic=1
+ModulePublic=1
+ExecPath=/opt/Customizer/GUI.gambas
+SourcePath=/home/as/Projects
+Maintainer=boza
+Address=boza@hack-the-planet
+License=General Public Licence

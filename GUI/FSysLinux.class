@@ -1,0 +1,90 @@
+' Gambas class file
+
+PUBLIC SUB Form_Open()
+  DIM HFColor, HBColor, HSColor, WorkDir, SplashFile AS Variant
+  ME.Center
+  ME.Caption = "ISOLinux Splash and Colors"
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  
+  IF NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") AND NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.jpg") THEN
+    Message.Warning("Splash file doesn't exists.")
+    ChangePic.Enabled = FALSE
+  ELSE 
+    IF Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") THEN
+      SplashFile = "splash.pcx"
+    ELSE 
+      SplashFile = "splash.jpg"
+    ENDIF 
+    
+    SplashPic.Picture = Picture.Load(Trim(WorkDir) & "/ISO/isolinux/" & SplashFile)
+  ENDIF 
+
+  IF NOT Exist(Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg") THEN 
+    Message.Warning("gfxboot.cfg doesn't exists")
+    SetColourMode.Enabled = FALSE
+    ColorChooser1.Enabled = FALSE
+  ELSE 
+    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep foreground=* | sed 's/foreground=0x//'" TO HFColor
+    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep background=* | sed 's/background=0x//'" TO HBColor
+    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep screen-colour=* | sed 's/screen-colour=0x//'" TO HSColor
+  
+    Test.ForeColor = Val("&H" & HFColor) 
+    Test.BackColor = Val("&H" & HBColor)
+    Panel1.BackColor = Val("&H" & HSColor)
+    ColorChooser1.ToolTip = "Change the colour used for " & SetColourMode.Text
+  ENDIF 
+END
+
+PUBLIC SUB Quit_Click()
+  ME.Close
+END
+
+
+PUBLIC SUB ChangePic_Click()
+  DIM PIC, WorkDir, SplashFile AS String
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  SHELL "grep PIC= /opt/Customizer/settings.conf | sed 's/PIC=//;s/\"//g'" TO PIC
+  
+  Dialog.Title = "Please select picture"
+  Dialog.Filter = ["*.pcx;*.png;*.bmp;*.jpeg;*.jpg", "Pictures"]
+  
+  IF Exist(PIC) THEN
+    Dialog.Path = PIC
+  ELSE 
+    Dialog.Path = "/home"
+  ENDIF  
+  
+  IF Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") THEN
+      SplashFile = "splash.pcx"
+  ELSE 
+      SplashFile = "splash.jpg"
+  ENDIF 
+  
+  IF Dialog.OpenFile() THEN RETURN 
+  SHELL "sed -i 's@PIC=.*@PIC=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  SHELL "convert -resize 640x480! -colors 256 '" & Dialog.Path & "' " & Trim(WorkDir) & "/ISO/isolinux/" & SplashFile WAIT
+  SplashPic.Picture = Picture.Load(Trim(WorkDir) & "/ISO/isolinux/" & SplashFile)
+END
+
+PUBLIC SUB ColorChooser1_Change()
+  DIM Colour, WorkDir AS Variant
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  
+  Colour = Hex(ColorChooser1.Value, 6)
+  
+  SELECT CASE SetColourMode.Text
+    CASE "Foreground"
+    Test.ForeColor = ColorChooser1.Value
+    SHELL "sed -i 's/foreground=0x.*/foreground=0x" & Colour & "/' " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg" 
+  CASE "Background"
+    Test.BackColor = ColorChooser1.Value
+    SHELL "sed -i 's/background=0x.*/background=0x" & Colour & "/' " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg"
+  CASE "Screen-Colour"
+    Panel1.BackColor = ColorChooser1.Value
+    SHELL "sed -i 's/screen-colour=0x.*/screen-colour=0x" & Colour & "/' " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg"
+  END SELECT
+END
+
+PUBLIC SUB SetColourMode_Click()
+  ColorChooser1.ToolTip = "Change the colour used for " & SetColourMode.Text
+END

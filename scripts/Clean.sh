@@ -1,4 +1,4 @@
-#!/bin/bash -u
+#!/usr/bin/env bash
 #
 # This script is part of Customzier
 #
@@ -11,6 +11,7 @@
 # Jabber: xakepa@jabber.org
 # Skype: big-smoke10
 #
+set -u
 source /opt/Customizer/Functions.sh
 source /opt/Customizer/settings.conf
 Reset='\e[0m'

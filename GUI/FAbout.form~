@@ -1,0 +1,31 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,65,49)
+  Text = ("")
+  Icon = Picture["icon:/small/info"]
+  Border = Window.Fixed
+  { Label12 Label
+    MoveScaled(14,1,37,4)
+    Font = Font["URW Bookman L,Bold,+5"]
+    Text = ("Customizer v3.0.5")
+    Alignment = Align.Center
+  }
+  { Credits Label
+    MoveScaled(12,33,41,11)
+    Text = ("c0diNg: Ivailo Monev (a.k.a. SmiL3y)\nPPA maintainer: Micha\xC5\x82 G\xC5\x82owienka (a.k.a. eloaders)\n\nYou can send me feedback on E-Mail:\nxakepa10@gmail.com")
+    Alignment = Align.Center
+  }
+  { Quit Button
+    MoveScaled(26,45,13,3)
+    ToolTip = ("Close this window")
+    Text = ("Close")
+    Picture = Picture["icon:/16/close"]
+  }
+  { TextArea1 TextArea
+    MoveScaled(1,5,63,27)
+    Text = ("This package is free software; you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation; either version 2 of the License, or\n(at your option) any later version.\n\nThis package is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this package; if not, write to the Free Software\nFoundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA")
+    ReadOnly = True
+    Wrap = True
+  }
+}

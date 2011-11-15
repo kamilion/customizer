@@ -1,5 +1,3 @@
-#!/bin/bash -u
-#
 # This script is part of Customzier
 #
 # Homepage: http://u-customizer.sf.net

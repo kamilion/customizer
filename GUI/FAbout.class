@@ -1,0 +1,10 @@
+' Gambas class file
+
+PUBLIC SUB Form_Open()
+  ME.Center
+  ME.Caption = "Info"
+END
+
+PUBLIC SUB Quit_Click()
+  ME.Close
+END

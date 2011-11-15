@@ -1,4 +1,4 @@
-#!/bin/bash -u
+#!/usr/bin/env bash
 #
 # This script is part of Customzier
 #
@@ -11,6 +11,7 @@
 # Jabber: xakepa@jabber.org
 # Skype: big-smoke10
 #
+set -u
 source /opt/Customizer/Functions.sh
 source /opt/Customizer/settings.conf
 Reset='\e[0m'
@@ -26,11 +27,6 @@ if [ ! -e "$HOOK" ];then
 	echo -ne "${Red}ERROR${Reset}: ${Yellow}The hook files doesn't exists.${Reset}"
 	read nada
 	exit
-fi
-
-if [ ! -x "$HOOK" ];then
-	echo -ne "${Red}OVERRIDE${Reset}: ${Yellow}The hook file isn't executable, let's make it.${Reset}"
-	chmod +x "$HOOK"
 fi
 
 echo -e "${Yellow}#${Reset} ${Green}Doing some preparations${Reset}"
@@ -57,6 +53,11 @@ dpkg --configure -a
 apt-get install -f -y -q
 echo -e "${Yellow}   *${Reset} ${Green}Updating packages database${Reset}"
 apt-get update -qq
+
+if [ ! -x "/tmp/$HOOK_NAME" ];then
+	echo -ne "${Red}OVERRIDE${Reset}: ${Yellow}The hook file isn't executable, let's make it.${Reset}"
+	chmod +x "/tmp/$HOOK_NAME"
+fi
 
 echo -e "${Yellow}   *${Reset} ${Green}Executing the hook${Reset}: ${Yellow}$HOOK_NAME${Reset}"
 exec /tmp/$HOOK_NAME

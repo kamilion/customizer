@@ -1,0 +1,842 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2002-11-01 04:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .project:1
+msgid "U-Customizer"
+msgstr "-"
+
+#: .project:2
+msgid "GUI for U-Customizer"
+msgstr "-"
+
+#: FAbout.class:33
+#, fuzzy
+msgid "U-Customizer v2.1.4"
+msgstr "-"
+
+#: FAbout.class:39
+msgid ""
+"c0diNg: SmiL3y\n"
+"\n"
+"You can send me feedback on E-Mail:\n"
+"xakepa10@gmail.com"
+msgstr ""
+
+#: FAbout.class:45 FDownloader.class:88 FEditConfigs.class:69 FHints.class:30
+#: FNewUpdate.class:94 FSettings.class:83 FTweaks.class:49
+msgid "Close"
+msgstr ""
+
+#: FAbout.class:51
+msgid ""
+"This package is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This package is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this package; if not, write to the Free Software\n"
+"Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301 USA"
+msgstr ""
+
+#: FDownloader.class:68
+msgid "Select UMR release"
+msgstr ""
+
+#: FDownloader.class:74
+#, fuzzy
+msgid "Select the release of Ubuntu-Mini-Remix which you want to be downloaded"
+msgstr "Seleziona la lingua che vuoi modificare"
+
+#: FDownloader.class:75 FMain.class:678
+msgid "ComboBox1"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "11.04 (amd64)"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "11.04 (i386)"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "10.10 (i386)"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "10.10 (amd64)"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "10.04.1 (i386)"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "10.04.1 (amd64)"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "10.04 (i386)"
+msgstr ""
+
+#: FDownloader.class:77
+msgid "10.04 (amd64)"
+msgstr ""
+
+#: FDownloader.class:82
+msgid "Choose folder where the downloaded ISO will be saved"
+msgstr ""
+
+#: FDownloader.class:94
+msgid "Start downloading the choosen version of Ubuntu-Mini-Remix"
+msgstr ""
+
+#: FDownloader.class:95 FNewUpdate.class:100
+#, fuzzy
+msgid "Download"
+msgstr "Scarica UMR"
+
+#: FEditConfigs.class:62
+msgid "Save changes to the file"
+msgstr ""
+
+#: FEditConfigs.class:63
+msgid "Save"
+msgstr "Salva"
+
+#: FHints.class:36
+msgid ""
+"1. INSTALL PACKAGES WITHOUT RECOMMENDS AND SUGGESTED PACKAGES\n"
+"\n"
+"If you want to keep the distribution without bloat on it you can install "
+"packages using:\n"
+"\n"
+"apt-get install foo --no-install-recommends\n"
+"\n"
+"This will install only the dependecies for package 'foo', and if you want to "
+"make that permanent you can check the 'Tweaks' ( Extras >> Tweasks) and "
+"enable this permanently\n"
+"\n"
+"\n"
+"2. INTEGRATING LIVE CD INSTALLER\n"
+"\n"
+"Ubiquity is the Live CD installer which all the Ubuntu users are well "
+"fammiliar with. If you want to include one in your distro so it can be "
+"installed to HD after trying it in Live mode you will have to make a little "
+"choise - what type of front-end libraries it will use, for an example if I'm "
+"creating Live CD with Gnome as Desktop Environment I will install the GTK "
+"front-end for ubiquity so the (Python) libs and artwork (pictures, text "
+"during install) will match the DE I will do the following:\n"
+"\n"
+"apt-get install ubiquity ubiquity-frontend-gtk\n"
+"\n"
+"However if you will install KDE as DE you will have to install the KDE'ish "
+"frontend:\n"
+"\n"
+"apt-get install ubiquity ubiquity-frontend-kde\n"
+"\n"
+"NOTE: The GTK frontend is also preferable when installing even other DE/WM "
+"like LXDE, XFCE, Fluxbox, Openbox etc.\n"
+"\n"
+"\n"
+"3. PURGE THE UNNECCESSERY LOCALES\n"
+"\n"
+"If you use only english locales you can purge them by installing a package "
+"from the repos, selecting what locales they need and purge the unneccessery "
+"locale which will save HD space (100-200MB depending on what packges you "
+"install and their localization/man-pages files) by installing the neccessery "
+"tools:\n"
+"\n"
+"apt-get install localepurge dialog\n"
+"\n"
+"While the installation proccess is installing the packages it will prompt "
+"you what locales you need (using dialog), select only those you require!\n"
+"After the installation is copmlete type in the following:\n"
+"\n"
+"localepurge\n"
+"\n"
+"You can also reconfigure the configuration for localepurge by typing in the "
+"following:\n"
+"\n"
+"dpkg-reconfigure localepurge\n"
+"\n"
+"\n"
+"4. INSTALLING CUSTOM COMPILED KERNEL\n"
+"\n"
+"If you know what you are doing (you know your PCs Hardware well) and "
+"compiled kernel before you may want to do that inside the chroot env. "
+"however after you start the ISO build proccess it will purge all kernel "
+"image and install the lates one avaliable from the repos. This was added to "
+"the script as a mesure to avoid installing multiple kernel images, if more "
+"then one initrd is located in the /boot folder the ISO build proccess will "
+"fail. Now to the point, to disable that you will have go to "
+"'Settings' ( Main >> Settings ) and uncheck 'Purge Kernels'\n"
+"\n"
+"The if you have compiled kernel before you can use the deb packages by "
+"copying them into the /home/FileSystem using the 'Browse FileSystem', using "
+"your favourite File-Manager or even the CLI and install them OR compiling it "
+"inside the chroot env. (which isn't recomended because the ISO may be "
+"unbootable) I suggest you to compile kernel once or twice on your current "
+"OS, test it and then installing it into the build env.\n"
+"\n"
+"Also you may want to edit line 169:\n"
+"\n"
+"gunzip -dc ../initrd.lz | cpio -imvd --no-absolute-filenames > /dev/null "
+"2>&1\n"
+"\n"
+"and line 181:\n"
+"\n"
+"find . | cpio --quiet --dereference -o -H newc | lzma -7 > $ISOPATH/casper/"
+"initrd.lz\n"
+"\n"
+"Line 169 is responsible for the decompression proccess which is performed to "
+"apply the changes about the choosen 'Hostname' and 'LiveCD User Name'. It "
+"will depend on what compression you will choose while setting up the source "
+"of the kernel and compiling it after that so be aware, otherwise the build "
+"proccess may fail! Please consult www.google.com for some How-To compile "
+"kernel, different compression formats and how to compress/decompress "
+"archives in CLI.\n"
+"\n"
+"\n"
+"5. STARTING FROM THE BARE MINIMAL\n"
+"\n"
+"Many users will want to start from the bare minimal and from the ground up, "
+"and here come Ubuntu-Mini-Remix! It's the bare minimal Ubuntu ISO which has "
+"the bare minimal for Live CD, not even Live installer is included! So, how "
+"to get it? 2-choises - download ISO using 'UMR Downloader' (Main >> UMR "
+"Downloader) or visit http://www.ubuntu-mini-remix.org/ using your favourite "
+"web browser and download the desired version.\n"
+"\n"
+"\n"
+"6. YOU CAN'T BUILD 64-bit (AMD64) OS FROM 32-bit HOST OS\n"
+"\n"
+"Unless you install some extra libraries (which isn't recommended at all) and "
+"touch here and there you can't chroot into 64-bit OS env. from 32-bit HOST "
+"OS! So, what can you do? Use www.google.com and search for some How-To OR "
+"save to project file, send it to friend with 64-bit OS so he can use the "
+"setting you've configured and build it for you.\n"
+"\n"
+"7. SETTINGS\n"
+"\n"
+"7.1 Use Terminal instead of Zenity to display progress\n"
+"\n"
+"By enabling these feature you will see more info about the build proccess so "
+"if an \terror accures (the scripts and GUI include some debug/error display "
+"options but they can be 100 accurate) you will see what's happening an fix "
+"the issue or contact me so I can try yo help you or atleast to give you some "
+"directions where you can find additional information.\n"
+"\n"
+"\n"
+"7.2 Purge Kernel/s and install the latest avaliable\n"
+"\n"
+"This will remove all of the currently installed Kernels and install only one "
+"so when the scripts are looking for the boot files (initrd and vmlinuz) "
+"there will be only one of each and no problems will accure. However if you "
+"want to install custom compiled Kernel (see 4. in on that text page) it will "
+"be useful to desable it instead of modifying the scripts and eventually "
+"corrupt them.\n"
+"\n"
+"\n"
+"7.3 Delete Boot files after creating the ISO\n"
+"\n"
+"By enabling that option you will save space (around 10~20MB), however it is "
+"useful only if the ISO you are producing is going to be ONLY LiveCD. If the "
+"distro is going to be installed you shouldn't enable that option."
+msgstr ""
+
+#: FMain.class:60
+msgid "/home/ISO"
+msgstr "-"
+
+#: FMain.class:527
+msgid "Main"
+msgstr "File"
+
+#: FMain.class:530
+msgid "UMR Downloader"
+msgstr "Scarica UMR"
+
+#: FMain.class:535
+msgid "Settings"
+msgstr ""
+
+#: FMain.class:540
+msgid "Open Project.."
+msgstr "Apri progetto..."
+
+#: FMain.class:545
+msgid "Save Project.."
+msgstr "Salva progetto..."
+
+#: FMain.class:550
+msgid "Clean and Exit"
+msgstr ""
+
+#: FMain.class:555
+msgid "Exit"
+msgstr "Esci"
+
+#: FMain.class:561
+msgid "Extras"
+msgstr "Extra"
+
+#: FMain.class:565
+msgid "Browse FileSystem"
+msgstr "Esplora FileSystem"
+
+#: FMain.class:570
+msgid "Browse ISO"
+msgstr "Esplora ISO"
+
+#: FMain.class:575
+msgid "Edit Sources.list"
+msgstr "Modifica sources.list"
+
+#: FMain.class:580
+msgid "DEB Installer"
+msgstr "Installatore DEB"
+
+#: FMain.class:585
+msgid "Auto Execute Commands"
+msgstr "Comandi automatici"
+
+#: FMain.class:589
+msgid "Execute"
+msgstr "Esegui"
+
+#: FMain.class:594
+msgid "Edit Commands List"
+msgstr "Modifica lista comandi"
+
+#: FMain.class:600
+msgid "Tweaks"
+msgstr ""
+
+#: FMain.class:605
+msgid "List Packages"
+msgstr "Lista pacchetti"
+
+#: FMain.class:611
+msgid "Help"
+msgstr "Aiuto"
+
+#: FMain.class:614
+msgid "Check for Updates"
+msgstr ""
+
+#: FMain.class:619
+msgid "Hints"
+msgstr ""
+
+#: FMain.class:624
+msgid "About"
+msgstr "Informazioni"
+
+#: FMain.class:632
+#, fuzzy
+msgid " Configuration "
+msgstr " Personalizzazione"
+
+#: FMain.class:636
+msgid "Set LiveCD User name for your distro"
+msgstr "Imposta il nome utente livecd per la tua distro"
+
+#: FMain.class:637
+msgid "user"
+msgstr ""
+
+#: FMain.class:642
+msgid "Enter Hostname for your distro"
+msgstr "Inserisci l'hostname per la tua distro"
+
+#: FMain.class:643
+#, fuzzy
+msgid "hostname"
+msgstr "-"
+
+#: FMain.class:648
+msgid "Enter name for your distro"
+msgstr "Inserisci il nome per la tua distro"
+
+#: FMain.class:649
+#, fuzzy
+msgid "Distro Name"
+msgstr "Nome distro"
+
+#: FMain.class:654
+msgid "LiveCD User name"
+msgstr "LiveCD - Nome utente"
+
+#: FMain.class:660
+msgid "Hostname"
+msgstr "-"
+
+#: FMain.class:666
+msgid "Distribution Name"
+msgstr "Nome distribuzione"
+
+#: FMain.class:673
+#, fuzzy
+msgid " Customization "
+msgstr " Personalizzazione"
+
+#: FMain.class:677
+msgid ""
+"Select desired DE/WM to be installed and click \"Install DE/WM\" and it will "
+"be installed with a single mouse click but only with core packages!"
+msgstr ""
+
+#: FMain.class:685
+msgid ""
+"Clicking this button will install the select on the left DE/WM for you\n"
+"(if the installation proccess fails check the source list, enable the "
+"required repositories and try again)"
+msgstr ""
+
+#: FMain.class:686
+#, fuzzy
+msgid "Install DE/WM"
+msgstr "Installa Apps"
+
+#: FMain.class:693
+msgid "Modify distro with Cosnole as ROOT"
+msgstr "Modifica la distro tramite console (come ROOT)"
+
+#: FMain.class:694
+msgid "Console"
+msgstr "-"
+
+#: FMain.class:701
+msgid "Modify distro look as ROOT"
+msgstr "Modifica l'aspetto della distro (come ROOT)"
+
+#: FMain.class:702
+msgid "Desktop"
+msgstr "-"
+
+#: FMain.class:709
+msgid " Build and try it out "
+msgstr " Crea e prova"
+
+#: FMain.class:714
+msgid "Build the ISO Image"
+msgstr "Crea l'immagine ISO"
+
+#: FMain.class:715
+msgid "Build ISO"
+msgstr "Crea la ISO"
+
+#: FMain.class:721
+msgid "Emulate ISO with QEMU"
+msgstr "Emula la ISO con QEMU"
+
+#: FMain.class:722
+msgid "QEMU"
+msgstr "-"
+
+#: FMain.class:730
+msgid "Clean all temp files and dirs"
+msgstr "Pulisci tutti i file e cartelle temporanei"
+
+#: FMain.class:731
+msgid "Clean"
+msgstr "Pulisci"
+
+#: FMain.class:737
+msgid "Select ISO image to be used as base for your distro"
+msgstr "Seleziona l'immagine ISO che verrà usata come base per la tua distro"
+
+#: FMain.class:738
+msgid "Select ISO"
+msgstr "Seleziona la ISO"
+
+#: FNewUpdate.class:88
+msgid "The following changes are made in the new version:"
+msgstr ""
+
+#: FNewUpdate.class:106
+msgid "Download and Install"
+msgstr ""
+
+#: FSettings.class:89
+msgid "Use Terminal instead of Zenity to display progress"
+msgstr ""
+
+#: FSettings.class:94
+msgid "Purge Kernel/s and install the latest avaliable"
+msgstr ""
+
+#: FSettings.class:99
+msgid "Delete Boot files after creating the ISO"
+msgstr ""
+
+#: FSettings.class:104
+msgid ""
+"Please, refer to some notes about these options on\n"
+"Help >> Hints or disabling/enabling them may cause\n"
+"issues while trying to build the final ISO image!"
+msgstr ""
+
+#: FTweaks.class:43
+msgid ""
+"Permanent disable APT package manager to install recommended and suggested "
+"packages"
+msgstr ""
+
+#: FTweaks.class:44
+msgid "Disable APT recommends/suggested"
+msgstr ""
+
+#~ msgid "Add"
+#~ msgstr "Aggiungi"
+
+#~ msgid ""
+#~ "All of the preperation has been made. Hit the 'Build' button to start the "
+#~ "automated proccess."
+#~ msgstr ""
+#~ "Tutta la preparazione è stata completata. Premi il pulsante \"Crea\" per "
+#~ "avviare il processo automatico."
+
+#~ msgid "Apps Installation"
+#~ msgstr "Installazione applicazioni"
+
+#~ msgid "Auto CLI-Chroot commands execute"
+#~ msgstr "Comandi automatici via terminale"
+
+#~ msgid "Browse SlideShow"
+#~ msgstr "Esplora Slideshow"
+
+#~ msgid "Browse Ubiquity"
+#~ msgstr "Esplora Ubiquity"
+
+#~ msgid "Browse Ubiquity folder"
+#~ msgstr "Esplora directory Ubiquity"
+
+#~ msgid "Browse Ubiquity-SlideShow folder"
+#~ msgstr "Esplora directory Ubiquity-Slideshow"
+
+#~ msgid "Build"
+#~ msgstr "Costruisci"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancella"
+
+#~ msgid "Cancel Wizard"
+#~ msgstr "Annulla procedura guidata"
+
+#~ msgid "Choose as many as you want deb packages to be installed"
+#~ msgstr "Digita tutti i pacchetti deb che vuoi installare"
+
+#~ msgid "Choose Different Style"
+#~ msgstr "Scegli uno stile differente"
+
+#~ msgid "Choose different Ubiquity style (Ubuntu, Kubuntu or Xubuntu)"
+#~ msgstr ""
+#~ "Scegli uno stile differente per Ubiquity (Ubuntu, Kubuntu o Xubuntu)"
+
+#~ msgid ""
+#~ "Choose from presests to be used to automaticly install apps cia Install "
+#~ "Apps buton"
+#~ msgstr ""
+#~ "Scegli un modello predefinito da usare per l'installazione automatica "
+#~ "delle applicazioni"
+
+#~ msgid ""
+#~ "Choose from presests to be used to automaticly install apps via Install "
+#~ "Apps buton"
+#~ msgstr ""
+#~ "Scegli un modello predefinito da usare per installare le applicazioni "
+#~ "automaticamente tramite il ulsante Installa Apps"
+
+#~ msgid ""
+#~ "Choose from various presets - Minimal and Full Desktop\n"
+#~ "Envierment that will be installed or manually type which\n"
+#~ "apps should be installed. You can even select a preset and\n"
+#~ "then remove or add more apps to the list. It's up to you.."
+#~ msgstr ""
+#~ "Scegli un modello predefinito per l'ambiente - minimale o completo\n"
+#~ "che sarà installato oppure specifica manualmente quali applicazioni "
+#~ "saranno installate. Puoi selezionare anche un modello predefinito e "
+#~ "modificare (aggiungere o rimuovere) le applicazioni dalla lista. A tua "
+#~ "discrezione..."
+
+#~ msgid "Choose packages to be purged from list"
+#~ msgstr "Pacchetti scegli di essere eliminati dalla lista"
+
+#~ msgid "Click on the picture to select replacement for Ubiquity-Background"
+#~ msgstr ""
+#~ "Clicca sull'immagine per selezionarne una sostitutiva per lo sfondo di "
+#~ "Ubiquity"
+
+#~ msgid "Click on the picture to select replacement for Ubiquity-Logo"
+#~ msgstr ""
+#~ "Clicca sull'immagine per selezionarne una sostitutiva per il logo di "
+#~ "Ubiquity"
+
+#~ msgid "Click to change"
+#~ msgstr "Clicca per modificare"
+
+#~ msgid "Copy File"
+#~ msgstr "Copia file"
+
+#~ msgid ""
+#~ "Developer\n"
+#~ "Ivailo Monev\n"
+#~ "\n"
+#~ "Beta tester\n"
+#~ "Davide Purinani\n"
+#~ "\n"
+#~ "Italian translation\n"
+#~ "Francesco Muriana"
+#~ msgstr ""
+#~ "Sviluppatore\n"
+#~ "Ivailo Monev\n"
+#~ "\n"
+#~ "Beta tester\n"
+#~ "Davide Purinani\n"
+#~ "\n"
+#~ "Traduzione italiana\n"
+#~ "Francesco Muriana"
+
+#~ msgid "Distro name, Hostname, LiveCD User and Full user name"
+#~ msgstr "Nome distro, hostname, utente livecd e nome completo utente"
+
+#~ msgid "Documenation"
+#~ msgstr "Documentazione"
+
+#~ msgid "Edit"
+#~ msgstr "Modifica"
+
+#~ msgid "Edit Apps List"
+#~ msgstr "Modifica lista applicazioni"
+
+#~ msgid "Edit Sources list"
+#~ msgstr "Modifica lista sorgenti"
+
+#~ msgid "Edit Sources.list file to add repository"
+#~ msgstr "Modifica il file sources.list per aggiungere i repository"
+
+#~ msgid ""
+#~ "Edit Ubiquity-SlideShow text (first select language and file to edit)"
+#~ msgstr ""
+#~ "Modifica il testo di Ubiquity-Slideshow (seleziona la lingua e i vari "
+#~ "file da modificare)"
+
+#~ msgid "Error Log"
+#~ msgstr "Log degli errori"
+
+#~ msgid "Exit and Clean"
+#~ msgstr "Esci e pulisci"
+
+#~ msgid "FileBox"
+#~ msgstr "-"
+
+#~ msgid "Full Gnome"
+#~ msgstr "Gnome completo"
+
+#~ msgid "Full KDE"
+#~ msgstr "KDE completo"
+
+#~ msgid "Full LXDE"
+#~ msgstr "LXDE completo"
+
+#~ msgid "Full OpenBox"
+#~ msgstr "OpenBox completo"
+
+#~ msgid "Full User name"
+#~ msgstr "Nome completo"
+
+#~ msgid "Full xfce4"
+#~ msgstr "XFCE completo"
+
+#~ msgid "http://u-customizer.eu5.org/"
+#~ msgstr "-"
+
+#~ msgid ""
+#~ "If you're reading this then there is a problem with the GUI.\n"
+#~ "Please, report me for any kind of issues."
+#~ msgstr ""
+#~ "Se stai leggendo questo messaggio, c'è un problema con la GUI.\n"
+#~ "Per favore, notificami qualsiasi tipo di problema."
+
+#~ msgid "Install apps from preset ( or edit apps list from extras )"
+#~ msgstr ""
+#~ "Installa applicazioni predefinite (o modifica la lista applicazioni da "
+#~ "extra)"
+
+#~ msgid "Install DEB packages"
+#~ msgstr "Installa pacchetti DEB"
+
+#~ msgid " Installing Apps "
+#~ msgstr " Installa Apps"
+
+#~ msgid "LanguageBox"
+#~ msgstr "-"
+
+#~ msgid "LiveCD Installer"
+#~ msgstr "LiveCD - Installazione"
+
+#~ msgid " Logo and Banner "
+#~ msgstr " Logo e banner"
+
+#~ msgid "Manualy edit the apps list"
+#~ msgstr "Modifica manualmente la lista delle applicazioni"
+
+#~ msgid "Minimal Gnome"
+#~ msgstr "Gnome minimale"
+
+#~ msgid "Minimal KDE"
+#~ msgstr "KDE minimale"
+
+#~ msgid "Minimal LXDE"
+#~ msgstr "LXDE minimale"
+
+#~ msgid "Minimal OpenBox"
+#~ msgstr "OpenBox minimale"
+
+#~ msgid "Minimal xfce4"
+#~ msgstr "XFCE minimale"
+
+#~ msgid "Next"
+#~ msgstr "Avanti"
+
+#~ msgid "Other"
+#~ msgstr "Altro"
+
+#~ msgid " Pictures"
+#~ msgstr " Immagini"
+
+#~ msgid " Preperation "
+#~ msgstr " Preparazione"
+
+#~ msgid "Proceed to the next step"
+#~ msgstr "Avanza al passo successivo"
+
+#~ msgid ""
+#~ "Project Wizard will guide you trough various steps to gather information "
+#~ "about your needs and to config the setup proccess. Hit Next to continue "
+#~ "to the next step."
+#~ msgstr ""
+#~ "La procedura guidata ti guiderà attraverso i vari passaggi per "
+#~ "raccogliere le informazioni sulle tue esigenze e configurare il processo "
+#~ "di installazione. Premi \"Avanti\" per avanzare al prossimo passo."
+
+#~ msgid "Purge Packages"
+#~ msgstr "Purge pacchetti"
+
+#~ msgid "Remove All"
+#~ msgstr "Rimuovi tutto"
+
+#~ msgid "Remove all Ubiquity istances"
+#~ msgstr "Rimuovi tutti i processi di Ubiquity"
+
+#~ msgid "Remove Ubiquity"
+#~ msgstr "Rimuovi Ubiquity"
+
+#~ msgid ""
+#~ "Save Wizzard Project to a file for future use. Later you can open "
+#~ "project, start the Project Wizzard again and make some changes to update "
+#~ "or correct something."
+#~ msgstr ""
+#~ "Salva l'avvio guidato in un file per un uso futuro. Più avanti potrai "
+#~ "aprire il progetto, avviare l'avvio guidato nuovamente e fare dei "
+#~ "cambiamenti per aggiornare o correggere qualcosa."
+
+#~ msgid "Select file to be edited"
+#~ msgstr "Seleziona il file da modificare"
+
+#~ msgid "Set Full User name for your distro"
+#~ msgstr "Imposta il nome utente reale per la tua distro"
+
+#~ msgid "Standard KDE"
+#~ msgstr "KDE standard"
+
+#~ msgid "Standard resolution for Background is 816x176"
+#~ msgstr "La risoluzione per lo sfondo è 816x176"
+
+#~ msgid "Standard resolution for Logo is 454x90"
+#~ msgstr "La risoluzione standard per il logo è 454x90"
+
+#~ msgid ""
+#~ "Start Wizard which will guide you trough various steps to collect "
+#~ "information and build ISO very fast"
+#~ msgstr ""
+#~ "Avvia il wizard che ti guiderà attraverso i vari passaggi, raccogliendo "
+#~ "le necessarie informazioni per la creazione della ISO"
+
+#~ msgid ""
+#~ "Thank you for using my tool. If you have any issues, please contact me to "
+#~ "solve them as soon as possible."
+#~ msgstr ""
+#~ "Grazie per aver utilizzato il mio programma. Qualora avessi dei problemi, "
+#~ "contattami in modo da poterli risolvere il più presto possibile."
+
+#~ msgid ""
+#~ "Type in commands which will be executed in CLI-Chroot env.\n"
+#~ "BEWARE! Any mismatch can effect negative on the distro."
+#~ msgstr ""
+#~ "Digita i comandi che verranno eseguiti dal chroot testuale.\n"
+#~ "ATTENZIONE! Qualsiasi errore può avere effetti negativi sulla distro."
+
+#~ msgid ""
+#~ "Type in the Distribution name, Hostname, LiveCD User name\n"
+#~ "and Full User name that should be used in the customized\n"
+#~ "distro. They will be applied to the distro by recompiling\n"
+#~ "initrd.lz/gz file."
+#~ msgstr ""
+#~ "Digita il nome della distribuzione, l'hostname, il nome utente per il "
+#~ "livecd\n"
+#~ "e il nome utente reale che saranno usati per la procedura.\n"
+#~ "Saranno applicati alla distribuzione ricompilando il file initrd.lz."
+
+#~ msgid " Ubiquity-SlideShow Text "
+#~ msgstr "-"
+
+#~ msgid "ucustomizer@gmail.com"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/dolphin"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/filerunner"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/gentoo"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/krusader"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/pcmanfm"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/rox-filer"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/thunar"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/worker"
+#~ msgstr "-"
+
+#~ msgid "/usr/bin/xfe"
+#~ msgstr "-"
+
+#~ msgid "Wizard"
+#~ msgstr "-"

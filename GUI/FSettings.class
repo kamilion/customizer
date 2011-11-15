@@ -1,0 +1,133 @@
+' Gambas class file
+
+
+PUBLIC SUB Form_Open()
+  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res AS String
+  ME.Center
+  ME.Caption = "Settings"
+  
+  IF Exist("/usr/bin/gedit") THEN
+    EditorBox.Add("gedit")
+  ENDIF 
+
+  IF Exist("/usr/bin/medit") THEN
+    EditorBox.Add("medit")
+  ENDIF 
+  
+  IF Exist("/usr/bin/nedit") THEN
+    EditorBox.Add("nedit")
+  ENDIF 
+  
+  IF Exist("/usr/bin/mousepad") THEN
+    EditorBox.Add("mousepad")
+  ENDIF 
+  
+  IF Exist("/usr/bin/leafpad") THEN
+    EditorBox.Add("leafpad")
+  ENDIF 
+  
+  IF Exist("/usr/bin/geany") THEN
+    EditorBox.Add("geany")
+  ENDIF 
+  
+  IF Exist("/usr/bin/emacs") THEN
+    EditorBox.Add("emacs")
+  ENDIF 
+  
+  IF Exist("/usr/bin/kate") THEN
+    EditorBox.Add("kate")
+  ENDIF 
+  
+  IF Exist("/usr/bin/kwrite") THEN
+    EditorBox.Add("kwrite")
+  ENDIF 
+  
+  IF Exist("/usr/bin/bluefish") THEN
+    EditorBox.Add("bluefish")
+  ENDIF 
+  
+  IF Exist("/usr/bin/ultraedit") THEN
+    EditorBox.Add("ultraedit")
+  ENDIF 
+  
+  IF Exist("/usr/bin/scite") THEN
+    EditorBox.Add("scite")
+  ENDIF 
+  
+  IF Exist("/usr/bin/vi") THEN
+    EditorBox.Add("vi")
+  ENDIF 
+  
+  IF Exist("/usr/bin/vim") THEN
+    EditorBox.Add("vim")
+  ENDIF 
+  
+  IF Exist("/usr/bin/nano") THEN
+    EditorBox.Add("nano")
+  ENDIF 
+  
+  IF Exist("/usr/bin/pico") THEN
+    EditorBox.Add("pico")
+  ENDIF 
+  
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  SHELL "grep EDITOR= /opt/Customizer/settings.conf | sed 's/EDITOR=//'" TO Edit
+  SHELL "grep WIN_EXECUTABLES= /opt/Customizer/settings.conf | sed 's/WIN_EXECUTABLES=//;s/\"//g'" TO WinExe
+  SHELL "grep BOOT_FILES= /opt/Customizer/settings.conf | sed 's/BOOT_FILES=//;s/\"//g'" TO BFiles
+  SHELL "grep VRAM= /opt/Customizer/settings.conf | sed 's/VRAM=//;s/\"//g'" TO VRam
+  SHELL "grep RESOLUTION= /opt/Customizer/settings.conf | sed 's/RESOLUTION=//;s/\"//g'" TO Res
+  
+  TRY WDir.Text = Trim(WorkDir)
+  TRY EditorBox.Text = Trim(Edit)
+  TRY WinExecutables.Value = Trim(WinExe)
+  TRY BootFiles.Value = Trim(BFiles)
+  TRY VirtualMemBox.Text = Trim(VRam)
+  TRY ResolutionBox.Text = Trim(Res)
+  
+  IF FMain.Build_ISO.Enabled = TRUE THEN 
+    Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
+    Change_WDir.Enabled = FALSE
+    Change_WDir.ToolTip = "Changing the working directory is not possible at that state!"
+  ENDIF 
+END
+
+PUBLIC SUB WinExecutables_Click()
+  SHELL "sed -i 's/WIN_EXECUTABLES=.*/WIN_EXECUTABLES=" & WinExecutables.Value & "/' /opt/Customizer/settings.conf"
+END
+
+PUBLIC SUB BootFiles_Click()
+  SHELL "sed -i 's/BOOT_FILES=.*/BOOT_FILES=" & BootFiles.Value & "/' /opt/Customizer/settings.conf"
+END
+
+PUBLIC SUB ResolutionBox_Click()
+  SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=" & ResolutionBox.Text & "/' /opt/Customizer/settings.conf"
+END
+
+PUBLIC SUB EditorBox_Click()
+  SHELL "sed -i 's/EDITOR=.*/EDITOR=" & EditorBox.Text & "/' /opt/Customizer/settings.conf"
+END
+
+PUBLIC SUB VirtualMemBox_Click()
+  SHELL "sed -i 's/VRAM=.*/VRAM=" & VirtualMemBox.Text & "/' /opt/Customizer/settings.conf"
+END
+
+PUBLIC SUB Change_WDir_Click()
+  DIM WorkDir AS String
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  
+  Dialog.Title = "Please, select work directory"
+  
+  IF Exist(Trim(WorkDir)) THEN 
+    Dialog.Path = Trim(WorkDir)
+  ELSE 
+    Dialog.Path = "/home"
+  ENDIF 
+  
+  IF Dialog.SelectDirectory() THEN RETURN 
+  SHELL "sed -i 's@WORK_DIR=.*@WORK_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  WDir.Text = Dialog.Path
+END
+
+PUBLIC SUB Quit_Click()
+  ME.Close
+END

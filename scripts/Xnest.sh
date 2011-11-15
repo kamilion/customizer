@@ -1,4 +1,4 @@
-#!/bin/bash -u
+#!/usr/bin/env bash
 #
 # This script is part of Customzier
 #
@@ -11,6 +11,7 @@
 # Jabber: xakepa@jabber.org
 # Skype: big-smoke10
 #
+set -u
 source /opt/Customizer/Functions.sh
 source /opt/Customizer/settings.conf
 Reset='\e[0m'
@@ -68,7 +69,6 @@ Green='\e[1;32m'
 Yellow='\e[1;33m'
 
 echo -e "${Yellow}   *${Reset} ${Green}Setting up${Reset}"
-DISPLAY=localhost:9
 export DISPLAY=localhost:9
 export HOME=/root
 export LC_ALL=C
@@ -107,7 +107,7 @@ EOF
 # FIXME: error not shown when unable to execute Xephyr
 # (Xephyr -ac -screen $RESOLUTION -br :9 &) || xephyr_error
 echo -e "${Yellow}#${Reset} ${Green}Starting Xephyr${Reset}"
-Xephyr -ac -screen $RESOLUTION -terminate -br :9 &
+Xephyr -ac -screen $RESOLUTION -br :9 &
 
 xhost +local:
 mount_sys
