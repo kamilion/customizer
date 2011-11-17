@@ -23,7 +23,7 @@ echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
 check_for_X
 
 echo -e "${Yellow}#${Reset} ${Green}Getting the configs${Reset}"
-ARCH=`chroot "$WORK_DIR/FileSystem" uname -m` || arch_error
+ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || arch_error
 DIST=`grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//'` || dist_error
 VERSION=`grep DISTRIB_RELEASE= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//'` || version_error
 

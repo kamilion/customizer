@@ -162,7 +162,7 @@ PUBLIC SUB Check_for_ISO()
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
   SHELL "grep DISTRIB_ID= '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release' | sed 's/DISTRIB_ID=//'" TO Dist
   SHELL "grep DISTRIB_RELEASE= '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release' | sed 's/DISTRIB_RELEASE=//'" TO Rel
-  SHELL "chroot '" & Trim(WorkDir) & "/FileSystem' uname -m" TO Arch
+  SHELL "chroot '" & Trim(WorkDir) & "/FileSystem' dpkg --print-architecture" TO Arch
   
   IF Exist(Trim(WorkDir) & "/" & Trim(Dist) & "-" & Trim(Arch) & "-" & Trim(Rel) & ".iso") THEN
     FMain.QEMU.Enabled = TRUE

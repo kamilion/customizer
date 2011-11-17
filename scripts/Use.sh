@@ -88,8 +88,8 @@ unsquashfs -f -d "$WORK_DIR/FileSystem" "$MOUNT_PATH/casper/filesystem.squashfs"
 
 ################## Check the architecture of the root filesystem ##################
 echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
-ARCH=`chroot "$WORK_DIR/FileSystem" uname -m` || arch_error
-if [ "$ARCH" = "x86_64" -o "" ] && [ "`uname -m`" != "x86_64" ]; then
+ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || arch_error
+if [ "$ARCH" = "amd64" -o "" ] && [ "`uname -m`" != "x86_64" ]; then
 	echo -ne "${Red}ERROR${Reset}: ${Yellow}The selected ISOs filesystem architecture is amd64 and yours is not. You can customize (chroot to install/purge packages, issue some commands etc.)  amd64 architecture ISOs filesystem only if you are running amd64/x86_64 OS release on your machine!'${Reset}"
 	read nada
 	clean

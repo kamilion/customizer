@@ -73,7 +73,7 @@ fi
 #################### setting up the root filesystem #####################
 
 echo -e "${Yellow}# ${Green}Loading configs${Reset}"
-ARCH=`chroot "$WORK_DIR/FileSystem" uname -m` || arch_error
+ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || arch_error
 RELEASE_NOTES_URL="`cat "$WORK_DIR/ISO/.disk/release_notes_url"`"
 DIST=`grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//'`
 VERSION=`grep DISTRIB_RELEASE= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//'`
