@@ -1,0 +1,14 @@
+Customizer v3.0.6 (unofficial)
+
+C0diNg: Ivailo Monev (a.k.a. SmiL3y)
+E-Mail: xakepa10@gmail.com
+
+Features:
+
+	* Customizer Ubuntu and derivateves (i.e. Linux Mint) ISO images
+	* Quick access to chrooted Terminal, X-nested session, Package Manager and more
+	* Snapshots of the current work can be done to save time when experimenting
+	* Accessible from CLI and GUI, GUI has more options/features
+
+
+This project is almost dead, looking for someone to take over the development! I'm pushing only overall code improvements and bug fixes here but nothing major is going on around here.
