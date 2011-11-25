@@ -17,6 +17,7 @@ source /opt/Customizer/settings.conf
 
 echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
 check_fs_dir
+check_lock
 check_sources_list
 
 if [ "`pgrep Xorg`" = "" ];then
@@ -27,7 +28,7 @@ fi
 
 PACKAGE_MANAGER=""
 if [ ! -e "$WORK_DIR/FileSystem/usr/bin/software-center" ] && [ ! -e "$WORK_DIR/FileSystem/usr/sbin/synaptic" ] && [ ! -e "$WORK_DIR/FileSystem/usr/bin/aptitude" ] && [ ! -e "$WORK_DIR/FileSystem/usr/bin/aptsh" ];then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}No supported package manager were detected. Chroot and install software-center, synaptic, aptitude or aptsh.${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}No supported package manager were detected${Reset}"
 	read nada
 	exit
 fi
@@ -57,6 +58,7 @@ echo -e "${Yellow}#${Reset} ${Green}Doing some preparations${Reset}"
 cp -f /etc/hosts "$WORK_DIR/FileSystem/etc"
 cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
 echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
+touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
 
 # Create script to setup chroot env.
 cat > "$WORK_DIR/FileSystem/tmp/script.sh" << EOF

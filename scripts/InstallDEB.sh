@@ -21,6 +21,7 @@ Yellow='\e[1;33m'
 
 echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
 check_fs_dir
+check_lock
 check_sources_list
 
 if [ ! -e "$DEB" ];then
@@ -41,6 +42,7 @@ cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
 echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
 rm -f "$WORK_DIR/FileSystem/tmp/*deb"
 cp "$DEB" "$WORK_DIR/FileSystem/tmp"
+touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
 
 cat > "$WORK_DIR/FileSystem/tmp/script.sh" << EOF
 Reset='\e[0m'

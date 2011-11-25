@@ -19,6 +19,8 @@ Red='\e[1;31m'
 Green='\e[1;32m'
 Yellow='\e[1;33m'
 
+check_lock
+
 if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ];then
 	recursive_umount
 	echo -e "${Yellow}#${Reset} ${Green}Deleting FileSystem folder${Reset}"

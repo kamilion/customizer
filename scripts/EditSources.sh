@@ -25,13 +25,13 @@ check_sources_list
 
 echo -e "${Yellow}#${Reset} ${Green}Editing sources.list with: ${Yellow}$EDITOR${Reset}"
 if [ ! -r "$WORK_DIR/FileSystem/etc/apt/sources.list" ];then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}The sources.list file isn't readable. Modify the permissions so it is and retry.${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}The sources.list file isn't readable${Reset}"
 	read nada
 	exit
 fi
 
 if [ ! -w "$WORK_DIR/FileSystem/etc/apt/sources.list" ];then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}The sources.list file isn't writable. Modify the permissions so it is and retry.${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}The sources.list file isn't writable${Reset}"
 	read nada
 	exit
 fi

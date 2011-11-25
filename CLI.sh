@@ -80,7 +80,7 @@ if [ "$#" != "0" ];then
 			-w|--update) /opt/Customizer/scripts/Update.sh ;;
 			-v|--version) Version ;;
 			-h|--help) Usage ;;
-			*) echo -e "${Red}ERROR${Reset}: ${Yellow}Unrecognized argument${Reset}" ;;
+			*) echo -e "${Red}ERROR${Reset}: ${Yellow}Unrecognized argument${Reset}: ${Green}$arg${Reset}" ;;
 		esac
 	done
 else

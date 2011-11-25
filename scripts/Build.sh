@@ -18,10 +18,11 @@ source /opt/Customizer/settings.conf
 #################### check configs & dirs before going further ####################
 echo -e "${Yellow}# ${Green}Checking${Reset}"
 check_fs_dir
+check_lock
 check_sources_list
 
 if [ ! -d "$WORK_DIR/ISO/isolinux" ]; then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}$WORK_DIR/ISO/isolinux doesnt exist. Please, clean and select ISO again to repeat the extraction proccess or use the syslinux package to restore it.${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}$WORK_DIR/ISO/isolinux doesnt exist${Reset}"
 	read nada
 	exit
 fi
@@ -59,13 +60,13 @@ if [ ! -e "$WORK_DIR/ISO/.disk/release_notes_url" ]; then
 fi
 
 if [ ! -e "$WORK_DIR/FileSystem/etc/lsb-release" ]; then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}$WORK_DIR/FileSystem/etc/lsb-release dosn't exists. Create it manualy or clean and start all-over again.${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}$WORK_DIR/FileSystem/etc/lsb-release dosn't exists${Reset}"
 	read nada
 	exit
 fi
 
 if [ ! -e "$WORK_DIR/FileSystem/etc/casper.conf" ]; then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}$WORK_DIR/FileSystem/etc/casper.conf dosn't exists. Create it manualy or clean and start all-over again.${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}$WORK_DIR/FileSystem/etc/casper.conf dosn't exists${Reset}"
 	read nada
 	exit
 fi
@@ -113,6 +114,7 @@ echo -e "${Yellow}# ${Green}Doing some preparations${Reset}"
 cp -f /etc/hosts "$WORK_DIR/FileSystem/etc"
 cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
 echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
+touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
 
 cat > "$WORK_DIR/FileSystem/tmp/script.sh" << EOF
 Reset='\e[0m'
@@ -167,9 +169,8 @@ umount_sys
 recursive_umount
 
 echo -e "${Yellow}# ${Green}Copying boot files${Reset}"
-cp -f "$WORK_DIR/FileSystem/initrd.img" "$WORK_DIR/ISO/casper/initrd.lz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy the initrd.img file.${Reset}"; read nada; exit; }
-
-cp -f "$WORK_DIR/FileSystem/vmlinuz" "$WORK_DIR/ISO/casper/vmlinuz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy the vmlinuz file.${Reset}"; read nada; exit; }
+cp -f "$WORK_DIR/FileSystem/initrd.img" "$WORK_DIR/ISO/casper/initrd.lz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy /initrd.img${Reset}"; read nada; exit; }
+cp -f "$WORK_DIR/FileSystem/vmlinuz" "$WORK_DIR/ISO/casper/vmlinuz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy /vmlinuz${Reset}"; read nada; exit; }
 
 if [ "$BOOT_FILES" = "1" ]; then
 	echo -e "${Yellow}# ${Green}Deleteing boot files${Reset}"
@@ -182,16 +183,16 @@ echo -e "${Yellow}# ${Green}Creating squashed FileSystem${Reset}"
 mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to squash the filesystem.${Reset}"; read nada; exit; }
 
 if (( "`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`" > "4000000" ));then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}The squashed filesystem size is greater than 4GB. Reduce its size by removing packages, locales and/or other none-essentials and retry the build process.${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}The squashed filesystem size is greater than 4GB${Reset}"
 	read nada
 	exit
 fi
 
-echo "`du -sx --block-size=1 $WORK_DIR/FileSystem | cut -f1`" > "$WORK_DIR/ISO/casper/filesystem.size" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to calculate the size of the filesystem.${Reset}"; read nada; exit; }
+echo "`du -sx --block-size=1 $WORK_DIR/FileSystem | cut -f1`" > "$WORK_DIR/ISO/casper/filesystem.size" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to calculate the size of the filesystem${Reset}"; read nada; exit; }
 
 echo -e "${Yellow}#${Reset} ${Green}Creating Manifest files${Reset}"
 echo -e "   ${Yellow}*${Reset} ${Green}Creating filesystem.manifest${Reset}"
-chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || { zenity --error --text="Unable to chroot into the filesystem to create packages list (manifest file). Are you trying to customize 64-bit (x86_64/amd64) ISO from 32-bit (x86/i386) host OS? If so read the FAQ on the forum: http://sourceforge.net/apps/phpbb/u-customizer/viewtopic.php?f=1&t=3"; exit; }
+chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to create the filesystem.manifest${Reset}"; read nada ; exit; }
 echo -e "   ${Yellow}*${Reset} ${Green}Creating filesystem.manifest-desktop${Reset}"
 cp -f "$WORK_DIR/ISO/casper/filesystem.manifest" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
 REMOVE='ubiquity casper live-initramfs user-setup discover1 xresprobe os-prober libdebian-installer4'
@@ -241,7 +242,7 @@ fi
 ################# Creating md5sum and ISO  #################
 
 echo -e "${Yellow}# ${Green}Creating MD5Sums${Reset}"
-(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt") > md5sum.txt || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to create the md5sum.${Reset}"; read nada; exit; }
+(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt") > md5sum.txt || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to create the md5sum${Reset}"; read nada; exit; }
 
 echo -e "${Yellow}# ${Green}Creating ISO${Reset}"
 (genisoimage -r -V "$DIST-$ARCH-$VERSION" -b isolinux/isolinux.bin -c isolinux/boot.cat -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table -o "$WORK_DIR/$DIST-$ARCH-$VERSION.iso" -input-charset utf-8 .

@@ -2,7 +2,7 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res AS String
+  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp AS String
   ME.Center
   ME.Caption = "Settings"
   
@@ -76,6 +76,7 @@ PUBLIC SUB Form_Open()
   SHELL "grep BOOT_FILES= /opt/Customizer/settings.conf | sed 's/BOOT_FILES=//;s/\"//g'" TO BFiles
   SHELL "grep VRAM= /opt/Customizer/settings.conf | sed 's/VRAM=//;s/\"//g'" TO VRam
   SHELL "grep RESOLUTION= /opt/Customizer/settings.conf | sed 's/RESOLUTION=//;s/\"//g'" TO Res
+  SHELL "grep COMPRESSION= /opt/Customizer/settings.conf | sed 's/COMPRESSION=//;s/\"//g'" TO SComp
   
   TRY WDir.Text = Trim(WorkDir)
   TRY EditorBox.Text = Trim(Edit)
@@ -83,6 +84,7 @@ PUBLIC SUB Form_Open()
   TRY BootFiles.Value = Trim(BFiles)
   TRY VirtualMemBox.Text = Trim(VRam)
   TRY ResolutionBox.Text = Trim(Res)
+  TRY CompressionBox.Text = Trim(SComp)
   
   IF FMain.Build_ISO.Enabled = TRUE THEN 
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
@@ -126,6 +128,10 @@ PUBLIC SUB Change_WDir_Click()
   IF Dialog.SelectDirectory() THEN RETURN 
   SHELL "sed -i 's@WORK_DIR=.*@WORK_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
   WDir.Text = Dialog.Path
+END
+
+PUBLIC SUB CompressionBox_Click()
+  SHELL "sed -i 's/COMPRESSION=.*/COMPRESSION=" & CompressionBox.Text & "/' /opt/Customizer/settings.conf"
 END
 
 PUBLIC SUB Quit_Click()

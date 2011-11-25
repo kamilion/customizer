@@ -21,12 +21,14 @@ Yellow='\e[1;33m'
 
 echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
 check_fs_dir
+check_lock
 check_sources_list
 
 echo -e "${Yellow}#${Reset} ${Green}Doing some preparations${Reset}"
 cp -f /etc/hosts "$WORK_DIR/FileSystem/etc"
 cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
 echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
+touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
 
 cat > "$WORK_DIR/FileSystem/tmp/script.sh" << EOF
 Reset='\e[0m'

@@ -22,13 +22,13 @@ Yellow='\e[1;33m'
 #################### Some functions used when error accures #####################
 
 iso_mount_error () {
-echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount. The reason may be that the folder $MOUNT_PATH is currently busy or fail to gain root privilegs${Reset}"
+echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to mount the ISO${Reset}"
 read nada
 clean
 }
 
 unsquash_error () {
-echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to extract the filesystem.squashfs. Make sure you have squashfs-tools installed and build-in kernel module for support of squashfs filesystem and its version is equal or greater than the version used for the compression of the filesystem inside the ISO${Reset}"
+echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to extract the filesystem.squashfs${Reset}"
 read nada
 clean
 }
@@ -53,6 +53,9 @@ if [ ! -e "$ISO" ];then
 fi
 
 ################## Cleaning up previous temp folders if exists ##################
+
+check_lock
+
 if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ];then
 	echo -e "${Yellow}#${Reset} ${Green}Cleaning up temporary directories${Reset}"
 	
@@ -77,7 +80,7 @@ mount -t iso9660 -o loop "$ISO" "$MOUNT_PATH" || iso_mount_error
 
 ######################## Check if the ISO image is usable ########################
 if [ ! -d "$MOUNT_PATH/casper" ] || [ ! -d "$MOUNT_PATH/.disk" ] || [ ! -d "$MOUNT_PATH/isolinux" ] || [ ! -e "$MOUNT_PATH/casper/filesystem.squashfs" ]; then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}This is not a usable ISO image. Make sure you've selected Ubuntu, Xubuntu, Lubuntu, Kubuntu, Ebuntu, Linux Mint or other Ubuntu based ISO image${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}This is not a usable ISO image${Reset}"
 	read nada
 	clean
 fi
@@ -90,7 +93,7 @@ unsquashfs -f -d "$WORK_DIR/FileSystem" "$MOUNT_PATH/casper/filesystem.squashfs"
 echo -e "${Yellow}#${Reset} ${Green}Checking${Reset}"
 ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || arch_error
 if [ "$ARCH" = "amd64" -o "" ] && [ "`uname -m`" != "x86_64" ]; then
-	echo -ne "${Red}ERROR${Reset}: ${Yellow}The selected ISOs filesystem architecture is amd64 and yours is not. You can customize (chroot to install/purge packages, issue some commands etc.)  amd64 architecture ISOs filesystem only if you are running amd64/x86_64 OS release on your machine!'${Reset}"
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}The selected ISOs filesystem architecture is amd64 and yours is not${Reset}"
 	read nada
 	clean
 fi

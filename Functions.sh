@@ -82,6 +82,14 @@ echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/var/run/dbus${Reset}"
 
 ############# Errors #############
 
+check_lock () {
+if [ -e "$WORK_DIR/FileSystem/tmp/lock_chroot" ];then 
+	echo -ne "${Red}ERROR${Reset}: ${Yellow}The filesystem is locked${Reset}"
+	read nada
+	exit
+fi
+}
+
 rsync_error () {
 echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy files! Make sure you have rsync installed${Reset}"
 read nada

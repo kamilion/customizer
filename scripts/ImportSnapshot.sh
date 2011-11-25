@@ -26,6 +26,8 @@ if [ ! -e "$SNAPSHOT" ];then
 	exit
 fi
 
+check_lock
+
 case "$SNAPSHOT" in
 	*.cps) true ;;
 	*) echo -ne "${Red}ERROR${Reset}: ${Yellow}This is not Customizer project snapshot.${Reset}"; read nada; exit ;;
@@ -38,15 +40,16 @@ if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ]; then
 	rm -rf "$WORK_DIR/ISO"
 fi
 
-cd /
+mkdir -p "$WORK_DIR"
+cd "$WORK_DIR"
 echo -e "${Yellow}#${Reset} ${Green}De-Compressing snapshot${Reset}"
-tar -xf $SNAPSHOT || { echo -ne "${Red}ERROR${Reset}: ${Yellow}An error accure while trying to decompress the snapshot.${Reset}"; read nada; exit; }
+tar -axf "$SNAPSHOT" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}An error accure while trying to decompress the snapshot${Reset}"; read nada; exit; }
 
 echo -e "   ${Yellow}*${Reset} ${Green}De-Compressing root filesystem${Reset}"
-tar -jxf /tmp/snapshot/rootfs.tar.bz2 || { echo -ne "${Red}ERROR${Reset}: ${Yellow}An error accure while trying to de-compress the root filesystem.${Reset}"; read nada; exit; }
+tar -axf rootfs.* || { echo -ne "${Red}ERROR${Reset}: ${Yellow}An error accure while trying to de-compress the root filesystem${Reset}"; read nada; exit; }
 
 echo -e "   ${Yellow}*${Reset} ${Green}De-Compressing ISO folder${Reset}"
-tar -jxf /tmp/snapshot/isofolder.tar.bz2 || { echo -ne "${Red}ERROR${Reset}: ${Yellow}An error accure while trying to de-compress the ISO folder.${Reset}"; read nada; exit; }
+tar -axf isofolder.* || { echo -ne "${Red}ERROR${Reset}: ${Yellow}An error accure while trying to de-compress the ISO folder${Reset}"; read nada; exit; }
 
 echo -e "${Yellow}#${Reset} ${Green}Deleting temp files${Reset}"
-rm -rf /tmp/snapshot
+rm -rf rootfs.* isofolder.*
