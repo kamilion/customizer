@@ -82,7 +82,7 @@ echo -e "${Yellow}   *${Reset} ${Green}Installing the latest Dbus${Reset}"
 apt-get install --yes dbus -qq
 
 echo -e "${Yellow}   *${Reset} ${Green}Running package manager:${Reset} ${Yellow}$PACKAGE_MANAGER${Reset}"
-exec `which $PACKAGE_MANAGER`
+`which $PACKAGE_MANAGER`
 
 echo -e "${Yellow}   *${Reset} ${Green}Cleaning up${Reset}"
 apt-get clean
@@ -105,6 +105,7 @@ mount_sys
 mount_dbus
 echo -e "${Yellow}#${Reset} ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
+rm -f "$WORK_DIR/tmp/lock_chroot"
 umount_sys
 recursive_umount
 xhost -local:

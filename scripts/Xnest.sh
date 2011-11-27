@@ -116,6 +116,7 @@ mount_sys
 mount_dbus
 echo -e "${Yellow}#${Reset} ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
+rm -f "$WORK_DIR/tmp/lock_chroot"
 umount_sys
 recursive_umount
 xhost -local:
