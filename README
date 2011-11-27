@@ -21,6 +21,17 @@ Features:
 	
 Changes log:
 
+Customizer v3.0.7
+
+     * Modifed initctl fix to work with Oneiric and newer releases
+     * Fixed copying of initrd.img and vmlinuz on Oneiric and newer
+     * Fixed chroot lock on internal command error
+     * Fixed GUI License form text frame
+     * Fixed GUI crash when unable to extract ISOs content
+     + Deactivating grub-update
+     
+-- SmiL3y <xakepa10@gmail.com>  Sat, 27 Nov 2011 23:56:57 -0400
+
 Customizer v3.0.6
 
      * Improved snapshots scripts preventing possible issues
