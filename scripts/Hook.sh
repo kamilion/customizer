@@ -33,6 +33,10 @@ fi
 echo -e "${Yellow}#${Reset} ${Green}Doing some preparations${Reset}"
 cp -f /etc/hosts "$WORK_DIR/FileSystem/etc"
 cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
+mv "$WORK_DIR/FileSystem/sbin/initctl" "$WORK_DIR/FileSystem/sbin/initctl.blocked"
+ln -s "$WORK_DIR/FileSystem/bin/true" "$WORK_DIR/FileSystem/sbin/initctl"
+mv "$WORK_DIR/FileSystem/usr/sbin/update-grub" "$WORK_DIR/FileSystem/usr/sbin/update-grub.blocked"
+ln -s "$WORK_DIR/FileSystem/bin/true" "$WORK_DIR/FileSystem/usr/sbin/update-grub"
 echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
 cp -f "$HOOK" "$WORK_DIR/FileSystem/tmp"
 export HOOK_NAME="`basename "$HOOK"`"
@@ -83,6 +87,10 @@ EOF
 mount_sys
 echo -e "${Yellow}#${Reset} ${Green}Entering Chroot env.${Reset}"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || chroot_hook_error
+rm "$WORK_DIR/FileSystem/sbin/initctl"
+mv "$WORK_DIR/FileSystem/sbin/initctl.blocked" "$WORK_DIR/FileSystem/sbin/initctl"
+rm "$WORK_DIR/FileSystem/usr/sbin/update-grub"
+mv "$WORK_DIR/FileSystem/usr/sbin/update-grub.blocked" "$WORK_DIR/FileSystem/usr/sbin/update-grub"
 rm -f "$WORK_DIR/tmp/lock_chroot"
 umount_sys
 recursive_umount
