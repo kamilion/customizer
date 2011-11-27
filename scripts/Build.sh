@@ -134,7 +134,7 @@ echo -e "${Yellow}   *${Reset} ${Green}Making sure everything is configured${Res
 dpkg --configure -a
 apt-get install -f -y -qq
 
-if [ ! -f /initrd.img ] || [ ! -f /vmlinuz ]; then
+if [ ! -e /initrd.img ] || [ ! -e /vmlinuz ]; then
 	echo -e "${Yellow}   *${Reset} ${Green}Purging Kernels (if any)${Reset}"
 	apt-get purge --yes linux-image* linux-headers* -qq
 	echo -e "${Yellow}   *${Reset} ${Green}Installing Kernel${Reset}"
@@ -169,9 +169,17 @@ rm -f "$WORK_DIR/tmp/lock_chroot"
 umount_sys
 recursive_umount
 
+INITRD_SOURCE="$WORK_DIR/FileSystem/initrd.img"
+VMLINUZ_SOURCE="$WORK_DIR/FileSystem/vmlinuz"
 echo -e "${Yellow}# ${Green}Copying boot files${Reset}"
-cp -f "$WORK_DIR/FileSystem/initrd.img" "$WORK_DIR/ISO/casper/initrd.lz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy /initrd.img${Reset}"; read nada; exit; }
-cp -f "$WORK_DIR/FileSystem/vmlinuz" "$WORK_DIR/ISO/casper/vmlinuz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy /vmlinuz${Reset}"; read nada; exit; }
+if [ ! -e "$INITRD_SOURCE" ] || [ ! -e "$VMLINUZ_SOURCE" ] ; then
+	INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
+	VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
+	echo -e "${Red}OVERRIDE${Reset}: ${Yellow}Will use the most recent kernel${Reset}"
+fi
+
+cp -f "$INITRD_SOURCE" "$WORK_DIR/ISO/casper/initrd.lz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy initrd.img${Reset}"; read nada; exit; }
+cp -f "$VMLINUZ_SOURCE" "$WORK_DIR/ISO/casper/vmlinuz" || { echo -ne "${Red}ERROR${Reset}: ${Yellow}Unable to copy vmlinuz${Reset}"; read nada; exit; }
 
 if [ "$BOOT_FILES" = "1" ]; then
 	echo -e "${Yellow}# ${Green}Deleteing boot files${Reset}"
