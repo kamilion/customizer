@@ -39,7 +39,6 @@ echo "
 
  Other options:
      -h|--help      Display this message
-     -w|--update    Check for new version
      -v|--version   Show the current version and more
 "
 }
@@ -77,7 +76,6 @@ if [ "$#" != "0" ];then
 			-r|--rebuild) su-to-root -c /opt/Customizer/scripts/Build.sh ;;
 			-q|--qemu) su-to-root -c /opt/Customizer/scripts/QEMU.sh ;;
 			-t|--clean) su-to-root -c /opt/Customizer/scripts/Clean.sh ;;
-			-w|--update) /opt/Customizer/scripts/Update.sh ;;
 			-v|--version) Version ;;
 			-h|--help) Usage ;;
 			*) echo -e "${Red}ERROR${Reset}: ${Yellow}Unrecognized argument${Reset}: ${Green}$arg${Reset}" ;;

@@ -1,4 +1,4 @@
-Customizer v3.0.6 (unofficial)
+Customizer v3.0.6
 
 C0diNg: Ivailo Monev (a.k.a. SmiL3y)
 E-Mail: xakepa10@gmail.com
@@ -13,10 +13,95 @@ Forum: https://sf.net/apps/phpbb/u-customizer/
 
 Features:
 
-	* Customizer Ubuntu and derivateves (i.e. Linux Mint) ISO images
+	* Customize Ubuntu and derivateves (i.e. Linux Mint) Live CD/DVD ISO images
 	* Quick access to chrooted Terminal, X-nested session, Package Manager and more
 	* Snapshots of the current work can be done to save time when experimenting
 	* Accessible from CLI and GUI, GUI has more options/features
+	
+	
+Changes log:
 
+Customizer v3.0.6
 
-This project is almost dead, looking for someone to take over the development! I'm pushing only overall code improvements and bug fixes here but nothing major is going on around here.
+     * Improved snapshots scripts preventing possible issues
+     * User can choose compressions format in which the snapshots will be compressed
+     * Swaped the live user and hostname GUI fields
+     * Fixed Xnest.sh termination
+     * Fixed GUI crash when unable to extract ISOs content
+     * Improved bash scripts protability
+     * Replaced 'uname -m' with 'dpkg --print-architecture' to get the proper arch
+     * Some QEMU.sh improvements
+     + Killing customizer at GUI exit
+     + Added check if filesystem is already locked by another script
+     + Implemented long arguments handling into CLI.sh
+     - Removed obsolent update feature duo to the changes in the development tehniques 
+     
+-- SmiL3y <xakepa10@gmail.com>  Sat, 26 Nov 2011 20:01:57 -0400
+
+Customizer v3.0.5
+
+       * Enhanced DEB package post-installation scripts
+       * DEB package now depends on gambas packages greater then 2.0 and lower then any 2.9
+       * DEB package now depends on x11-xserver-utils
+       * /usr/bin/customizer uses sh instead of bash to execute the GUI, initiates faster
+       * Fixes applied so when WORK_DIR is path with spaces everthing woks fine
+       * QEMU.sh also initiated as root, needed to chroot to get variables
+       * QEMU.sh checks for running X-server (Xorg)
+       * Squashed filesystem no longer created with "-all-root", causes dbus issues and probably more
+       * Changing WORK_DIR not possible in the middle of customization
+       * Dbus should work fine, mounting /var/lib/dbus and /var/run/dbus for running X applications (sessions and package managers) from within the chroot
+       + Added Software-Center to supported package managers (doesn't work if Distribution name is changed)
+       + DEB package creates menu entry for window managers (such as Fluxbox, Openbox etc.)
+
+-- SmiL3y <xakepa10@gmail.com>  Tue, 27 Sep 2011 15:23:14 -0400
+
+Customizer v3.0.4
+
+       * Removed title change in scripts and moved to GUI, solves a few issues
+       * Removed not needed "#!/bin/bash" in some of the chroot-hooks to prevent spawning unnecessery bash shells
+       + Added option to change the work directory from GUI
+       + Added check if another instance of the GUI is already running to prevent double-chrooting and other issues
+       + Added missing import of "Functions.sh" in the "QEMU.sh" and "Update.sh" script to report errors properly
+       + Added comments in the main configuration file
+        
+-- SmiL3y <xakepa10@gmail.com>  Sun, 18 Sep 2011 15:44:18 -0400
+
+Customizer v3.0.3
+
+       * Fixed DEB package post-installation script, was messed up in v3.0.2
+       * Fixed version checking in the update script
+       * No space allowed in Hostname GUI field
+
+-- SmiL3y <xakepa10@gmail.com>  Sat, 17 Sep 2011 16:05:00 -0400
+
+Customizer v3.0.2
+
+       * Fixed copying settings to /etc/skel after closing the nested X-session
+       * Changed version text in GUI (in 3.0.1 was not)
+       * QEMU VRAM is now 256 by default
+
+-- SmiL3y <xakepa10@gmail.com>  Thu, 15 Sep 2011 01:47:20 -0400
+
+Customizer v3.0.1
+
+       * Removed some chmod lines in Use.sh which were left in the rush
+       * SysLinux splash change fixes (changing Linux Mint syslinux colors still not possible)
+       + Added imagemagick to DEB package dependecies needed for syslinux splash change
+       + Added forgotten IceWM GUI installation
+       + Changing the Linux Mint syslinux splash is possible now
+       + /opt/Customizer deleted before installation using DEB packages
+
+-- SmiL3y <xakepa10@gmail.com>  Wed, 14 Sep 2011 12:02:20 -0400
+
+Customizer v3.0.0
+
+       * Numerous scripts and GUI fixes/improvements
+       * Improved Linux Mint support
+       + Using global configuration file now (/opt/Customizer/settings.conf)
+       + Option to choose which X-session to run
+       + Option to choose which package manager to run
+       - Full user name and Code name droped from GUI configuration fields, changing code name isn't recommended at all
+       - UMR Downloader not available anymore, downloading as root isn't recommended
+       - Zenity isn't used to report errors for TTY compability
+
+-- SmiL3y <xakepa10@gmail.com>  Wed, 14 Sep 2011 03:19:15 -0400
