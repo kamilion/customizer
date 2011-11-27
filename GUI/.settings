@@ -12,12 +12,13 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:156.16"
-File[2]="Module.module:189.127"
-File[3]="FTweaks.form"
-File[4]="FTweaks.class:179.105"
-Active=4
-Count=4
+File[1]="FMain.class:248.15"
+File[2]="FMain.form"
+File[3]="FLicense.form"
+File[4]="FAbout.form"
+File[5]="FAbout.class:4.21"
+Active=5
+Count=5
 
 [Watches]
 Count=0

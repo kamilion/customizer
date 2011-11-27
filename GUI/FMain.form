@@ -68,10 +68,10 @@
   }
   { Help Menu
     Text = ("Help")
-    { CheckForUpdates Menu
-      Text = ("Check for Updates")
-      Picture = Picture["icon:/16/find"]
-      Shortcut = "Ctrl+C"
+    { License Menu
+      Text = ("License")
+      Picture = Picture["icon:/16/text"]
+      Shortcut = "Ctrl+L"
     }
     { About Menu
       Text = ("About")

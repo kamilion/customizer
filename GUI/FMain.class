@@ -245,6 +245,6 @@ PUBLIC SUB About_Click()
   FAbout.Show
 END 
 
-PUBLIC SUB CheckForUpdates_Click()
-  EXEC ["x-terminal-emulator", "--title=Checking for updates", "-e", "/opt/Customizer/CLI.sh", "-w"] WAIT
+PUBLIC SUB License_Click()
+  FLicense.Show
 END
