@@ -8,12 +8,12 @@
   { Label12 Label
     MoveScaled(1,2,43,4)
     Font = Font["URW Bookman L,Bold,+5"]
-    Text = ("Customizer v3.0.7")
+    Text = ("Customizer v3.0.8")
     Alignment = Align.Center
   }
   { Credits Label
     MoveScaled(2,19,42,23)
-    Text = ("Coding:\nIvailo Monev (a.k.a. SmiL3y)\n\nPPA maintainer:\nMicha\xC5\x82 G\xC5\x82owienka (a.k.a. eloaders)\n<eloaders@yahoo.com>\n\nDocumentation:\nMubiin Kimura\n<clearkimura@gmail.com>")
+    Text = ("Coding:\nIvailo Monev (a.k.a. SmiL3y)\n\nPPA maintainer:\nMicha\xC5\x82 G\xC5\x82owienka (a.k.a. eloaders)\n<eloaders@yahoo.com>\n\nDocumentation:\nMubiin Kimura (a.k.a. clearkimura)\n<clearkimura@gmail.com>")
     Alignment = Align.Center
   }
   { Quit Button

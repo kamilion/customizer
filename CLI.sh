@@ -45,10 +45,11 @@ echo "
 
 Version () {
 echo
-echo "Customizer v3.0.5
+echo "Customizer v3.0.8
 
-Homepage: http://u-customizer.sf.net
-Forum: https://sourceforge.net/apps/phpbb/u-customizer
+Homepage: https://github.com/fluxer/Customizer
+Wiki: https://github.com/fluxer/Customizer/wiki
+Issues: https://github.com/fluxer/Customizer/issues
 
 
 Main developer: Ivailo Monev (a.k.a SmiL3y)
@@ -56,7 +57,11 @@ Main developer: Ivailo Monev (a.k.a SmiL3y)
 
 PPA maintainer:
 Michał Głowienka (a.k.a. eloaders)
-<eloaders@yahoo.com>"
+<eloaders@yahoo.com>
+
+Documentation:
+Mubiin Kimura (a.k.a. clearkimura)
+<clearkimura@gmail.com>"
 echo
 }
 
