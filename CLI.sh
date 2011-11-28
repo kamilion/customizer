@@ -51,7 +51,8 @@ Homepage: http://u-customizer.sf.net
 Forum: https://sourceforge.net/apps/phpbb/u-customizer
 
 
-Main developer: Ivailo Monev (a.k.a SmiL3y)
+Main developer:
+Ivailo Monev (a.k.a SmiL3y)
 <xakepa10@gmail.com>
 
 PPA maintainer:
