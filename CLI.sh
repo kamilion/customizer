@@ -45,7 +45,7 @@ echo "
 
 Version () {
 echo
-echo "Customizer v3.0.5
+echo "Customizer v3.0.7
 
 Homepage: http://u-customizer.sf.net
 Forum: https://sourceforge.net/apps/phpbb/u-customizer
