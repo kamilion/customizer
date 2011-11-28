@@ -43,8 +43,6 @@ Yellow='\e[1;33m'
 echo -e "${Yellow}   *${Reset} ${Green}Setting up${Reset}"
 export HOME=/root
 export LC_ALL=C
-dpkg-divert --local --rename --add /sbin/initctl
-ln -f -s /bin/true /sbin/initctl
 
 echo -e "${Yellow}   *${Reset} ${Green}Making sure everything is configured${Reset}"
 dpkg --configure -a
@@ -56,11 +54,9 @@ apt-get update -qq
 
 echo -e "${Yellow}   *${Reset} ${Green}Cleaning up${Reset}"
 apt-get clean
-dpkg-divert --remove /sbin/initctl
 rm -f /etc/debian_chroot
 rm -f /etc/hosts
 rm -f /etc/resolv.conf
-rm -f /sbin/initctl
 rm -f ~/.bash_history
 rm -f /boot/*.bak
 rm -f /var/lib/dpkg/*-old

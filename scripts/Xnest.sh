@@ -78,8 +78,6 @@ echo -e "${Yellow}   *${Reset} ${Green}Setting up${Reset}"
 export DISPLAY=localhost:9
 export HOME=/root
 export LC_ALL=C
-dpkg-divert --local --rename --add /sbin/initctl
-ln -f -s /bin/true /sbin/initctl
 dbus-uuidgen --ensure
 
 echo -e "${Yellow}   *${Reset} ${Green}Making sure everything is configured${Reset}"
@@ -99,7 +97,6 @@ dpkg-divert --remove /sbin/initctl
 rm -f /etc/debian_chroot
 rm -f /etc/hosts
 rm -f /etc/resolv.conf
-rm -f /sbin/initctl
 rm -f ~/.bash_history
 rm -f /boot/*.bak
 rm -f /var/lib/dpkg/*-old
