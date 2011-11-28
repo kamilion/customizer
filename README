@@ -27,7 +27,6 @@ Customizer v3.0.7
      * Fixed copying of initrd.img and vmlinuz on Oneiric and newer
      * Fixed chroot lock on internal command error
      * Fixed GUI License form text frame
-     * Fixed GUI crash when unable to extract ISOs content
      + Deactivating grub-update while chrooted into the filesystem
      
 -- SmiL3y <xakepa10@gmail.com>  Sat, 27 Nov 2011 23:56:57 -0400
