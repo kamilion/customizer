@@ -1,13 +1,11 @@
+#
 # This script is part of Customzier
 #
-# Homepage: http://u-customizer.sf.net
-# Forum: https://sourceforge.net/apps/phpbb/u-customizer
+# Homepage: https://github.com/fluxer/Customizer
+# Wiki: https://github.com/fluxer/Customizer/wiki
+# Issues: https://github.com/fluxer/Customizer/issues
 #
-# C0diNg: Ivailo Monev (a.k.a SmiL3y)
-#
-# E-Mail: xakepa10@gmail.com
-# Jabber: xakepa@jabber.org
-# Skype: big-smoke10
+# C0diNg: Ivailo Monev (a.k.a SmiL3y) <xakepa10@gmail.com> 
 #
 source /opt/Customizer/settings.conf
 Reset='\e[0m'
