@@ -143,13 +143,13 @@
       Alignment = Align.Center
     }
     { LiveCD_User TextBox
-      MoveScaled(18,12,16,3)
+      MoveScaled(1,12,16,3)
       Enabled = False
       ToolTip = ("Set LiveCD User name for your distro")
       Text = ("live")
     }
     { Label4 Label
-      MoveScaled(18,9,16,3)
+      MoveScaled(1,9,16,3)
       Text = ("LiveCD User name")
       Alignment = Align.Center
     }
@@ -166,13 +166,13 @@
       Alignment = Align.Center
     }
     { HostName TextBox
-      MoveScaled(1,12,16,3)
+      MoveScaled(18,12,16,3)
       Enabled = False
       ToolTip = ("Enter Hostname for your distro")
       Text = ("hostname")
     }
     { Label5 Label
-      MoveScaled(1,9,16,3)
+      MoveScaled(18,9,16,3)
       Text = ("Hostname")
       Alignment = Align.Center
     }

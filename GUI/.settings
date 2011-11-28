@@ -14,9 +14,8 @@ SearchString=True
 [OpenFile]
 File[1]="FMain.class:18.68"
 File[2]="FMain.form"
-File[3]="FAbout.form"
-Active=3
-Count=3
+Active=2
+Count=2
 
 [Watches]
 Count=0
