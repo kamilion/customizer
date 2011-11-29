@@ -14,12 +14,7 @@ PUBLIC SUB Form_Open()
     Message.Warning("Another instance of Customizer is already running!")
     ME.Close
   ENDIF 
-  
-  IF User.Id == "0" THEN 
-    Message.Warning("To work properly the GUI need to be run as root!")
-    ME.Close
-  ENDIF 
-  
+
   Module.CheckExistence()
 END
 
