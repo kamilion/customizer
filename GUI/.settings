@@ -12,12 +12,10 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:18.68"
+File[1]="FMain.class:15.8"
+Active=1
 File[2]="FMain.form"
-File[3]="FSettings.form"
-File[4]="FAbout.form"
-Active=4
-Count=4
+Count=2
 
 [Watches]
 Count=0

@@ -15,11 +15,6 @@ PUBLIC SUB Form_Open()
     ME.Close
   ENDIF 
   
-  IF User.Id == "0" THEN 
-    Message.Warning("To work properly the GUI need to be run as root!")
-    ME.Close
-  ENDIF 
-  
   Module.CheckExistence()
 END
 

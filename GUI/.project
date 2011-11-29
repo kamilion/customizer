@@ -3,7 +3,7 @@
 Title=Customizer
 Startup=FMain
 Icon=logo.png
-Version=3.1.4
+Version=3.1.5
 Library=gb.gui
 Library=gb.form
 Description=GUI for Customizer (previuosly known as U-Customizer)
