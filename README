@@ -7,8 +7,9 @@ Application info:
 
 Looking for a tool that will allow You to customize Ubuntu, Kubuntu, Lubuntu, Xubuntu , Linux Mint or  other Ubuntu based ISO images? Well, you've found it! Customizer is the right choise - it allows you to customize them the way you want to within the matter of few minutes (on a modern PC) running Terminal, Synaptic, Desktop session (in chroot environment) and even more so you can modify the images to fit your needs.
 
-Website: http://u-customizer.sf.net/
-Forum: https://sf.net/apps/phpbb/u-customizer/
+Home: https://github.com/fluxer/Customizer/
+Issues: https://sf.net/apps/phpbb/u-customizer/
+Wiki: https://github.com/fluxer/Customizer/wiki
 
 
 Features:
