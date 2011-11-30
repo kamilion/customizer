@@ -13,8 +13,8 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.class:45.64"
-Active=1
 File[2]="FMain.form"
+Active=2
 Count=2
 
 [Watches]
