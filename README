@@ -19,6 +19,13 @@ Features:
 	* Snapshots of the current work can be done to save time when experimenting
 	* Accessible from CLI and GUI, GUI has more options/features
 	
+
+Credits:
+
+	Coding: Ivailo Monev (a.k.a. SmiL3y)  <xakepa10@gmail.com>
+	PPA maintainer: Michał Głowienka (a.k.a. eloaders) <eloaders@yahoo.com>
+        Documentation: Mubiin Kimura (a.k.a. clearkimura) <clearkimura@gmail.com>
+
 	
 Changes log:
 
