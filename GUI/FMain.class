@@ -113,7 +113,7 @@ PUBLIC SUB DistName_Change()
   SHELL "sed -i 's/DISTRIB_ID=.*/DISTRIB_ID=" & DistName.Text & "/' '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release'"
   SHELL "sed -i 's/DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION=\"" & DistName.Text & " " & Version.Text & "\"/' '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release'"
   TRY File.Save(Trim(WorkDir) & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
-  TRY File.Save(Trim(WorkDir) & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
+  'TRY File.Save(Trim(WorkDir) & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
 PUBLIC SUB HostName_Change()

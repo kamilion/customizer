@@ -64,19 +64,19 @@ echo
 if [ "$#" != "0" ];then
 	for arg in "$@"; do
 		case $arg in
-			-u|--use) su-to-root -c /opt/Customizer/scripts/Use.sh ;;
-			-c|--chroot) su-to-root -c /opt/Customizer/scripts/Chroot.sh ;;
-			-x|--xnest) su-to-root -c /opt/Customizer/scripts/Xnest.sh ;;
-			-e|--sources) su-to-root -c /opt/Customizer/scripts/EditSources.sh ;;
-			-a|--archive) su-to-root -c /opt/Customizer/scripts/Archive.sh ;;
-			-d|--deb) su-to-root -c /opt/Customizer/scripts/InstallDEB.sh ;;
-			-k|--hook) su-to-root -c /opt/Customizer/scripts/Hook.sh ;;
-			-g|--gui) su-to-root -c /opt/Customizer/scripts/InstallGUI.sh ;;
-			-s|--snapshot) su-to-root -c /opt/Customizer/scripts/CreateSnapshot.sh ;;
-			-i|--import) su-to-root -c /opt/Customizer/scripts/ImportSnapshot.sh ;;
-			-r|--rebuild) su-to-root -c /opt/Customizer/scripts/Build.sh ;;
-			-q|--qemu) su-to-root -c /opt/Customizer/scripts/QEMU.sh ;;
-			-t|--clean) su-to-root -c /opt/Customizer/scripts/Clean.sh ;;
+			-u|--use) su -c /opt/Customizer/scripts/Use.sh ;;
+			-c|--chroot) su -c /opt/Customizer/scripts/Chroot.sh ;;
+			-x|--xnest) su -c /opt/Customizer/scripts/Xnest.sh ;;
+			-e|--sources) su -c /opt/Customizer/scripts/EditSources.sh ;;
+			-a|--archive) su -c /opt/Customizer/scripts/Archive.sh ;;
+			-d|--deb) su -c /opt/Customizer/scripts/InstallDEB.sh ;;
+			-k|--hook) su -c /opt/Customizer/scripts/Hook.sh ;;
+			-g|--gui) su -c /opt/Customizer/scripts/InstallGUI.sh ;;
+			-s|--snapshot) su -c /opt/Customizer/scripts/CreateSnapshot.sh ;;
+			-i|--import) su -c /opt/Customizer/scripts/ImportSnapshot.sh ;;
+			-r|--rebuild) su -c /opt/Customizer/scripts/Build.sh ;;
+			-q|--qemu) su -c /opt/Customizer/scripts/QEMU.sh ;;
+			-t|--clean) su -c /opt/Customizer/scripts/Clean.sh ;;
 			-v|--version) Version ;;
 			-h|--help) Usage ;;
 			*) echo -e "${Red}ERROR${Reset}: ${Yellow}Unrecognized argument${Reset}: ${Green}$arg${Reset}" ;;
