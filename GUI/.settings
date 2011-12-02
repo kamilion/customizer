@@ -12,10 +12,12 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:15.8"
-Active=1
+File[1]="FMain.class:248.2"
 File[2]="FMain.form"
-Count=2
+File[3]="FLicense.form"
+Active=3
+File[4]="FLicense.class:9.3"
+Count=4
 
 [Watches]
 Count=0

@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Customizer - Advanced LiveCD Remastering Tool
+# Copyright (C) 2011  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/Customizer
+# Wiki: https://github.com/fluxer/Customizer/wiki
+# Issues: https://github.com/fluxer/Customizer/issues
+#
+set -u
+source /opt/Customizer/common
+source /opt/Customizer/settings.conf
+
+__check_lock__
+__check_fs_dir__
+__recursive_umount__
+
+case "$COMPRESSION" in
+	bzip2) COMPRESSION_OPTIONS="tar -cjf"; EXT="tar.bz2"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
+	gzip) COMPRESSION_OPTIONS="tar -czf"; EXT="gz"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
+	tar) COMPRESSION_OPTIONS="tar -cf"; EXT="tar"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
+	*) ERROR_MESSAGE "Invalid compression format specified" ;;
+esac
+
+if [ -d "/tmp/snapshot" ];then
+	INFO_MESSAGE "Deleting what had been left from previous attempts"
+	rm -rf /tmp/snapshot
+fi
+
+mkdir -p /tmp/snapshot
+cd "$WORK_DIR"
+INFO_MESSAGE "Compressing the root filesystem"
+$COMPRESSION_OPTIONS /tmp/snapshot/rootfs.$EXT FileSystem || ERROR_MESSAGE "An error accure while trying to compress the root filesystem"
+
+INFO_MESSAGE "Compressing the ISO directory"
+$COMPRESSION_OPTIONS /tmp/snapshot/isofolder.$EXT ISO || ERROR_MESSAGE "An error accure while trying to compress the ISO folder"
+
+INFO_MESSAGE "Putting it all together"
+SN="$WORK_DIR/snapshot-`date +%H-%M-%S`.cps"
+cd /tmp/snapshot
+tar -cf "$SN" * || ERROR_MESSAGE "An error accure while trying to combine the two compressed archives"
+rm -rf /tmp/snapshot
+
+EXTRA_INFO_MESSAGE "Snapshot successfuly created" "$SN"
+read nada
+exit 0
