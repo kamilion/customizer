@@ -41,7 +41,7 @@ echo "
      -c|--chroot    Chroot into the filesystem
      -x|--xnest     Execute nested X-session
      -e|--sources   Edit sources.list
-     -p|--pkgm   Execute package manager
+     -p|--pkgm      Execute package manager
      -d|--deb       Install Debian package
      -k|--hook      Execute hook
      -g|--gui       Install GUI (DE/WM)
@@ -52,6 +52,7 @@ echo "
      -t|--clean     Clean all temporary files and folders
 
  Other options:
+     
      -h|--help      Display this message
      -v|--version   Show the current version and more
 "
@@ -100,7 +101,7 @@ if [ "$#" != "0" ];then
 			-r|--rebuild) Root_it /opt/Customizer/scripts/rebuild ;;
 			-q|--qemu) Root_it /opt/Customizer/scripts/qemu ;;
 			-t|--clean) Root_it /opt/Customizer/scripts/clean ;;
-			-v|--version) Version ;;
+            -v|--version) Version ;;
 			-h|--help) Usage ;;
 			*) MORE_ERROR_MESSAGE "Unrecognized argument" "$arg" ;;
 		esac

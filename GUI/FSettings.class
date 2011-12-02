@@ -2,7 +2,7 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp AS String
+  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp, FChroot AS String
   ME.Center
   ME.Caption = "Settings"
   
@@ -71,6 +71,7 @@ PUBLIC SUB Form_Open()
   ENDIF 
   
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  SHELL "grep FORCE_CHROOT= /opt/Customizer/settings.conf | sed 's/FORCE_CHROOT=//'" TO FChroot
   SHELL "grep EDITOR= /opt/Customizer/settings.conf | sed 's/EDITOR=//'" TO Edit
   SHELL "grep WIN_EXECUTABLES= /opt/Customizer/settings.conf | sed 's/WIN_EXECUTABLES=//;s/\"//g'" TO WinExe
   SHELL "grep BOOT_FILES= /opt/Customizer/settings.conf | sed 's/BOOT_FILES=//;s/\"//g'" TO BFiles
@@ -79,6 +80,7 @@ PUBLIC SUB Form_Open()
   SHELL "grep COMPRESSION= /opt/Customizer/settings.conf | sed 's/COMPRESSION=//;s/\"//g'" TO SComp
   
   TRY WDir.Text = Trim(WorkDir)
+  TRY ForceChroot.Value = Trim(FChroot)
   TRY EditorBox.Text = Trim(Edit)
   TRY WinExecutables.Value = Trim(WinExe)
   TRY BootFiles.Value = Trim(BFiles)
@@ -91,6 +93,10 @@ PUBLIC SUB Form_Open()
     Change_WDir.Enabled = FALSE
     Change_WDir.ToolTip = "Changing the working directory is not possible at that state!"
   ENDIF 
+END
+
+PUBLIC SUB ForceChroot_Click()
+  SHELL "sed -i 's/FORCE_CHROOT=.*/FORCE_CHROOT=" & ForceChroot.Value & "/' /opt/Customizer/settings.conf"
 END
 
 PUBLIC SUB WinExecutables_Click()

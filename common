@@ -63,8 +63,12 @@ EXTRA_ERROR_MESSAGE() {
 
 __check_lock__() {
     INFO_MESSAGE "Checking lock"
-    if [ -e "$WORK_DIR/FileSystem/tmp/lock_chroot" ];then 
-        ERROR_MESSAGE "The filesystem is locked"
+    if [ "$FORCE_CHROOT" = "1" ] || [ "$FORCE_CHROOT" = "-1" ];then
+        WARNING_MESSAGE "Forcing chroot"
+    else
+        if [ -e "$WORK_DIR/FileSystem/tmp/lock_chroot" ];then 
+            ERROR_MESSAGE "The filesystem is locked"
+        fi
     fi
 }
 

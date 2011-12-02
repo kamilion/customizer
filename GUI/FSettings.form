@@ -1,58 +1,58 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,47,35)
+  MoveScaled(0,0,47,38)
   Text = ("")
   Icon = Picture["icon:/small/options"]
   Border = Window.Fixed
   { Quit Button
-    MoveScaled(17,31,13,3)
+    MoveScaled(17,34,13,3)
     ToolTip = ("Close this window")
     Text = ("Close")
     Picture = Picture["icon:/16/close"]
   }
   { BootFiles CheckBox
-    MoveScaled(2,8,44,3)
-    ToolTip = ("Byt ticking this the build script will delete initrd and vmlinuz to save some MBs, however it should be used only when building LiveCDs not meant to be installed")
+    MoveScaled(2,11,44,3)
+    ToolTip = ("By ticking this the build script will delete initrd and vmlinuz to save some MBs, however it should be used only when building LiveCDs not meant to be installed")
     Text = ("Delete Boot files before creating the filesystem.squashfs")
   }
   { ResolutionBox ComboBox
-    MoveScaled(2,15,13,3)
+    MoveScaled(2,18,13,3)
     ToolTip = ("Change the resolution used by Xephyr to start desktop session")
     Text = ("ComboBox1")
     ReadOnly = True
     List = [("1920x1200"), ("1920x1080"), ("1600x1200"), ("1600x900"), ("1280x1024"), ("1280x960"), ("1280x800"), ("1280x768"), ("1024x768"), ("800x600"), ("640x480")]
   }
   { Label2 Label
-    MoveScaled(16,15,30,3)
+    MoveScaled(16,18,30,3)
     Text = ("'Desktop' (Xephyr) resolution")
     Alignment = Align.Center
   }
   { EditorBox ComboBox
-    MoveScaled(2,19,13,3)
+    MoveScaled(2,22,13,3)
     ToolTip = ("Set the desired text editor to be used when editing files")
     Text = ("")
     ReadOnly = True
   }
   { Label3 Label
-    MoveScaled(16,19,30,3)
+    MoveScaled(16,22,30,3)
     Text = ("Desired text editor")
     Alignment = Align.Center
   }
   { WinExecutables CheckBox
-    MoveScaled(2,11,44,3)
+    MoveScaled(2,14,44,3)
     ToolTip = ("Delete the windows executables in the ISO which you'll probbably not need at all")
     Text = ("Delete Windows executable files")
   }
   { VirtualMemBox ComboBox
-    MoveScaled(2,23,13,3)
+    MoveScaled(2,26,13,3)
     ToolTip = ("Set the amount of virtual RAM used by QEMU, the highed the value - the better performance you will get while emulating your ISO but it's recommended to be half of your RAM installed on your PC")
     Text = ("ComboBox1")
     ReadOnly = True
     List = [("64"), ("96"), ("128"), ("256"), ("384"), ("512"), ("768"), ("1024")]
   }
   { Label1 Label
-    MoveScaled(16,23,30,3)
+    MoveScaled(16,26,30,3)
     Text = ("QEMU virtual RAM (in megabytes)")
     Alignment = Align.Center
   }
@@ -73,15 +73,20 @@
     Alignment = Align.Center
   }
   { Label5 Label
-    MoveScaled(16,27,30,3)
+    MoveScaled(16,30,30,3)
     Text = ("Snapshots compression format")
     Alignment = Align.Center
   }
   { CompressionBox ComboBox
-    MoveScaled(2,27,13,3)
+    MoveScaled(2,30,13,3)
     ToolTip = ("Choose compression format for the created snapshots")
     Text = ("ComboBox1")
     ReadOnly = True
     List = [("bzip2"), ("gzip"), ("tar")]
+  }
+  { ForceChroot CheckBox
+    MoveScaled(2,8,44,3)
+    ToolTip = ("This this and the scripts will chroot into the filesystem even if it is locked, this is useful ONLY if there is a but in the application")
+    Text = ("Force chroot enter even if it is locked")
   }
 }
