@@ -92,7 +92,7 @@ if [ "$#" != "0" ];then
 			-c|--chroot) Root_it /opt/Customizer/scripts/chroot ;;
 			-x|--xnest) Root_it /opt/Customizer/scripts/xnest ;;
 			-e|--sources) Root_it /opt/Customizer/scripts/edit_sources ;;
-			-a|--archive) Root_it /opt/Customizer/scripts/package_manager ;;
+			-p|--pkgm) Root_it /opt/Customizer/scripts/package_manager ;;
 			-d|--deb) Root_it /opt/Customizer/scripts/install_deb ;;
 			-k|--hook) Root_it /opt/Customizer/scripts/hook ;;
 			-g|--gui) Root_it /opt/Customizer/scripts/install_gui ;;
