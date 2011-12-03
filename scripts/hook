@@ -30,9 +30,9 @@ __check_sources_list__
 
 if [ ! -e "$HOOK" ];then
 	ERROR_MESSAGE "The hook files doesn't exists"
+else
+    cp -f "$HOOK" "$WORK_DIR/FileSystem/tmp"
 fi
-
-cp -f "$HOOK" "$WORK_DIR/FileSystem/tmp"
 
 __allow_local_X_access__
 __mount_sys__

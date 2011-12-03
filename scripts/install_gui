@@ -60,7 +60,7 @@ done
 __allow_local_X_access__
 __mount_sys__
 __mount_dbus__
-__chroot__ "apt-get install -y $GUI_PACKAGES --no-install-recommends"
+__chroot__ "apt-get install dbus -f -y; dbus-uuidgen --ensure; apt-get install -y $GUI_PACKAGES --no-install-recommends"
 __umount_sys__
 __recursive_umount__
 __block_local_X_access__

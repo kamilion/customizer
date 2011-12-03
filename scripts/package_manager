@@ -41,31 +41,28 @@ if [ ! -e "$WORK_DIR/FileSystem/usr/bin/software-center" ] && [ ! -e "$WORK_DIR/
 fi
 
 while true;do
-echo
+    echo
+    for i in $PACKAGE_MANAGERS; do
+        if [ -e "$WORK_DIR/FileSystem/usr/sbin/$i" ] || [ -e "$WORK_DIR/FileSystem/usr/bin/$i" ];then
+            echo $i
+        fi
+    done
 	
-for i in $PACKAGE_MANAGERS; do
-if [ -e "$WORK_DIR/FileSystem/usr/sbin/$i" ] || [ -e "$WORK_DIR/FileSystem/usr/bin/$i" ];then
-	echo $i
-fi
-done
-	
-echo
-INFO_MESSAGE "What shall it be?: "
-read choise
+    echo
+    INFO_MESSAGE "What shall it be?: "
+    read choise
 
-if [ ! -f "$WORK_DIR/FileSystem/usr/sbin/$choise" ] && [ ! -f "$WORK_DIR/FileSystem/usr/bin/$choise" ];then
-	WARNING_MESSAGE "This is not an option"	
-else
-	break
-fi
+    if [ ! -f "$WORK_DIR/FileSystem/usr/sbin/$choise" ] && [ ! -f "$WORK_DIR/FileSystem/usr/bin/$choise" ];then
+        ERROR_MESSAGE_NO_EXIT "This is not an option"	
+    else
+        break
+    fi
 done
 
 __allow_local_X_access__
 __mount_sys__
 __mount_dbus__
-__chroot__ "apt-get install dbus -y -f
-dbus-uuidgen --ensure
-$choise"
+__chroot__ "apt-get install dbus -y -f; dbus-uuidgen --ensure; $choise"
 __umount_sys__
 __recursive_umount__
 __block_local_X_access__

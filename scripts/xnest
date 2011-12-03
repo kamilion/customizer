@@ -54,19 +54,15 @@ case $AVAILABLE in
 	done ;;
 esac
 
-# Start Xephyr and the script
 # FIXME: error not shown when unable to execute Xephyr
-# (Xephyr -ac -screen $RESOLUTION -br :9 &) || xephyr_error
+# (Xephyr -ac -screen $RESOLUTION -br :9 &) || error
 INFO_MESSAGE "Starting Xephyr"
 Xephyr -ac -screen $RESOLUTION -br :9 &
 
 __allow_local_X_access__
 __mount_sys__
 __mount_dbus__
-__chroot__ "apt-get install dbus -y -f
-export DISPLAY=localhost:9
-dbus-uuidgen --ensure
-
+__chroot__ "apt-get install dbus -y -f; export DISPLAY=localhost:9; dbus-uuidgen --ensure
 `grep -m 1 "Exec=" /usr/share/xsessions/$choise.desktop | sed 's/Exec=//'`"
 __umount_sys__
 __recursive_umount__

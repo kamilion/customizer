@@ -33,11 +33,9 @@ if [ ! -e "$DEB" ];then
 fi
 
 case "$DEB" in
-	*.deb) true ;;
+	*.deb) cp -f "$DEB" "$WORK_DIR/FileSystem/tmp" ;;
 	*) ERROR_MESSAGE "This is not DEB package" ;;
 esac
-
-cp -f "$DEB" "$WORK_DIR/FileSystem/tmp"
 
 __allow_local_X_access__
 __mount_sys__
