@@ -1,7 +1,8 @@
 * Fixed issue with the package manager script if nothing was entered
-* Organazied scripts for better overview and functionality
+* Organazied script for better overview and functionality
 * Scripts will execute properly if CLI.sh is called from root user
 * Fixed deleting of boot and windows files
++ Added option to output messages with and without using colors
 + Added missing credits to clearkimura in Version()
 + Added copyright in scripts
 + Added force chroot enter option

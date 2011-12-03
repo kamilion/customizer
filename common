@@ -29,41 +29,69 @@ Yellow='\e[1;33m'
 ############# Common functions #############
 
 INFO_MESSAGE() {
-	echo -e "[${Yellow}M${Reset}] ${Green}$1${Reset}"
+	if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Yellow}M${Reset}] ${Green}$1${Reset}"
+    else
+        echo -e "[M] $1"
+    fi
 }
 
 EXTRA_INFO_MESSAGE() {
-	echo -e "[${Yellow}M${Reset}] ${Green}$1${Reset}: ${Yellow}$2${Reset}"
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Yellow}M${Reset}] ${Green}$1${Reset}: ${Yellow}$2${Reset}"
+    else
+        echo -e "[M] $1: $2"
+    fi
 }
 
 WARNING_MESSAGE() {
-	echo -e "[${Red}W${Reset}] ${Yellow}$1${Reset}"
+	if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}W${Reset}] ${Yellow}$1${Reset}"
+    else
+        echo -e "[W] $1"
+    fi
 }
 
 EXTRA_WARNING_MESSAGE() {
-	echo -e "[${Red}W${Reset}] ${Yellow}$1${Reset}: ${Green}$2${Reset}"
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}W${Reset}] ${Yellow}$1${Reset}: ${Green}$2${Reset}"
+    else
+         echo -e "[W] $1: $2" 
+    fi
 }
 
 ERROR_MESSAGE() {
-	echo -e "[${Red}E${Reset}] ${Yellow}$1${Reset}"
-	read nada
-	exit 2
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}E${Reset}] ${Yellow}$1${Reset}"
+    else
+        echo -e "[E] $1"
+    fi
+    read nada
+    exit 2
 }
 
 ERROR_MESSAGE_NO_EXIT() {
-	echo -e "[${Red}E${Reset}] ${Yellow}$1${Reset}"
-	read nada
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}E${Reset}] ${Yellow}$1${Reset}"
+    else
+        echo -e "[E] $1"
+    fi
+    read nada
 }
 
 EXTRA_ERROR_MESSAGE() {
-	echo -e "[${Red}E${Reset}] ${Yellow}$1${Reset}: ${Green}$2${Reset}"
-	read nada
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}E${Reset}] ${Yellow}$1${Reset}: ${Green}$2${Reset}"
+	else
+        echo -e "[E] $1: $2"
+    fi
+    read nada
 	exit 2
 }
 
 __check_lock__() {
     INFO_MESSAGE "Checking lock"
-    if [ "$FORCE_CHROOT" = "1" ] || [ "$FORCE_CHROOT" = "-1" ];then
+    if [ "$FORCE_CHROOT" = "1" ];then
         WARNING_MESSAGE "Forcing chroot"
     else
         if [ -e "$WORK_DIR/FileSystem/tmp/lock_chroot" ];then 
@@ -73,39 +101,72 @@ __check_lock__() {
 }
 
 __chroot__() {
+export MESSAGES_COLORS="$MESSAGES_COLORS"
 echo "
 Reset='\e[0m'
 Red='\e[1;31m'
 Green='\e[1;32m'
 Yellow='\e[1;33m'
 
-echo -e \"[${Yellow}M${Reset}] ${Green}Setting up${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Setting up${Reset}\"
+    else
+        echo -e \"[M] Setting up\"
+fi
 export HOME=/root
 export LC_ALL=C
 
-echo -e \"[${Yellow}M${Reset}] ${Green}Blocking initctl${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Blocking initctl${Reset}\"
+    else
+        echo -e \"[M] Blocking initctl\"
+fi
 mv /sbin/initctl /sbin/initctl.blocked
 ln -s /bin/true /sbin/initctl
-echo -e \"[${Yellow}M${Reset}] ${Green}Blocking update-grub${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Blocking update-grub${Reset}\"
+    else
+        echo -e \"[M] Blocking update-grub\"
+fi
 mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
 ln -s /bin/true /usr/sbin/update-grub
 
-echo -e \"[${Yellow}M${Reset}] ${Green}Updating packages database${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Updating packages database${Reset}\"
+    else
+        echo -e \"[M] Updating packages database\"
+fi
 apt-get update -qq
-echo -e \"[${Yellow}M${Reset}] ${Green}Making sure everything is configured${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Making sure everything is configured${Reset}\"
+    else
+        echo -e \"[M] Making sure everything is configured\"
+fi
 dpkg --configure -a
 apt-get install -f -y -q
 
 ${@}
 
-echo -e \"[${Yellow}M${Reset}] ${Green}Unblocking initctl${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Unblocking initctl${Reset}\"
+    else
+        echo -e \"[M] Unblocking initctl\"
+fi
 rm -f /sbin/initctl
 mv /sbin/initctl.blocked /sbin/initctl
-echo -e \"[${Yellow}M${Reset}] ${Green}Unblocking update-grub${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Unblocking update-grub${Reset}\"
+    else
+        echo -e \"[M] Unblocking update-grub\"
+fi
 rm -f /usr/sbin/update-grub
 mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
 
-echo -e \"[${Yellow}M${Reset}] ${Green}Cleaning up${Reset}\"
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}M${Reset}] ${Green}Cleaning up${Reset}\"
+    else
+        echo -e \"[M] Cleaning up\"
+fi
 apt-get clean
 rm -f /etc/debian_chroot
 rm -f /etc/hosts
