@@ -1,5 +1,5 @@
 * Fixed issue with the package manager script if nothing was entered
-* Organazied script for better overview and functionality
+* Organazied scripts for better overview and functionality
 * Scripts will execute properly if CLI.sh is called from root user
 * Fixed deleting of boot and windows files
 + Added missing credits to clearkimura in Version()
