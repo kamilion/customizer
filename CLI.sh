@@ -101,7 +101,7 @@ if [ "$#" != "0" ];then
 			-r|--rebuild) Root_it /opt/Customizer/scripts/rebuild ;;
 			-q|--qemu) Root_it /opt/Customizer/scripts/qemu ;;
 			-t|--clean) Root_it /opt/Customizer/scripts/clean ;;
-            -v|--version) Version ;;
+            		-v|--version) Version ;;
 			-h|--help) Usage ;;
 			*) MORE_ERROR_MESSAGE "Unrecognized argument" "$arg" ;;
 		esac
