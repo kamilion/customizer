@@ -30,17 +30,17 @@ Yellow='\e[1;33m'
 
 INFO_MESSAGE() {
 	if [ "$MESSAGES_COLORS" = "1" ];then
-        echo -e "[${Yellow}M${Reset}] ${Green}$1${Reset}"
+        echo -e "[${Yellow}I${Reset}] ${Green}$1${Reset}"
     else
-        echo -e "[M] $1"
+        echo -e "[I] $1"
     fi
 }
 
 EXTRA_INFO_MESSAGE() {
     if [ "$MESSAGES_COLORS" = "1" ];then
-        echo -e "[${Yellow}M${Reset}] ${Green}$1${Reset}: ${Yellow}$2${Reset}"
+        echo -e "[${Yellow}I${Reset}] ${Green}$1${Reset}: ${Yellow}$2${Reset}"
     else
-        echo -e "[M] $1: $2"
+        echo -e "[I] $1: $2"
     fi
 }
 
@@ -109,38 +109,38 @@ Green='\e[1;32m'
 Yellow='\e[1;33m'
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Setting up${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Setting up${Reset}\"
     else
-        echo -e \"[M] Setting up\"
+        echo -e \"[I] Setting up\"
 fi
 export HOME=/root
 export LC_ALL=C
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Blocking initctl${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Blocking initctl${Reset}\"
     else
-        echo -e \"[M] Blocking initctl\"
+        echo -e \"[I] Blocking initctl\"
 fi
 mv /sbin/initctl /sbin/initctl.blocked
 ln -s /bin/true /sbin/initctl
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Blocking update-grub${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Blocking update-grub${Reset}\"
     else
-        echo -e \"[M] Blocking update-grub\"
+        echo -e \"[I] Blocking update-grub\"
 fi
 mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
 ln -s /bin/true /usr/sbin/update-grub
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Updating packages database${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Updating packages database${Reset}\"
     else
-        echo -e \"[M] Updating packages database\"
+        echo -e \"[I] Updating packages database\"
 fi
 apt-get update -qq
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Making sure everything is configured${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Making sure everything is configured${Reset}\"
     else
-        echo -e \"[M] Making sure everything is configured\"
+        echo -e \"[I] Making sure everything is configured\"
 fi
 dpkg --configure -a
 apt-get install -f -y -q
@@ -148,24 +148,24 @@ apt-get install -f -y -q
 ${@}
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Unblocking initctl${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Unblocking initctl${Reset}\"
     else
-        echo -e \"[M] Unblocking initctl\"
+        echo -e \"[I] Unblocking initctl\"
 fi
 rm -f /sbin/initctl
 mv /sbin/initctl.blocked /sbin/initctl
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Unblocking update-grub${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Unblocking update-grub${Reset}\"
     else
-        echo -e \"[M] Unblocking update-grub\"
+        echo -e \"[I] Unblocking update-grub\"
 fi
 rm -f /usr/sbin/update-grub
 mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}M${Reset}] ${Green}Cleaning up${Reset}\"
+        echo -e \"[${Yellow}I${Reset}] ${Green}Cleaning up${Reset}\"
     else
-        echo -e \"[M] Cleaning up\"
+        echo -e \"[I] Cleaning up\"
 fi
 apt-get clean
 rm -f /etc/debian_chroot
@@ -204,7 +204,7 @@ __check_fs_dir__ () {
 
 __check_sources_list__ () {
     INFO_MESSAGE "Checking sources.list"
-    if [ "`cat "$WORK_DIR/FileSystem/etc/apt/sources.list" | grep deb`" = "" ];then
+    if [ "`grep deb "$WORK_DIR/FileSystem/etc/apt/sources.list"`" = "" ];then
         WARNING_MESSAGE "The sources.list has been corrupted or deleted, attempting to fix"
         id=`grep 'DISTRIB_CODENAME=' "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//'`  
         echo "deb http://archive.ubuntu.com/ubuntu/ $id main" > "$WORK_DIR/FileSystem/etc/apt/sources.list" 

@@ -209,3 +209,33 @@ PUBLIC SUB CheckExistence()
     ENDIF
   ENDIF 
 END
+
+PUBLIC SUB Detect_Terminal_emulator()
+  DIM SupportedEmu AS String[]
+  DIM Emulator, TestVar AS String
+  DIM Emu AS Variant
+  
+  SupportedEmu = Array("gnome-terminal", "lxterminal", "xterm", "konsole")
+  
+  FOR EACH Emu IN SupportedEmu
+    EXEC ["which", "Emu"] TO TestVar
+      IF NOT Trim(TestVar) = "" 
+        Emulator = Emu
+        Message.Info("Emulator set to " & Emu)
+        BREAK 
+      ENDIF 
+    NEXT 
+END
+
+PUBLIC SUB Test()
+  DIM Dict AS NEW Collection
+  DIM Element AS String
+
+  Dict["Blue"] = 3
+  Dict["Red"] = 1
+  Dict["Green"] = 2
+
+  FOR EACH Element IN Dict
+    PRINT Element;
+  NEXT
+END 

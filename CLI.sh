@@ -24,6 +24,9 @@ set -e
 source /opt/Customizer/common
 source /opt/Customizer/settings.conf
 
+touch /var/log/myapp.log
+logger -f /var/log/myapp.log
+
 Root_it() {
 	if [ "$UID" != "0" ];then
 		WARNING_MESSAGE "You are not root! Promting for password"
@@ -88,7 +91,7 @@ Credits:
 if [ "$#" != "0" ];then
 	for arg in "$@"; do
 		case $arg in
-			-u|--use) Root_it /opt/Customizer/scripts/extract ;;
+			-u|--use) Root_it/opt/Customizer/scripts/extract ;;
 			-c|--chroot) Root_it /opt/Customizer/scripts/chroot ;;
 			-x|--xnest) Root_it /opt/Customizer/scripts/xnest ;;
 			-e|--sources) Root_it /opt/Customizer/scripts/edit_sources ;;
@@ -103,7 +106,7 @@ if [ "$#" != "0" ];then
 			-t|--clean) Root_it /opt/Customizer/scripts/clean ;;
             -v|--version) Version ;;
 			-h|--help) Usage ;;
-			*) MORE_ERROR_MESSAGE "Unrecognized argument" "$arg" ;;
+			*) EXTRA_ERROR_MESSAGE "Unrecognized argument" "$arg" ;;
 		esac
 	done
 else

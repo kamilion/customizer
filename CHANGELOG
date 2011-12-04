@@ -2,6 +2,7 @@
 * Organazied script for better overview and functionality
 * Scripts will execute properly if CLI.sh is called from root user
 * Fixed deleting of boot and windows files
+* Removed useles cat usage in the function fixing sources.list
 + Added option to output messages with and without using colors
 + Added missing credits to clearkimura in Version()
 + Added copyright in scripts
