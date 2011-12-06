@@ -43,7 +43,7 @@ case $AVAILABLE in
 	done
 	
 	echo
-	echo -ne "${Yellow}What shall it be?${Reset}: "
+	QUESTION_MESSAGE "What shall it be?"
 	read choise
 	
 	if [ ! -e "$WORK_DIR/FileSystem/usr/share/xsessions/$choise.desktop" ];then

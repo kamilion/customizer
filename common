@@ -117,7 +117,7 @@ __check_lock__() {
 }
 
 __chroot__() {
-export MESSAGES_COLORS="$MESSAGES_COLORS"
+export MESSAGES_COLORS
 echo "
 Reset='\e[0m'
 Red='\e[1;31m'
