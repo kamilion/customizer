@@ -49,11 +49,11 @@ while true;do
     done
 	
     echo
-    INFO_MESSAGE "What shall it be?: "
+    QUESTION_MESSAGE "What shall it be?" 
     read choise
 
     if [ ! -f "$WORK_DIR/FileSystem/usr/sbin/$choise" ] && [ ! -f "$WORK_DIR/FileSystem/usr/bin/$choise" ];then
-        ERROR_MESSAGE_NO_EXIT "This is not an option"	
+        WARNING_MESSAGE "This is not an option"	
     else
         break
     fi

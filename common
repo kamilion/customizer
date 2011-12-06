@@ -44,6 +44,22 @@ EXTRA_INFO_MESSAGE() {
     fi
 }
 
+QUESTION_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -ne "[${Yellow}?${Reset}] ${Green}$1${Reset} "
+    else
+        echo -ne "[*] $1 "
+    fi
+}
+
+EXTRA_QUESTION_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -ne "[${Yellow}?${Reset}] ${Green}$1${Reset} [${Yellow}$2${Reset}] "
+    else
+        echo -ne "[*] $1 [$2] "
+    fi
+}
+
 WARNING_MESSAGE() {
 	if [ "$MESSAGES_COLORS" = "1" ];then
         echo -e "[${Red}!${Reset}] ${Yellow}$1${Reset}"

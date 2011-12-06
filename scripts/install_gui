@@ -28,10 +28,9 @@ __check_fs_dir__
 __check_lock__
 __check_sources_list__
 
+WARNING_MESSAGE "ONLY THE BARE MINIMUM SET OF PACKAGES WILL BE ISNTALLED!"
 while true;do
-	WARNING_MESSAGE "ONLY THE BARE MINIMUM SET OF PACKAGES WILL BE ISNTALLED!"
 	echo "
-	
 	1. Gnome
 	2. KDE
 	3. XFCE4
@@ -41,7 +40,7 @@ while true;do
 	7. Blackbox
 	8. IceWM"
 	echo
-	INFO_MESSAGE "Which GUI (Desktop Environment/Window Manager) do you want to install?: "
+	EXTRA_QUESTION_MESSAGE "Which GUI do you want to install?" "1-8"
 	read choise
     
     case $choise in
@@ -53,14 +52,12 @@ while true;do
         6) GUI_PACKAGES="xserver-xorg xinit xterm fluxbox menu slim"; break ;;
         7) GUI_PACKAGES="xserver-xorg xinit xterm blackbox menu slim"; break ;;
         8) GUI_PACKAGES="xserver-xorg xinit icewm-lite menu xdm"; break ;;
-        *) ERROR_MESSAGE_NO_EXIT "This is not an option" ;;
+        *) WARNING_MESSAGE "This is not an option" ;;
     esac
 done
 
-__allow_local_X_access__
 __mount_sys__
 __mount_dbus__
 __chroot__ "apt-get install dbus -f -y; dbus-uuidgen --ensure; apt-get install -y $GUI_PACKAGES --no-install-recommends"
 __umount_sys__
 __recursive_umount__
-__block_local_X_access__
