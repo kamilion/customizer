@@ -80,6 +80,7 @@ PUBLIC SUB Form_Open()
   SHELL "grep RESOLUTION= /opt/Customizer/settings.conf | sed 's/RESOLUTION=//;s/\"//g'" TO Res
   SHELL "grep COMPRESSION= /opt/Customizer/settings.conf | sed 's/COMPRESSION=//;s/\"//g'" TO SComp
   
+
   TRY WDir.Text = Trim(WorkDir)
   TRY ForceChroot.Value = Trim(FChroot)
   TRY EditorBox.Text = Trim(Edit)

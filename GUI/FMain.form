@@ -89,7 +89,7 @@
       Text = ("Terminal")
       Picture = Picture["icon:/16/terminal"]
     }
-    { Desktop Button
+    { DesktopButton Button
       MoveScaled(1,19,16,3)
       Enabled = False
       ToolTip = ("Modify distro GUI look as root in realtime")
