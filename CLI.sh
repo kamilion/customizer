@@ -88,7 +88,7 @@ Credits:
 if [ "$#" != "0" ];then
 	for arg in "$@"; do
 		case $arg in
-			-u|--use) Root_it/opt/Customizer/scripts/extract ;;
+			-u|--use) Root_it /opt/Customizer/scripts/extract ;;
 			-c|--chroot) Root_it /opt/Customizer/scripts/chroot ;;
 			-x|--xnest) Root_it /opt/Customizer/scripts/xnest ;;
 			-e|--sources) Root_it /opt/Customizer/scripts/edit_sources ;;
