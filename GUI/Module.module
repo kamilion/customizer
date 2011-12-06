@@ -151,7 +151,7 @@ PUBLIC SUB Check_for_Xsession()
   IF Val(Xsessions) >= 1 THEN
     FMain.Desktop.Enabled = TRUE
   ELSE 
-    FMain.DesktopButton.Enabled = FALSE
+    FMain.Desktop.Enabled = FALSE
   ENDIF 
 END
 
