@@ -82,6 +82,7 @@ PUBLIC SUB Form_Open()
   
 
   TRY WDir.Text = Trim(WorkDir)
+  TRY UseColors.Value = Trim(UColors)
   TRY ForceChroot.Value = Trim(FChroot)
   TRY EditorBox.Text = Trim(Edit)
   TRY WinExecutables.Value = Trim(WinExe)

@@ -3,7 +3,7 @@
 Title=Customizer
 Startup=FMain
 Icon=logo.png
-Version=3.1.14
+Version=3.1.15
 Library=gb.desktop
 Library=gb.gui
 Library=gb.form

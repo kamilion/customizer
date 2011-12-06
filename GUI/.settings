@@ -13,11 +13,10 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.class:224.1"
-File[2]="FMain.form"
+File[2]="Module.module:227.3"
 File[3]="FSettings.form"
-File[4]="FSettings.class:100.14"
-Active=4
-Count=4
+Active=3
+Count=3
 
 [Watches]
 Count=0
