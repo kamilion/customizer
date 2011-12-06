@@ -116,14 +116,32 @@ EOF
 
 
 __chroot__ "if [ ! -e /initrd.img ] || [ ! -e /vmlinuz ]; then
-	echo -e \"[${Yellow}M${Reset}] ${Green}Purging Kernels (if any)${Reset}\"
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+            echo -e \"[${Yellow}*${Reset}] ${Green}Purging Kernels (if any)${Reset}\"
+    else
+            echo -e \"[*] Purging Kernels (if any)\"
+    fi
+
 	apt-get purge --yes linux-image* linux-headers* -qq
-	echo -e \"[${Yellow}M${Reset}] ${Green}Installing Kernel${Reset}\"
-	apt-get install --yes linux-image-generic linux-headers-generic -qq
+	
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+            echo -e \"[${Yellow}*${Reset}] ${Green}Installing Kernel${Reset}\"
+    else
+            echo -e \"[*] Installing Kernel\"
+    fi
+    apt-get install --yes linux-image-generic linux-headers-generic -qq
 else
-	echo -e \"[${Yellow}M${Reset}] ${Green}Installing the latest initramfs-tools${Reset}\"
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+            echo -e \"[${Yellow}*${Reset}] ${Green}Installing the latest initramfs-tools${Reset}\"
+    else
+            echo -e \"[*] Installing the latest initramfs-tools\"
+    fi
 	apt-get install --yes initramfs-tools -qq
-	echo -e \"[${Yellow}M${Reset}] ${Green}Updating/creating Kernel image${Reset}\"
+    if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+            echo -e \"[${Yellow}*${Reset}] ${Green}Updating/creating Kernel image${Reset}\"
+    else
+            echo -e \"[*] Updating/creating Kernel image\"
+    fi
 	update-initramfs -u
 fi"
 
