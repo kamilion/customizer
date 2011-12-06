@@ -24,10 +24,6 @@ set -e
 source /opt/Customizer/common
 source /opt/Customizer/settings.conf
 
-exec >/tmp/foo.log
-tail -f /tmp/foo.log &
-
-
 Root_it() {
 	if [ "$UID" != "0" ];then
 		WARNING_MESSAGE "You are not root! Promting for password"
