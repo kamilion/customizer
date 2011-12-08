@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# Customizer - Advanced LiveCD Remastering Tool
+# Copyright (C) 2011  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/Customizer
+# Wiki: https://github.com/fluxer/Customizer/wiki
+# Issues: https://github.com/fluxer/Customizer/issues
+#
+set -u
+source /opt/Customizer/common
+source /opt/Customizer/settings.conf
+
+__check_fs_dir__
+__check_lock__
+__check_sources_list__
+
+if [ "`pgrep Xorg`" = "" ];then
+	PACKAGE_MANAGERS="aptitude aptsh"
+else
+	PACKAGE_MANAGERS="software-center synaptic aptitude aptsh"
+fi
+
+PACKAGE_MANAGER=""
+if [ ! -e "$WORK_DIR/FileSystem/usr/bin/software-center" ] && [ ! -e "$WORK_DIR/FileSystem/usr/sbin/synaptic" ] \
+&& [ ! -e "$WORK_DIR/FileSystem/usr/bin/aptitude" ] && [ ! -e "$WORK_DIR/FileSystem/usr/bin/aptsh" ];then
+	ERROR_MESSAGE "No supported package manager were detected"
+fi
+
+while true;do
+    echo
+    for i in $PACKAGE_MANAGERS; do
+        if [ -e "$WORK_DIR/FileSystem/usr/sbin/$i" ] || [ -e "$WORK_DIR/FileSystem/usr/bin/$i" ];then
+            echo $i
+        fi
+    done
+	
+    echo
+    QUESTION_MESSAGE "What shall it be?" 
+    read choise
+
+    if [ ! -f "$WORK_DIR/FileSystem/usr/sbin/$choise" ] && [ ! -f "$WORK_DIR/FileSystem/usr/bin/$choise" ];then
+        WARNING_MESSAGE "This is not an option"	
+    else
+        break
+    fi
+done
+
+__allow_local_X_access__
+__mount_sys__
+__mount_dbus__
+__chroot__ "apt-get install dbus -y -f; dbus-uuidgen --ensure; $choise"
+__umount_sys__
+__recursive_umount__
+__block_local_X_access__

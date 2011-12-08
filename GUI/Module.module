@@ -147,7 +147,7 @@ PUBLIC SUB Check_for_Xsession()
   DIM WorkDir AS String
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
   SHELL "ls '" & Trim(WorkDir) & "/FileSystem/usr/share/xsessions' | wc -l" TO Xsessions
-  
+
   IF Val(Xsessions) >= 1 THEN
     FMain.Desktop.Enabled = TRUE
   ELSE 
@@ -184,7 +184,7 @@ PUBLIC SUB CheckExistence()
         'Enable some elements
         Module.Enable_Stuff()
       
-        ' Get some configuration to display it in the text boxes
+        'Get some configuration to display it in the text boxes
         SHELL "grep HOST= '" & Trim(WorkDir) & "/FileSystem/etc/casper.conf' | sed 's/export HOST=//;s/\"//g'" TO HName
         SHELL "grep DISTRIB_RELEASE= '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release' | sed 's/DISTRIB_RELEASE=//'" TO Rel
         SHELL "grep USERNAME= '" & Trim(WorkDir) & "/FileSystem/etc/casper.conf' | sed 's/export USERNAME=//;s/\"//g'" TO UName

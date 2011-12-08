@@ -1,29 +1,29 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,45,49)
+  MoveScaled(0,0,45,47)
   Text = ("")
   Icon = Picture["icon:/small/info"]
   Border = Window.Fixed
   { Label12 Label
     MoveScaled(1,2,43,4)
     Font = Font["URW Bookman L,Bold,+5"]
-    Text = ("Customizer v3.0.7")
+    Text = ("Customizer v3.1.0")
     Alignment = Align.Center
   }
   { Credits Label
-    MoveScaled(1,20,43,24)
-    Text = ("Coding:\nIvailo Monev (a.k.a. SmiL3y)\n<xakepa10@gmail.com>\n\nPPA maintainer:\nMicha\xC5\x82 G\xC5\x82owienka (a.k.a. eloaders)\n<eloaders@yahoo.com>\n\nDocumentation:\nMubiin Kimura\n<clearkimura@gmail.com>")
+    MoveScaled(2,19,42,23)
+    Text = ("Coding:\nIvailo Monev (a.k.a. SmiL3y)\n\nPPA maintainer:\nMicha\xC5\x82 G\xC5\x82owienka (a.k.a. eloaders)\n<eloaders@yahoo.com>\n\nDocumentation:\nMubiin Kimura (a.k.a. clearkimura)\n<clearkimura@gmail.com>")
     Alignment = Align.Center
   }
   { Quit Button
-    MoveScaled(17,45,11,3)
+    MoveScaled(18,43,11,3)
     ToolTip = ("Close this window")
     Text = ("Close")
     Picture = Picture["icon:/16/close"]
   }
   { PictureBox1 PictureBox
-    MoveScaled(17,7,11,11)
+    MoveScaled(18,7,10,10)
     Picture = Picture["logo.png"]
     Stretch = True
   }

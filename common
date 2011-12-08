@@ -1,0 +1,296 @@
+#!/usr/bin/env bash
+# Customizer - Advanced LiveCD Remastering Tool
+# Copyright (C) 2011  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/Customizer
+# Wiki: https://github.com/fluxer/Customizer/wiki
+# Issues: https://github.com/fluxer/Customizer/issues
+#
+
+Reset='\e[0m'
+Red='\e[1;31m'
+Green='\e[1;32m'
+Yellow='\e[1;33m'
+
+############# Common functions #############
+
+INFO_MESSAGE() {
+	if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Yellow}*${Reset}] ${Green}$1${Reset}"
+    else
+        echo -e "[*] $1"
+    fi
+}
+
+EXTRA_INFO_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Yellow}*${Reset}] ${Green}$1${Reset}: ${Yellow}$2${Reset}"
+    else
+        echo -e "[*] $1: $2"
+    fi
+}
+
+QUESTION_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -ne "[${Yellow}?${Reset}] ${Green}$1${Reset} "
+    else
+        echo -ne "[*] $1 "
+    fi
+}
+
+EXTRA_QUESTION_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -ne "[${Yellow}?${Reset}] ${Green}$1${Reset} [${Yellow}$2${Reset}] "
+    else
+        echo -ne "[*] $1 [$2] "
+    fi
+}
+
+WARNING_MESSAGE() {
+	if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}!${Reset}] ${Yellow}$1${Reset}"
+    else
+        echo -e "[!] $1"
+    fi
+}
+
+EXTRA_WARNING_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}!${Reset}] ${Yellow}$1${Reset}: ${Green}$2${Reset}"
+    else
+         echo -e "[!] $1: $2" 
+    fi
+}
+
+ERROR_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}X${Reset}] ${Yellow}$1${Reset}"
+    else
+        echo -e "[X] $1"
+    fi
+    read nada
+    exit 2
+}
+
+ERROR_MESSAGE_NO_EXIT() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}X${Reset}] ${Yellow}$1${Reset}"
+    else
+        echo -e "[X] $1"
+    fi
+    read nada
+}
+
+EXTRA_ERROR_MESSAGE() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}X${Reset}] ${Yellow}$1${Reset}: ${Green}$2${Reset}"
+	else
+        echo -e "[X] $1: $2"
+    fi
+    read nada
+	exit 2
+}
+
+__check_lock__() {
+    INFO_MESSAGE "Checking lock"
+    if [ "$FORCE_CHROOT" = "1" ];then
+        WARNING_MESSAGE "Forcing chroot"
+    else
+        if [ -e "$WORK_DIR/FileSystem/tmp/lock_chroot" ];then 
+            ERROR_MESSAGE "The filesystem is locked"
+        fi
+    fi
+}
+
+__chroot__() {
+export MESSAGES_COLORS
+echo "
+Reset='\e[0m'
+Red='\e[1;31m'
+Green='\e[1;32m'
+Yellow='\e[1;33m'
+
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Setting up${Reset}\"
+    else
+        echo -e \"[*] Setting up\"
+fi
+export HOME=/root
+export LC_ALL=C
+
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Blocking initctl${Reset}\"
+    else
+        echo -e \"[*] Blocking initctl\"
+fi
+mv /sbin/initctl /sbin/initctl.blocked
+ln -s /bin/true /sbin/initctl
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
+    else
+        echo -e \"[*] Blocking update-grub\"
+fi
+mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
+ln -s /bin/true /usr/sbin/update-grub
+
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
+    else
+        echo -e \"[*] Updating packages database\"
+fi
+apt-get update -qq
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Making sure everything is configured${Reset}\"
+    else
+        echo -e \"[*] Making sure everything is configured\"
+fi
+dpkg --configure -a
+apt-get install -f -y -q
+
+${@}
+
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking initctl${Reset}\"
+    else
+        echo -e \"[*] Unblocking initctl\"
+fi
+rm -f /sbin/initctl
+mv /sbin/initctl.blocked /sbin/initctl
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
+    else
+        echo -e \"[*] Unblocking update-grub\"
+fi
+rm -f /usr/sbin/update-grub
+mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
+
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
+    else
+        echo -e \"[*] Cleaning up\"
+fi
+apt-get clean
+rm -f /etc/debian_chroot
+rm -f /etc/hosts
+rm -f /etc/resolv.conf
+rm -f ~/.bash_history
+rm -f /boot/*.bak
+rm -f /var/lib/dpkg/*-old
+rm -f /var/lib/aptitude/*.old
+rm -f /var/cache/debconf/*.dat-old
+rm -f /var/log/*.gz
+rm -rf /tmp/*
+" > "$WORK_DIR/FileSystem/tmp/script.sh"
+
+INFO_MESSAGE "Doing some preparations"
+cp -f /etc/hosts "$WORK_DIR/FileSystem/etc"
+cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
+echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
+touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
+
+chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || WARNING_MESSAGE "The chroot hook has returned exit status by internal command"
+
+rm -f "$WORK_DIR/FileSystem/tmp/lock_chroot"
+}
+
+__check_fs_dir__ () {
+    INFO_MESSAGE "Checking filesystem"
+    if [ ! -d "$WORK_DIR/FileSystem" ];then
+        ERROR_MESSAGE "The filesystem path doesn't exists"
+    fi
+
+    if [ ! -d "$WORK_DIR/FileSystem/etc" ] || [ ! -d "$WORK_DIR/FileSystem/usr" ] || [ ! -d "$WORK_DIR/FileSystem/root" ];then
+        ERROR_MESSAGE "The filesystem path isn't usable or has been corruped"
+    fi
+}
+
+__check_sources_list__ () {
+    INFO_MESSAGE "Checking sources.list"
+    if [ "`grep deb "$WORK_DIR/FileSystem/etc/apt/sources.list"`" = "" ];then
+        WARNING_MESSAGE "The sources.list has been corrupted or deleted, attempting to fix"
+        id=`grep 'DISTRIB_CODENAME=' "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//'`  
+        echo "deb http://archive.ubuntu.com/ubuntu/ $id main" > "$WORK_DIR/FileSystem/etc/apt/sources.list" 
+        echo "deb-src http://archive.ubuntu.com/ubuntu/ $id main" >> "$WORK_DIR/FileSystem/etc/apt/sources.list"
+    fi
+}
+
+__check_for_X__ () {
+    INFO_MESSAGE "Checking whether X is running"
+    if [ "`pgrep Xorg`" = "" ];then
+        ERROR_MESSAGE "X-server (Xorg) is not running"
+    fi
+}
+
+__mount_sys__ () {
+    EXTRA_INFO_MESSAGE "Mounting" "/dev"
+    mount --rbind /dev "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE "Unable to mount /dev on" "$WORK_DIR/FileSystem/dev"
+    EXTRA_INFO_MESSAGE "Mounting" "/proc"
+    mount --bind /proc "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE "Unable to mount /proc on" "$WORK_DIR/FileSystem/proc"
+    EXTRA_INFO_MESSAGE "Mounting" "/sys"
+    mount --bind /sys "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE "Unable to mount /sys on" "$WORK_DIR/FileSystem/sys"
+}
+
+__umount_sys__ () {
+    EXTRA_INFO_MESSAGE "Unmounting" "/sys"
+    umount -fl "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE "Unable to unmount /sys from" "$WORK_DIR/FileSystem/sys"
+    EXTRA_INFO_MESSAGE "Unmounting" "/proc"
+    umount -fl "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE "Unable to unmount /proc from" "$WORK_DIR/FileSystem/proc"
+    EXTRA_INFO_MESSAGE "Unmounting" "/dev"
+    umount -fl "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE "Unable to unmount /dev from" "$WORK_DIR/FileSystem/dev"
+}
+
+__recursive_umount__ () {
+INFO_MESSAGE "Verbose unmounting"
+for i in `grep "$WORK_DIR/FileSystem" /proc/mounts | cut -d' ' -f2 | sed 's/\\\040/ /g'`; do
+	EXTRA_INFO_MESSAGE "Unmounting" "`echo $i | sed "s@$WORK_DIR/FileSystem@@g"`"
+	umount -fl "$i" || EXTRA_WARNING_MESSAGE "Unable to unmount" "$i"
+done
+}
+
+__mount_dbus__ () {
+mkdir -p "$WORK_DIR/FileSystem/var/lib/dbus"
+mkdir -p "$WORK_DIR/FileSystem/var/run/dbus"
+
+EXTRA_INFO_MESSAGE "Mounting" "/var/lib/dbus"
+mkdir -p "$WORK_DIR/FileSystem/var/lib/dbus"
+mount --bind /var/run/dbus "$WORK_DIR/FileSystem/var/lib/dbus" || EXTRA_WARNING_MESSAGE "Unable to mount /var/lib/dbus to" "$WORK_DIR/FileSystem/var/lib/dbus"echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/var/run/dbus${Reset}"
+
+EXTRA_INFO_MESSAGE "Mounting" "/var/run/dbus"
+mkdir -p "$WORK_DIR/FileSystem/var/run/dbus" 
+mount --bind /var/run/dbus "$WORK_DIR/FileSystem/var/run/dbus" || EXTRA_WARNING_MESSAGE "Unable to mount /var/run/dbus to" "$WORK_DIR/FileSystem/var/run/dbus"
+}
+
+__allow_local_X_access__() {
+    INFO_MESSAGE "Allwoing local access to X-server"
+    xhost +local:
+}
+
+__block_local_X_access__() {
+    INFO_MESSAGE "Blocking local access to X-server"
+    xhost -local:
+}
+
+__purge_work_dirs__() {
+    __check_lock__
+    __recursive_umount__
+    
+    EXTRA_INFO_MESSAGE "Purging" "$WORK_DIR/FileSystem"
+	rm -rf "$WORK_DIR/FileSystem" || ERROR_MESSAGE "Unable to purge the FileSystem directory"
+    
+	EXTRA_INFO_MESSAGE "Purging" "$WORK_DIR/ISO"
+	rm -rf "$WORK_DIR/ISO" || ERROR_MESSAGE "Unable to purge the ISO directory"
+}

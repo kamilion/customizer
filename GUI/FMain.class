@@ -14,7 +14,7 @@ PUBLIC SUB Form_Open()
     Message.Warning("Another instance of Customizer is already running!")
     ME.Close
   ENDIF 
-
+  
   Module.CheckExistence()
 END
 
@@ -43,7 +43,7 @@ PUBLIC SUB Edit_Sources_Click()
 END
 
 PUBLIC SUB Desktop_Click()
-  EXEC ["x-terminal-emulator", "--title=Running nested X-session", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
+  EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
 END
 
 PUBLIC SUB Terminal_Click()
@@ -88,7 +88,7 @@ PUBLIC SUB Install_DEB_Click()
 END
 
 PUBLIC SUB Archive_Click()
-  EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-a"] WAIT
+  EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   Module.Check_for_Xsession()
 END
 
@@ -113,7 +113,7 @@ PUBLIC SUB DistName_Change()
   SHELL "sed -i 's/DISTRIB_ID=.*/DISTRIB_ID=" & DistName.Text & "/' '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release'"
   SHELL "sed -i 's/DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION=\"" & DistName.Text & " " & Version.Text & "\"/' '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release'"
   TRY File.Save(Trim(WorkDir) & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
-  'TRY File.Save(Trim(WorkDir) & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
+  TRY File.Save(Trim(WorkDir) & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
 PUBLIC SUB HostName_Change()
