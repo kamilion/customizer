@@ -15,7 +15,6 @@ PUBLIC SUB Form_Open()
     ME.Close
   ENDIF 
   
-  Module.Detect_Terminal_emulator()
   Module.CheckExistence()
 END
 

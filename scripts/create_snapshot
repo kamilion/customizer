@@ -29,9 +29,9 @@ __check_fs_dir__
 __recursive_umount__
 
 case "$COMPRESSION" in
-	bzip2) COMPRESSION_OPTIONS="tar -cjf"; EXT="tar.bz2"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
-	gzip) COMPRESSION_OPTIONS="tar -czf"; EXT="gz"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
-	tar) COMPRESSION_OPTIONS="tar -cf"; EXT="tar"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
+	bzip2) COMPRESSION_OPTIONS="tar -cpjf"; EXT="bz2"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
+	gzip) COMPRESSION_OPTIONS="tar -cpzf"; EXT="gz"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
+	tar) COMPRESSION_OPTIONS="tar -cpf"; EXT="tar"; EXTRA_INFO_MESSAGE "Compressing as" "$COMPRESSION" ;;
 	*) ERROR_MESSAGE "Invalid compression format specified" ;;
 esac
 
