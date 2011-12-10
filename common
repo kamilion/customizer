@@ -116,6 +116,34 @@ __check_lock__() {
     fi
 }
 
+__check_fs_dir__ () {
+    INFO_MESSAGE "Checking filesystem"
+    if [ ! -d "$WORK_DIR/FileSystem" ];then
+        ERROR_MESSAGE "The filesystem path doesn't exists"
+    fi
+
+    if [ ! -d "$WORK_DIR/FileSystem/etc" ] || [ ! -d "$WORK_DIR/FileSystem/usr" ] || [ ! -d "$WORK_DIR/FileSystem/root" ];then
+        ERROR_MESSAGE "The filesystem path isn't usable or has been corruped"
+    fi
+}
+
+__check_sources_list__ () {
+    INFO_MESSAGE "Checking sources.list"
+    if [ "`grep deb "$WORK_DIR/FileSystem/etc/apt/sources.list"`" = "" ];then
+        WARNING_MESSAGE "The sources.list has been corrupted or deleted, attempting to fix"
+        id=`grep 'DISTRIB_CODENAME=' "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//'`  
+        echo "deb http://archive.ubuntu.com/ubuntu/ $id main" > "$WORK_DIR/FileSystem/etc/apt/sources.list" 
+        echo "deb-src http://archive.ubuntu.com/ubuntu/ $id main" >> "$WORK_DIR/FileSystem/etc/apt/sources.list"
+    fi
+}
+
+__check_for_X__ () {
+    INFO_MESSAGE "Checking whether X is running"
+    if [ "`pgrep Xorg`" = "" ];then
+        ERROR_MESSAGE "X-server (Xorg) is not running"
+    fi
+}
+
 __chroot__() {
 export MESSAGES_COLORS
 echo "
@@ -205,34 +233,6 @@ touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || WARNING_MESSAGE "The chroot hook has returned exit status by internal command"
 
 rm -f "$WORK_DIR/FileSystem/tmp/lock_chroot"
-}
-
-__check_fs_dir__ () {
-    INFO_MESSAGE "Checking filesystem"
-    if [ ! -d "$WORK_DIR/FileSystem" ];then
-        ERROR_MESSAGE "The filesystem path doesn't exists"
-    fi
-
-    if [ ! -d "$WORK_DIR/FileSystem/etc" ] || [ ! -d "$WORK_DIR/FileSystem/usr" ] || [ ! -d "$WORK_DIR/FileSystem/root" ];then
-        ERROR_MESSAGE "The filesystem path isn't usable or has been corruped"
-    fi
-}
-
-__check_sources_list__ () {
-    INFO_MESSAGE "Checking sources.list"
-    if [ "`grep deb "$WORK_DIR/FileSystem/etc/apt/sources.list"`" = "" ];then
-        WARNING_MESSAGE "The sources.list has been corrupted or deleted, attempting to fix"
-        id=`grep 'DISTRIB_CODENAME=' "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//'`  
-        echo "deb http://archive.ubuntu.com/ubuntu/ $id main" > "$WORK_DIR/FileSystem/etc/apt/sources.list" 
-        echo "deb-src http://archive.ubuntu.com/ubuntu/ $id main" >> "$WORK_DIR/FileSystem/etc/apt/sources.list"
-    fi
-}
-
-__check_for_X__ () {
-    INFO_MESSAGE "Checking whether X is running"
-    if [ "`pgrep Xorg`" = "" ];then
-        ERROR_MESSAGE "X-server (Xorg) is not running"
-    fi
 }
 
 __mount_sys__ () {
