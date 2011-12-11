@@ -209,10 +209,12 @@ PUBLIC SUB Exec_Hook_Click()
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@HOOK=.*@HOOK=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
   EXEC ["x-terminal-emulator", "--title=Executing Chroot Hook", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
+  Module.Check_for_Xsession()
 END
 
 PUBLIC SUB Install_GUI_Click()
   EXEC ["x-terminal-emulator", "--title=Installing GUI", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
+  Module.Check_for_Xsession()
 END
   
 PUBLIC SUB Tweaks_Click()
