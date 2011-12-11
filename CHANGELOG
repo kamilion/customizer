@@ -1,1 +1,3 @@
+	* Fixed DEB package installation
 	+ Added apt-helper enable/disable option
+

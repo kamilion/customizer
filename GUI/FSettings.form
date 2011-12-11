@@ -96,7 +96,7 @@
   }
   { AptHelper CheckBox
     MoveScaled(2,14,44,3)
-    ToolTip = ("Whenever you chroot, if this option is ticked, the script will update the packages database and try to remove unnecessary or install missing dependecies packages. In most cases it's very useful but people with slow connection may disable this to prevent apt-get update on every chroot to save time and network bandwidth")
+    ToolTip = ("Whenever you chroot, if this option is ticked, the scripts will update the packages database and try to remove unnecessary or install missing dependecies packages. In most cases it's very useful but people with slow connection may disable this to prevent apt-get update on every chroot to save time and network bandwidth")
     Text = ("Use apt-helper")
   }
 }
