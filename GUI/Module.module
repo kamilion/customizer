@@ -180,6 +180,7 @@ PUBLIC SUB CheckExistence()
       IF NOT Exist(Trim(WorkDir) & "/FileSystem/etc/casper.conf") OR NOT Exist(Trim(WorkDir) & "/FileSystem/etc/lsb-release") THEN 
         Message.Error(Trim(WorkDir) & "/FileSystem/etc/casper.conf or " & Trim(WorkDir) & "/FileSystem/etc/lsb-release\nare deleted but are very essential for setting up some configuration.\nCreate them using a text editor or clean and start all over again!")
         Module.Disable_Stuff()
+        FMain.Clean.Enabled = TRUE
       ELSE 
         'Enable some elements
         Module.Enable_Stuff()
