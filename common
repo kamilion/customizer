@@ -175,19 +175,21 @@ fi
 mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
 ln -s /bin/true /usr/sbin/update-grub
 
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
-    else
-        echo -e \"[*] Updating packages database\"
+if [ \"$APT_HELPER\" = \"1\" ];then
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+		    echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
+		else
+			echo -e \"[*] Updating packages database\"
+	fi
+	apt-get update -qq
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+	        echo -e \"[${Yellow}*${Reset}] ${Green}Making sure everything is configured${Reset}\"
+	    else
+	        echo -e \"[*] Making sure everything is configured\"
+	fi
+	dpkg --configure -a
+	apt-get install -f -y -q
 fi
-apt-get update -qq
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Making sure everything is configured${Reset}\"
-    else
-        echo -e \"[*] Making sure everything is configured\"
-fi
-dpkg --configure -a
-apt-get install -f -y -q
 
 ${@}
 

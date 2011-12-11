@@ -12,10 +12,10 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:185.96"
-Active=1
-File[2]="Module.module:210.3"
-File[3]="FMain.form"
+File[1]="FSettings.form"
+File[2]="FMain.form"
+File[3]="FSettings.class:75.91"
+Active=3
 Count=3
 
 [Watches]
