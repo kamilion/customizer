@@ -31,7 +31,7 @@ __check_sources_list__
 
 AVAILABLE=`(ls "$WORK_DIR/FileSystem/usr/share/xsessions" | wc -l) 2> /dev/null`
 case $AVAILABLE in
-	0) ERROR_MESSAGE "There are not X-session available" ;;
+	0) ERROR_MESSAGE "There are not X-sessions available" ;;
 	1) choise="`ls -F "$WORK_DIR/FileSystem/usr/share/xsessions" | sed 's/\.desktop//'`"
 	   EXTRA_WARNING_MESSAGE "There is only one X-session available" "$choise" ;;
 	*) WARNING_MESSAGE "Multiple X-sessions available, choose which one to execute:"
@@ -47,13 +47,14 @@ case $AVAILABLE in
 	read choise
 	
 	if [ ! -e "$WORK_DIR/FileSystem/usr/share/xsessions/$choise.desktop" ];then
-		ERROR_MESSAGE_NO_EXIT "This is not an option"	
+		WARNING_MESSAGE "This is not an option"	
 	else
 		break
 	fi
 	done ;;
 esac
 
+EXEC_COMMAND="`grep -m 1 'Exec=' "$WORK_DIR/FileSystem/usr/share/xsessions/$choise.desktop" | sed 's/Exec=//'`"
 # FIXME: error not shown when unable to execute Xephyr
 # (Xephyr -ac -screen $RESOLUTION -br :9 &) || error
 INFO_MESSAGE "Starting Xephyr"
@@ -62,8 +63,10 @@ Xephyr -ac -screen $RESOLUTION -br :9 &
 __allow_local_X_access__
 __mount_sys__
 __mount_dbus__
-__chroot__ "apt-get install dbus -y -f; export DISPLAY=localhost:9; dbus-uuidgen --ensure
-`grep -m 1 "Exec=" /usr/share/xsessions/$choise.desktop | sed 's/Exec=//'`"
+__chroot__ "apt-get install dbus -y -f
+export DISPLAY=localhost:9
+dbus-uuidgen --ensure;
+$EXEC_COMMAND"
 __umount_sys__
 __recursive_umount__
 __block_local_X_access__
