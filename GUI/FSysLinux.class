@@ -24,9 +24,9 @@ PUBLIC SUB Form_Open()
     SetColourMode.Enabled = FALSE
     ColorChooser1.Enabled = FALSE
   ELSE 
-    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep foreground=* | sed 's/foreground=0x//'" TO HFColor
-    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep background=* | sed 's/background=0x//'" TO HBColor
-    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep screen-colour=* | sed 's/screen-colour=0x//'" TO HSColor
+    SHELL "grep foreground= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/foreground=0x//'" TO HFColor
+    SHELL "grep background= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/background=0x//'" TO HBColor
+    SHELL "grep screen-colour= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/screen-colour=0x//'" TO HSColor
   
     Test.ForeColor = Val("&H" & HFColor) 
     Test.BackColor = Val("&H" & HBColor)
