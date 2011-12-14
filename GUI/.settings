@@ -12,13 +12,11 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FSettings.form"
-File[2]="FMain.form"
-File[3]="FSysLinux.form"
-File[4]="FMain.class:237.16"
-File[5]="FSysLinux.class:27.29"
-Active=5
-Count=5
+File[1]="FMain.form"
+File[2]="FSysLinux.form"
+File[3]="FSysLinux.class:38.12"
+Active=3
+Count=3
 
 [Watches]
 Count=0

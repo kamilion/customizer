@@ -28,6 +28,7 @@ __check_fs_dir__
 __check_lock__
 __check_sources_list__
 __mount_sys__
-__chroot__ "/bin/bash"
+__chroot__ "source ~/.bashrc
+/bin/bash"
 __umount_sys__
 __recursive_umount__
