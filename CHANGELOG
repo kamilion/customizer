@@ -1,4 +1,0 @@
-	* SysLinux customization fixes
-	+ Enabling 'Clean' in GUI if important files are missing to be able to clean
-	+ Added apt-helper enable/disable option
-	+ Added warning message to chrooted terminal to quit with "exit"
