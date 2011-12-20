@@ -141,11 +141,7 @@ PUBLIC SUB BootFiles_Click()
 END
 
 PUBLIC SUB ResolutionBox_Click()
-  IF ResolutionBox.Value = 0 THEN 
-    SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=0/' /opt/Customizer/settings.conf"
-  ELSE 
-    SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=1/' /opt/Customizer/settings.conf"
-  ENDIF 
+  SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=1/' /opt/Customizer/settings.conf" 
 END
 
 PUBLIC SUB EditorBox_Click()
