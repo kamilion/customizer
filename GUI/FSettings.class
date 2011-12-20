@@ -141,7 +141,7 @@ PUBLIC SUB BootFiles_Click()
 END
 
 PUBLIC SUB ResolutionBox_Click()
-  SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=1/' /opt/Customizer/settings.conf" 
+  SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=" & ResolutionBox.Text & "/' /opt/Customizer/settings.conf" 
 END
 
 PUBLIC SUB EditorBox_Click()
