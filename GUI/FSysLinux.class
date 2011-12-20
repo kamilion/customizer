@@ -24,14 +24,19 @@ PUBLIC SUB Form_Open()
     SetColourMode.Enabled = FALSE
     ColorChooser1.Enabled = FALSE
   ELSE 
-    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep foreground=* | sed 's/foreground=0x//'" TO HFColor
-    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep background=* | sed 's/background=0x//'" TO HBColor
-    SHELL "cat " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg | grep screen-colour=* | sed 's/screen-colour=0x//'" TO HSColor
+    SHELL "grep foreground= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/foreground=0x//'" TO HFColor
+    SHELL "grep background= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/background=0x//'" TO HBColor
+    SHELL "grep screen-colour= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/screen-colour=0x//'" TO HSColor
   
     Test.ForeColor = Val("&H" & HFColor) 
     Test.BackColor = Val("&H" & HBColor)
     Panel1.BackColor = Val("&H" & HSColor)
     ColorChooser1.ToolTip = "Change the colour used for " & SetColourMode.Text
+  ENDIF 
+  
+  IF NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") AND NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.jpg") AND NOT Exist(Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg") THEN
+    Message.Error("Nothing to do here")
+    ME.Close
   ENDIF 
 END
 
@@ -48,8 +53,8 @@ PUBLIC SUB ChangePic_Click()
   Dialog.Title = "Please select picture"
   Dialog.Filter = ["*.pcx;*.png;*.bmp;*.jpeg;*.jpg", "Pictures"]
   
-  IF Exist(PIC) THEN
-    Dialog.Path = PIC
+  IF Exist(Trim(PIC)) THEN
+    Dialog.Path = Trim(PIC)
   ELSE 
     Dialog.Path = "/home"
   ENDIF  
@@ -62,7 +67,7 @@ PUBLIC SUB ChangePic_Click()
   
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@PIC=.*@PIC=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
-  SHELL "convert -resize 640x480! -colors 256 '" & Dialog.Path & "' " & Trim(WorkDir) & "/ISO/isolinux/" & SplashFile WAIT
+  SHELL "convert -resize 640x480! -colors 256 '" & Dialog.Path & "' '" & Trim(WorkDir) & "/ISO/isolinux/" & SplashFile & "'" WAIT
   SplashPic.Picture = Picture.Load(Trim(WorkDir) & "/ISO/isolinux/" & SplashFile)
 END
 
@@ -75,13 +80,13 @@ PUBLIC SUB ColorChooser1_Change()
   SELECT CASE SetColourMode.Text
     CASE "Foreground"
     Test.ForeColor = ColorChooser1.Value
-    SHELL "sed -i 's/foreground=0x.*/foreground=0x" & Colour & "/' " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg" 
+    SHELL "sed -i 's/foreground=0x.*/foreground=0x" & Colour & "/' '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg'" 
   CASE "Background"
     Test.BackColor = ColorChooser1.Value
-    SHELL "sed -i 's/background=0x.*/background=0x" & Colour & "/' " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg"
+    SHELL "sed -i 's/background=0x.*/background=0x" & Colour & "/' '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg'"
   CASE "Screen-Colour"
     Panel1.BackColor = ColorChooser1.Value
-    SHELL "sed -i 's/screen-colour=0x.*/screen-colour=0x" & Colour & "/' " & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg"
+    SHELL "sed -i 's/screen-colour=0x.*/screen-colour=0x" & Colour & "/' '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg'"
   END SELECT
 END
 

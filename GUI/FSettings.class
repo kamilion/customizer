@@ -2,7 +2,7 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp, FChroot, UColors AS String
+  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper AS String
   ME.Center
   ME.Caption = "Settings"
   
@@ -73,6 +73,7 @@ PUBLIC SUB Form_Open()
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
   SHELL "grep MESSAGES_COLORS= /opt/Customizer/settings.conf | sed 's/MESSAGES_COLORS=//'" TO UColors
   SHELL "grep FORCE_CHROOT= /opt/Customizer/settings.conf | sed 's/FORCE_CHROOT=//'" TO FChroot
+  SHELL "grep APT_HELPER= /opt/Customizer/settings.conf | sed 's/APT_HELPER=//'" TO AHelper
   SHELL "grep EDITOR= /opt/Customizer/settings.conf | sed 's/EDITOR=//'" TO Edit
   SHELL "grep WIN_EXECUTABLES= /opt/Customizer/settings.conf | sed 's/WIN_EXECUTABLES=//;s/\"//g'" TO WinExe
   SHELL "grep BOOT_FILES= /opt/Customizer/settings.conf | sed 's/BOOT_FILES=//;s/\"//g'" TO BFiles
@@ -84,6 +85,7 @@ PUBLIC SUB Form_Open()
   TRY WDir.Text = Trim(WorkDir)
   TRY UseColors.Value = Trim(UColors)
   TRY ForceChroot.Value = Trim(FChroot)
+  TRY AptHelper.Value = Trim(AHelper)
   TRY EditorBox.Text = Trim(Edit)
   TRY WinExecutables.Value = Trim(WinExe)
   TRY BootFiles.Value = Trim(BFiles)
@@ -114,6 +116,14 @@ PUBLIC SUB ForceChroot_Click()
   ENDIF 
 END
 
+PUBLIC SUB AptHelper_Click()
+  IF AptHelper.Value = 0 THEN 
+    SHELL "sed -i 's/APT_HELPER=.*/APT_HELPER=0/' /opt/Customizer/settings.conf"
+  ELSE 
+    SHELL "sed -i 's/APT_HELPER=.*/APT_HELPER=1/' /opt/Customizer/settings.conf"
+  ENDIF 
+END
+
 PUBLIC SUB WinExecutables_Click()
   IF WinExecutables.Value = 0 THEN 
     SHELL "sed -i 's/WIN_EXECUTABLES=.*/WIN_EXECUTABLES=0/' /opt/Customizer/settings.conf"
@@ -131,11 +141,7 @@ PUBLIC SUB BootFiles_Click()
 END
 
 PUBLIC SUB ResolutionBox_Click()
-  IF ResolutionBox.Value = 0 THEN 
-    SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=0/' /opt/Customizer/settings.conf"
-  ELSE 
-    SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=1/' /opt/Customizer/settings.conf"
-  ENDIF 
+  SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=1/' /opt/Customizer/settings.conf" 
 END
 
 PUBLIC SUB EditorBox_Click()

@@ -28,6 +28,13 @@ __check_fs_dir__
 __check_lock__
 __check_sources_list__
 __mount_sys__
-__chroot__ "/bin/bash"
+__chroot__ "
+if [ "$MESSAGES_COLORS" = "1" ];then
+    echo -e \"[${Red}!${Reset}] ${Yellow}Use 'exit' to quit properly${Reset}\"
+else
+	echo -e \"[!] Use 'exit' to quit properly\"
+fi
+
+/bin/bash"
 __umount_sys__
 __recursive_umount__

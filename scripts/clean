@@ -28,8 +28,6 @@ if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ];then
     __purge_work_dirs__
 else
 	INFO_MESSAGE "There is nothing to clean"
-    read nada
-    exit
 fi
 	
 	
