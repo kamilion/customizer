@@ -154,65 +154,84 @@ Green='\e[1;32m'
 Yellow='\e[1;33m'
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Setting up${Reset}\"
+	echo -e \"[${Yellow}*${Reset}] ${Green}Setting up${Reset}\"
 else
-echo -e \"[*] Setting up\"
+	echo -e \"[*] Setting up\"
 fi
 export HOME=/root
 export LC_ALL=C
 
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Blocking initctl${Reset}\"
+if [ ! -e \"/sbin/initctl.blocked\" ];then
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+		echo -e \"[${Yellow}*${Reset}] ${Green}Blocking initctl${Reset}\"
+	else
+		echo -e \"[*] Blocking initctl\"
+	fi
+	mv /sbin/initctl /sbin/initctl.blocked
+	ln -s /bin/true /sbin/initctl
 else
-echo -e \"[*] Blocking initctl\"
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+		echo -e \"[${Red}!${Reset}] ${Yellow}Blocking of initctl skipped${Reset}\"
+	else
+		echo -e \"[*] Blocking of initctl skipped\"
+	fi
 fi
-mv /sbin/initctl /sbin/initctl.blocked
-ln -s /bin/true /sbin/initctl
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
+
+if [ ! -e \"/usr/sbin/update-grub.blocked\" ];then
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+		echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
+	else
+		echo -e \"[*] Blocking update-grub\"
+	fi
+	mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
+	ln -s /bin/true /usr/sbin/update-grub
 else
-echo -e \"[*] Blocking update-grub\"
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+		echo -e \"[${Red}*${Reset}] ${Yellow}Blocking of update-grub skipped${Reset}\"
+	else
+		echo -e \"[*] Blocking of update-grub skipped\"
+	fi
 fi
-mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
-ln -s /bin/true /usr/sbin/update-grub
 
 if [ \"$APT_HELPER\" = \"1\" ];then
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
-else
-echo -e \"[*] Updating packages database\"
-fi
-apt-get update -qq
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Making sure everything is configured${Reset}\"
-else
-echo -e \"[*] Making sure everything is configured\"
-fi
-dpkg --configure -a
-apt-get install -f -y -q
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+		echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
+	else
+		echo -e \"[*] Updating packages database\"
+	fi
+	apt-get update -qq
+	
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+		echo -e \"[${Yellow}*${Reset}] ${Green}Making sure everything is configured${Reset}\"
+	else
+		echo -e \"[*] Making sure everything is configured\"
+	fi
+	dpkg --configure -a
+	apt-get install -f -y -q
 fi
 
 ${@}
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking initctl${Reset}\"
+	echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking initctl${Reset}\"
 else
-echo -e \"[*] Unblocking initctl\"
+	echo -e \"[*] Unblocking initctl\"
 fi
 rm -f /sbin/initctl
 mv /sbin/initctl.blocked /sbin/initctl
+
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
+	echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
 else
-echo -e \"[*] Unblocking update-grub\"
+	echo -e \"[*] Unblocking update-grub\"
 fi
 rm -f /usr/sbin/update-grub
 mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
+	echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
 else
-echo -e \"[*] Cleaning up\"
+	echo -e \"[*] Cleaning up\"
 fi
 apt-get clean
 rm -f /etc/debian_chroot
