@@ -8,7 +8,7 @@
   { Label12 Label
     MoveScaled(1,2,43,4)
     Font = Font["URW Bookman L,Bold,+5"]
-    Text = ("Customizer v3.1.1")
+    Text = ("Customizer v3.1.2")
     Alignment = Align.Center
   }
   { Credits Label

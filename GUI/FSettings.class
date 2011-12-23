@@ -2,7 +2,7 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper AS String
+  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper, ATitle AS String
   ME.Center
   ME.Caption = "Settings"
   
@@ -71,6 +71,7 @@ PUBLIC SUB Form_Open()
   ENDIF 
   
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
   SHELL "grep MESSAGES_COLORS= /opt/Customizer/settings.conf | sed 's/MESSAGES_COLORS=//'" TO UColors
   SHELL "grep FORCE_CHROOT= /opt/Customizer/settings.conf | sed 's/FORCE_CHROOT=//'" TO FChroot
   SHELL "grep APT_HELPER= /opt/Customizer/settings.conf | sed 's/APT_HELPER=//'" TO AHelper
@@ -83,6 +84,7 @@ PUBLIC SUB Form_Open()
   
 
   TRY WDir.Text = Trim(WorkDir)
+  TRY AppendTitle.Value = Trim(ATitle)
   TRY UseColors.Value = Trim(UColors)
   TRY ForceChroot.Value = Trim(FChroot)
   TRY AptHelper.Value = Trim(AHelper)
@@ -97,6 +99,14 @@ PUBLIC SUB Form_Open()
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
     Change_WDir.Enabled = FALSE
     Change_WDir.ToolTip = "Changing the working directory is not possible at that state!"
+  ENDIF 
+END
+
+PUBLIC SUB AppendTitle_Click()
+  IF AppendTitle.Value = 0 THEN 
+    SHELL "sed -i 's/APPEND_TITLE=.*/APPEND_TITLE=0/' /opt/Customizer/settings.conf"
+  ELSE 
+    SHELL "sed -i 's/APPEND_TITLE=.*/APPEND_TITLE=1/' /opt/Customizer/settings.conf"
   ENDIF 
 END
 

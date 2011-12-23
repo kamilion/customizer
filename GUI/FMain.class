@@ -20,8 +20,9 @@ END
 
 ' Main Buttons
 PUBLIC SUB UseImage_Click()
-  DIM ISO AS String
+  DIM ISO, ATitle AS String
   SHELL "grep ISO= /opt/Customizer/settings.conf | sed 's/ISO=//;s/\"//g'" TO ISO
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
   
   Dialog.Title = "Please select ISO Image"
   Dialog.Filter = ["*.iso", "ISO Images"]
@@ -34,28 +35,62 @@ PUBLIC SUB UseImage_Click()
   
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@ISO=.*@ISO=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
-  EXEC ["x-terminal-emulator", "--title=Disassambling ISO image", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Disassambling ISO image", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
+  ENDIF 
+  
   Module.CheckExistence()
 END
 
 PUBLIC SUB Edit_Sources_Click()
-  EXEC ["x-terminal-emulator", "--title=Editing sources.list", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Editing sources.list", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
+  ENDIF 
 END
 
 PUBLIC SUB Desktop_Click()
-  EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Running Desktop session", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
+  ENDIF 
 END
 
 PUBLIC SUB Terminal_Click()
-  EXEC ["x-terminal-emulator", "--title=Chroot Terminal", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Chroot Terminal", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
+  ENDIF 
   Module.Check_for_Xsession()
 END
 
 PUBLIC SUB Build_ISO_Click()
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
   IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN 
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
   ELSE
-    EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
+    IF Trim(ATitle) = "1" THEN 
+      EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
+    ELSE 
+      EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
+    ENDIF 
   ENDIF 
   
   Module.Check_for_ISO()
@@ -195,7 +230,9 @@ END
 
   'Menu - Extras
 PUBLIC SUB Exec_Hook_Click()
-  DIM HOOK AS String
+  DIM HOOK, ATitle AS String
+  
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
   SHELL "grep HOOK= /opt/Customizer/settings.conf | sed 's/HOOK=//;s/\"//'" TO HOOK 
   
   Dialog.Title = "Please select hook file"
@@ -208,12 +245,26 @@ PUBLIC SUB Exec_Hook_Click()
   
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@HOOK=.*@HOOK=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
-  EXEC ["x-terminal-emulator", "--title=Executing Chroot Hook", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Executing Chroot Hook", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
+  ENDIF 
+  
   Module.Check_for_Xsession()
 END
 
 PUBLIC SUB Install_GUI_Click()
-  EXEC ["x-terminal-emulator", "--title=Installing GUI", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Installing GUI", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
+  ENDIF 
+  
   Module.Check_for_Xsession()
 END
   

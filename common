@@ -224,7 +224,8 @@ rm -f /var/lib/dpkg/*-old
 rm -f /var/lib/aptitude/*.old
 rm -f /var/cache/debconf/*.dat-old
 rm -f /var/log/*.gz
-rm -rf /tmp/*
+rm -rf /tmp
+mkdir /tmp
 " > "$WORK_DIR/FileSystem/tmp/script.sh"
 
 INFO_MESSAGE "Doing some preparations"
