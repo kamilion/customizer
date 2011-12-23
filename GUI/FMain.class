@@ -34,20 +34,20 @@ PUBLIC SUB UseImage_Click()
   
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@ISO=.*@ISO=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
-  EXEC ["x-terminal-emulator", "--title=Disassambling ISO image", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Disassambling ISO image'", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
   Module.CheckExistence()
 END
 
 PUBLIC SUB Edit_Sources_Click()
-  EXEC ["x-terminal-emulator", "--title=Editing sources.list", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Editing sources.list'", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
 END
 
 PUBLIC SUB Desktop_Click()
-  EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Building ISO Image'", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
 END
 
 PUBLIC SUB Terminal_Click()
-  EXEC ["x-terminal-emulator", "--title=Chroot Terminal", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Chroot Terminal'", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
   Module.Check_for_Xsession()
 END
 
@@ -55,14 +55,14 @@ PUBLIC SUB Build_ISO_Click()
   IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN 
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
   ELSE
-    EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
+    EXEC ["x-terminal-emulator", "--title='Building ISO Image'", "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
   ENDIF 
   
   Module.Check_for_ISO()
 END
 
 PUBLIC SUB Clean_Click()
-  EXEC ["x-terminal-emulator", "--title=Cleaning up", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Cleaning up'", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
   Module.Disable_Stuff
   Build_ISO.Text = "Build ISO"
 END
@@ -83,18 +83,18 @@ PUBLIC SUB Install_DEB_Click()
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@DEB=.*@DEB=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
 
-  EXEC ["x-terminal-emulator", "--title=Installing DEB Package", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Installing DEB Package'", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
   Module.Check_for_Xsession()
 END
 
 PUBLIC SUB Archive_Click()
-  EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Running Package Manager'", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   Module.Check_for_Xsession()
 END
 
 
 PUBLIC SUB QEMU_Click()
-  EXEC ["x-terminal-emulator", "--title=Emulating ISO Image with QEMU", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Emulating ISO Image with QEMU'", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
 END
 
 
@@ -185,12 +185,12 @@ PUBLIC SUB Import_Snapshot_Click()
   IF Dialog.OpenFile() THEN RETURN
   SHELL "sed -i 's@SNAPSHOT=.*@SNAPSHOT=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
 
-  EXEC ["x-terminal-emulator", "--title=Importing Snapshot", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Importing Snapshot'", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
   Module.CheckExistence()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
-  EXEC ["x-terminal-emulator", "--title=Creatings Snapshot", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Creatings Snapshot'", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
 END
 
   'Menu - Extras
@@ -208,12 +208,12 @@ PUBLIC SUB Exec_Hook_Click()
   
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@HOOK=.*@HOOK=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
-  EXEC ["x-terminal-emulator", "--title=Executing Chroot Hook", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Executing Chroot Hook'", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
   Module.Check_for_Xsession()
 END
 
 PUBLIC SUB Install_GUI_Click()
-  EXEC ["x-terminal-emulator", "--title=Installing GUI", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
+  EXEC ["x-terminal-emulator", "--title='Installing GUI'", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
   Module.Check_for_Xsession()
 END
   
