@@ -1,3 +1,2 @@
-	* Skipping initctl and grub-update blocking if chroot is forced to prevent major disasters
 	+ Added option to append (or not) title to terminal so that the GUI functions properly
 	
