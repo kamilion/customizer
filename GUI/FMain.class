@@ -43,7 +43,7 @@ PUBLIC SUB Edit_Sources_Click()
 END
 
 PUBLIC SUB Desktop_Click()
-  EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
+  EXEC ["x-terminal-emulator", "--title=Running Desktop session", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
 END
 
 PUBLIC SUB Terminal_Click()
