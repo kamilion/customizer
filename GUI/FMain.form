@@ -7,11 +7,6 @@
   Border = Window.Fixed
   { Menu Menu
     Text = ("Main")
-    { Get_UMR Menu
-      Text = ("UMR Downloader")
-      Picture = Picture["icon:/small/earth"]
-      Visible = False
-    }
     { Settings Menu
       Text = ("Settings")
       Picture = Picture["icon:/16/options"]

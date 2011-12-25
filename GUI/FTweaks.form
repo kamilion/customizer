@@ -4,6 +4,7 @@
   MoveScaled(0,0,41,25)
   Text = ("")
   Icon = Picture["icon:/16/tools"]
+  Border = Window.Fixed
   { APT_Recommends CheckBox
     MoveScaled(1,1,39,3)
     ToolTip = ("Permanent disable/enable APT package manager to install recommended and suggested packages")
