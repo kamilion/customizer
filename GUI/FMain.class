@@ -97,13 +97,21 @@ PUBLIC SUB Build_ISO_Click()
 END
 
 PUBLIC SUB Clean_Click()
-  EXEC ["x-terminal-emulator", "--title=Cleaning up", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Cleaning up", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
+  ENDIF 
   Module.Disable_Stuff
   Build_ISO.Text = "Build ISO"
 END
 
 PUBLIC SUB Install_DEB_Click()
-  DIM DEB AS String
+  DIM DEB, ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
   SHELL "grep DEB= /opt/Customizer/settings.conf | sed 's/DEB=//;s/\"//g'" TO DEB
   
   Dialog.Title = "Please select a DEB package"
@@ -118,18 +126,37 @@ PUBLIC SUB Install_DEB_Click()
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@DEB=.*@DEB=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
 
-  EXEC ["x-terminal-emulator", "--title=Installing DEB Package", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Installing DEB Package", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
+  ENDIF 
+  
   Module.Check_for_Xsession()
 END
 
 PUBLIC SUB Archive_Click()
-  EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
+  ENDIF 
   Module.Check_for_Xsession()
 END
 
 
 PUBLIC SUB QEMU_Click()
-  EXEC ["x-terminal-emulator", "--title=Emulating ISO Image with QEMU", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
+  DIM ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Emulating ISO Image with QEMU", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
+  ENDIF 
 END
 
 
@@ -205,7 +232,8 @@ PUBLIC SUB Settings_Click()
 END
 
 PUBLIC SUB Import_Snapshot_Click()
-  DIM SNAPSHOT AS String
+  DIM SNAPSHOT, ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
   SHELL "grep SNAPSHOT= /opt/Customizer/settings.conf | sed 's/SNAPSHOT=//;s/\"//g'" TO SNAPSHOT
   
   Dialog.Title = "Please select Customizer project snapshot"
@@ -220,12 +248,26 @@ PUBLIC SUB Import_Snapshot_Click()
   IF Dialog.OpenFile() THEN RETURN
   SHELL "sed -i 's@SNAPSHOT=.*@SNAPSHOT=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
 
-  EXEC ["x-terminal-emulator", "--title=Importing Snapshot", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
+
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Importing Snapshot", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
+  ENDIF 
+  
   Module.CheckExistence()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
-  EXEC ["x-terminal-emulator", "--title=Creatings Snapshot", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
+  DIM SNAPSHOT, ATitle AS String
+  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
+  
+  IF Trim(ATitle) = "1" THEN 
+    EXEC ["x-terminal-emulator", "--title=Creatings Snapshot", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
+  ELSE 
+    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
+  ENDIF 
 END
 
   'Menu - Extras
