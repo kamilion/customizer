@@ -2,7 +2,7 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM WorkDir, WinExe, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper, ATitle AS String
+  DIM WDir, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper, ATitle, MDir AS String
   ME.Center
   ME.Caption = "Settings"
   
@@ -70,26 +70,26 @@ PUBLIC SUB Form_Open()
     EditorBox.Add("pico")
   ENDIF 
   
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WDir
+  SHELL "grep MOUNT_DIR= /opt/Customizer/settings.conf | sed 's/MOUNT_DIR=//;s/\"//g'" TO MDir
   SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
   SHELL "grep MESSAGES_COLORS= /opt/Customizer/settings.conf | sed 's/MESSAGES_COLORS=//'" TO UColors
   SHELL "grep FORCE_CHROOT= /opt/Customizer/settings.conf | sed 's/FORCE_CHROOT=//'" TO FChroot
   SHELL "grep APT_HELPER= /opt/Customizer/settings.conf | sed 's/APT_HELPER=//'" TO AHelper
   SHELL "grep EDITOR= /opt/Customizer/settings.conf | sed 's/EDITOR=//'" TO Edit
-  SHELL "grep WIN_EXECUTABLES= /opt/Customizer/settings.conf | sed 's/WIN_EXECUTABLES=//;s/\"//g'" TO WinExe
   SHELL "grep BOOT_FILES= /opt/Customizer/settings.conf | sed 's/BOOT_FILES=//;s/\"//g'" TO BFiles
   SHELL "grep VRAM= /opt/Customizer/settings.conf | sed 's/VRAM=//;s/\"//g'" TO VRam
   SHELL "grep RESOLUTION= /opt/Customizer/settings.conf | sed 's/RESOLUTION=//;s/\"//g'" TO Res
   SHELL "grep COMPRESSION= /opt/Customizer/settings.conf | sed 's/COMPRESSION=//;s/\"//g'" TO SComp
   
 
-  TRY WDir.Text = Trim(WorkDir)
+  TRY WorkDir.Text = Trim(WDir)
+  TRY MountDir.Text = Trim(MDir)
   TRY AppendTitle.Value = Trim(ATitle)
   TRY UseColors.Value = Trim(UColors)
   TRY ForceChroot.Value = Trim(FChroot)
   TRY AptHelper.Value = Trim(AHelper)
   TRY EditorBox.Text = Trim(Edit)
-  TRY WinExecutables.Value = Trim(WinExe)
   TRY BootFiles.Value = Trim(BFiles)
   TRY VirtualMemBox.Text = Trim(VRam)
   TRY ResolutionBox.Text = Trim(Res)
@@ -134,14 +134,6 @@ PUBLIC SUB AptHelper_Click()
   ENDIF 
 END
 
-PUBLIC SUB WinExecutables_Click()
-  IF WinExecutables.Value = 0 THEN 
-    SHELL "sed -i 's/WIN_EXECUTABLES=.*/WIN_EXECUTABLES=0/' /opt/Customizer/settings.conf"
-  ELSE 
-    SHELL "sed -i 's/WIN_EXECUTABLES=.*/WIN_EXECUTABLES=1/' /opt/Customizer/settings.conf"
-  ENDIF 
-END
-
 PUBLIC SUB BootFiles_Click()
   IF BootFiles.Value = 0 THEN 
     SHELL "sed -i 's/BOOT_FILES=.*/BOOT_FILES=0/' /opt/Customizer/settings.conf"
@@ -163,20 +155,37 @@ PUBLIC SUB VirtualMemBox_Click()
 END
 
 PUBLIC SUB Change_WDir_Click()
-  DIM WorkDir AS String
+  DIM WDir AS String
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
   
   Dialog.Title = "Please, select work directory"
   
-  IF Exist(Trim(WorkDir)) THEN 
-    Dialog.Path = Trim(WorkDir)
+  IF Exist(Trim(WDir)) THEN 
+    Dialog.Path = Trim(WDir)
   ELSE 
     Dialog.Path = "/home"
   ENDIF 
   
   IF Dialog.SelectDirectory() THEN RETURN 
   SHELL "sed -i 's@WORK_DIR=.*@WORK_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
-  WDir.Text = Dialog.Path
+  WorkDir.Text = Dialog.Path
+END
+
+PUBLIC SUB Change_MDir_Click()
+  DIM MDir AS String
+  SHELL "grep MOUNT_DIR= /opt/Customizer/settings.conf | sed 's/MOUNT_DIR=//;s/\"//g'" TO MDir
+  
+  Dialog.Title = "Please, select work directory"
+  
+  IF Exist(Trim(MDir)) THEN 
+    Dialog.Path = Trim(MDir)
+  ELSE 
+    Dialog.Path = "/home"
+  ENDIF 
+  
+  IF Dialog.SelectDirectory() THEN RETURN 
+  SHELL "sed -i 's@MOUNT_DIR=.*@MOUNT_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  MountDir.Text = Dialog.Path
 END
 
 PUBLIC SUB CompressionBox_Click()

@@ -200,27 +200,6 @@ EOF
 INFO_MESSAGE "Creating disk info"
 echo "$DIST $VERSION "$CODENAME" - Release $ARCH (`date "+%Y%m%d"`)" > "$WORK_DIR/ISO/.disk/info"
 
-cd "$WORK_DIR/ISO"
-if [ "$WIN_EXECUTABLES" = "1" ]; then
-	INFO_MESSAGE "Deleteing Windows executable files"
-	rm -rf "$WORK_DIR/ISO/bin"
-	rm -rf "$WORK_DIR/ISO/disctree"
-	rm -rf "$WORK_DIR/ISO/pics"
-	rm -rf "$WORK_DIR/ISO/programs"
-	rm -f "$WORK_DIR/ISO/autorun.inf"
-	rm -f "$WORK_DIR/ISO/start.bmp"
-	rm -f "$WORK_DIR/ISO/start.exe"
-	rm -f "$WORK_DIR/ISO/start.ini"
-	rm -f "$WORK_DIR/ISO/ubuntu.ico"
-	rm -f "$WORK_DIR/ISO/kubuntu.ico"
-	rm -f "$WORK_DIR/ISO/xubuntu.ico"
-	rm -f "$WORK_DIR/ISO/lubuntu.ico"
-	rm -f "$WORK_DIR/ISO/wubi-cdboot.exe"
-	rm -f "$WORK_DIR/ISO/wubi.exe"
-	rm -f "$WORK_DIR/ISO/umenu.exe"
-	rm -f "$WORK_DIR/ISO/usb-creator.exe"
-fi
-
 ################# Creating md5sum and ISO  #################
 
 INFO_MESSAGE "Creating MD5Sums"

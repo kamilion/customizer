@@ -139,7 +139,7 @@ __check_sources_list__ () {
 
 __check_for_X__ () {
     INFO_MESSAGE "Checking whether X is running"
-    if [ "`pgrep Xorg`" = "" ];then
+    if [ "`ps -e | grep Xorg`" = "" ];then
         ERROR_MESSAGE "X-server (Xorg) is not running"
     fi
 }
@@ -217,16 +217,14 @@ if [ \"$MESSAGES_COLORS\" = \"1\" ];then
 else
 	echo -e \"[*] Unblocking initctl\"
 fi
-rm -f /sbin/initctl
-mv /sbin/initctl.blocked /sbin/initctl
+mv -f /sbin/initctl.blocked /sbin/initctl
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
 	echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
 else
 	echo -e \"[*] Unblocking update-grub\"
 fi
-rm -f /usr/sbin/update-grub
-mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
+mv -f /usr/sbin/update-grub.blocked /usr/sbin/update-grub
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
 	echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
@@ -260,11 +258,11 @@ rm -f "$WORK_DIR/FileSystem/tmp/lock_chroot"
 
 __mount_sys__ () {
     EXTRA_INFO_MESSAGE "Mounting" "/dev"
-    mount --rbind /dev "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE "Unable to mount /dev on" "$WORK_DIR/FileSystem/dev"
+    mount --rbind /dev "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE "Unable to mount /dev to" "$WORK_DIR/FileSystem/dev"
     EXTRA_INFO_MESSAGE "Mounting" "/proc"
-    mount --bind /proc "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE "Unable to mount /proc on" "$WORK_DIR/FileSystem/proc"
+    mount --bind /proc "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE "Unable to mount /proc to" "$WORK_DIR/FileSystem/proc"
     EXTRA_INFO_MESSAGE "Mounting" "/sys"
-    mount --bind /sys "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE "Unable to mount /sys on" "$WORK_DIR/FileSystem/sys"
+    mount --bind /sys "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE "Unable to mount /sys to" "$WORK_DIR/FileSystem/sys"
 }
 
 __umount_sys__ () {

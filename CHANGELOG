@@ -1,2 +1,3 @@
 	+ Added option to append (or not) title to terminal so that the GUI functions properly
-	
+	+ Added option to change MOUNT_DIR from GUI (in settings)
+	- Removed the option to delete windows files, obsolent
