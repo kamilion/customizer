@@ -290,7 +290,7 @@ mkdir -p "$WORK_DIR/FileSystem/var/run/dbus"
 
 EXTRA_INFO_MESSAGE "Mounting" "/var/lib/dbus"
 mkdir -p "$WORK_DIR/FileSystem/var/lib/dbus"
-mount --bind /var/run/dbus "$WORK_DIR/FileSystem/var/lib/dbus" || EXTRA_WARNING_MESSAGE "Unable to mount /var/lib/dbus to" "$WORK_DIR/FileSystem/var/lib/dbus"echo -e "   ${Yellow}* ${Green}Mounting${Reset}: ${Yellow}/var/run/dbus${Reset}"
+mount --bind /var/run/dbus "$WORK_DIR/FileSystem/var/lib/dbus" || EXTRA_WARNING_MESSAGE "Unable to mount /var/lib/dbus to" "$WORK_DIR/FileSystem/var/lib/dbus"
 
 EXTRA_INFO_MESSAGE "Mounting" "/var/run/dbus"
 mkdir -p "$WORK_DIR/FileSystem/var/run/dbus" 
