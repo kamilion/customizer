@@ -63,6 +63,11 @@
   }
   { Help Menu
     Text = ("Help")
+    { Credits Menu
+      Text = ("Credits")
+      Picture = Picture["icon:/16/people"]
+      Shortcut = "Ctrl+C"
+    }
     { License Menu
       Text = ("License")
       Picture = Picture["icon:/16/text"]

@@ -343,3 +343,7 @@ END
 PUBLIC SUB License_Click()
   FLicense.Show
 END
+
+PUBLIC SUB Credits_Click()
+  FCredits.Show
+END
