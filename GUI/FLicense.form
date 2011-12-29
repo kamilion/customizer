@@ -3,6 +3,7 @@
 { Form Form
   MoveScaled(0,0,62,37)
   Text = ("")
+  Icon = Picture["icon:/small/text"]
   Border = Window.Fixed
   { Quit Button
     MoveScaled(25,33,11,3)
