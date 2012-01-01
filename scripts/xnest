@@ -80,6 +80,12 @@ rm -rf "$WORK_DIR/FileSystem/root/.cache"
 rm -rf "$WORK_DIR/FileSystem/root/.dbus"
 rm -rf "$WORK_DIR/FileSystem/root/.thumbnails"
 
+rm -rf "$WORK_DIR/FileSystem/root/.aptitude"
+rm -rf "$WORK_DIR/FileSystem/root/.cups"
+rm -rf "$WORK_DIR/FileSystem/root/.adobe"
+rm -rf "$WORK_DIR/FileSystem/root/.gvfs"
+rm -rf "$WORK_DIR/FileSystem/root/.local/share/gvfs-metadata"
+
 INFO_MESSAGE "Copying the changes to skel"
 cp -ru "$WORK_DIR/FileSystem/root/"* "$WORK_DIR/FileSystem/etc/skel" 2> /dev/null
 cp -ru "$WORK_DIR/FileSystem/root/".??* "$WORK_DIR/FileSystem/etc/skel" 2> /dev/null

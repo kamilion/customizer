@@ -13,9 +13,11 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="FLicense.form"
-Active=2
-Count=2
+File[2]="FMain.class:22.2"
+File[3]="FSettings.form"
+File[4]="FSettings.class:184.2"
+Active=4
+Count=4
 
 [Watches]
 Count=0
