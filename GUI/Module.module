@@ -122,6 +122,7 @@ PUBLIC SUB Enable_Stuff()
   
   'Check for installed Desktop env. or Window Manager
   Check_for_Xsession()
+  Check_for_pkgm()
 END
 
 PUBLIC SUB Disable_Stuff()
@@ -153,6 +154,24 @@ PUBLIC SUB Check_for_Xsession()
   ELSE 
     FMain.Desktop.Enabled = FALSE
   ENDIF 
+END
+
+PUBLIC SUB Check_for_pkgm()
+  DIM pkgms AS NEW Collection
+  DIM WorkDir, pkgm AS String
+  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  pkgms["first"] = "synaptic"
+  pkgms["second"] = "aptitude"
+  'Pkgms = "aptitude synaptic"
+  
+  FOR EACH pkgm IN pkgms
+    IF Exist(Trim(WorkDir) & "/FileSystem/usr/bin/" & pkgm) OR IF Exist(Trim(WorkDir) & "/FileSystem/usr/sbin/" & pkgm) THEN
+      FMain.Archive.Enabled = TRUE
+      BREAK 
+    ELSE 
+      FMain.Archive.Enabled = FALSE
+    ENDIF 
+  NEXT 
 END
 
 PUBLIC SUB Check_for_ISO()
@@ -205,8 +224,11 @@ PUBLIC SUB CheckExistence()
         'Check if previously builded ISO image exists
         Check_for_ISO
         
-        'Check for DEs/WMs installed
+        'Check if DEs/WM is installed
         Check_for_Xsession()
+        
+        'Check if package manager is installed installed
+        Module.Check_for_pkgm()
       ENDIF 
     ENDIF
   ENDIF 

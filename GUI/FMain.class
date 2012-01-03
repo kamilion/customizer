@@ -65,6 +65,8 @@ PUBLIC SUB Desktop_Click()
   ELSE 
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
   ENDIF 
+  
+  Module.Check_for_pkgm()
 END
 
 PUBLIC SUB Terminal_Click()
@@ -77,6 +79,7 @@ PUBLIC SUB Terminal_Click()
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
   ENDIF 
   Module.Check_for_Xsession()
+  Module.Check_for_pkgm()
 END
 
 PUBLIC SUB Build_ISO_Click()
@@ -133,6 +136,7 @@ PUBLIC SUB Install_DEB_Click()
   ENDIF 
   
   Module.Check_for_Xsession()
+  Module.Check_for_pkgm()
 END
 
 PUBLIC SUB Archive_Click()
@@ -295,6 +299,7 @@ PUBLIC SUB Exec_Hook_Click()
   ENDIF 
   
   Module.Check_for_Xsession()
+  Module.Check_for_pkgm()
 END
 
 PUBLIC SUB Install_GUI_Click()
@@ -308,6 +313,7 @@ PUBLIC SUB Install_GUI_Click()
   ENDIF 
   
   Module.Check_for_Xsession()
+  Module.Check_for_pkgm()
 END
   
 PUBLIC SUB Tweaks_Click()

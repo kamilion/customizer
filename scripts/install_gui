@@ -31,27 +31,29 @@ __check_sources_list__
 WARNING_MESSAGE "ONLY THE BARE MINIMUM SET OF PACKAGES WILL BE ISNTALLED!"
 while true;do
 	echo "
-	1. Gnome
-	2. KDE
-	3. XFCE4
-	4. LXDE
-	5. Openbox
-	6. Fluxbox
-	7. Blackbox
-	8. IceWM"
+	1. Gnome2
+	2. Unity
+	3. KDE
+	4. XFCE4
+	5. LXDE
+	6. Openbox
+	7. Fluxbox
+	8. Blackbox
+	9. IceWM"
 	echo
-	EXTRA_QUESTION_MESSAGE "Which GUI do you want to install?" "1-8"
+	EXTRA_QUESTION_MESSAGE "Which GUI do you want to install?" "1-9"
 	read choise
     
     case $choise in
-        1) GUI_PACKAGES="xserver-xorg xinit gnome-session gnome-panel gdm gnome-terminal"; break ;;
-        2) GUI_PACKAGES="xserver-xorg xinit kde-standard"; break ;;
-        3) GUI_PACKAGES="xserver-xorg xinit xfce4 # xfce4-session xfce4-panel xfce4-terminal"; break ;;
-        4) GUI_PACKAGES="xserver-xorg xinit lxde-core lxterminal lxdm"; break ;;
-        5) GUI_PACKAGES="xserver-xorg xinit xterm openbox menu slim"; break ;;
-        6) GUI_PACKAGES="xserver-xorg xinit xterm fluxbox menu slim"; break ;;
-        7) GUI_PACKAGES="xserver-xorg xinit xterm blackbox menu slim"; break ;;
-        8) GUI_PACKAGES="xserver-xorg xinit icewm-lite menu xdm"; break ;;
+        1) GUI_PACKAGES="xserver-xorg xinit gnome-session gnome-panel gdm gnome-terminal gtk2-engines gnome-themes-selected"; break ;;
+        2) GUI_PACKAGES="xserver-xorg xinit unity unity-2d gnome-session gnome-terminal gnome-icon-theme"; break ;;
+		3) GUI_PACKAGES="xserver-xorg xinit kde-standard"; break ;;
+        4) GUI_PACKAGES="xserver-xorg xinit xfce4 # xfce4-session xfce4-panel xfce4-terminal"; break ;;
+        5) GUI_PACKAGES="xserver-xorg xinit lxde-core lxterminal lxdm"; break ;;
+        6) GUI_PACKAGES="xserver-xorg xinit xterm openbox menu slim"; break ;;
+        7) GUI_PACKAGES="xserver-xorg xinit xterm fluxbox menu slim"; break ;;
+        8) GUI_PACKAGES="xserver-xorg xinit xterm blackbox menu slim"; break ;;
+        9) GUI_PACKAGES="xserver-xorg xinit icewm-lite menu xdm"; break ;;
         *) WARNING_MESSAGE "This is not an option" ;;
     esac
 done
