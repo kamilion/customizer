@@ -1,5 +1,7 @@
 	* Default resolution for Xephyr is 800x600
-	+ Added option to append (or not) title to terminal so that the GUI functions properly
+	* Credits, License and About are now separate GUI forms
+	+ Added option to append (or not) title to terminal (for compability with different Terminal emulators)
 	+ Added option to change MOUNT_DIR from GUI (in settings)
 	+ Archive enabled only if package manager is installed
+	+ Skipping mount of pseudo filesystems if already mounted
 	- Removed the option to delete windows files, obsolent
