@@ -215,7 +215,7 @@
   { Label8 Label
     MoveScaled(12,1,43,4)
     Font = Font["Bold,+6"]
-    Text = ("Customizer v3.1.2")
+    Text = ("Customizer v3.1.3")
     Alignment = Align.Center
   }
   { Label9 Label
