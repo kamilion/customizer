@@ -105,6 +105,15 @@ EXTRA_ERROR_MESSAGE() {
 	exit 2
 }
 
+EXTRA_ERROR_MESSAGE_NOT_EXIT() {
+    if [ "$MESSAGES_COLORS" = "1" ];then
+        echo -e "[${Red}X${Reset}] ${Yellow}$1${Reset}: ${Green}$2${Reset}"
+	else
+        echo -e "[X] $1: $2"
+    fi
+    read nada
+}
+
 __check_lock__() {
     INFO_MESSAGE "Checking lock"
     if [ "$FORCE_CHROOT" = "1" ];then
@@ -187,9 +196,9 @@ if [ ! -e \"/usr/sbin/update-grub.blocked\" ];then
 	ln -s /bin/true /usr/sbin/update-grub
 else
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-		echo -e \"[${Red}*${Reset}] ${Yellow}Blocking of update-grub skipped${Reset}\"
+		echo -e \"[${Red}!${Reset}] ${Yellow}Blocking of update-grub skipped${Reset}\"
 	else
-		echo -e \"[*] Blocking of update-grub skipped\"
+		echo -e \"[!] Blocking of update-grub skipped\"
 	fi
 fi
 
@@ -217,16 +226,14 @@ if [ \"$MESSAGES_COLORS\" = \"1\" ];then
 else
 	echo -e \"[*] Unblocking initctl\"
 fi
-rm -f /sbin/initctl
-mv /sbin/initctl.blocked /sbin/initctl
+mv -f /sbin/initctl.blocked /sbin/initctl
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
 	echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
 else
 	echo -e \"[*] Unblocking update-grub\"
 fi
-rm -f /usr/sbin/update-grub
-mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
+mv -f /usr/sbin/update-grub.blocked /usr/sbin/update-grub
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
 	echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
@@ -259,21 +266,49 @@ rm -f "$WORK_DIR/FileSystem/tmp/lock_chroot"
 }
 
 __mount_sys__ () {
-    EXTRA_INFO_MESSAGE "Mounting" "/dev"
-    mount --rbind /dev "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE "Unable to mount /dev on" "$WORK_DIR/FileSystem/dev"
-    EXTRA_INFO_MESSAGE "Mounting" "/proc"
-    mount --bind /proc "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE "Unable to mount /proc on" "$WORK_DIR/FileSystem/proc"
-    EXTRA_INFO_MESSAGE "Mounting" "/sys"
-    mount --bind /sys "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE "Unable to mount /sys on" "$WORK_DIR/FileSystem/sys"
+    if [ "`grep "$WORK_DIR/FileSystem/dev" /proc/mounts`" = "" ];then  
+		EXTRA_INFO_MESSAGE "Mounting" "/dev"
+		mount --rbind /dev "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE_NOT_EXIT "Unable to mount /dev to" "$WORK_DIR/FileSystem/dev"
+	else
+		EXTRA_WARNING_MESSAGE "/dev is already mounted on" "$WORK_DIR/FileSystem/dev"
+	fi
+	
+	if [ "`grep "$WORK_DIR/FileSystem/proc" /proc/mounts`" = "" ];then
+		EXTRA_INFO_MESSAGE "Mounting" "/proc"
+		mount --bind /proc "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE_NOT_EXIT "Unable to mount /proc to" "$WORK_DIR/FileSystem/proc"
+    else
+		EXTRA_WARNING_MESSAGE "/proc is already mounted on" "$WORK_DIR/FileSystem/proc"
+	fi
+	
+	if [ "`grep "$WORK_DIR/FileSystem/sys" /proc/mounts`" = "" ];then
+		EXTRA_INFO_MESSAGE "Mounting" "/sys"
+		mount --bind /sys "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE_NOT_EXIT "Unable to mount /sys to" "$WORK_DIR/FileSystem/sys"
+	else
+		EXTRA_WARNING_MESSAGE "/sys is already mounted on" "$WORK_DIR/FileSystem/sys"
+	fi
 }
 
 __umount_sys__ () {
-    EXTRA_INFO_MESSAGE "Unmounting" "/sys"
-    umount -fl "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE "Unable to unmount /sys from" "$WORK_DIR/FileSystem/sys"
-    EXTRA_INFO_MESSAGE "Unmounting" "/proc"
-    umount -fl "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE "Unable to unmount /proc from" "$WORK_DIR/FileSystem/proc"
-    EXTRA_INFO_MESSAGE "Unmounting" "/dev"
-    umount -fl "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE "Unable to unmount /dev from" "$WORK_DIR/FileSystem/dev"
+	if [ "`grep "$WORK_DIR/FileSystem/sys" /proc/mounts`" = "" ];then
+		EXTRA_WARNING_MESSAGE "/sys is not mounted on" "$WORK_DIR/FileSystem/sys"
+	else
+		EXTRA_INFO_MESSAGE "Unmounting" "/sys"
+		umount -fl "$WORK_DIR/FileSystem/sys" || EXTRA_ERROR_MESSAGE "Unable to unmount /sys from" "$WORK_DIR/FileSystem/sys"
+    fi
+	
+	if [ "`grep "$WORK_DIR/FileSystem/proc" /proc/mounts`" = "" ];then
+		EXTRA_WARNING_MESSAGE "/proc is not mounted on" "$WORK_DIR/FileSystem/proc"
+	else
+		EXTRA_INFO_MESSAGE "Unmounting" "/proc"
+		umount -fl "$WORK_DIR/FileSystem/proc" || EXTRA_ERROR_MESSAGE "Unable to unmount /proc from" "$WORK_DIR/FileSystem/proc"
+    fi
+	
+	if [ "`grep "$WORK_DIR/FileSystem/dev" /proc/mounts`" = "" ];then
+		EXTRA_WARNING_MESSAGE "/dev is not mounted on" "$WORK_DIR/FileSystem/sys"
+	else
+		EXTRA_INFO_MESSAGE "Unmounting" "/dev"
+		umount -fl "$WORK_DIR/FileSystem/dev" || EXTRA_ERROR_MESSAGE "Unable to unmount /dev from" "$WORK_DIR/FileSystem/dev"
+	fi
 }
 
 __recursive_umount__ () {

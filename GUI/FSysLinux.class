@@ -3,7 +3,7 @@
 PUBLIC SUB Form_Open()
   DIM HFColor, HBColor, HSColor, WorkDir, SplashFile AS Variant
   ME.Center
-  ME.Caption = "ISOLinux Splash and Colors"
+  ME.Caption = "SysLinux"
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
   
   IF NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") AND NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.jpg") THEN

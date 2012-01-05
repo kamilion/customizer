@@ -7,11 +7,6 @@
   Border = Window.Fixed
   { Menu Menu
     Text = ("Main")
-    { Get_UMR Menu
-      Text = ("UMR Downloader")
-      Picture = Picture["icon:/small/earth"]
-      Visible = False
-    }
     { Settings Menu
       Text = ("Settings")
       Picture = Picture["icon:/16/options"]
@@ -68,6 +63,11 @@
   }
   { Help Menu
     Text = ("Help")
+    { Credits Menu
+      Text = ("Credits")
+      Picture = Picture["icon:/16/people"]
+      Shortcut = "Ctrl+C"
+    }
     { License Menu
       Text = ("License")
       Picture = Picture["icon:/16/text"]
@@ -215,7 +215,7 @@
   { Label8 Label
     MoveScaled(12,1,43,4)
     Font = Font["Bold,+6"]
-    Text = ("Customizer v3.1.1")
+    Text = ("Customizer v3.1.2")
     Alignment = Align.Center
   }
   { Label9 Label

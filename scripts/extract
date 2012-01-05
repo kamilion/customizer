@@ -28,11 +28,11 @@ source /opt/Customizer/settings.conf
 
 __create_work_dirs__() {
 	INFO_MESSAGE "Creating work directories"
-	mkdir -p "$MOUNT_PATH" "$WORK_DIR/ISO" "$WORK_DIR/FileSystem" || ERROR_MESSAGE "Unable to create working directories"
+	mkdir -p "$MOUNT_DIR" "$WORK_DIR/ISO" "$WORK_DIR/FileSystem" || ERROR_MESSAGE "Unable to create working directories"
 }
 
 __clean__() {
-	umount -fl "$MOUNT_PATH" 2> /dev/null
+	umount -fl "$MOUNT_DIR" 2> /dev/null
     __purge_work_dirs__
 }
 
@@ -53,13 +53,13 @@ fi
 
 ############################# Mounting the ISO image #############################
 INFO_MESSAGE "Mounting ISO"
-mount -t iso9660 -o loop "$ISO" "$MOUNT_PATH" || ERROR_MESSAGE "Unable to mount the ISO"
+mount -t iso9660 -o loop "$ISO" "$MOUNT_DIR" || ERROR_MESSAGE "Unable to mount the ISO"
 
 ######################## Check if the ISO image is usable ########################
 
 INFO_MESSAGE "Checking ISO image"
-if [ ! -d "$MOUNT_PATH/casper" ] || [ ! -d "$MOUNT_PATH/.disk" ] || \
- [ ! -d "$MOUNT_PATH/isolinux" ] || [ ! -e "$MOUNT_PATH/casper/filesystem.squashfs" ]; then
+if [ ! -d "$MOUNT_DIR/casper" ] || [ ! -d "$MOUNT_DIR/.disk" ] || \
+ [ ! -d "$MOUNT_DIR/isolinux" ] || [ ! -e "$MOUNT_DIR/casper/filesystem.squashfs" ]; then
 	ERROR_MESSAGE_NO_EXIT "This is not a usable ISO image"
 	__clean__
     exit 2
@@ -68,7 +68,7 @@ fi
 ######################### Extraction filesystem.squashfs ##########################
 
 INFO_MESSAGE "Extracting FileSystem"
-unsquashfs -f -d "$WORK_DIR/FileSystem" "$MOUNT_PATH/casper/filesystem.squashfs" || ERROR_MESSAGE "Unable to extract the filesystem.squashfs"
+unsquashfs -f -d "$WORK_DIR/FileSystem" "$MOUNT_DIR/casper/filesystem.squashfs" || ERROR_MESSAGE "Unable to extract the filesystem.squashfs"
 
 ################## Check the architecture of the root filesystem ##################
 
@@ -84,8 +84,8 @@ fi
 ############ rsync the some files but exclude some that are not needed ############
 
 INFO_MESSAGE "Copying ISO files"
-rsync --exclude=/casper/* --exclude=/md5sum.txt --exclude=/README.diskdefines -a "$MOUNT_PATH/" "$WORK_DIR/ISO" || ERROR_MESSAGE "Unable to rsync files"
+rsync --exclude=/casper/* --exclude=/md5sum.txt --exclude=/README.diskdefines -a "$MOUNT_DIR/" "$WORK_DIR/ISO" || ERROR_MESSAGE "Unable to rsync files"
 
 ############################## Unmount the ISO image ##############################
 INFO_MESSAGE "Unmounting ISO"
-umount -f "$MOUNT_PATH" || EXTRA_ERROR_MESSAGE "Unable to unmount the ISO from" "$MOUNT_PATH"
+umount -f "$MOUNT_DIR" || EXTRA_ERROR_MESSAGE "Unable to unmount the ISO from" "$MOUNT_DIR"
