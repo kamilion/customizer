@@ -148,7 +148,7 @@ __check_sources_list__ () {
 
 __check_for_X__ () {
     INFO_MESSAGE "Checking whether X is running"
-    if [ "`ps -e | grep Xorg`" = "" ];then
+    if [ "`pgrep Xorg`" = "" ];then
         ERROR_MESSAGE "X-server (Xorg) is not running"
     fi
 }
