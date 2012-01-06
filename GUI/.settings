@@ -12,12 +12,13 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="Functions.module:35.6"
-File[2]="FTweaks.class:18.25"
-Active=2
-File[3]="Check.module:47.57"
-File[4]="FTweaks.form"
-Count=4
+File[1]="Functions.module:32.12"
+File[2]="FTweaks.class:4.44"
+File[3]="Check.module:49.44"
+File[4]="FMain.class:248.6"
+File[5]="Module.module:12.31"
+Active=5
+Count=5
 
 [Watches]
 Count=0

@@ -31,8 +31,8 @@ PUBLIC SUB UseImage_Click()
   Dialog.Title = "Please select ISO Image"
   Dialog.Filter = ["*.iso", "ISO Images"]
   
-  IF Exist(Trim(ISO)) THEN 
-    Dialog.Path = Trim(ISO)
+  IF Exist(ISO) THEN 
+    Dialog.Path = ISO
   ELSE 
     Dialog.Path = "/home"
   ENDIF 
@@ -50,8 +50,7 @@ PUBLIC SUB UseImage_Click()
 END
 
 PUBLIC SUB Edit_Sources_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -64,8 +63,7 @@ PUBLIC SUB Edit_Sources_Click()
 END
 
 PUBLIC SUB Desktop_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -80,8 +78,7 @@ PUBLIC SUB Desktop_Click()
 END
 
 PUBLIC SUB Terminal_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -96,8 +93,7 @@ PUBLIC SUB Terminal_Click()
 END
 
 PUBLIC SUB Build_ISO_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -116,8 +112,7 @@ PUBLIC SUB Build_ISO_Click()
 END
 
 PUBLIC SUB Clean_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -132,8 +127,7 @@ PUBLIC SUB Clean_Click()
 END
 
 PUBLIC SUB Install_DEB_Click()
-  DIM DEB, ATitle AS String
-  DIM tmpStr AS String
+  DIM DEB, ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -163,8 +157,7 @@ PUBLIC SUB Install_DEB_Click()
 END
 
 PUBLIC SUB Archive_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -179,8 +172,7 @@ END
 
 
 PUBLIC SUB QEMU_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -199,8 +191,7 @@ END
 
 ' Change Configs
 PUBLIC SUB DistName_Change()
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM WorkDir, tmpStr AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -215,8 +206,7 @@ PUBLIC SUB DistName_Change()
 END
 
 PUBLIC SUB HostName_Change()
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM WorkDir, tmpStr AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -226,8 +216,7 @@ PUBLIC SUB HostName_Change()
 END
 
 PUBLIC SUB LiveCD_User_Change()
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM WorkDir, tmpStr AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -237,8 +226,7 @@ PUBLIC SUB LiveCD_User_Change()
 END
 
 PUBLIC SUB Version_Change()
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM WorkDir, tmpStr AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -253,8 +241,7 @@ PUBLIC SUB Version_Change()
 END
 
 PUBLIC SUB ReleaseNotesURL_Change()
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM WorkDir, tmpStr AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -280,8 +267,7 @@ PUBLIC SUB Settings_Click()
 END
 
 PUBLIC SUB Import_Snapshot_Click()
-  DIM SNAPSHOT, ATitle AS String
-  DIM tmpStr AS String
+  DIM SNAPSHOT, ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -300,8 +286,6 @@ PUBLIC SUB Import_Snapshot_Click()
   IF Dialog.OpenFile() THEN RETURN
   SHELL "sed -i 's@SNAPSHOT=.*@SNAPSHOT=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
 
-
-  
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Importing Snapshot", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
   ELSE 
@@ -312,8 +296,7 @@ PUBLIC SUB Import_Snapshot_Click()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -327,8 +310,7 @@ END
 
   'Menu - Extras
 PUBLIC SUB Exec_Hook_Click()
-  DIM HOOK, ATitle AS String
-  DIM tmpStr AS String
+  DIM HOOK, ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -357,8 +339,7 @@ PUBLIC SUB Exec_Hook_Click()
 END
 
 PUBLIC SUB Install_GUI_Click()
-  DIM ATitle AS String
-  DIM tmpStr AS String
+  DIM ATitle, tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
   ATitle = Functions.Get_Conf(tmpStr)
@@ -379,11 +360,65 @@ END
 
   
 PUBLIC SUB Browse_FS_Click()
-  Module.Browse_FileSystem_Folder()
+  DIM WorkDir, tmpStr AS String
+
+  tmpStr = "WORK_DIR="
+  WorkDir = Functions.Get_Conf(tmpStr)
+  
+  IF Exist("/usr/bin/nautilus") THEN 
+    EXEC ["/usr/bin/nautilus", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/dolphin") THEN 
+    EXEC ["/usr/bin/dolphin", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/pcmanfm") THEN 
+    EXEC ["/usr/bin/pcmanfm", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/xfe") THEN 
+    EXEC ["/usr/bin/xfe", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/worker") THEN 
+    EXEC ["/usr/bin/worker", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/gentoo") THEN 
+    EXEC ["/usr/bin/gentoo", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/thunar") THEN 
+    EXEC ["/usr/bin/thunar", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/filerunner") THEN 
+    EXEC ["/usr/bin/filerunner", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/krusader") THEN 
+    EXEC ["/usr/bin/krusader", WorkDir & "/FileSystem"]
+  ELSE IF Exist("/usr/bin/rox-filer") THEN 
+    EXEC ["/usr/bin/rox-filer", WorkDir & "/FileSystem"]
+  ELSE 
+    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
+  ENDIF
 END
 
 PUBLIC SUB Browse_ISO_Click()
-  Module.Browse_ISO_Folder()
+  DIM WorkDir, tmpStr AS String
+
+  tmpStr = "WORK_DIR="
+  WorkDir = Functions.Get_Conf(tmpStr)
+
+  IF Exist("/usr/bin/nautilus") THEN 
+    EXEC ["/usr/bin/nautilus", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/dolphin") THEN 
+    EXEC ["/usr/bin/dolphin", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/pcmanfm") THEN 
+    EXEC ["/usr/bin/pcmanfm", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/xfe") THEN 
+    EXEC ["/usr/bin/xfe", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/worker") THEN 
+    EXEC ["/usr/bin/worker", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/gentoo") THEN 
+    EXEC ["/usr/bin/gentoo", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/thunar") THEN 
+    EXEC ["/usr/bin/thunar", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/filerunner") THEN 
+    EXEC ["/usr/bin/filerunner", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/krusader") THEN 
+    EXEC ["/usr/bin/krusader", WorkDir & "/ISO"]
+  ELSE IF Exist("/usr/bin/rox-filer") THEN 
+    EXEC ["/usr/bin/rox-filer", WorkDir & "/ISO"]
+  ELSE 
+    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
+  ENDIF
 END
 
 PUBLIC SUB List_Packages_Click()

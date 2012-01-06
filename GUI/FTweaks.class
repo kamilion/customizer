@@ -2,7 +2,7 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM sZone, Frame, CurrentShell, WorkDir, tmpStr, tmpFile, var AS String
+  DIM sZone, Frame, WorkDir, tmpStr, tmpFile AS String
   DIM tz_array AS String[]
   
   tmpStr = "WORK_DIR="
@@ -92,8 +92,9 @@ PUBLIC SUB Form_Open()
     SShell.Add("/bin/yash")
   ENDIF
   
-  SHELL "grep DSHELL= '" & WorkDir & "/FileSystem/etc/adduser.conf' | sed 's/DSHELL=//'" TO CurrentShell
-  SShell.Text = Trim(CurrentShell)
+  tmpFile = WorkDir & "/FileSystem/etc/adduser.conf"
+  tmpStr = "DSHELL="
+  SShell.Text = Functions.Get_Str(tmpFile, tmpStr)
   
   TRY Zone.Text = File.Load(WorkDir & "/FileSystem/etc/Zone")
 END
