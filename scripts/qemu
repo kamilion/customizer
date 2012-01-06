@@ -35,6 +35,10 @@ if [ ! -e "$WORK_DIR/$DIST-$ARCH-$VERSION.iso" ];then
 	EXTRA_ERROR_MESSAGE "ISO Image doesn't exists" "$WORK_DIR/$DIST-$ARCH-$VERSION.iso"
 else
 	EXTRA_INFO_MESSAGE "Running QEMU with ISO image" "$WORK_DIR/$DIST-$ARCH-$VERSION.iso"
-	qemu -cdrom "$WORK_DIR/$DIST-$ARCH-$VERSION.iso" -m $VRAM || ERROR_MESSAGE "An error accure while trying to emulate the ISO"	
+	if [ "`dpkg --print-architecture`" = "amd64" ];then
+		qemu-system-x86_64 -cdrom "$WORK_DIR/$DIST-$ARCH-$VERSION.iso" -m $VRAM || ERROR_MESSAGE "An error accure while trying to emulate the ISO"	
+	else
+		qemu -cdrom "$WORK_DIR/$DIST-$ARCH-$VERSION.iso" -m $VRAM || ERROR_MESSAGE "An error accure while trying to emulate the ISO"	
+	fi
 fi
 
