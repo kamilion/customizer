@@ -7,6 +7,8 @@ PUBLIC SUB Form_Open()
   ME.Center
   ME.Caption = "SysLinux"
   
+  Check.Conf_File()
+  
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
   

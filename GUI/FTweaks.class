@@ -5,6 +5,8 @@ PUBLIC SUB Form_Open()
   DIM sZone, Frame, WorkDir, tmpStr, tmpFile AS String
   DIM tz_array AS String[]
   
+  Check.Conf_File()
+  
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
   

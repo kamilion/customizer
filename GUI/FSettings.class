@@ -2,11 +2,12 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM WDir, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper, ATitle, MDir AS String
   DIM tmpStr AS String
   
   ME.Center
   ME.Caption = "Settings"
+  
+  Check.Conf_File()
   
   IF Exist("/usr/bin/gedit") THEN
     EditorBox.Add("gedit")
@@ -73,39 +74,27 @@ PUBLIC SUB Form_Open()
   ENDIF 
   
   tmpStr = "WORK_DIR="
-  WDir = Functions.Get_Conf(tmpStr)
+  TRY WorkDir.Text = Functions.Get_Conf(tmpStr)
   tmpStr = "MOUNT_DIR="
-  MDir = Functions.Get_Conf(tmpStr)
+  TRY MountDir.Text = Functions.Get_Conf(tmpStr)
   tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  TRY AppendTitle.Value = Functions.Get_Conf(tmpStr)
   tmpStr = "MESSAGES_COLORS="
-  UColors = Functions.Get_Conf(tmpStr)
+  TRY UseColors.Value = Functions.Get_Conf(tmpStr)
   tmpStr = "FORCE_CHROOT="
-  FChroot = Functions.Get_Conf(tmpStr)
+  TRY ForceChroot.Value = Functions.Get_Conf(tmpStr)
   tmpStr = "APT_HELPER="
-  AHelper = Functions.Get_Conf(tmpStr)
+  TRY AptHelper.Value = Functions.Get_Conf(tmpStr)
   tmpStr = "EDITOR="
-  Edit = Functions.Get_Conf(tmpStr)
+  TRY EditorBox.Text = Functions.Get_Conf(tmpStr)
   tmpStr = "BOOT_FILES="
-  BFiles = Functions.Get_Conf(tmpStr)
+  TRY BootFiles.Value = Functions.Get_Conf(tmpStr)
   tmpStr = "VRAM="
-  VRam = Functions.Get_Conf(tmpStr)
+  TRY VirtualMemBox.Text = Functions.Get_Conf(tmpStr)
+  tmpStr = "RESOLUTION="
+  TRY ResolutionBox.Text = Functions.Get_Conf(tmpStr)
   tmpStr = "COMPRESSION="
-  Res = Functions.Get_Conf(tmpStr)
-  tmpStr = "COMPRESSION="
-  SComp = Functions.Get_Conf(tmpStr)
-
-  TRY WorkDir.Text = WDir
-  TRY MountDir.Text = MDir
-  TRY AppendTitle.Value = ATitle
-  TRY UseColors.Value = UColors
-  TRY ForceChroot.Value = FChroot
-  TRY AptHelper.Value = AHelper
-  TRY EditorBox.Text = Edit
-  TRY BootFiles.Value = BFiles
-  TRY VirtualMemBox.Text = VRam
-  TRY ResolutionBox.Text = Res
-  TRY CompressionBox.Text = SComp
+  TRY CompressionBox.Text = Functions.Get_Conf(tmpStr)
   
   IF FMain.Build_ISO.Enabled = TRUE THEN 
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")

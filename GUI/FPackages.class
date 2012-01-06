@@ -3,12 +3,11 @@
 
 PUBLIC SUB Form_Open()
   DIM TempFile AS File
-  DIM textLine AS String
   DIM items AS String[]
-  DIM i AS Integer
-  DIM key AS Integer
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM i, key AS Integer
+  DIM textLine, WorkDir, tmpStr AS String
+  
+  Check.Conf_File()
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
