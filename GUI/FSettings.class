@@ -73,27 +73,27 @@ PUBLIC SUB Form_Open()
   ENDIF 
   
   tmpStr = "WORK_DIR="
-  WDir = Module.SearchForConf(tmpStr)
+  WDir = Functions.Get_Conf(tmpStr)
   tmpStr = "MOUNT_DIR="
-  MDir = Module.SearchForConf(tmpStr)
+  MDir = Functions.Get_Conf(tmpStr)
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   tmpStr = "MESSAGES_COLORS="
-  UColors = Module.SearchForConf(tmpStr)
+  UColors = Functions.Get_Conf(tmpStr)
   tmpStr = "FORCE_CHROOT="
-  FChroot = Module.SearchForConf(tmpStr)
+  FChroot = Functions.Get_Conf(tmpStr)
   tmpStr = "APT_HELPER="
-  AHelper = Module.SearchForConf(tmpStr)
+  AHelper = Functions.Get_Conf(tmpStr)
   tmpStr = "EDITOR="
-  Edit = Module.SearchForConf(tmpStr)
+  Edit = Functions.Get_Conf(tmpStr)
   tmpStr = "BOOT_FILES="
-  BFiles = Module.SearchForConf(tmpStr)
+  BFiles = Functions.Get_Conf(tmpStr)
   tmpStr = "VRAM="
-  VRam = Module.SearchForConf(tmpStr)
+  VRam = Functions.Get_Conf(tmpStr)
   tmpStr = "COMPRESSION="
-  Res = Module.SearchForConf(tmpStr)
+  Res = Functions.Get_Conf(tmpStr)
   tmpStr = "COMPRESSION="
-  SComp = Module.SearchForConf(tmpStr)
+  SComp = Functions.Get_Conf(tmpStr)
 
   TRY WorkDir.Text = WDir
   TRY MountDir.Text = MDir
@@ -171,7 +171,7 @@ PUBLIC SUB Change_WDir_Click()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WDir = Module.SearchForConf(tmpStr)
+  WDir = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Please, select work directory"
   
@@ -191,7 +191,7 @@ PUBLIC SUB Change_MDir_Click()
   DIM tmpStr AS String
   
   tmpStr = "MOUNT_DIR="
-  MDir = Module.SearchForConf(tmpStr)
+  MDir = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Please, select work directory"
   

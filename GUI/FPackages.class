@@ -11,7 +11,7 @@ PUBLIC SUB Form_Open()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
 
   ME.Center
   ME.Caption = "Installed Packages "
@@ -52,7 +52,7 @@ PUBLIC SUB Save_Click()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Select where to save the list"
   Dialog.Filter = ["*.txt", "Text Files"]

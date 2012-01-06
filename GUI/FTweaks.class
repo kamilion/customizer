@@ -7,7 +7,7 @@ PUBLIC SUB Form_Open()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   ME.Center
   ME.Caption = "Tweaks"
@@ -178,7 +178,7 @@ PUBLIC SUB APT_Recommends_Click()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   IF APT_Recommends.Value = TRUE THEN
     EXEC ["rm", "-f", WorkDir & "/FileSystem/etc/apt/apt.conf"]
@@ -193,7 +193,7 @@ PUBLIC SUB TimeZone_Click()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   TRY File.Save(WorkDir & "/FileSystem/etc/timezone", TimeZone.Text)
 END
 
@@ -203,7 +203,7 @@ PUBLIC SUB Framebuffer_Click()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   IF Framebuffer.Value = TRUE THEN 
     SHELL "sed -i 's/FRAMEBUFFER=.*/FRAMEBUFFER=y/' '" & WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper'"
@@ -222,7 +222,7 @@ PUBLIC SUB TTYs_Click()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
    
   ReplaceString = "\"\\/dev\\/tty[1-" & TTYs.Text & "]\""
   SHELL "sed -i 's/ACTIVE_CONSOLES=.*/ACTIVE_CONSOLES=" & ReplaceString & "/' '" & WorkDir & "/FileSystem/etc/default/console-setup'"
@@ -234,7 +234,7 @@ PUBLIC SUB SShell_Click()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   SELECT CASE SShell.Text
     CASE "/bin/ash"

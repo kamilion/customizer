@@ -8,7 +8,7 @@ PUBLIC SUB Form_Open()
   ME.Caption = "SysLinux"
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   IF NOT Exist(WorkDir & "/ISO/isolinux/splash.pcx") AND NOT Exist(WorkDir & "/ISO/isolinux/splash.jpg") THEN
     Message.Warning("Splash file doesn't exists.")
@@ -53,9 +53,9 @@ PUBLIC SUB ChangePic_Click()
   DIM tmpStr, PIC, WorkDir, SplashFile AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   tmpStr = "PIC="
-  PIC = Module.SearchForConf(tmpStr)
+  PIC = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Please select picture"
   Dialog.Filter = ["*.pcx;*.png;*.bmp;*.jpeg;*.jpg", "Pictures"]
@@ -83,7 +83,7 @@ PUBLIC SUB ColorChooser1_Change()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   Colour = Hex(ColorChooser1.Value, 6)
   

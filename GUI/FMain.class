@@ -15,7 +15,7 @@ PUBLIC SUB Form_Open()
     ME.Close
   ENDIF 
 
-  Module.CheckExistence()
+  Check.Existence()
 END
 
 ' Main Buttons
@@ -24,10 +24,10 @@ PUBLIC SUB UseImage_Click()
   DIM tmpStr AS String
   
   tmpStr = "ISO="
-  ISO = Module.SearchForConf(tmpStr)
+  ISO = Functions.Get_Conf(tmpStr)
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Please select ISO Image"
   Dialog.Filter = ["*.iso", "ISO Images"]
@@ -47,7 +47,7 @@ PUBLIC SUB UseImage_Click()
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
   ENDIF 
   
-  Module.CheckExistence()
+  Check.Existence()
 END
 
 PUBLIC SUB Edit_Sources_Click()
@@ -55,7 +55,7 @@ PUBLIC SUB Edit_Sources_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Editing sources.list", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
@@ -69,7 +69,7 @@ PUBLIC SUB Desktop_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Running Desktop session", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
@@ -77,7 +77,7 @@ PUBLIC SUB Desktop_Click()
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
   ENDIF 
   
-  Module.Check_for_pkgm()
+  Check.Pkg_Manager()
 END
 
 PUBLIC SUB Terminal_Click()
@@ -85,15 +85,15 @@ PUBLIC SUB Terminal_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Chroot Terminal", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
   ELSE 
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
   ENDIF 
-  Module.Check_for_Xsession()
-  Module.Check_for_pkgm()
+  Check.X_session()
+  Check.Pkg_Manager()
 END
 
 PUBLIC SUB Build_ISO_Click()
@@ -101,7 +101,7 @@ PUBLIC SUB Build_ISO_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN 
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
@@ -113,7 +113,7 @@ PUBLIC SUB Build_ISO_Click()
     ENDIF 
   ENDIF 
   
-  Module.Check_for_ISO()
+  Module.Check.ISO()
 END
 
 PUBLIC SUB Clean_Click()
@@ -121,7 +121,7 @@ PUBLIC SUB Clean_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
 
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Cleaning up", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
@@ -137,9 +137,9 @@ PUBLIC SUB Install_DEB_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   tmpStr = "DEB="
-  DEB = Module.SearchForConf(tmpStr)
+  DEB = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Please select a DEB package"
   Dialog.Filter = ["*.deb", "Debian Packages"]
@@ -159,8 +159,8 @@ PUBLIC SUB Install_DEB_Click()
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
   ENDIF 
   
-  Module.Check_for_Xsession()
-  Module.Check_for_pkgm()
+  Check.X_session()
+  Check.Pkg_Manager()
 END
 
 PUBLIC SUB Archive_Click()
@@ -168,14 +168,14 @@ PUBLIC SUB Archive_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   ELSE 
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   ENDIF 
-  Module.Check_for_Xsession()
+  Check.X_session()
 END
 
 
@@ -184,7 +184,7 @@ PUBLIC SUB QEMU_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Emulating ISO Image with QEMU", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
@@ -204,7 +204,7 @@ PUBLIC SUB DistName_Change()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
@@ -220,7 +220,7 @@ PUBLIC SUB HostName_Change()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   HostName.Text = Trim(LCase(HostName.Text))
   SHELL "sed -i 's/export HOST=.*/export HOST=\"" & HostName.Text & "\"/' '" & WorkDir & "/FileSystem/etc/casper.conf'"
@@ -231,7 +231,7 @@ PUBLIC SUB LiveCD_User_Change()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
   SHELL "sed -i 's/export USERNAME=.*/export USERNAME=\"" & LiveCD_User.Text & "\"/' '" & WorkDir & "/FileSystem/etc/casper.conf'"
@@ -242,7 +242,7 @@ PUBLIC SUB Version_Change()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
@@ -258,7 +258,7 @@ PUBLIC SUB ReleaseNotesURL_Change()
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
-  WorkDir = Module.SearchForConf(tmpStr)
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   Trim(ReleaseNotesURL.Text)
   TRY File.Save(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
@@ -285,9 +285,9 @@ PUBLIC SUB Import_Snapshot_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   tmpStr = "SNAPSHOT="
-  SNAPSHOT = Module.SearchForConf(tmpStr)
+  SNAPSHOT = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Please select Customizer project snapshot"
   Dialog.Filter = ["*.cps", "Snapshots"]
@@ -309,7 +309,7 @@ PUBLIC SUB Import_Snapshot_Click()
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
   ENDIF 
   
-  Module.CheckExistence()
+  Check.Existence()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
@@ -317,7 +317,7 @@ PUBLIC SUB Create_Snapshot_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Creatings Snapshot", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
@@ -332,9 +332,9 @@ PUBLIC SUB Exec_Hook_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   tmpStr = "HOOK="
-  HOOK = Module.SearchForConf(tmpStr)
+  HOOK = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Please select hook file"
   
@@ -353,8 +353,8 @@ PUBLIC SUB Exec_Hook_Click()
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
   ENDIF 
   
-  Module.Check_for_Xsession()
-  Module.Check_for_pkgm()
+  Check.X_session()
+  Check.Pkg_Manager()
 END
 
 PUBLIC SUB Install_GUI_Click()
@@ -362,7 +362,7 @@ PUBLIC SUB Install_GUI_Click()
   DIM tmpStr AS String
   
   tmpStr = "APPEND_TITLE="
-  ATitle = Module.SearchForConf(tmpStr)
+  ATitle = Functions.Get_Conf(tmpStr)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Installing GUI", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
@@ -370,8 +370,8 @@ PUBLIC SUB Install_GUI_Click()
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
   ENDIF 
   
-  Module.Check_for_Xsession()
-  Module.Check_for_pkgm()
+  Check.X_session()
+  Check.Pkg_Manager()
 END
   
 PUBLIC SUB Tweaks_Click()
