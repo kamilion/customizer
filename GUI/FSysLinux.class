@@ -1,8 +1,8 @@
 ' Gambas class file
 
 PUBLIC SUB Form_Open()
-  DIM HFColor, HBColor, HSColor, WorkDir, SplashFile AS Variant
-  DIM tmpStr AS String
+  DIM HFColor, HBColor, HSColor, SplashFile AS Variant
+  DIM WorkDir, tmpStr AS String
   
   ME.Center
   ME.Caption = "SysLinux"
@@ -50,20 +50,23 @@ END
 
 
 PUBLIC SUB ChangePic_Click()
-  DIM PIC, WorkDir, SplashFile AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  SHELL "grep PIC= /opt/Customizer/settings.conf | sed 's/PIC=//;s/\"//g'" TO PIC
+  DIM tmpStr, PIC, WorkDir, SplashFile AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
+  tmpStr = "PIC="
+  PIC = Module.SearchForConf(tmpStr)
   
   Dialog.Title = "Please select picture"
   Dialog.Filter = ["*.pcx;*.png;*.bmp;*.jpeg;*.jpg", "Pictures"]
   
-  IF Exist(Trim(PIC)) THEN
-    Dialog.Path = Trim(PIC)
+  IF Exist(PIC) THEN
+    Dialog.Path = PIC
   ELSE 
     Dialog.Path = "/home"
   ENDIF  
   
-  IF Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") THEN
+  IF Exist(WorkDir & "/ISO/isolinux/splash.pcx") THEN
       SplashFile = "splash.pcx"
   ELSE 
       SplashFile = "splash.jpg"
@@ -71,26 +74,29 @@ PUBLIC SUB ChangePic_Click()
   
   IF Dialog.OpenFile() THEN RETURN 
   SHELL "sed -i 's@PIC=.*@PIC=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
-  SHELL "convert -resize 640x480! -colors 256 '" & Dialog.Path & "' '" & Trim(WorkDir) & "/ISO/isolinux/" & SplashFile & "'" WAIT
-  SplashPic.Picture = Picture.Load(Trim(WorkDir) & "/ISO/isolinux/" & SplashFile)
+  SHELL "convert -resize 640x480! -colors 256 '" & Dialog.Path & "' '" & WorkDir & "/ISO/isolinux/" & SplashFile & "'" WAIT
+  SplashPic.Picture = Picture.Load(WorkDir & "/ISO/isolinux/" & SplashFile)
 END
 
 PUBLIC SUB ColorChooser1_Change()
   DIM Colour, WorkDir AS Variant
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
   
   Colour = Hex(ColorChooser1.Value, 6)
   
   SELECT CASE SetColourMode.Text
     CASE "Foreground"
     Test.ForeColor = ColorChooser1.Value
-    SHELL "sed -i 's/foreground=0x.*/foreground=0x" & Colour & "/' '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg'" 
+    SHELL "sed -i 's/foreground=0x.*/foreground=0x" & Colour & "/' '" & WorkDir & "/ISO/isolinux/gfxboot.cfg'" 
   CASE "Background"
     Test.BackColor = ColorChooser1.Value
-    SHELL "sed -i 's/background=0x.*/background=0x" & Colour & "/' '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg'"
+    SHELL "sed -i 's/background=0x.*/background=0x" & Colour & "/' '" & WorkDir & "/ISO/isolinux/gfxboot.cfg'"
   CASE "Screen-Colour"
     Panel1.BackColor = ColorChooser1.Value
-    SHELL "sed -i 's/screen-colour=0x.*/screen-colour=0x" & Colour & "/' '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg'"
+    SHELL "sed -i 's/screen-colour=0x.*/screen-colour=0x" & Colour & "/' '" & WorkDir & "/ISO/isolinux/gfxboot.cfg'"
   END SELECT
 END
 
