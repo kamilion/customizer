@@ -1,1 +1,2 @@
 	* QEMU will now handle amd64 machines when emulating the ISO
+	* GUI gathers values without 'SHELL' code (should be faster)

@@ -13,8 +13,11 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-Active=1
-Count=1
+File[2]="FMain.class:333.2"
+File[3]="FTweaks.form"
+File[4]="FTweaks.class:263.72"
+Active=4
+Count=4
 
 [Watches]
 Count=0

@@ -4,107 +4,110 @@
 PUBLIC SUB Form_Open()
   DIM zone, Frame, CurrentTTYs, CurrentShell AS String
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
   
   ME.Center
   ME.Caption = "Tweaks"
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Africa/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Africa/").Sort()
     TimeZone.Add("Africa/" & zone)
   NEXT
 
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/America/Argentina/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/Argentina/").Sort()
     TimeZone.Add("America/Argentina/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/America/Indiana/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/Indiana/").Sort()
     TimeZone.Add("America/Indiana/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/America/Kentucky/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/Kentucky/").Sort()
     TimeZone.Add("America/Kentucky/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/America/North_Dakota/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/North_Dakota/").Sort()
     TimeZone.Add("America/North_Dakota/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/America/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/").Sort()
     TimeZone.Add("America/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Antarctica/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Antarctica/").Sort()
     TimeZone.Add("Antarctica/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Arctic/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Arctic/").Sort()
     TimeZone.Add("Arctic/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Asia/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Asia/").Sort()
     TimeZone.Add("Asia/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Atlantic/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Atlantic/").Sort()
     TimeZone.Add("Atlantic/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Brazil/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Brazil/").Sort()
     TimeZone.Add("Brazil/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Canada/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Canada/").Sort()
     TimeZone.Add("Canada/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Chile/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Chile/").Sort()
     TimeZone.Add("Chile/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Europe/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Europe/").Sort()
     TimeZone.Add("Europe/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Indian/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Indian/").Sort()
     TimeZone.Add("Indian/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Mexico/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Mexico/").Sort()
     TimeZone.Add("Mexico/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Mideast/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Mideast/").Sort()
     TimeZone.Add("Mideast/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Pacific/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Pacific/").Sort()
     TimeZone.Add("Pacific/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/US/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/US/").Sort()
     TimeZone.Add("US/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/SystemV/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/SystemV/").Sort()
     TimeZone.Add("SystemV/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/Etc/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Etc/").Sort()
     TimeZone.Add("Etc/" & zone)
   NEXT
   
-  FOR EACH zone IN Dir(Trim(WorkDir) & "/FileSystem/usr/share/zoneinfo/").Sort()
+  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/").Sort()
     TimeZone.Add(zone)
   NEXT
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/etc/apt/apt.conf") THEN
+  IF Exist(WorkDir & "/FileSystem/etc/apt/apt.conf") THEN
     APT_Recommends.Value = FALSE
   ELSE 
     APT_Recommends.Value = TRUE
   ENDIF 
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
-    SHELL "grep FRAMEBUFFER= '" & Trim(WorkDir) & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper' | sed 's/FRAMEBUFFER=//'" TO Frame
+  IF Exist(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
+    SHELL "grep FRAMEBUFFER= '" & WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper' | sed 's/FRAMEBUFFER=//'" TO Frame
   
     IF Trim(Frame) = "y" THEN 
       Framebuffer.Value = TRUE
@@ -116,87 +119,96 @@ PUBLIC SUB Form_Open()
     Framebuffer.Enabled = FALSE
   ENDIF 
   
-  SHELL "grep ACTIVE_CONSOLES= '" & Trim(WorkDir) & "/FileSystem/etc/default/console-setup' | sed 's/ACTIVE_CONSOLES=\"\\/dev\\/tty\\[1-//;s/]\"//'" TO CurrentTTYs
+  SHELL "grep ACTIVE_CONSOLES= '" & WorkDir & "/FileSystem/etc/default/console-setup' | sed 's/ACTIVE_CONSOLES=\"\\/dev\\/tty\\[1-//;s/]\"//'" TO CurrentTTYs
   TTYs.Text = Trim(CurrentTTYs)
   PRINT Trim(CurrentTTYs)
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/ash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/ash") THEN 
     SShell.Add("/bin/ash")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/sh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/sh") THEN 
     SShell.Add("/bin/sh")
   ENDIF 
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/csh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/csh") THEN 
     SShell.Add("/bin/csh")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/ksh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/ksh") THEN 
     SShell.Add("/bin/ksh")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/mksh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/mksh") THEN 
     SShell.Add("/bin/mksh")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/tcsh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/tcsh") THEN 
     SShell.Add("/bin/tcsh")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/bash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/bash") THEN 
     SShell.Add("/bin/bash")
   ENDIF 
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/dash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/dash") THEN 
     SShell.Add("/bin/dash")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/psh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/psh") THEN 
     SShell.Add("/bin/psh")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/zsh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/zsh") THEN 
     SShell.Add("/bin/zsh")
   ENDIF
   
-  IF Exist(Trim(WorkDir) & "/FileSystem/bin/yash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/yash") THEN 
     SShell.Add("/bin/yash")
   ENDIF
   
-  SHELL "grep DSHELL= '" & Trim(WorkDir) & "/FileSystem/etc/adduser.conf' | sed 's/DSHELL=//'" TO CurrentShell
+  SHELL "grep DSHELL= '" & WorkDir & "/FileSystem/etc/adduser.conf' | sed 's/DSHELL=//'" TO CurrentShell
   SShell.Text = Trim(CurrentShell)
   
-  TRY TimeZone.Text = File.Load(Trim(WorkDir) & "/FileSystem/etc/timezone")
+  TRY TimeZone.Text = File.Load(WorkDir & "/FileSystem/etc/timezone")
 END
 
 PUBLIC SUB APT_Recommends_Click()
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
   
   IF APT_Recommends.Value = TRUE THEN
-    EXEC ["rm", "-f", Trim(WorkDir) & "/FileSystem/etc/apt/apt.conf"]
+    EXEC ["rm", "-f", WorkDir & "/FileSystem/etc/apt/apt.conf"]
   ELSE 
-    SHELL "echo 'APT::Install-Recommends \"false\";' > '" & Trim(WorkDir) & "/FileSystem/etc/apt/apt.conf' && echo 'APT::Install-Suggests \"false\";' >> '" & Trim(WorkDir) & "/FileSystem/etc/apt/apt.conf'"
+    SHELL "echo 'APT::Install-Recommends \"false\";' > '" & WorkDir & "/FileSystem/etc/apt/apt.conf' && echo 'APT::Install-Suggests \"false\";' >> '" & Trim(WorkDir) & "/FileSystem/etc/apt/apt.conf'"
   ENDIF 
 END
 
 
 PUBLIC SUB TimeZone_Click()
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  TRY File.Save(Trim(WorkDir) & "/FileSystem/etc/timezone", TimeZone.Text)
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
+  TRY File.Save(WorkDir & "/FileSystem/etc/timezone", TimeZone.Text)
 END
 
 
 PUBLIC SUB Framebuffer_Click()
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
   
   IF Framebuffer.Value = TRUE THEN 
-    SHELL "sed -i 's/FRAMEBUFFER=.*/FRAMEBUFFER=y/' '" & Trim(WorkDir) & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper'"
+    SHELL "sed -i 's/FRAMEBUFFER=.*/FRAMEBUFFER=y/' '" & WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper'"
   ELSE 
-    SHELL "sed -i 's/FRAMEBUFFER=.*/FRAMEBUFFER=n/' '" & Trim(WorkDir) & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper'"
+    SHELL "sed -i 's/FRAMEBUFFER=.*/FRAMEBUFFER=n/' '" & WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper'"
   ENDIF 
 END
 
@@ -207,16 +219,23 @@ END
 PUBLIC SUB TTYs_Click()
   DIM ReplaceString AS String
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
    
   ReplaceString = "\"\\/dev\\/tty[1-" & TTYs.Text & "]\""
-  SHELL "sed -i 's/ACTIVE_CONSOLES=.*/ACTIVE_CONSOLES=" & ReplaceString & "/' '" & Trim(WorkDir) & "/FileSystem/etc/default/console-setup'"
+  SHELL "sed -i 's/ACTIVE_CONSOLES=.*/ACTIVE_CONSOLES=" & ReplaceString & "/' '" & WorkDir & "/FileSystem/etc/default/console-setup'"
 END
 
 PUBLIC SUB SShell_Click()
   DIM ReplaceString AS String
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
+  
   SELECT CASE SShell.Text
     CASE "/bin/ash"
       ReplaceString = "\\/bin\\/ash"
@@ -242,5 +261,5 @@ PUBLIC SUB SShell_Click()
       ReplaceString = "\\/bin\\/yash"
   END SELECT 
 
-  SHELL "sed -i 's/DSHELL=.*/DSHELL=" & ReplaceString & "/' '" & Trim(WorkDir) & "/FileSystem/etc/adduser.conf'"
+  SHELL "sed -i 's/DSHELL=.*/DSHELL=" & ReplaceString & "/' '" & WorkDir & "/FileSystem/etc/adduser.conf'"
 END

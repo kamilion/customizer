@@ -3,9 +3,10 @@
 Title=Customizer
 Startup=FMain
 Icon=logo.png
-Version=3.1.52
+Version=3.1.63
 Library=gb.gui
 Library=gb.form
+Library=gb.image
 Description=GUI for Customizer (previuosly known as U-Customizer)
 Authors=SmiL3y
 TabSize=2

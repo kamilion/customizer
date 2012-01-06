@@ -2,31 +2,35 @@
 
 PUBLIC SUB Form_Open()
   DIM HFColor, HBColor, HSColor, WorkDir, SplashFile AS Variant
+  DIM tmpStr AS String
+  
   ME.Center
   ME.Caption = "SysLinux"
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
   
-  IF NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") AND NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.jpg") THEN
+  tmpStr = "WORK_DIR="
+  WorkDir = Module.SearchForConf(tmpStr)
+  
+  IF NOT Exist(WorkDir & "/ISO/isolinux/splash.pcx") AND NOT Exist(WorkDir & "/ISO/isolinux/splash.jpg") THEN
     Message.Warning("Splash file doesn't exists.")
     ChangePic.Enabled = FALSE
   ELSE 
-    IF Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") THEN
+    IF Exist(WorkDir & "/ISO/isolinux/splash.pcx") THEN
       SplashFile = "splash.pcx"
     ELSE 
       SplashFile = "splash.jpg"
     ENDIF 
     
-    SplashPic.Picture = Picture.Load(Trim(WorkDir) & "/ISO/isolinux/" & SplashFile)
+    SplashPic.Picture = Picture.Load(WorkDir & "/ISO/isolinux/" & SplashFile)
   ENDIF 
 
-  IF NOT Exist(Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg") THEN 
+  IF NOT Exist(WorkDir & "/ISO/isolinux/gfxboot.cfg") THEN 
     Message.Warning("gfxboot.cfg doesn't exists")
     SetColourMode.Enabled = FALSE
     ColorChooser1.Enabled = FALSE
   ELSE 
-    SHELL "grep foreground= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/foreground=0x//'" TO HFColor
-    SHELL "grep background= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/background=0x//'" TO HBColor
-    SHELL "grep screen-colour= '" & Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg' | sed 's/screen-colour=0x//'" TO HSColor
+    SHELL "grep foreground= '" & WorkDir & "/ISO/isolinux/gfxboot.cfg' | sed 's/foreground=0x//'" TO HFColor
+    SHELL "grep background= '" & WorkDir & "/ISO/isolinux/gfxboot.cfg' | sed 's/background=0x//'" TO HBColor
+    SHELL "grep screen-colour= '" & WorkDir & "/ISO/isolinux/gfxboot.cfg' | sed 's/screen-colour=0x//'" TO HSColor
   
     Test.ForeColor = Val("&H" & HFColor) 
     Test.BackColor = Val("&H" & HBColor)
@@ -34,7 +38,7 @@ PUBLIC SUB Form_Open()
     ColorChooser1.ToolTip = "Change the colour used for " & SetColourMode.Text
   ENDIF 
   
-  IF NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.pcx") AND NOT Exist(Trim(WorkDir) & "/ISO/isolinux/splash.jpg") AND NOT Exist(Trim(WorkDir) & "/ISO/isolinux/gfxboot.cfg") THEN
+  IF NOT Exist(WorkDir & "/ISO/isolinux/splash.pcx") AND NOT Exist(WorkDir & "/ISO/isolinux/splash.jpg") AND NOT Exist(WorkDir & "/ISO/isolinux/gfxboot.cfg") THEN
     Message.Error("Nothing to do here")
     ME.Close
   ENDIF 

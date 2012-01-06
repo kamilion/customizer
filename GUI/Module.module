@@ -1,5 +1,47 @@
 ' Gambas module file
 
+PUBLIC FUNCTION SearchForConf(tmpStr AS String) AS Variant
+  DIM sLine, Result AS String
+  DIM hFile AS File
+  
+  hFile = OPEN "/opt/Customizer/settings.conf" FOR INPUT 
+  WHILE NOT Eof(hFile)
+    LINE INPUT #hFile, sLine
+    IF sLine LIKE tmpStr & "*" THEN 
+      sLine = Replace$(sLine, "\"", "")
+      Result = Replace$(sLine, tmpStr, "")
+      BREAK 
+    ENDIF 
+  WEND
+  
+  RETURN Result
+
+  CATCH 
+    Message.Error("Unable to get value: " & tmpStr)
+END
+
+PUBLIC FUNCTION SearchForString(tmpFile AS String, tmpStr AS String) AS Variant
+  DIM sLine, Result AS String
+  DIM hFile AS File
+  
+  Result = ""
+  hFile = OPEN tmpFile FOR INPUT 
+  WHILE NOT Eof(hFile)
+    LINE INPUT #hFile, sLine
+    IF sLine LIKE tmpStr & "*" THEN 
+      sLine = Replace$(sLine, "\"", "")
+      Result = Replace$(sLine, tmpStr, "")
+      BREAK 
+    ENDIF 
+  WEND
+  
+  RETURN Result
+
+  CATCH 
+    Message.Error("Unable to get info!\n\nFile: " & tmpFile & "\nString: " & tmpStr)
+END
+
+
 PUBLIC SUB Browse_FileSystem_Folder()
   DIM FILEMANAGER AS String
   DIM WorkDir AS String
@@ -147,7 +189,9 @@ PUBLIC SUB Check_for_Xsession()
   DIM Xsessions AS Variant
   DIM WorkDir AS String
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  SHELL "ls '" & Trim(WorkDir) & "/FileSystem/usr/share/xsessions' | wc -l" TO Xsessions
+  
+  Xsessions = "0"
+  TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions").Count
 
   IF Val(Xsessions) >= 1 THEN
     FMain.Desktop.Enabled = TRUE
@@ -162,7 +206,6 @@ PUBLIC SUB Check_for_pkgm()
   SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
   pkgms["first"] = "synaptic"
   pkgms["second"] = "aptitude"
-  'Pkgms = "aptitude synaptic"
   
   FOR EACH pkgm IN pkgms
     IF Exist(Trim(WorkDir) & "/FileSystem/usr/bin/" & pkgm) OR IF Exist(Trim(WorkDir) & "/FileSystem/usr/sbin/" & pkgm) THEN

@@ -3,6 +3,8 @@
 
 PUBLIC SUB Form_Open()
   DIM WDir, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper, ATitle, MDir AS String
+  DIM tmpStr AS String
+  
   ME.Center
   ME.Caption = "Settings"
   
@@ -70,30 +72,40 @@ PUBLIC SUB Form_Open()
     EditorBox.Add("pico")
   ENDIF 
   
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WDir
-  SHELL "grep MOUNT_DIR= /opt/Customizer/settings.conf | sed 's/MOUNT_DIR=//;s/\"//g'" TO MDir
-  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
-  SHELL "grep MESSAGES_COLORS= /opt/Customizer/settings.conf | sed 's/MESSAGES_COLORS=//'" TO UColors
-  SHELL "grep FORCE_CHROOT= /opt/Customizer/settings.conf | sed 's/FORCE_CHROOT=//'" TO FChroot
-  SHELL "grep APT_HELPER= /opt/Customizer/settings.conf | sed 's/APT_HELPER=//'" TO AHelper
-  SHELL "grep EDITOR= /opt/Customizer/settings.conf | sed 's/EDITOR=//'" TO Edit
-  SHELL "grep BOOT_FILES= /opt/Customizer/settings.conf | sed 's/BOOT_FILES=//;s/\"//g'" TO BFiles
-  SHELL "grep VRAM= /opt/Customizer/settings.conf | sed 's/VRAM=//;s/\"//g'" TO VRam
-  SHELL "grep RESOLUTION= /opt/Customizer/settings.conf | sed 's/RESOLUTION=//;s/\"//g'" TO Res
-  SHELL "grep COMPRESSION= /opt/Customizer/settings.conf | sed 's/COMPRESSION=//;s/\"//g'" TO SComp
-  
+  tmpStr = "WORK_DIR="
+  WDir = Module.SearchForConf(tmpStr)
+  tmpStr = "MOUNT_DIR="
+  MDir = Module.SearchForConf(tmpStr)
+  tmpStr = "APPEND_TITLE="
+  ATitle = Module.SearchForConf(tmpStr)
+  tmpStr = "MESSAGES_COLORS="
+  UColors = Module.SearchForConf(tmpStr)
+  tmpStr = "FORCE_CHROOT="
+  FChroot = Module.SearchForConf(tmpStr)
+  tmpStr = "APT_HELPER="
+  AHelper = Module.SearchForConf(tmpStr)
+  tmpStr = "EDITOR="
+  Edit = Module.SearchForConf(tmpStr)
+  tmpStr = "BOOT_FILES="
+  BFiles = Module.SearchForConf(tmpStr)
+  tmpStr = "VRAM="
+  VRam = Module.SearchForConf(tmpStr)
+  tmpStr = "COMPRESSION="
+  Res = Module.SearchForConf(tmpStr)
+  tmpStr = "COMPRESSION="
+  SComp = Module.SearchForConf(tmpStr)
 
-  TRY WorkDir.Text = Trim(WDir)
-  TRY MountDir.Text = Trim(MDir)
-  TRY AppendTitle.Value = Trim(ATitle)
-  TRY UseColors.Value = Trim(UColors)
-  TRY ForceChroot.Value = Trim(FChroot)
-  TRY AptHelper.Value = Trim(AHelper)
-  TRY EditorBox.Text = Trim(Edit)
-  TRY BootFiles.Value = Trim(BFiles)
-  TRY VirtualMemBox.Text = Trim(VRam)
-  TRY ResolutionBox.Text = Trim(Res)
-  TRY CompressionBox.Text = Trim(SComp)
+  TRY WorkDir.Text = WDir
+  TRY MountDir.Text = MDir
+  TRY AppendTitle.Value = ATitle
+  TRY UseColors.Value = UColors
+  TRY ForceChroot.Value = FChroot
+  TRY AptHelper.Value = AHelper
+  TRY EditorBox.Text = Edit
+  TRY BootFiles.Value = BFiles
+  TRY VirtualMemBox.Text = VRam
+  TRY ResolutionBox.Text = Res
+  TRY CompressionBox.Text = SComp
   
   IF FMain.Build_ISO.Enabled = TRUE THEN 
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
@@ -156,12 +168,15 @@ END
 
 PUBLIC SUB Change_WDir_Click()
   DIM WDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WDir = Module.SearchForConf(tmpStr)
   
   Dialog.Title = "Please, select work directory"
   
-  IF Exist(Trim(WDir)) THEN 
-    Dialog.Path = Trim(WDir)
+  IF Exist(WDir) THEN 
+    Dialog.Path = WDir
   ELSE 
     Dialog.Path = "/home"
   ENDIF 
@@ -173,12 +188,15 @@ END
 
 PUBLIC SUB Change_MDir_Click()
   DIM MDir AS String
-  SHELL "grep MOUNT_DIR= /opt/Customizer/settings.conf | sed 's/MOUNT_DIR=//;s/\"//g'" TO MDir
+  DIM tmpStr AS String
+  
+  tmpStr = "MOUNT_DIR="
+  MDir = Module.SearchForConf(tmpStr)
   
   Dialog.Title = "Please, select work directory"
   
-  IF Exist(Trim(MDir)) THEN 
-    Dialog.Path = Trim(MDir)
+  IF Exist(MDir) THEN 
+    Dialog.Path = MDir
   ELSE 
     Dialog.Path = "/home"
   ENDIF 
