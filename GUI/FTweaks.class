@@ -13,14 +13,14 @@ PUBLIC SUB Form_Open()
   ME.Center
   ME.Caption = "Tweaks"
   
-  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/", "*", gb.Directory).Sort()
+  FOR EACH sZone IN RDir(WorkDir & "/FileSystem/usr/share/zoneinfo/", "*", gb.Directory).Sort()
     Zone.Add(sZone)
   NEXT
   
   tz_array = Split(File.Load(WorkDir & "/FileSystem/etc/timezone"), "/")
   Zone.Text = tz_array[0]
   
-  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*").Sort()
+  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()
     Time.Add(sZone)
   NEXT
   Time.Text = tz_array[1]
@@ -197,7 +197,7 @@ PUBLIC SUB Zone_Click()
   WorkDir = Functions.Get_Conf(tmpStr)
   
   Time.Clear
-  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*").Sort()
+  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()
     Time.Add(sZone)
   NEXT
 END
