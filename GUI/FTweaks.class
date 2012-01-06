@@ -2,9 +2,8 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM zone, Frame, CurrentTTYs, CurrentShell AS String
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM sZone, Frame, CurrentShell, WorkDir, tmpStr, tmpFile, var AS String
+  DIM tz_array AS String[]
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -12,94 +11,18 @@ PUBLIC SUB Form_Open()
   ME.Center
   ME.Caption = "Tweaks"
   
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Africa/").Sort()
-    TimeZone.Add("Africa/" & zone)
+  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/", "*", gb.Directory).Sort()
+    Zone.Add(sZone)
   NEXT
+  
+  tz_array = Split(File.Load(WorkDir & "/FileSystem/etc/timezone"), "/")
+  Zone.Text = tz_array[0]
+  
+  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*").Sort()
+    Time.Add(sZone)
+  NEXT
+  Time.Text = tz_array[1]
 
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/Argentina/").Sort()
-    TimeZone.Add("America/Argentina/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/Indiana/").Sort()
-    TimeZone.Add("America/Indiana/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/Kentucky/").Sort()
-    TimeZone.Add("America/Kentucky/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/North_Dakota/").Sort()
-    TimeZone.Add("America/North_Dakota/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/America/").Sort()
-    TimeZone.Add("America/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Antarctica/").Sort()
-    TimeZone.Add("Antarctica/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Arctic/").Sort()
-    TimeZone.Add("Arctic/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Asia/").Sort()
-    TimeZone.Add("Asia/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Atlantic/").Sort()
-    TimeZone.Add("Atlantic/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Brazil/").Sort()
-    TimeZone.Add("Brazil/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Canada/").Sort()
-    TimeZone.Add("Canada/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Chile/").Sort()
-    TimeZone.Add("Chile/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Europe/").Sort()
-    TimeZone.Add("Europe/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Indian/").Sort()
-    TimeZone.Add("Indian/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Mexico/").Sort()
-    TimeZone.Add("Mexico/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Mideast/").Sort()
-    TimeZone.Add("Mideast/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Pacific/").Sort()
-    TimeZone.Add("Pacific/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/US/").Sort()
-    TimeZone.Add("US/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/SystemV/").Sort()
-    TimeZone.Add("SystemV/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/Etc/").Sort()
-    TimeZone.Add("Etc/" & zone)
-  NEXT
-  
-  FOR EACH zone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/").Sort()
-    TimeZone.Add(zone)
-  NEXT
-  
   IF Exist(WorkDir & "/FileSystem/etc/apt/apt.conf") THEN
     APT_Recommends.Value = FALSE
   ELSE 
@@ -107,9 +30,11 @@ PUBLIC SUB Form_Open()
   ENDIF 
   
   IF Exist(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
-    SHELL "grep FRAMEBUFFER= '" & WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper' | sed 's/FRAMEBUFFER=//'" TO Frame
+    tmpFile = WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper"
+    tmpStr = "FRAMEBUFFER="
+    Frame = Functions.Get_Str(tmpFile, tmpStr)
   
-    IF Trim(Frame) = "y" THEN 
+    IF Frame = "y" THEN 
       Framebuffer.Value = TRUE
     ELSE 
       Framebuffer.Value = FALSE
@@ -119,9 +44,9 @@ PUBLIC SUB Form_Open()
     Framebuffer.Enabled = FALSE
   ENDIF 
   
-  SHELL "grep ACTIVE_CONSOLES= '" & WorkDir & "/FileSystem/etc/default/console-setup' | sed 's/ACTIVE_CONSOLES=\"\\/dev\\/tty\\[1-//;s/]\"//'" TO CurrentTTYs
-  TTYs.Text = Trim(CurrentTTYs)
-  PRINT Trim(CurrentTTYs)
+  tmpFile = WorkDir & "/FileSystem/etc/default/console-setup"
+  tmpStr = "ACTIVE_CONSOLES="
+  TTYs.Text = Replace$(Replace$(Functions.Get_Str(tmpFile, tmpStr), "/dev/tty[1-", ""), "]", "")
   
   IF Exist(WorkDir & "/FileSystem/bin/ash") THEN 
     SShell.Add("/bin/ash")
@@ -170,7 +95,7 @@ PUBLIC SUB Form_Open()
   SHELL "grep DSHELL= '" & WorkDir & "/FileSystem/etc/adduser.conf' | sed 's/DSHELL=//'" TO CurrentShell
   SShell.Text = Trim(CurrentShell)
   
-  TRY TimeZone.Text = File.Load(WorkDir & "/FileSystem/etc/timezone")
+  TRY Zone.Text = File.Load(WorkDir & "/FileSystem/etc/Zone")
 END
 
 PUBLIC SUB APT_Recommends_Click()
@@ -181,20 +106,20 @@ PUBLIC SUB APT_Recommends_Click()
   WorkDir = Functions.Get_Conf(tmpStr)
   
   IF APT_Recommends.Value = TRUE THEN
-    EXEC ["rm", "-f", WorkDir & "/FileSystem/etc/apt/apt.conf"]
+    TRY KILL WorkDir & "/FileSystem/etc/apt/apt.conf"
   ELSE 
-    SHELL "echo 'APT::Install-Recommends \"false\";' > '" & WorkDir & "/FileSystem/etc/apt/apt.conf' && echo 'APT::Install-Suggests \"false\";' >> '" & Trim(WorkDir) & "/FileSystem/etc/apt/apt.conf'"
+    TRY File.Save(WorkDir & "/FileSystem/etc/apt/apt.conf", "APT::Install-Recommends \"false\";\nAPT::Install-Suggests \"false\";")
   ENDIF 
 END
 
 
-PUBLIC SUB TimeZone_Click()
+PUBLIC SUB Time_Click()
   DIM WorkDir AS String
   DIM tmpStr AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
-  TRY File.Save(WorkDir & "/FileSystem/etc/timezone", TimeZone.Text)
+  TRY File.Save(WorkDir & "/FileSystem/etc/timezone", Zone.Text & "/" & Time.Text)
 END
 
 
@@ -229,9 +154,7 @@ PUBLIC SUB TTYs_Click()
 END
 
 PUBLIC SUB SShell_Click()
-  DIM ReplaceString AS String
-  DIM WorkDir AS String
-  DIM tmpStr AS String
+  DIM ReplaceString, WorkDir, tmpStr AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -262,4 +185,16 @@ PUBLIC SUB SShell_Click()
   END SELECT 
 
   SHELL "sed -i 's/DSHELL=.*/DSHELL=" & ReplaceString & "/' '" & WorkDir & "/FileSystem/etc/adduser.conf'"
+END
+
+PUBLIC SUB Zone_Click()
+  DIM sZone, WorkDir, tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Functions.Get_Conf(tmpStr)
+  
+  Time.Clear
+  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*").Sort()
+    Time.Add(sZone)
+  NEXT
 END

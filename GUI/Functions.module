@@ -20,26 +20,22 @@ PUBLIC FUNCTION Get_Conf(tmpStr AS String) AS Variant
     Message.Error("Unable to get value: " & tmpStr)
 END
 
-PUBLIC FUNCTION Get_Str(tFile AS String, tStr AS String) AS Variant
-  DIM sLine, tmpStr, WorkDir, Result AS String
+PUBLIC FUNCTION Get_Str(tmpFile AS String, tmpStr AS String) AS Variant
+  DIM sLine, WorkDir, Result AS String
   DIM hFile AS File
-  
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
-  
-  hFile = OPEN tFile FOR INPUT 
+
+  hFile = OPEN tmpFile FOR INPUT 
   WHILE NOT Eof(hFile)
     LINE INPUT #hFile, sLine
-    IF sLine LIKE "*" & tStr & "*" THEN 
+    IF sLine LIKE "*" & tmpStr & "*" THEN 
       sLine = Replace$(sLine, "\"", "")
       sLine = Replace$(sLine, "export ", "")
-      Result = Replace$(sLine, tStr, "")
+      Result = Replace$(sLine, tmpStr, "")
       BREAK 
     ENDIF 
   WEND
-  
   RETURN Result
 
   CATCH 
-    Message.Error("Unable to get info!\n\nFile: " & tFile & "\nString: " & tStr)
+    Message.Error("Unable to get info!\n\nFile: " & tmpFile & "\nString: " & tmpStr)
 END

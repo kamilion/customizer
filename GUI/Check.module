@@ -35,17 +35,16 @@ PUBLIC SUB Pkg_Manager()
 END
 
 PUBLIC SUB ISO()
-  DIM WorkDir, Dist, Arch, Rel, tmpStr, tFile, tStr AS String
+  DIM WorkDir, Dist, Arch, Rel, tmpStr, tmpFile AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
   
-  tFile = WorkDir & "/FileSystem/etc/lsb-release"
-  tStr = "DISTRIB_ID="
-  Dist = Functions.Get_Str(tFile, tStr)
-  tStr = "DISTRIB_RELEASE="
-  Rel = Functions.Get_Str(tFile, tStr)
-
+  tmpFile = WorkDir & "/FileSystem/etc/lsb-release"
+  tmpStr = "DISTRIB_ID="
+  Dist = Functions.Get_Str(tmpFile, tmpStr)
+  tmpStr = "DISTRIB_RELEASE="
+  Rel = Functions.Get_Str(tmpFile, tmpStr)
   SHELL "chroot '" & WorkDir & "/FileSystem' dpkg --print-architecture" TO Arch
   
   IF Exist(WorkDir & "/" & Dist & "-" & Trim(Arch) & "-" & Rel & ".iso") THEN
@@ -54,7 +53,7 @@ PUBLIC SUB ISO()
 END
 
 PUBLIC SUB Existence()
-  DIM RNURL, WorkDir, tmpStr, tFile, tStr AS String
+  DIM RNURL, WorkDir, tmpStr, tmpFile AS String
   
   tmpStr = "WORK_DIR="
   WorkDir = Functions.Get_Conf(tmpStr)
@@ -73,16 +72,16 @@ PUBLIC SUB Existence()
         Module.Enable_Stuff()
       
         'Get some configuration to display it in the text boxes
-        tFile = WorkDir & "/FileSystem/etc/casper.conf"
-        tStr = "HOST="
-        FMain.HostName.Text = Functions.Get_Str(tFile, tStr)
-        tStr = "USERNAME="
-        FMain.LiveCD_User.Text = Functions.Get_Str(tFile, tStr)
-        tFile = WorkDir & "/FileSystem/etc/lsb-release"
-        tStr = "DISTRIB_RELEASE="
-        FMain.Version.Text = Functions.Get_Str(tFile, tStr)
-        tStr = "DISTRIB_ID="
-        FMain.DistName.Text = Functions.Get_Str(tFile, tStr)
+        tmpFile = WorkDir & "/FileSystem/etc/casper.conf"
+        tmpStr = "HOST="
+        FMain.HostName.Text = Functions.Get_Str(tmpFile, tmpStr)
+        tmpStr = "USERNAME="
+        FMain.LiveCD_User.Text = Functions.Get_Str(tmpFile, tmpStr)
+        tmpFile = WorkDir & "/FileSystem/etc/lsb-release"
+        tmpStr = "DISTRIB_RELEASE="
+        FMain.Version.Text = Functions.Get_Str(tmpFile, tmpStr)
+        tmpStr = "DISTRIB_ID="
+        FMain.DistName.Text = Functions.Get_Str(tmpFile, tmpStr)
         
         'Set/Load the release notes URL
         FMain.ReleaseNotesURL.Text = "http://www.ubuntu.com/getubuntu/releasenotes"

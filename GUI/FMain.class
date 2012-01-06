@@ -20,8 +20,7 @@ END
 
 ' Main Buttons
 PUBLIC SUB UseImage_Click()
-  DIM ISO, ATitle AS String
-  DIM tmpStr AS String
+  DIM ISO, ATitle, tmpStr AS String
   
   tmpStr = "ISO="
   ISO = Functions.Get_Conf(tmpStr)

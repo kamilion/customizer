@@ -146,7 +146,7 @@ PUBLIC SUB AptHelper_Click()
   ENDIF 
 END
 
-PUBLIC SUB BootFiles_Click()
+PUBLIC SUB BootmpFiles_Click()
   IF BootFiles.Value = 0 THEN 
     SHELL "sed -i 's/BOOT_FILES=.*/BOOT_FILES=0/' /opt/Customizer/settings.conf"
   ELSE 

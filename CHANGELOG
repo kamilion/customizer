@@ -1,2 +1,4 @@
 	* QEMU will now handle amd64 machines when emulating the ISO
 	* GUI gathers values without 'SHELL' code (should be faster)
+	* Improved file-manager detecting for browsing directories
+	* Split TimeZone selection in 2-textboxes for easier selection

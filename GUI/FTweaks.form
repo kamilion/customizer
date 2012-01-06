@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,41,25)
+  MoveScaled(0,0,41,29)
   Text = ("")
   Icon = Picture["icon:/16/tools"]
   Border = Window.Fixed
@@ -11,17 +11,17 @@
     Text = ("Install APT recommends/suggested")
   }
   { Quit Button
-    MoveScaled(14,21,13,3)
+    MoveScaled(14,25,13,3)
     Text = ("Close")
     Picture = Picture["icon:/16/close"]
   }
-  { TimeZone ComboBox
-    MoveScaled(1,8,20,3)
+  { Zone ComboBox
+    MoveScaled(1,11,16,3)
     ReadOnly = True
     Text = ("ComboBox1")
   }
   { Label1 Label
-    MoveScaled(22,8,18,3)
+    MoveScaled(10,7,18,3)
     Text = ("TimeZone")
     Alignment = Align.Center
   }
@@ -31,25 +31,30 @@
     Text = ("Use Framebuffer")
   }
   { SShell ComboBox
-    MoveScaled(1,12,12,3)
+    MoveScaled(1,16,12,3)
     ReadOnly = True
     List = []
     Text = ("ComboBox1")
   }
   { Label2 Label
-    MoveScaled(14,12,26,3)
+    MoveScaled(14,16,26,3)
     Text = ("Choose default Shell")
     Alignment = Align.Center
   }
   { TTYs ComboBox
-    MoveScaled(1,16,6,3)
+    MoveScaled(1,20,6,3)
     ReadOnly = True
     List = [("1"), ("2"), ("3"), ("4"), ("5"), ("6"), ("7"), ("8"), ("9"), ("10"), ("11")]
     Text = ("ComboBox1")
   }
   { Label3 Label
-    MoveScaled(8,16,32,3)
+    MoveScaled(8,20,32,3)
     Text = ("Active TTY Consoles")
     Alignment = Align.Center
+  }
+  { Time ComboBox
+    MoveScaled(18,11,21,3)
+    ReadOnly = True
+    Text = ("ComboBox1")
   }
 }

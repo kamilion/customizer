@@ -60,7 +60,7 @@ echo "
 
 Version () {
 echo "
-Customizer v3.1.3
+Customizer v3.2.0
 
 Links:
 
