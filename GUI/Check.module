@@ -14,10 +14,11 @@ END
 PUBLIC SUB X_session()
   DIM Xsessions AS Variant
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   Xsessions = "0"
-  TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions").Count
+  TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions", gb.File).Count
 
   IF Val(Xsessions) >= 1 THEN
     FMain.Desktop.Enabled = TRUE
@@ -27,35 +28,24 @@ PUBLIC SUB X_session()
 END
 
 PUBLIC SUB Pkg_Manager()
-  DIM pkgms AS NEW Collection
-  DIM WorkDir, tmpStr, pkgm AS String
+  DIM WorkDir, pkgm AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
-  pkgms["first"] = "synaptic"
-  pkgms["second"] = "aptitude"
-  
-  FOR EACH pkgm IN pkgms
-    IF Exist(WorkDir & "/FileSystem/usr/bin/" & pkgm) OR IF Exist(WorkDir & "/FileSystem/usr/sbin/" & pkgm) THEN
-      FMain.Archive.Enabled = TRUE
-      BREAK 
-    ELSE 
-      FMain.Archive.Enabled = FALSE
-    ENDIF 
-  NEXT 
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
+
+  IF Exist(WorkDir & "/FileSystem/usr/bin/synaptic") OR Exist(WorkDir & "/FileSystem/usr/sbin/aptitude") THEN
+    FMain.Archive.Enabled = TRUE
+  ELSE 
+    FMain.Archive.Enabled = FALSE
+  ENDIF 
 END
 
 PUBLIC SUB ISO()
-  DIM WorkDir, Dist, Arch, Rel, tmpStr, tmpFile AS String
+  DIM WorkDir, Dist, Arch, Rel AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
+  Dist = Functions.Get_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=")
+  Rel = Functions.Get_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=")
   
-  tmpFile = WorkDir & "/FileSystem/etc/lsb-release"
-  tmpStr = "DISTRIB_ID="
-  Dist = Functions.Get_Str(tmpFile, tmpStr)
-  tmpStr = "DISTRIB_RELEASE="
-  Rel = Functions.Get_Str(tmpFile, tmpStr)
   SHELL "chroot '" & WorkDir & "/FileSystem' dpkg --print-architecture" TO Arch
   
   IF Exist(WorkDir & "/" & Dist & "-" & Trim(Arch) & "-" & Rel & ".iso") THEN
@@ -64,10 +54,9 @@ PUBLIC SUB ISO()
 END
 
 PUBLIC SUB Existence()
-  DIM RNURL, WorkDir, tmpStr, tmpFile AS String
+  DIM RNURL, WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   IF Exist(WorkDir & "/FileSystem") AND Exist(WorkDir & "/ISO") THEN 
     IF NOT Exist(WorkDir & "/FileSystem/root") OR NOT Exist(WorkDir & "/FileSystem/etc") THEN 
@@ -83,16 +72,10 @@ PUBLIC SUB Existence()
         Module.Enable_Stuff()
       
         'Get some configuration to display it in the text boxes
-        tmpFile = WorkDir & "/FileSystem/etc/casper.conf"
-        tmpStr = "HOST="
-        FMain.HostName.Text = Functions.Get_Str(tmpFile, tmpStr)
-        tmpStr = "USERNAME="
-        FMain.LiveCD_User.Text = Functions.Get_Str(tmpFile, tmpStr)
-        tmpFile = WorkDir & "/FileSystem/etc/lsb-release"
-        tmpStr = "DISTRIB_RELEASE="
-        FMain.Version.Text = Functions.Get_Str(tmpFile, tmpStr)
-        tmpStr = "DISTRIB_ID="
-        FMain.DistName.Text = Functions.Get_Str(tmpFile, tmpStr)
+        FMain.HostName.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/casper.conf", "HOST=")
+        FMain.LiveCD_User.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/casper.conf", "USERNAME=")
+        FMain.Version.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=")
+        FMain.DistName.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=")
         
         'Set/Load the release notes URL
         FMain.ReleaseNotesURL.Text = "http://www.ubuntu.com/getubuntu/releasenotes"

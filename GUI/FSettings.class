@@ -2,8 +2,6 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM tmpStr AS String
-  
   ME.Center
   ME.Caption = "Settings"
   
@@ -73,28 +71,17 @@ PUBLIC SUB Form_Open()
     EditorBox.Add("pico")
   ENDIF 
   
-  tmpStr = "WORK_DIR="
-  TRY WorkDir.Text = Functions.Get_Conf(tmpStr)
-  tmpStr = "MOUNT_DIR="
-  TRY MountDir.Text = Functions.Get_Conf(tmpStr)
-  tmpStr = "APPEND_TITLE="
-  TRY AppendTitle.Value = Functions.Get_Conf(tmpStr)
-  tmpStr = "MESSAGES_COLORS="
-  TRY UseColors.Value = Functions.Get_Conf(tmpStr)
-  tmpStr = "FORCE_CHROOT="
-  TRY ForceChroot.Value = Functions.Get_Conf(tmpStr)
-  tmpStr = "APT_HELPER="
-  TRY AptHelper.Value = Functions.Get_Conf(tmpStr)
-  tmpStr = "EDITOR="
-  TRY EditorBox.Text = Functions.Get_Conf(tmpStr)
-  tmpStr = "BOOT_FILES="
-  TRY BootFiles.Value = Functions.Get_Conf(tmpStr)
-  tmpStr = "VRAM="
-  TRY VirtualMemBox.Text = Functions.Get_Conf(tmpStr)
-  tmpStr = "RESOLUTION="
-  TRY ResolutionBox.Text = Functions.Get_Conf(tmpStr)
-  tmpStr = "COMPRESSION="
-  TRY CompressionBox.Text = Functions.Get_Conf(tmpStr)
+  TRY WorkDir.Text = Functions.Get_Conf("WORK_DIR=")
+  TRY MountDir.Text = Functions.Get_Conf("MOUNT_DIR=")
+  TRY AppendTitle.Value = Functions.Get_Conf("APPEND_TITLE=")
+  TRY UseColors.Value = Functions.Get_Conf("MESSAGES_COLORS=")
+  TRY ForceChroot.Value = Functions.Get_Conf("FORCE_CHROOT=")
+  TRY AptHelper.Value = Functions.Get_Conf("APT_HELPER=")
+  TRY EditorBox.Text = Functions.Get_Conf("EDITOR=")
+  TRY BootFiles.Value = Functions.Get_Conf("BOOT_FILES=")
+  TRY VirtualMemBox.Text = Functions.Get_Conf("VRAM=")
+  TRY ResolutionBox.Text = Functions.Get_Conf("RESOLUTION=")
+  TRY CompressionBox.Text = Functions.Get_Conf("COMPRESSION=")
   
   IF FMain.Build_ISO.Enabled = TRUE THEN 
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
@@ -105,62 +92,60 @@ END
 
 PUBLIC SUB AppendTitle_Click()
   IF AppendTitle.Value = 0 THEN 
-    SHELL "sed -i 's/APPEND_TITLE=.*/APPEND_TITLE=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APPEND_TITLE=", "0")
   ELSE 
-    SHELL "sed -i 's/APPEND_TITLE=.*/APPEND_TITLE=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APPEND_TITLE=", "1")
   ENDIF 
 END
 
 PUBLIC SUB UseColors_Click()
   IF UseColors.Value = 0 THEN 
-    SHELL "sed -i 's/MESSAGES_COLORS=.*/MESSAGES_COLORS=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("MESSAGES_COLORS=", "0")
   ELSE 
-    SHELL "sed -i 's/MESSAGES_COLORS=.*/MESSAGES_COLORS=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("MESSAGES_COLORS=", "1")
   ENDIF 
 END
 
 PUBLIC SUB ForceChroot_Click()
   IF ForceChroot.Value = 0 THEN 
-    SHELL "sed -i 's/FORCE_CHROOT=.*/FORCE_CHROOT=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("FORCE_CHROOT=", "0")
   ELSE 
-    SHELL "sed -i 's/FORCE_CHROOT=.*/FORCE_CHROOT=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("FORCE_CHROOT=", "1")
   ENDIF 
 END
 
 PUBLIC SUB AptHelper_Click()
   IF AptHelper.Value = 0 THEN 
-    SHELL "sed -i 's/APT_HELPER=.*/APT_HELPER=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APT_HELPER=", "0")
   ELSE 
-    SHELL "sed -i 's/APT_HELPER=.*/APT_HELPER=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APT_HELPER=", "1")
   ENDIF 
 END
 
-PUBLIC SUB BootmpFiles_Click()
+PUBLIC SUB BootFiles_Click()
   IF BootFiles.Value = 0 THEN 
-    SHELL "sed -i 's/BOOT_FILES=.*/BOOT_FILES=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("BOOT_FILES=", "0")
   ELSE 
-    SHELL "sed -i 's/BOOT_FILES=.*/BOOT_FILES=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("BOOT_FILES=", "1")
   ENDIF 
 END
 
 PUBLIC SUB ResolutionBox_Click()
-  SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=" & ResolutionBox.Text & "/' /opt/Customizer/settings.conf" 
+  Functions.Replace_Conf("RESOLUTION=", ResolutionBox.Text)
 END
 
 PUBLIC SUB EditorBox_Click()
-  SHELL "sed -i 's/EDITOR=.*/EDITOR=" & EditorBox.Text & "/' /opt/Customizer/settings.conf"
+  Functions.Replace_Conf("EDITOR=", EditorBox.Text)
 END
 
 PUBLIC SUB VirtualMemBox_Click()
-  SHELL "sed -i 's/VRAM=.*/VRAM=" & VirtualMemBox.Text & "/' /opt/Customizer/settings.conf"
+  Functions.Replace_Conf("VRAM=", VirtualMemBox.Text)
 END
 
 PUBLIC SUB Change_WDir_Click()
   DIM WDir AS String
-  DIM tmpStr AS String
-  
-  tmpStr = "WORK_DIR="
-  WDir = Functions.Get_Conf(tmpStr)
+
+  WDir = Functions.Get_Conf("WORK_DIR=")
   
   Dialog.Title = "Please, select work directory"
   
@@ -171,16 +156,14 @@ PUBLIC SUB Change_WDir_Click()
   ENDIF 
   
   IF Dialog.SelectDirectory() THEN RETURN 
-  SHELL "sed -i 's@WORK_DIR=.*@WORK_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("WORK_DIR=", Dialog.Path)
   WorkDir.Text = Dialog.Path
 END
 
 PUBLIC SUB Change_MDir_Click()
   DIM MDir AS String
-  DIM tmpStr AS String
   
-  tmpStr = "MOUNT_DIR="
-  MDir = Functions.Get_Conf(tmpStr)
+  MDir = Functions.Get_Conf("MOUNT_DIR=")
   
   Dialog.Title = "Please, select work directory"
   
@@ -191,12 +174,12 @@ PUBLIC SUB Change_MDir_Click()
   ENDIF 
   
   IF Dialog.SelectDirectory() THEN RETURN 
-  SHELL "sed -i 's@MOUNT_DIR=.*@MOUNT_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("MOUNT_DIR=", Dialog.Path)
   MountDir.Text = Dialog.Path
 END
 
 PUBLIC SUB CompressionBox_Click()
-  SHELL "sed -i 's/COMPRESSION=.*/COMPRESSION=" & CompressionBox.Text & "/' /opt/Customizer/settings.conf"
+  Functions.Replace_Conf("COMPRESSION=", CompressionBox.Text)
 END
 
 PUBLIC SUB Quit_Click()

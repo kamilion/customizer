@@ -5,12 +5,11 @@ PUBLIC SUB Form_Open()
   DIM TempFile AS File
   DIM items AS String[]
   DIM i, key AS Integer
-  DIM textLine, WorkDir, tmpStr AS String
+  DIM textLine, WorkDir AS String
   
   Check.Conf_File()
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
 
   ME.Center
   ME.Caption = "Installed Packages "

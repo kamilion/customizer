@@ -2,13 +2,12 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM sZone, Frame, WorkDir, tmpStr, tmpFile AS String
+  DIM sZone, Frame, WorkDir AS String
   DIM tz_array AS String[]
   
   Check.Conf_File()
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   ME.Center
   ME.Caption = "Tweaks"
@@ -32,9 +31,7 @@ PUBLIC SUB Form_Open()
   ENDIF 
   
   IF Exist(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
-    tmpFile = WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper"
-    tmpStr = "FRAMEBUFFER="
-    Frame = Functions.Get_Str(tmpFile, tmpStr)
+    Frame = Functions.Get_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=")
   
     IF Frame = "y" THEN 
       Framebuffer.Value = TRUE
@@ -46,9 +43,8 @@ PUBLIC SUB Form_Open()
     Framebuffer.Enabled = FALSE
   ENDIF 
   
-  tmpFile = WorkDir & "/FileSystem/etc/default/console-setup"
-  tmpStr = "ACTIVE_CONSOLES="
-  TTYs.Text = Replace$(Replace$(Functions.Get_Str(tmpFile, tmpStr), "/dev/tty[1-", ""), "]", "")
+  Message.Info(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES="))
+  TTYs.Text = Replace$(Replace$(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES="), "/dev/tty[1-", ""), "]", "")
   
   IF Exist(WorkDir & "/FileSystem/bin/ash") THEN 
     SShell.Add("/bin/ash")
@@ -94,19 +90,15 @@ PUBLIC SUB Form_Open()
     SShell.Add("/bin/yash")
   ENDIF
   
-  tmpFile = WorkDir & "/FileSystem/etc/adduser.conf"
-  tmpStr = "DSHELL="
-  SShell.Text = Functions.Get_Str(tmpFile, tmpStr)
+  SShell.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=")
   
   TRY Zone.Text = File.Load(WorkDir & "/FileSystem/etc/Zone")
 END
 
 PUBLIC SUB APT_Recommends_Click()
   DIM WorkDir AS String
-  DIM tmpStr AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   IF APT_Recommends.Value = TRUE THEN
     TRY KILL WorkDir & "/FileSystem/etc/apt/apt.conf"
@@ -118,25 +110,21 @@ END
 
 PUBLIC SUB Time_Click()
   DIM WorkDir AS String
-  DIM tmpStr AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   TRY File.Save(WorkDir & "/FileSystem/etc/timezone", Zone.Text & "/" & Time.Text)
 END
 
 
 PUBLIC SUB Framebuffer_Click()
   DIM WorkDir AS String
-  DIM tmpStr AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   IF Framebuffer.Value = TRUE THEN 
-    SHELL "sed -i 's/FRAMEBUFFER=.*/FRAMEBUFFER=y/' '" & WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper'"
+    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
   ELSE 
-    SHELL "sed -i 's/FRAMEBUFFER=.*/FRAMEBUFFER=n/' '" & WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper'"
+    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "n")
   ENDIF 
 END
 
@@ -145,56 +133,25 @@ PUBLIC SUB Quit_Click()
 END
 
 PUBLIC SUB TTYs_Click()
-  DIM ReplaceString AS String
   DIM WorkDir AS String
-  DIM tmpStr AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
    
-  ReplaceString = "\"\\/dev\\/tty[1-" & TTYs.Text & "]\""
-  SHELL "sed -i 's/ACTIVE_CONSOLES=.*/ACTIVE_CONSOLES=" & ReplaceString & "/' '" & WorkDir & "/FileSystem/etc/default/console-setup'"
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", "/dev/tty[1-" & TTYs.Text & "]")
 END
 
 PUBLIC SUB SShell_Click()
-  DIM ReplaceString, WorkDir, tmpStr AS String
+  DIM WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
-  
-  SELECT CASE SShell.Text
-    CASE "/bin/ash"
-      ReplaceString = "\\/bin\\/ash"
-    CASE "/bin/sh"
-      ReplaceString = "\\/bin\\/sh"
-    CASE "/bin/csh"
-      ReplaceString = "\\/bin\\/csh"
-    CASE "/bin/ksh"
-      ReplaceString = "\\/bin\\/ksh"
-    CASE "/bin/mksh"
-      ReplaceString = "\\/bin\\/mksh"
-    CASE "/bin/tcsh"
-      ReplaceString = "\\/bin\\/tcsh"
-    CASE "/bin/bash"
-      ReplaceString = "\\/bin\\/bash"
-    CASE "/bin/dash"
-      ReplaceString = "\\/bin\\/dash"
-    CASE "/bin/psh"
-      ReplaceString = "\\/bin\\/psh"
-    CASE "/bin/zsh"
-      ReplaceString = "\\/bin\\/zsh"
-    CASE "/bin/yash"
-      ReplaceString = "\\/bin\\/yash"
-  END SELECT 
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
 
-  SHELL "sed -i 's/DSHELL=.*/DSHELL=" & ReplaceString & "/' '" & WorkDir & "/FileSystem/etc/adduser.conf'"
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", SShell.Text)
 END
 
 PUBLIC SUB Zone_Click()
-  DIM sZone, WorkDir, tmpStr AS String
+  DIM sZone, WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   Time.Clear
   FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()

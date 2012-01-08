@@ -2,15 +2,14 @@
 
 PUBLIC SUB Form_Open()
   DIM HFColor, HBColor, HSColor, SplashFile AS Variant
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
   
   ME.Center
   ME.Caption = "SysLinux"
   
   Check.Conf_File()
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   IF NOT Exist(WorkDir & "/ISO/isolinux/splash.pcx") AND NOT Exist(WorkDir & "/ISO/isolinux/splash.jpg") THEN
     Message.Warning("Splash file doesn't exists.")
@@ -52,12 +51,10 @@ END
 
 
 PUBLIC SUB ChangePic_Click()
-  DIM tmpStr, PIC, WorkDir, SplashFile AS String
+  DIM PIC, WorkDir, SplashFile AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
-  tmpStr = "PIC="
-  PIC = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
+  PIC = Functions.Get_Conf("PIC=")
   
   Dialog.Title = "Please select picture"
   Dialog.Filter = ["*.pcx;*.png;*.bmp;*.jpeg;*.jpg", "Pictures"]
@@ -75,30 +72,26 @@ PUBLIC SUB ChangePic_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  SHELL "sed -i 's@PIC=.*@PIC=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("PIC=", Dialog.Path)
   SHELL "convert -resize 640x480! -colors 256 '" & Dialog.Path & "' '" & WorkDir & "/ISO/isolinux/" & SplashFile & "'" WAIT
   SplashPic.Picture = Picture.Load(WorkDir & "/ISO/isolinux/" & SplashFile)
 END
 
 PUBLIC SUB ColorChooser1_Change()
-  DIM Colour, WorkDir AS Variant
-  DIM tmpStr AS String
+  DIM WorkDir AS Variant
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
-  
-  Colour = Hex(ColorChooser1.Value, 6)
-  
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
+
   SELECT CASE SetColourMode.Text
     CASE "Foreground"
     Test.ForeColor = ColorChooser1.Value
-    SHELL "sed -i 's/foreground=0x.*/foreground=0x" & Colour & "/' '" & WorkDir & "/ISO/isolinux/gfxboot.cfg'" 
+    Functions.Replace_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "foreground=0x", Hex(ColorChooser1.Value, 6))
   CASE "Background"
     Test.BackColor = ColorChooser1.Value
-    SHELL "sed -i 's/background=0x.*/background=0x" & Colour & "/' '" & WorkDir & "/ISO/isolinux/gfxboot.cfg'"
+    Functions.Replace_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "background=0x", Hex(ColorChooser1.Value, 6))
   CASE "Screen-Colour"
     Panel1.BackColor = ColorChooser1.Value
-    SHELL "sed -i 's/screen-colour=0x.*/screen-colour=0x" & Colour & "/' '" & WorkDir & "/ISO/isolinux/gfxboot.cfg'"
+    Functions.Replace_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "screen-colour=0x", Hex(ColorChooser1.Value, 6))
   END SELECT
 END
 

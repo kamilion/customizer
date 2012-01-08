@@ -1,6 +1,8 @@
 ' Gambas class file
 ' Main Form
 
+'PUBLIC WorkDir = Functions.Get_Conf("WORK_DIR=") AS String
+
 PUBLIC SUB Form_Open()
   DIM STATUS AS Variant
   ME.Center
@@ -21,13 +23,10 @@ END
 
 ' Main Buttons
 PUBLIC SUB UseImage_Click()
-  DIM ISO, ATitle, tmpStr AS String
+  DIM ISO, ATitle AS String
   
-  tmpStr = "ISO="
-  ISO = Functions.Get_Conf(tmpStr)
-  
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ISO = Functions.Get_Conf("ISO=")
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   Dialog.Title = "Please select ISO Image"
   Dialog.Filter = ["*.iso", "ISO Images"]
@@ -39,7 +38,7 @@ PUBLIC SUB UseImage_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  SHELL "sed -i 's@ISO=.*@ISO=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("ISO=", Dialog.Path)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Disassambling ISO image", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
@@ -51,10 +50,9 @@ PUBLIC SUB UseImage_Click()
 END
 
 PUBLIC SUB Edit_Sources_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Editing sources.list", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
@@ -64,10 +62,9 @@ PUBLIC SUB Edit_Sources_Click()
 END
 
 PUBLIC SUB Desktop_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Running Desktop session", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
@@ -79,25 +76,24 @@ PUBLIC SUB Desktop_Click()
 END
 
 PUBLIC SUB Terminal_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Chroot Terminal", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
   ELSE 
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
   ENDIF 
+  
   Check.X_session()
   Check.Pkg_Manager()
 END
 
 PUBLIC SUB Build_ISO_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN 
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
@@ -113,10 +109,9 @@ PUBLIC SUB Build_ISO_Click()
 END
 
 PUBLIC SUB Clean_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
 
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Cleaning up", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
@@ -128,12 +123,10 @@ PUBLIC SUB Clean_Click()
 END
 
 PUBLIC SUB Install_DEB_Click()
-  DIM DEB, ATitle, tmpStr AS String
+  DIM DEB, ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
-  tmpStr = "DEB="
-  DEB = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
+  DEB = Functions.Get_Conf("DEB=")
   
   Dialog.Title = "Please select a DEB package"
   Dialog.Filter = ["*.deb", "Debian Packages"]
@@ -145,7 +138,7 @@ PUBLIC SUB Install_DEB_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  SHELL "sed -i 's@DEB=.*@DEB=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("DEB=", Dialog.Path)
 
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Installing DEB Package", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
@@ -158,25 +151,24 @@ PUBLIC SUB Install_DEB_Click()
 END
 
 PUBLIC SUB Archive_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   ELSE 
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   ENDIF 
+  
   Check.X_session()
 END
 
 
 PUBLIC SUB QEMU_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Emulating ISO Image with QEMU", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
@@ -192,60 +184,55 @@ END
 
 ' Change Configs
 PUBLIC SUB DistName_Change()
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  SHELL "sed -i 's/DISTRIB_ID=.*/DISTRIB_ID=" & DistName.Text & "/' '" & WorkDir & "/FileSystem/etc/lsb-release'"
-  SHELL "sed -i 's/DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION=\"" & DistName.Text & " " & Version.Text & "\"/' '" & WorkDir & "/FileSystem/etc/lsb-release'"
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=", DistName.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
   TRY File.Save(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
   TRY File.Save(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
 PUBLIC SUB HostName_Change()
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   HostName.Text = Trim(LCase(HostName.Text))
-  SHELL "sed -i 's/export HOST=.*/export HOST=\"" & HostName.Text & "\"/' '" & WorkDir & "/FileSystem/etc/casper.conf'"
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
 END
 
 PUBLIC SUB LiveCD_User_Change()
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
-  SHELL "sed -i 's/export USERNAME=.*/export USERNAME=\"" & LiveCD_User.Text & "\"/' '" & WorkDir & "/FileSystem/etc/casper.conf'"
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
 END
 
 PUBLIC SUB Version_Change()
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  SHELL "sed -i 's/DISTRIB_RELEASE=.*/DISTRIB_RELEASE=" & Version.Text & "/' '" & WorkDir & "/FileSystem/etc/lsb-release'"
-  SHELL "sed -i 's/DISTRIB_DESCRIPTION=.*/DISTRIB_DESCRIPTION=\"" & DistName.Text & " " & Version.Text & "\"/' '" & WorkDir & "/FileSystem/etc/lsb-release" '
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=", Version.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
   TRY File.Save(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
   TRY File.Save(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
 PUBLIC SUB ReleaseNotesURL_Change()
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
   
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   Trim(ReleaseNotesURL.Text)
   TRY File.Save(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
@@ -268,12 +255,10 @@ PUBLIC SUB Settings_Click()
 END
 
 PUBLIC SUB Import_Snapshot_Click()
-  DIM SNAPSHOT, ATitle, tmpStr AS String
+  DIM SNAPSHOT, ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
-  tmpStr = "SNAPSHOT="
-  SNAPSHOT = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
+  SNAPSHOT = Functions.Get_Conf("SNAPSHOT=")
   
   Dialog.Title = "Please select Customizer project snapshot"
   Dialog.Filter = ["*.cps", "Snapshots"]
@@ -285,7 +270,7 @@ PUBLIC SUB Import_Snapshot_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN
-  SHELL "sed -i 's@SNAPSHOT=.*@SNAPSHOT=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("SNAPSHOT=", Dialog.Path)
 
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Importing Snapshot", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
@@ -297,10 +282,9 @@ PUBLIC SUB Import_Snapshot_Click()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Creatings Snapshot", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
@@ -311,12 +295,10 @@ END
 
   'Menu - Extras
 PUBLIC SUB Exec_Hook_Click()
-  DIM HOOK, ATitle, tmpStr AS String
+  DIM HOOK, ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
-  tmpStr = "HOOK="
-  HOOK = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
+  HOOK = Functions.Get_Conf("HOOK=")
   
   Dialog.Title = "Please select hook file"
   
@@ -327,7 +309,7 @@ PUBLIC SUB Exec_Hook_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  SHELL "sed -i 's@HOOK=.*@HOOK=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("HOOK=", Dialog.Path)
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Executing Chroot Hook", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
@@ -340,10 +322,9 @@ PUBLIC SUB Exec_Hook_Click()
 END
 
 PUBLIC SUB Install_GUI_Click()
-  DIM ATitle, tmpStr AS String
+  DIM ATitle AS String
   
-  tmpStr = "APPEND_TITLE="
-  ATitle = Functions.Get_Conf(tmpStr)
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
   
   IF ATitle = 1 THEN 
     EXEC ["x-terminal-emulator", "--title=Installing GUI", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
@@ -361,10 +342,9 @@ END
 
   
 PUBLIC SUB Browse_FS_Click()
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
 
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   IF Exist("/usr/bin/nautilus") THEN 
     EXEC ["/usr/bin/nautilus", WorkDir & "/FileSystem"]
@@ -392,10 +372,9 @@ PUBLIC SUB Browse_FS_Click()
 END
 
 PUBLIC SUB Browse_ISO_Click()
-  DIM WorkDir, tmpStr AS String
+  DIM WorkDir AS String
 
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
 
   IF Exist("/usr/bin/nautilus") THEN 
     EXEC ["/usr/bin/nautilus", WorkDir & "/ISO"]

@@ -1,42 +1,88 @@
 ' Gambas module file
 
-PUBLIC FUNCTION Get_Conf(tmpStr AS String) AS Variant
-  DIM sLine, Result AS String
+PUBLIC FUNCTION Get_Conf(SrchStr AS String) AS Variant
+  DIM sLine AS String
   DIM hFile AS File
   
   hFile = OPEN "/opt/Customizer/settings.conf" FOR INPUT 
   WHILE NOT Eof(hFile)
     LINE INPUT #hFile, sLine
-    IF sLine LIKE tmpStr & "*" THEN 
+    IF sLine LIKE SrchStr & "*" THEN 
       sLine = Replace$(sLine, "\"", "")
-      Result = Replace$(sLine, tmpStr, "")
+      sLine = Replace$(sLine, SrchStr, "")
       BREAK 
     ENDIF 
   WEND
   
-  RETURN Result
+  RETURN sLine
 
   CATCH 
-    Message.Error("Unable to get value: " & tmpStr)
+    Message.Error("Unable to get value: " & SrchStr)
 END
 
-PUBLIC FUNCTION Get_Str(tmpFile AS String, tmpStr AS String) AS Variant
-  DIM sLine, WorkDir, Result AS String
+PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String) AS Variant
+  DIM sLine AS String
   DIM hFile AS File
 
-  hFile = OPEN tmpFile FOR INPUT 
+  hFile = OPEN SrchFile FOR INPUT 
   WHILE NOT Eof(hFile)
     LINE INPUT #hFile, sLine
-    IF sLine LIKE "*" & tmpStr & "*" THEN 
+    IF sLine LIKE "*" & SrchStr & "*" THEN 
       sLine = Replace$(sLine, "\"", "")
       sLine = Replace$(sLine, "export ", "")
-      Result = Replace$(sLine, tmpStr, "")
+      sLine = Replace$(sLine, SrchStr, "")
       BREAK 
     ENDIF 
   WEND
   
-  RETURN Result
+  RETURN sLine
 
   CATCH 
-    Message.Error("Unable to get info!\n\nFile: " & tmpFile & "\nString: " & tmpStr)
+    Message.Error("Unable to get info!\n\nFile: " & SrchFile & "\nString: " & SrchStr)
+END
+
+PUBLIC FUNCTION Replace_Conf(SrchStr AS String, RpcStr AS String)
+  DIM content_array AS String[]
+  DIM sLine, content AS String
+  DIM counter AS Integer
+  
+  content = File.Load("/opt/Customizer/settings.conf")
+  content_array = Split(File.Load("/opt/Customizer/settings.conf"), "\n")
+  
+  counter = 0
+  FOR EACH sLine IN content_array
+    IF sLine LIKE SrchStr & "*" THEN 
+      File.Save("/opt/Customizer/settings.conf", Replace$(content, sLine, SrchStr & "\"" & RpcStr & "\""))
+      BREAK 
+    ENDIF 
+     
+    counter += 1
+  NEXT 
+  
+  IF counter = content_array.Count THEN 
+    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n\n In: /opt/Customizer/settings.conf")
+  ENDIF 
+END
+
+PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS String)
+  DIM content_array AS String[]
+  DIM sLine, content AS String
+  DIM counter AS Integer
+  
+  content = File.Load(SrchFile)
+  content_array = Split(File.Load(SrchFile), "\n")
+  
+  counter = 0
+  FOR EACH sLine IN content_array
+    IF sLine LIKE SrchStr & "*" THEN 
+      File.Save(SrchFile, Replace$(content, sLine, SrchStr & "\"" & RpcStr & "\""))
+      BREAK 
+    ENDIF 
+     
+    counter += 1
+  NEXT 
+  
+  IF counter = content_array.Count THEN 
+    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n\n In: " & SrchFile)
+  ENDIF 
 END
