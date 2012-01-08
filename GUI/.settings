@@ -13,11 +13,12 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="FMain.class:18.70"
-File[3]="Functions.module:43.0"
-Active=3
+File[2]="FMain.class:376.43"
+File[3]="FSysLinux.form"
 File[4]="FTweaks.form"
-Count=4
+File[5]="FTweaks.class:44.2"
+Active=5
+Count=5
 
 [Watches]
 Count=0

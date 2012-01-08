@@ -43,7 +43,6 @@ PUBLIC SUB Form_Open()
     Framebuffer.Enabled = FALSE
   ENDIF 
   
-  Message.Info(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES="))
   TTYs.Text = Replace$(Replace$(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES="), "/dev/tty[1-", ""), "]", "")
   
   IF Exist(WorkDir & "/FileSystem/bin/ash") THEN 
