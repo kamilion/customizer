@@ -3,7 +3,7 @@
 PUBLIC SUB Conf_File()
 IF NOT Exist("/opt/Customizer/settings.conf") THEN 
     Message.Warning("Configuration file doesn't exists, creating one with the default values")
-    File.Save("/opt/Customizer/settings.conf", "# Main settings\nWORK_DIR=\"/home\"\nMOUNT_DIR=\"/media/ISO\"\n\n# Preferences\nAPPEND_TITLE=1\nMESSAGES_COLORS=1\nFORCE_CHROOT=0\nAPT_HELPER=1\nEDITOR=nano\nRESOLUTION=800x600\nBOOT_FILES=0\nVRAM=256\nCOMPRESSION=bzip2\n\n# Saved variables\nISO=\"\"\nSNAPSHOT=\"\"\nDEB=\"\"\nHOOK=\"\"\nPIC=\"\"")
+    File.Save("/opt/Customizer/settings.conf", "# Main settings\nWORK_DIR=\"/home\"\nMOUNT_DIR=\"/media/ISO\"\n\n# Preferences\nAPPEND_TITLE=1\nMESSAGES_COLORS=1\nFORCE_CHROOT=0\nAPT_HELPER=1\nEDITOR=nano\nRESOLUTION=800x600\nBOOT_FILES=0\nVRAM=256\nCOMPRESSION=tar\n\n# Saved variables\nISO=\"\"\nSNAPSHOT=\"\"\nDEB=\"\"\nHOOK=\"\"\nPIC=\"\"")
     
     CATCH 
       Message.Error("Unable to create configuration file, check your permissions")
@@ -17,6 +17,7 @@ PUBLIC SUB X_session()
   
   WorkDir = Functions.Get_Conf("WORK_DIR=")
   
+  Xsessions = 0
   TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions").Count
 
   IF Xsessions >= 1 THEN
