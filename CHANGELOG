@@ -2,7 +2,7 @@
 	* GUI gathers variables and changes them without 'SHELL' code (should be faster)
 	* Improved file-manager detecting for browsing directories
 	* Split TimeZone selection in 2-textboxes for easier selection
-	* Tar now default compression for snapshot
+	* Tar now default compression for snapshots
 	* GUI code cleanup
 	+ Existence of configuration file is checked from GUI and created with defaults if needed
 	+ Fixinig path to /home directory and display entries after exiting the nested X-session ('Dekstop')
