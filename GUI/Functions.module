@@ -98,7 +98,7 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
   ELSE 
     IF Editor = "nano" OR Editor = "pico" OR Editor = "vi" OR Editor = "vim" THEN 
       IF ATitle = 1 THEN 
-        EXEC ["x-terminal-emulator", "--title=Editing " & EditFile, "-e", Editor, WorkDir & EditFile] WAIT
+        EXEC ["x-terminal-emulator", "--title=Editing " & WorkDir & EditFile, "-e", Editor, WorkDir & EditFile] WAIT
       ELSE 
         EXEC ["x-terminal-emulator", "-e", Editor, WorkDir & EditFile] WAIT
       ENDIF 

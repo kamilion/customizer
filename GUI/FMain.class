@@ -50,15 +50,7 @@ PUBLIC SUB UseImage_Click()
 END
 
 PUBLIC SUB Edit_Sources_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Editing sources.list", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
-  ENDIF 
+  Functions.Edit_File("/FileSystem/etc/apt/sources.list")
 END
 
 PUBLIC SUB Desktop_Click()
