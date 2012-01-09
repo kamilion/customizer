@@ -28,14 +28,13 @@ PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String) AS Variant
   WHILE NOT Eof(hFile)
     LINE INPUT #hFile, sLine
     IF sLine LIKE "*" & SrchStr & "*" THEN 
-      sLine = Replace$(sLine, "\"", "")
       sLine = Replace$(sLine, "export ", "")
       sLine = Replace$(sLine, SrchStr, "")
       BREAK 
     ENDIF 
   WEND
   
-  RETURN sLine
+  RETURN UnQuote(sLine)
 
   CATCH 
     Message.Error("Unable to get info!\n\nFile: " & SrchFile & "\nString: " & SrchStr)
@@ -52,7 +51,7 @@ PUBLIC FUNCTION Replace_Conf(SrchStr AS String, RpcStr AS String)
   counter = 0
   FOR EACH sLine IN content_array
     IF sLine LIKE SrchStr & "*" THEN 
-      File.Save("/opt/Customizer/settings.conf", Replace$(content, sLine, SrchStr & "\"" & RpcStr & "\""))
+      File.Save("/opt/Customizer/settings.conf", Replace$(content, sLine, SrchStr & Quote(RpcStr)))
       BREAK 
     ENDIF 
      
@@ -75,7 +74,7 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   counter = 0
   FOR EACH sLine IN content_array
     IF sLine LIKE SrchStr & "*" THEN 
-      File.Save(SrchFile, Replace$(content, sLine, SrchStr & "\"" & RpcStr & "\""))
+      File.Save(SrchFile, Replace$(content, sLine, SrchStr & RpcStr))
       BREAK 
     ENDIF 
      

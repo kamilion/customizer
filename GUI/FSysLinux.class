@@ -29,10 +29,10 @@ PUBLIC SUB Form_Open()
     SetColourMode.Enabled = FALSE
     ColorChooser1.Enabled = FALSE
   ELSE 
-    SHELL "grep foreground= '" & WorkDir & "/ISO/isolinux/gfxboot.cfg' | sed 's/foreground=0x//'" TO HFColor
-    SHELL "grep background= '" & WorkDir & "/ISO/isolinux/gfxboot.cfg' | sed 's/background=0x//'" TO HBColor
-    SHELL "grep screen-colour= '" & WorkDir & "/ISO/isolinux/gfxboot.cfg' | sed 's/screen-colour=0x//'" TO HSColor
-  
+    HFColor = Functions.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "foreground=0x")
+    HBColor = Functions.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "background=0x")
+    HSColor = Functions.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "screen-colour=0x")
+    
     Test.ForeColor = Val("&H" & HFColor) 
     Test.BackColor = Val("&H" & HBColor)
     Panel1.BackColor = Val("&H" & HSColor)

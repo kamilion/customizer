@@ -12,15 +12,9 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.form"
-File[2]="FMain.class:107.2"
-File[3]="FSysLinux.form"
-File[4]="FTweaks.form"
-File[5]="FTweaks.class:44.2"
-File[6]="Check.module:5.265"
-Active=6
-File[7]="Functions.module:77.0"
-Count=7
+File[1]="FMain.class:193.101"
+Active=1
+Count=1
 
 [Watches]
 Count=0

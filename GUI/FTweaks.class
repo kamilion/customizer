@@ -121,9 +121,9 @@ PUBLIC SUB Framebuffer_Click()
   WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   IF Framebuffer.Value = TRUE THEN 
-    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
+    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", Quote("y"))
   ELSE 
-    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "n")
+    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", Quote("n"))
   ENDIF 
 END
 
@@ -136,7 +136,7 @@ PUBLIC SUB TTYs_Click()
   
   WorkDir = Functions.Get_Conf("WORK_DIR=")
    
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", "/dev/tty[1-" & TTYs.Text & "]")
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", Quote("/dev/tty[1-" & TTYs.Text & "]"))
 END
 
 PUBLIC SUB SShell_Click()
@@ -144,7 +144,7 @@ PUBLIC SUB SShell_Click()
   
   WorkDir = Functions.Get_Conf("WORK_DIR=")
 
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", SShell.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", Quote(SShell.Text))
 END
 
 PUBLIC SUB Zone_Click()

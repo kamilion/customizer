@@ -191,8 +191,8 @@ PUBLIC SUB DistName_Change()
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=", DistName.Text)
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=", Quote(DistName.Text))
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", Quote(DistName.Text & " " & Version.Text))
   TRY File.Save(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
   TRY File.Save(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
@@ -203,7 +203,7 @@ PUBLIC SUB HostName_Change()
   WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   HostName.Text = Trim(LCase(HostName.Text))
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", Quote(HostName.Text))
 END
 
 PUBLIC SUB LiveCD_User_Change()
@@ -212,7 +212,7 @@ PUBLIC SUB LiveCD_User_Change()
   WorkDir = Functions.Get_Conf("WORK_DIR=")
   
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", Quote(LiveCD_User.Text))
 END
 
 PUBLIC SUB Version_Change()
@@ -223,8 +223,8 @@ PUBLIC SUB Version_Change()
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=", Version.Text)
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=", Quote(Version.Text))
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", Quote(DistName.Text & " " & Version.Text))
   TRY File.Save(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
   TRY File.Save(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
