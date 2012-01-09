@@ -5,3 +5,4 @@
 	* Tar now default compression for snapshot
 	* GUI code cleanup
 	+ Existence of configuration file is checked from GUI and created with defaults if needed
+	+ Fixinig path to /home directory and display entries after exiting the nested X-session ('Dekstop')

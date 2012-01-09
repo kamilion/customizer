@@ -105,7 +105,7 @@ PUBLIC SUB Build_ISO_Click()
     ENDIF 
   ENDIF 
   
-  Module.Check.ISO()
+  Check.ISO()
 END
 
 PUBLIC SUB Clean_Click()

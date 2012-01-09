@@ -17,10 +17,9 @@ PUBLIC SUB X_session()
   
   WorkDir = Functions.Get_Conf("WORK_DIR=")
   
-  Xsessions = "0"
-  TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions", gb.File).Count
+  TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions").Count
 
-  IF Val(Xsessions) >= 1 THEN
+  IF Xsessions >= 1 THEN
     FMain.Desktop.Enabled = TRUE
   ELSE 
     FMain.Desktop.Enabled = FALSE
