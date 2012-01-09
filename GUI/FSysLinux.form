@@ -23,17 +23,17 @@
   { ColorChooser1 ColorChooser
     MoveScaled(49,2,44,35)
   }
-  { Test Label
+  { Selected Label
     MoveScaled(13,20,24,4)
     Font = Font["+2"]
-    Text = ("Text Label")
+    Text = ("Selected")
     Alignment = Align.Center
   }
   { SetColourMode ComboBox
     MoveScaled(66,38,16,3)
     ToolTip = ("Set which colour should be changed")
     ReadOnly = True
-    List = [("Foreground"), ("Background"), ("Screen-Colour")]
+    List = [("Selected"), ("Normal"), ("Screen-Colour")]
     Text = ("ComboBox1")
   }
   { ChangePic Button
@@ -41,5 +41,12 @@
     ToolTip = ("Change isolinux image")
     Text = ("Change")
     Picture = Picture["icon:/16/image"]
+  }
+  { Normal Label
+    MoveScaled(13,25,24,4)
+    Font = Font["+2"]
+    Text = ("Normal")
+    Alignment = Align.Center
+    Transparent = True
   }
 }
