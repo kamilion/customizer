@@ -3,17 +3,18 @@
 
 PUBLIC SUB Form_Open()
   DIM TempFile AS File
-  DIM textLine AS String
   DIM items AS String[]
-  DIM i AS Integer
-  DIM key AS Integer
-  DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM i, key AS Integer
+  DIM textLine, WorkDir AS String
+  
+  Check.Conf_File()
+  
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
 
   ME.Center
   ME.Caption = "Installed Packages "
 
-  SHELL "chroot '" & Trim(WorkDir) & "/FileSystem' dpkg-query -W --showformat='${Package},${Version},${Priority},${Installed-Size}\n' | tee /tmp/PACKAGESLIST" WAIT
+  SHELL "chroot '" & WorkDir & "/FileSystem' dpkg-query -W --showformat='${Package},${Version},${Priority},${Installed-Size}\n' | tee /tmp/PACKAGESLIST" WAIT
 
   OPEN "/tmp/PACKAGESLIST" FOR READ AS #TempFile
   ' Setup ColumnView
@@ -46,12 +47,18 @@ END
 
 PUBLIC SUB Save_Click()
   DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+  DIM tmpStr AS String
+  
+  tmpStr = "WORK_DIR="
+  WorkDir = Functions.Get_Conf(tmpStr)
   
   Dialog.Title = "Select where to save the list"
   Dialog.Filter = ["*.txt", "Text Files"]
-  Dialog.Path = Trim(WorkDir) & ""
+  Dialog.Path = WorkDir
 
   IF Dialog.SaveFile() THEN RETURN
   COPY "/tmp/PACKAGESLIST" TO Dialog.Path & ".txt"
+  
+  CATCH 
+    Message.Error("Unable to copy /tmp/PACKAGESLIST to" & Dialog.Path)
 END

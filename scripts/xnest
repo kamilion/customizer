@@ -89,3 +89,10 @@ rm -rf "$WORK_DIR/FileSystem/root/.local/share/gvfs-metadata"
 INFO_MESSAGE "Copying the changes to skel"
 cp -ru "$WORK_DIR/FileSystem/root/"* "$WORK_DIR/FileSystem/etc/skel" 2> /dev/null
 cp -ru "$WORK_DIR/FileSystem/root/".??* "$WORK_DIR/FileSystem/etc/skel" 2> /dev/null
+
+INFO_MESSAGE "Fixinig path to /home directory"
+LIVEUSERNAME=`grep "export USERNAME=" "$WORK_DIR/FileSystem/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g'` || ERROR_MESSAGE "Unable get the username"
+find "$WORK_DIR/FileSystem/etc/skel" -type f | xargs sed -i "s@/home/root/@/home/$LIVEUSERNAME@g" || WARNING_MESSAGE "Unable fix home path"
+
+INFO_MESSAGE "Fixinig display entries"
+find "$WORK_DIR/FileSystem/etc/skel" -type f | xargs sed -i "s@localhost:9.0@:0.0@g" || WARNING_MESSAGE "Unable get fix display entries"

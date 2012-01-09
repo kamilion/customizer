@@ -79,9 +79,9 @@ fi
 INFO_MESSAGE "Loading configs"
 ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || ERROR_MESSAGE "Unable to chroot and get the architecture"
 RELEASE_NOTES_URL="`cat "$WORK_DIR/ISO/.disk/release_notes_url"`"
-DIST=`grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//'` || ERROR_MESSAGE "Unable to chroot and get the distribution ID"
-VERSION=`grep DISTRIB_RELEASE= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//'` || ERROR_MESSAGE "Unable to get the distribution version"
-CODENAME=`grep DISTRIB_CODENAME= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//'` || ERROR_MESSAGE "Unable to get the distribution codename"
+DIST=`grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//;s/\"//g'` || ERROR_MESSAGE "Unable to chroot and get the distribution ID"
+VERSION=`grep DISTRIB_RELEASE= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//;s/\"//g'` || ERROR_MESSAGE "Unable to get the distribution version"
+CODENAME=`grep DISTRIB_CODENAME= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//;s/\"//g'` || ERROR_MESSAGE "Unable to get the distribution codename"
 LIVEUSERNAME=`grep "export USERNAME=" "$WORK_DIR/FileSystem/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g'` || ERROR_MESSAGE "Unable get the username"
 
 to_clean="$WORK_DIR/$DIST-$ARCH-$VERSION.iso $WORK_DIR/ISO/casper/filesystem.squashfs \

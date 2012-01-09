@@ -1,110 +1,5 @@
 ' Gambas module file
 
-PUBLIC SUB Browse_FileSystem_Folder()
-  DIM FILEMANAGER AS String
-  DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  IF Exist("/usr/bin/nautilus") THEN 
-    FILEMANAGER = "nautilus"
-  ENDIF 
-  
-  IF Exist("/usr/bin/dolphin") THEN 
-    FILEMANAGER = "dolphin"
-  ENDIF
-  
-  IF Exist("/usr/bin/pcmanfm") THEN 
-    FILEMANAGER = "pcmanfm"
-  ENDIF
-  
-  IF Exist("/usr/bin/xfe") THEN 
-    FILEMANAGER = "xfe"
-  ENDIF
-  
-  IF Exist("/usr/bin/worker") THEN 
-    FILEMANAGER = "worker"
-  ENDIF
-  
-  IF Exist("/usr/bin/gentoo") THEN 
-    FILEMANAGER = "gentoo"
-  ENDIF
-  
-  IF Exist("/usr/bin/thunar") THEN 
-    FILEMANAGER = "thunar"
-  ENDIF
-  
-  
-  IF Exist("/usr/bin/filerunner") THEN 
-    FILEMANAGER = "filerunner"
-  ENDIF
-  
-  IF Exist("/usr/bin/krusader") THEN 
-    FILEMANAGER = "krusader"
-  ENDIF
-  
-  IF Exist("/usr/bin/rox-filer") THEN 
-    FILEMANAGER = "rox-filer"
-  ENDIF
-  
-  IF NOT Exist("/usr/bin/nautilus") AND IF NOT Exist("/usr/bin/dolphin") AND IF NOT Exist("/usr/bin/pcmanfm") AND IF NOT Exist("/usr/bin/xfe") AND IF NOT Exist("/usr/bin/worker") AND IF NOT Exist("/usr/bin/gentoo") AND IF NOT Exist("/usr/bin/thunar") AND IF NOT Exist("/usr/bin/filerunner") AND IF NOT Exist("/usr/bin/krusader") AND IF NOT Exist("/usr/bin/rox-filer") THEN
-    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
-  ELSE 
-    EXEC [FILEMANAGER, Trim(WorkDir) & "/FileSystem"]
-  ENDIF 
-END
-
-PUBLIC SUB Browse_ISO_Folder()
-  DIM FILEMANAGER AS String
-  DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  
-  IF Exist("/usr/bin/nautilus") THEN 
-    FILEMANAGER = "nautilus"
-  ENDIF 
-  
-  IF Exist("/usr/bin/dolphin") THEN 
-    FILEMANAGER = "dolphin"
-  ENDIF
-  
-  IF Exist("/usr/bin/pcmanfm") THEN 
-    FILEMANAGER = "pcmanfm"
-  ENDIF
-  
-  IF Exist("/usr/bin/xfe") THEN 
-    FILEMANAGER = "xfe"
-  ENDIF
-  
-  IF Exist("/usr/bin/worker") THEN 
-    FILEMANAGER = "worker"
-  ENDIF
-  
-  IF Exist("/usr/bin/gentoo") THEN 
-    FILEMANAGER = "gentoo"
-  ENDIF
-  
-  IF Exist("/usr/bin/thunar") THEN 
-    FILEMANAGER = "thunar"
-  ENDIF
-  
-  
-  IF Exist("/usr/bin/filerunner") THEN 
-    FILEMANAGER = "filerunner"
-  ENDIF
-  
-  IF Exist("/usr/bin/krusader") THEN 
-    FILEMANAGER = "krusader"
-  ENDIF
-  
-  IF Exist("/usr/bin/rox-filer") THEN 
-    FILEMANAGER = "rox-filer"
-  ENDIF
-  
-  IF NOT Exist("/usr/bin/nautilus") AND IF NOT Exist("/usr/bin/dolphin") AND IF NOT Exist("/usr/bin/pcmanfm") AND IF NOT Exist("/usr/bin/xfe") AND IF NOT Exist("/usr/bin/worker") AND IF NOT Exist("/usr/bin/gentoo") AND IF NOT Exist("/usr/bin/thunar") AND IF NOT Exist("/usr/bin/filerunner") AND IF NOT Exist("/usr/bin/krusader") AND IF NOT Exist("/usr/bin/rox-filer") THEN
-    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
-  ELSE 
-    EXEC [FILEMANAGER, Trim(WorkDir) & "/ISO"]
-  ENDIF 
-END
-
 PUBLIC SUB Enable_Stuff()
   FMain.Create_Snapshot.Enabled = TRUE
   FMain.Edit_Sources.Enabled = TRUE
@@ -113,6 +8,8 @@ PUBLIC SUB Enable_Stuff()
   FMain.Build_ISO.Enabled = TRUE
   FMain.Clean.Enabled = TRUE
   FMain.Extras_Menu.Enabled = TRUE
+  FMain.Directories.Enabled = TRUE
+  FMain.Files.Enabled = TRUE
   FMain.Archive.Enabled = TRUE
   FMain.DistName.Enabled = TRUE
   FMain.HostName.Enabled = TRUE
@@ -121,8 +18,8 @@ PUBLIC SUB Enable_Stuff()
   FMain.ReleaseNotesURL.Enabled = TRUE
   
   'Check for installed Desktop env. or Window Manager
-  Check_for_Xsession()
-  Check_for_pkgm()
+  Check.X_session()
+  Check.Pkg_Manager()
 END
 
 PUBLIC SUB Disable_Stuff()
@@ -134,102 +31,12 @@ PUBLIC SUB Disable_Stuff()
   FMain.Build_ISO.Enabled = FALSE
   FMain.Clean.Enabled = FALSE
   FMain.Extras_Menu.Enabled = FALSE
+  FMain.Directories.Enabled = FALSE
+  FMain.Files.Enabled = FALSE
   FMain.Desktop.Enabled = FALSE
-  
   FMain.DistName.Enabled = FALSE
   FMain.HostName.Enabled = FALSE
   FMain.LiveCD_User.Enabled = FALSE
   FMain.Version.Enabled = FALSE
   FMain.ReleaseNotesURL.Enabled = FALSE
-END
-
-PUBLIC SUB Check_for_Xsession()
-  DIM Xsessions AS Variant
-  DIM WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  SHELL "ls '" & Trim(WorkDir) & "/FileSystem/usr/share/xsessions' | wc -l" TO Xsessions
-
-  IF Val(Xsessions) >= 1 THEN
-    FMain.Desktop.Enabled = TRUE
-  ELSE 
-    FMain.Desktop.Enabled = FALSE
-  ENDIF 
-END
-
-PUBLIC SUB Check_for_pkgm()
-  DIM pkgms AS NEW Collection
-  DIM WorkDir, pkgm AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  pkgms["first"] = "synaptic"
-  pkgms["second"] = "aptitude"
-  'Pkgms = "aptitude synaptic"
-  
-  FOR EACH pkgm IN pkgms
-    IF Exist(Trim(WorkDir) & "/FileSystem/usr/bin/" & pkgm) OR IF Exist(Trim(WorkDir) & "/FileSystem/usr/sbin/" & pkgm) THEN
-      FMain.Archive.Enabled = TRUE
-      BREAK 
-    ELSE 
-      FMain.Archive.Enabled = FALSE
-    ENDIF 
-  NEXT 
-END
-
-PUBLIC SUB Check_for_ISO()
-  DIM WorkDir, Dist, Arch, Rel AS String
-  
-  
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  SHELL "grep DISTRIB_ID= '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release' | sed 's/DISTRIB_ID=//'" TO Dist
-  SHELL "grep DISTRIB_RELEASE= '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release' | sed 's/DISTRIB_RELEASE=//'" TO Rel
-  SHELL "chroot '" & Trim(WorkDir) & "/FileSystem' dpkg --print-architecture" TO Arch
-  
-  IF Exist(Trim(WorkDir) & "/" & Trim(Dist) & "-" & Trim(Arch) & "-" & Trim(Rel) & ".iso") THEN
-    FMain.QEMU.Enabled = TRUE
-  ENDIF 
-END
-
-PUBLIC SUB CheckExistence()
-  DIM Dist, HName, UName, Rel, RNURL, WorkDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
-  
-  IF Exist(Trim(WorkDir) & "/FileSystem") AND Exist(Trim(WorkDir) & "/ISO") THEN 
-    IF NOT Exist(Trim(WorkDir) & "/FileSystem/root") OR NOT Exist(Trim(WorkDir) & "/FileSystem/etc") THEN 
-      Message.Error("Some important folder are missing which mait be result\nof unsuccessful cleaning or deleted by accident, clean and start\nall over again or import your latest snapshot (if you had created one).")
-      FMain.Clean.Enabled = TRUE
-    ELSE 
-      IF NOT Exist(Trim(WorkDir) & "/FileSystem/etc/casper.conf") OR NOT Exist(Trim(WorkDir) & "/FileSystem/etc/lsb-release") THEN 
-        Message.Error(Trim(WorkDir) & "/FileSystem/etc/casper.conf or " & Trim(WorkDir) & "/FileSystem/etc/lsb-release\nare deleted but are very essential for setting up some configuration.\nCreate them using a text editor or clean and start all over again!")
-        Module.Disable_Stuff()
-        FMain.Clean.Enabled = TRUE
-      ELSE 
-        'Enable some elements
-        Module.Enable_Stuff()
-      
-        'Get some configuration to display it in the text boxes
-        SHELL "grep HOST= '" & Trim(WorkDir) & "/FileSystem/etc/casper.conf' | sed 's/export HOST=//;s/\"//g'" TO HName
-        SHELL "grep DISTRIB_RELEASE= '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release' | sed 's/DISTRIB_RELEASE=//'" TO Rel
-        SHELL "grep USERNAME= '" & Trim(WorkDir) & "/FileSystem/etc/casper.conf' | sed 's/export USERNAME=//;s/\"//g'" TO UName
-        SHELL "grep DISTRIB_ID= '" & Trim(WorkDir) & "/FileSystem/etc/lsb-release' | sed 's/DISTRIB_ID=//'" TO Dist
-    
-        'Set the text of the aproparite text box acording to the configuration
-        FMain.DistName.Text = Trim(Dist)
-        FMain.HostName.Text = Trim(HName)
-        FMain.Version.Text = Trim(Rel)
-        FMain.LiveCD_User.Text = Trim(UName)
-        
-        'Set/Load the release notes URL
-        FMain.ReleaseNotesURL.Text = "http://www.ubuntu.com/getubuntu/releasenotes"
-        TRY FMain.ReleaseNotesURL.Text = File.Load(Trim(WorkDir) & "/ISO/.disk/release_notes_url")
-        
-        'Check if previously builded ISO image exists
-        Check_for_ISO
-        
-        'Check if DEs/WM is installed
-        Check_for_Xsession()
-        
-        'Check if package manager is installed installed
-        Module.Check_for_pkgm()
-      ENDIF 
-    ENDIF
-  ENDIF 
 END

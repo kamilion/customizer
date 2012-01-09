@@ -2,9 +2,10 @@
 
 
 PUBLIC SUB Form_Open()
-  DIM WDir, BFiles, Edit, VRam, Res, SComp, FChroot, UColors, AHelper, ATitle, MDir AS String
   ME.Center
   ME.Caption = "Settings"
+  
+  Check.Conf_File()
   
   IF Exist("/usr/bin/gedit") THEN
     EditorBox.Add("gedit")
@@ -70,30 +71,17 @@ PUBLIC SUB Form_Open()
     EditorBox.Add("pico")
   ENDIF 
   
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WDir
-  SHELL "grep MOUNT_DIR= /opt/Customizer/settings.conf | sed 's/MOUNT_DIR=//;s/\"//g'" TO MDir
-  SHELL "grep APPEND_TITLE= /opt/Customizer/settings.conf | sed 's/APPEND_TITLE=//'" TO ATitle
-  SHELL "grep MESSAGES_COLORS= /opt/Customizer/settings.conf | sed 's/MESSAGES_COLORS=//'" TO UColors
-  SHELL "grep FORCE_CHROOT= /opt/Customizer/settings.conf | sed 's/FORCE_CHROOT=//'" TO FChroot
-  SHELL "grep APT_HELPER= /opt/Customizer/settings.conf | sed 's/APT_HELPER=//'" TO AHelper
-  SHELL "grep EDITOR= /opt/Customizer/settings.conf | sed 's/EDITOR=//'" TO Edit
-  SHELL "grep BOOT_FILES= /opt/Customizer/settings.conf | sed 's/BOOT_FILES=//;s/\"//g'" TO BFiles
-  SHELL "grep VRAM= /opt/Customizer/settings.conf | sed 's/VRAM=//;s/\"//g'" TO VRam
-  SHELL "grep RESOLUTION= /opt/Customizer/settings.conf | sed 's/RESOLUTION=//;s/\"//g'" TO Res
-  SHELL "grep COMPRESSION= /opt/Customizer/settings.conf | sed 's/COMPRESSION=//;s/\"//g'" TO SComp
-  
-
-  TRY WorkDir.Text = Trim(WDir)
-  TRY MountDir.Text = Trim(MDir)
-  TRY AppendTitle.Value = Trim(ATitle)
-  TRY UseColors.Value = Trim(UColors)
-  TRY ForceChroot.Value = Trim(FChroot)
-  TRY AptHelper.Value = Trim(AHelper)
-  TRY EditorBox.Text = Trim(Edit)
-  TRY BootFiles.Value = Trim(BFiles)
-  TRY VirtualMemBox.Text = Trim(VRam)
-  TRY ResolutionBox.Text = Trim(Res)
-  TRY CompressionBox.Text = Trim(SComp)
+  TRY WorkDir.Text = Functions.Get_Conf("WORK_DIR=")
+  TRY MountDir.Text = Functions.Get_Conf("MOUNT_DIR=")
+  TRY AppendTitle.Value = Functions.Get_Conf("APPEND_TITLE=")
+  TRY UseColors.Value = Functions.Get_Conf("MESSAGES_COLORS=")
+  TRY ForceChroot.Value = Functions.Get_Conf("FORCE_CHROOT=")
+  TRY AptHelper.Value = Functions.Get_Conf("APT_HELPER=")
+  TRY EditorBox.Text = Functions.Get_Conf("EDITOR=")
+  TRY BootFiles.Value = Functions.Get_Conf("BOOT_FILES=")
+  TRY VirtualMemBox.Text = Functions.Get_Conf("VRAM=")
+  TRY ResolutionBox.Text = Functions.Get_Conf("RESOLUTION=")
+  TRY CompressionBox.Text = Functions.Get_Conf("COMPRESSION=")
   
   IF FMain.Build_ISO.Enabled = TRUE THEN 
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
@@ -104,92 +92,94 @@ END
 
 PUBLIC SUB AppendTitle_Click()
   IF AppendTitle.Value = 0 THEN 
-    SHELL "sed -i 's/APPEND_TITLE=.*/APPEND_TITLE=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APPEND_TITLE=", "0")
   ELSE 
-    SHELL "sed -i 's/APPEND_TITLE=.*/APPEND_TITLE=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APPEND_TITLE=", "1")
   ENDIF 
 END
 
 PUBLIC SUB UseColors_Click()
   IF UseColors.Value = 0 THEN 
-    SHELL "sed -i 's/MESSAGES_COLORS=.*/MESSAGES_COLORS=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("MESSAGES_COLORS=", "0")
   ELSE 
-    SHELL "sed -i 's/MESSAGES_COLORS=.*/MESSAGES_COLORS=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("MESSAGES_COLORS=", "1")
   ENDIF 
 END
 
 PUBLIC SUB ForceChroot_Click()
   IF ForceChroot.Value = 0 THEN 
-    SHELL "sed -i 's/FORCE_CHROOT=.*/FORCE_CHROOT=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("FORCE_CHROOT=", "0")
   ELSE 
-    SHELL "sed -i 's/FORCE_CHROOT=.*/FORCE_CHROOT=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("FORCE_CHROOT=", "1")
   ENDIF 
 END
 
 PUBLIC SUB AptHelper_Click()
   IF AptHelper.Value = 0 THEN 
-    SHELL "sed -i 's/APT_HELPER=.*/APT_HELPER=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APT_HELPER=", "0")
   ELSE 
-    SHELL "sed -i 's/APT_HELPER=.*/APT_HELPER=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("APT_HELPER=", "1")
   ENDIF 
 END
 
 PUBLIC SUB BootFiles_Click()
   IF BootFiles.Value = 0 THEN 
-    SHELL "sed -i 's/BOOT_FILES=.*/BOOT_FILES=0/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("BOOT_FILES=", "0")
   ELSE 
-    SHELL "sed -i 's/BOOT_FILES=.*/BOOT_FILES=1/' /opt/Customizer/settings.conf"
+    Functions.Replace_Conf("BOOT_FILES=", "1")
   ENDIF 
 END
 
 PUBLIC SUB ResolutionBox_Click()
-  SHELL "sed -i 's/RESOLUTION=.*/RESOLUTION=" & ResolutionBox.Text & "/' /opt/Customizer/settings.conf" 
+  Functions.Replace_Conf("RESOLUTION=", ResolutionBox.Text)
 END
 
 PUBLIC SUB EditorBox_Click()
-  SHELL "sed -i 's/EDITOR=.*/EDITOR=" & EditorBox.Text & "/' /opt/Customizer/settings.conf"
+  Functions.Replace_Conf("EDITOR=", EditorBox.Text)
 END
 
 PUBLIC SUB VirtualMemBox_Click()
-  SHELL "sed -i 's/VRAM=.*/VRAM=" & VirtualMemBox.Text & "/' /opt/Customizer/settings.conf"
+  Functions.Replace_Conf("VRAM=", VirtualMemBox.Text)
 END
 
 PUBLIC SUB Change_WDir_Click()
   DIM WDir AS String
-  SHELL "grep WORK_DIR= /opt/Customizer/settings.conf | sed 's/WORK_DIR=//;s/\"//g'" TO WorkDir
+
+  WDir = Functions.Get_Conf("WORK_DIR=")
   
   Dialog.Title = "Please, select work directory"
   
-  IF Exist(Trim(WDir)) THEN 
-    Dialog.Path = Trim(WDir)
+  IF Exist(WDir) THEN 
+    Dialog.Path = WDir
   ELSE 
     Dialog.Path = "/home"
   ENDIF 
   
   IF Dialog.SelectDirectory() THEN RETURN 
-  SHELL "sed -i 's@WORK_DIR=.*@WORK_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("WORK_DIR=", Dialog.Path)
   WorkDir.Text = Dialog.Path
 END
 
 PUBLIC SUB Change_MDir_Click()
   DIM MDir AS String
-  SHELL "grep MOUNT_DIR= /opt/Customizer/settings.conf | sed 's/MOUNT_DIR=//;s/\"//g'" TO MDir
+  
+  MDir = Functions.Get_Conf("MOUNT_DIR=")
   
   Dialog.Title = "Please, select work directory"
   
-  IF Exist(Trim(MDir)) THEN 
-    Dialog.Path = Trim(MDir)
+  IF Exist(MDir) THEN 
+    Dialog.Path = MDir
   ELSE 
     Dialog.Path = "/home"
   ENDIF 
   
   IF Dialog.SelectDirectory() THEN RETURN 
-  SHELL "sed -i 's@MOUNT_DIR=.*@MOUNT_DIR=\"" & Dialog.Path & "\"@' /opt/Customizer/settings.conf" WAIT
+  Functions.Replace_Conf("MOUNT_DIR=", Dialog.Path)
   MountDir.Text = Dialog.Path
 END
 
 PUBLIC SUB CompressionBox_Click()
-  SHELL "sed -i 's/COMPRESSION=.*/COMPRESSION=" & CompressionBox.Text & "/' /opt/Customizer/settings.conf"
+  Functions.Replace_Conf("COMPRESSION=", CompressionBox.Text)
 END
 
 PUBLIC SUB Quit_Click()
