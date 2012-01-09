@@ -12,11 +12,9 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:352.0"
-File[2]="FMain.form"
-File[3]="Functions.module:113.26"
-Active=3
-Count=3
+File[1]="FMain.form"
+Active=1
+Count=1
 
 [Watches]
 Count=0

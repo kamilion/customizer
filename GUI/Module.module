@@ -8,6 +8,8 @@ PUBLIC SUB Enable_Stuff()
   FMain.Build_ISO.Enabled = TRUE
   FMain.Clean.Enabled = TRUE
   FMain.Extras_Menu.Enabled = TRUE
+  FMain.Directories.Enabled = TRUE
+  FMain.Files.Enabled = TRUE
   FMain.Archive.Enabled = TRUE
   FMain.DistName.Enabled = TRUE
   FMain.HostName.Enabled = TRUE
@@ -29,8 +31,9 @@ PUBLIC SUB Disable_Stuff()
   FMain.Build_ISO.Enabled = FALSE
   FMain.Clean.Enabled = FALSE
   FMain.Extras_Menu.Enabled = FALSE
+  FMain.Directories.Enabled = FALSE
+  FMain.Files.Enabled = FALSE
   FMain.Desktop.Enabled = FALSE
-  
   FMain.DistName.Enabled = FALSE
   FMain.HostName.Enabled = FALSE
   FMain.LiveCD_User.Enabled = FALSE
