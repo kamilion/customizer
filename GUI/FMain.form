@@ -55,6 +55,7 @@
   }
   { Directories Menu
     Text = ("Directories")
+    Enabled = False
     { Browse_FS Menu
       Text = ("FileSystem")
       Picture = Picture["icon:/16/directory"]
@@ -82,6 +83,7 @@
   }
   { Files Menu
     Text = ("Files")
+    Enabled = False
     { Edit_casper_conf Menu
       Text = ("/etc/casper.conf")
       Picture = Picture["icon:/16/edit"]
