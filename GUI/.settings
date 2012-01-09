@@ -12,10 +12,11 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.class:193.101"
-File[2]="FSysLinux.form"
-Active=2
-Count=2
+File[1]="FMain.class:352.0"
+File[2]="FMain.form"
+File[3]="Functions.module:113.26"
+Active=3
+Count=3
 
 [Watches]
 Count=0

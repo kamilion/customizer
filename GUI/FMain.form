@@ -48,17 +48,51 @@
       Text = ("SysLinux")
       Picture = Picture["icon:/16/properties"]
     }
-    { Browse_FS Menu
-      Text = ("Browse FileSystem")
-      Picture = Picture["icon:/16/home"]
-    }
-    { Browse_ISO Menu
-      Text = ("Browse ISO")
-      Picture = Picture["icon:/16/directory"]
-    }
     { List_Packages Menu
       Text = ("List Installed Packages")
       Picture = Picture["icon:/16/text"]
+    }
+  }
+  { Directories Menu
+    Text = ("Directories")
+    { Browse_FS Menu
+      Text = ("FileSystem")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_etc_skel Menu
+      Text = ("FileSystem/etc/skel")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_etc Menu
+      Text = ("FileSystem/etc")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_root Menu
+      Text = ("FileSystem/root")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_ISO Menu
+      Text = ("ISO")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_ISO_isolinux Menu
+      Text = ("ISO/isolinux")
+      Picture = Picture["icon:/16/directory"]
+    }
+  }
+  { Files Menu
+    Text = ("Files")
+    { Edit_casper_conf Menu
+      Text = ("/etc/casper.conf")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Edit_lsb_release Menu
+      Text = ("/etc/lsb_release")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Edit_motd Menu
+      Text = ("/etc/update-motd.d/10-help-text")
+      Picture = Picture["icon:/16/edit"]
     }
   }
   { Help Menu

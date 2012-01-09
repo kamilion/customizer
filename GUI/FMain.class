@@ -340,67 +340,6 @@ PUBLIC SUB Tweaks_Click()
   FTweaks.Show
 END
 
-  
-PUBLIC SUB Browse_FS_Click()
-  DIM WorkDir AS String
-
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
-  IF Exist("/usr/bin/nautilus") THEN 
-    EXEC ["/usr/bin/nautilus", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/dolphin") THEN 
-    EXEC ["/usr/bin/dolphin", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/pcmanfm") THEN 
-    EXEC ["/usr/bin/pcmanfm", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/xfe") THEN 
-    EXEC ["/usr/bin/xfe", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/worker") THEN 
-    EXEC ["/usr/bin/worker", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/gentoo") THEN 
-    EXEC ["/usr/bin/gentoo", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/thunar") THEN 
-    EXEC ["/usr/bin/thunar", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/filerunner") THEN 
-    EXEC ["/usr/bin/filerunner", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/krusader") THEN 
-    EXEC ["/usr/bin/krusader", WorkDir & "/FileSystem"]
-  ELSE IF Exist("/usr/bin/rox-filer") THEN 
-    EXEC ["/usr/bin/rox-filer", WorkDir & "/FileSystem"]
-  ELSE 
-    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
-  ENDIF
-END
-
-PUBLIC SUB Browse_ISO_Click()
-  DIM WorkDir AS String
-
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-
-  IF Exist("/usr/bin/nautilus") THEN 
-    EXEC ["/usr/bin/nautilus", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/dolphin") THEN 
-    EXEC ["/usr/bin/dolphin", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/pcmanfm") THEN 
-    EXEC ["/usr/bin/pcmanfm", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/xfe") THEN 
-    EXEC ["/usr/bin/xfe", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/worker") THEN 
-    EXEC ["/usr/bin/worker", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/gentoo") THEN 
-    EXEC ["/usr/bin/gentoo", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/thunar") THEN 
-    EXEC ["/usr/bin/thunar", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/filerunner") THEN 
-    EXEC ["/usr/bin/filerunner", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/krusader") THEN 
-    EXEC ["/usr/bin/krusader", WorkDir & "/ISO"]
-  ELSE IF Exist("/usr/bin/rox-filer") THEN 
-    EXEC ["/usr/bin/rox-filer", WorkDir & "/ISO"]
-  ELSE 
-    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
-  ENDIF
-END
-
 PUBLIC SUB List_Packages_Click()
   FPackages.Show
 END
@@ -410,6 +349,44 @@ PUBLIC SUB SysLinux_Click()
 END
 
 
+  
+' Browse directories
+PUBLIC SUB Browse_FS_Click()
+  Functions.Browse_Dir("/FileSystem")
+END
+
+PUBLIC SUB Browse_ISO_Click()
+  Functions.Browse_Dir("/ISO")
+END
+
+PUBLIC SUB Browse_FS_etc_skel_Click()
+  Functions.Browse_Dir("/FileSystem/etc/skel")
+END
+
+PUBLIC SUB Browse_FS_etc_Click()
+  Functions.Browse_Dir("/FileSystem/etc")
+END
+
+PUBLIC SUB Browse_FS_root_Click()
+  Functions.Browse_Dir("/FileSystem/root")
+END
+
+PUBLIC SUB Browse_ISO_isolinux_Click()
+  Functions.Browse_Dir("/ISO/isolinux")
+END
+
+' Edit files
+PUBLIC SUB Edit_casper_conf_Click()
+  Functions.Edit_File("/FileSystem/etc/casper.conf")
+END
+
+PUBLIC SUB Edit_lsb_release_Click()
+  Functions.Edit_File("/FileSystem/etc/lsb_release")
+END
+
+PUBLIC SUB Edit_motd_Click()
+  Functions.Edit_File("/FileSystem/etc/update-motd.d/10-help-text")
+END
 
 
 

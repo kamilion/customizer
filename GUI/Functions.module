@@ -85,3 +85,59 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
     Message.Error("Unable to find:\n\nString: " & SrchStr & "\n\n In: " & SrchFile)
   ENDIF 
 END
+
+PUBLIC FUNCTION Edit_File(EditFile AS String)
+  DIM WorkDir, ATitle, Editor AS String
+  
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
+  ATitle = Functions.Get_Conf("APPEND_TITLE=")
+  Editor = Functions.Get_Conf("EDITOR=")
+
+  IF NOT Exist("/usr/bin/" & Editor) THEN 
+    Message.Warning("Change the prefered text-editor, " & Editor & " can not be used")
+  ELSE 
+    IF Editor = "nano" OR Editor = "pico" OR Editor = "vi" OR Editor = "vim" THEN 
+      IF ATitle = 1 THEN 
+        EXEC ["x-terminal-emulator", "--title=Editing " & EditFile, "-e", Editor, WorkDir & EditFile] WAIT
+      ELSE 
+        EXEC ["x-terminal-emulator", "-e", Editor, WorkDir & EditFile] WAIT
+      ENDIF 
+    ELSE 
+      EXEC [Editor, WorkDir & EditFile]
+    ENDIF 
+  ENDIF 
+  
+  CATCH 
+    Message.Error("Unable to edit\n\nFile: " & EditFile & "\nWith text-editor: " & Editor)
+END
+
+PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
+  DIM WorkDir AS String
+
+  WorkDir = Functions.Get_Conf("WORK_DIR=")
+  
+  IF Exist("/usr/bin/nautilus") THEN 
+    EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/dolphin") THEN 
+    EXEC ["/usr/bin/dolphin", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/pcmanfm") THEN 
+    EXEC ["/usr/bin/pcmanfm", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/xfe") THEN 
+    EXEC ["/usr/bin/xfe", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/worker") THEN 
+    EXEC ["/usr/bin/worker", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/gentoo") THEN 
+    EXEC ["/usr/bin/gentoo", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/thunar") THEN 
+    EXEC ["/usr/bin/thunar", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/filerunner") THEN 
+    EXEC ["/usr/bin/filerunner", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/krusader") THEN 
+    EXEC ["/usr/bin/krusader", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/rox-filer") THEN 
+    EXEC ["/usr/bin/rox-filer", WorkDir & BrsDir]
+  ELSE 
+    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
+  ENDIF
+  
+END
