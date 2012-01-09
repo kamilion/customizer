@@ -381,7 +381,7 @@ PUBLIC SUB Edit_casper_conf_Click()
 END
 
 PUBLIC SUB Edit_lsb_release_Click()
-  Functions.Edit_File("/FileSystem/etc/lsb_release")
+  Functions.Edit_File("/FileSystem/etc/lsb-release")
 END
 
 PUBLIC SUB Edit_motd_Click()
