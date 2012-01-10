@@ -1,0 +1,3 @@
+	* Appending default values in files if match not found (by GUI)
+	* Using public variables in GUI to abvoid re-reading of files
+	* Other manor corrections

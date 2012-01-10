@@ -1,43 +1,56 @@
 ' Gambas module file
 
-PUBLIC FUNCTION Get_Conf(SrchStr AS String) AS Variant
-  DIM sLine AS String
-  DIM hFile AS File
+PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", Quote("/home")) 
+PUBLIC ATitle AS String = Functions.Get_Conf("APPEND_TITLE=", Quote("1"))
+
+PUBLIC FUNCTION Get_Conf(SrchStr AS String, Def AS String) AS Variant
+  DIM content_array AS String[]
+  DIM sLine, content AS String
+  DIM counter AS Integer
+
+  content = File.Load("/opt/Customizer/settings.conf")
+  content_array = Split(File.Load("/opt/Customizer/settings.conf"), "\n")
   
-  hFile = OPEN "/opt/Customizer/settings.conf" FOR INPUT 
-  WHILE NOT Eof(hFile)
-    LINE INPUT #hFile, sLine
+  counter = 0
+  FOR EACH sLine IN content_array
     IF sLine LIKE SrchStr & "*" THEN 
-      sLine = Replace$(sLine, "\"", "")
       sLine = Replace$(sLine, SrchStr, "")
       BREAK 
     ENDIF 
-  WEND
+    counter += 1
+  NEXT 
   
-  RETURN sLine
-
-  CATCH 
-    Message.Error("Unable to get value: " & SrchStr)
-END
-
-PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String) AS Variant
-  DIM sLine AS String
-  DIM hFile AS File
-
-  hFile = OPEN SrchFile FOR INPUT 
-  WHILE NOT Eof(hFile)
-    LINE INPUT #hFile, sLine
-    IF sLine LIKE "*" & SrchStr & "*" THEN 
-      sLine = Replace$(sLine, "export ", "")
-      sLine = Replace$(sLine, SrchStr, "")
-      BREAK 
-    ENDIF 
-  WEND
+  IF counter = content_array.Count THEN 
+    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n In: /opt/Customizer/settings.conf\n\nAppedning: " & SrchStr & Def & "\nTo: /opt/Customizer/settings.conf")
+    File.Save("/opt/Customizer/settings.conf", content & "\n" & SrchStr & Def)
+  ENDIF 
   
   RETURN UnQuote(sLine)
+END
 
-  CATCH 
-    Message.Error("Unable to get info!\n\nFile: " & SrchFile & "\nString: " & SrchStr)
+PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS Variant
+  DIM content_array AS String[]
+  DIM sLine, content AS String
+  DIM counter AS Integer
+
+  content = File.Load(SrchFile)
+  content_array = Split(File.Load(SrchFile), "\n")
+  
+  counter = 0
+  FOR EACH sLine IN content_array
+    IF sLine LIKE SrchStr & "*" THEN 
+      sLine = Replace$(sLine, SrchStr, "")
+      BREAK 
+    ENDIF 
+    counter += 1
+  NEXT 
+  
+  IF counter = content_array.Count THEN 
+    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Def & "\nTo: " & SrchFile)
+    File.Save(SrchFile, content & "\n" & SrchStr & Def)
+  ENDIF 
+  
+  RETURN UnQuote(sLine)
 END
 
 PUBLIC FUNCTION Replace_Conf(SrchStr AS String, RpcStr AS String)
@@ -54,7 +67,6 @@ PUBLIC FUNCTION Replace_Conf(SrchStr AS String, RpcStr AS String)
       File.Save("/opt/Customizer/settings.conf", Replace$(content, sLine, SrchStr & Quote(RpcStr)))
       BREAK 
     ENDIF 
-     
     counter += 1
   NEXT 
   
@@ -77,21 +89,20 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
       File.Save(SrchFile, Replace$(content, sLine, SrchStr & RpcStr))
       BREAK 
     ENDIF 
-     
     counter += 1
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n\n In: " & SrchFile)
+    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & RpcStr & "\nTo: " & SrchFile)
+    File.Save(SrchFile, content & "\n" & SrchStr & RpcStr)
   ENDIF 
 END
 
+
 PUBLIC FUNCTION Edit_File(EditFile AS String)
-  DIM WorkDir, ATitle, Editor AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  Editor = Functions.Get_Conf("EDITOR=")
+  DIM Editor AS String
+
+  Editor = Functions.Get_Conf("EDITOR=", "nano")
 
   IF NOT Exist("/usr/bin/" & Editor) THEN 
     Message.Warning("Change the prefered text-editor, " & Editor & " can not be used")
@@ -112,10 +123,6 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
 END
 
 PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
-  DIM WorkDir AS String
-
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
   IF Exist("/usr/bin/nautilus") THEN 
     EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/dolphin") THEN 

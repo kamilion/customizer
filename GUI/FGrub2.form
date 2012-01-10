@@ -1,52 +1,53 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,94,42)
+  MoveScaled(0,0,47,44)
   Text = ("")
-  Icon = Picture["icon:/16/properties"]
-  Border = Window.Fixed
-  { Panel1 Panel
-    MoveScaled(1,1,47,36)
-  }
   { SplashPic PictureBox
-    MoveScaled(2,2,45,34)
+    MoveScaled(1,1,45,34)
     ToolTip = ("Preview of the isolinux image")
     Stretch = True
     Border = Border.Raised
   }
   { Quit Button
-    MoveScaled(40,38,16,3)
+    MoveScaled(27,40,16,3)
     ToolTip = ("Close this window")
     Text = ("Close")
     Picture = Picture["icon:/16/close"]
   }
-  { ColorChooser1 ColorChooser
-    MoveScaled(49,2,44,35)
-  }
   { Selected Label
-    MoveScaled(13,20,24,4)
+    MoveScaled(12,19,24,4)
     Font = Font["+2"]
     Text = ("Selected")
     Alignment = Align.Center
   }
-  { SetColourMode ComboBox
-    MoveScaled(66,38,16,3)
-    ToolTip = ("Set which colour should be changed")
-    ReadOnly = True
-    List = [("Selected"), ("Normal"), ("Screen-Colour")]
-    Text = ("ComboBox1")
-  }
   { ChangePic Button
-    MoveScaled(15,38,16,3)
+    MoveScaled(4,40,16,3)
     ToolTip = ("Change isolinux image")
     Text = ("Change Splash")
     Picture = Picture["icon:/16/image"]
   }
   { Normal Label
-    MoveScaled(13,25,24,4)
+    MoveScaled(12,24,24,4)
     Font = Font["+2"]
     Text = ("Normal")
     Alignment = Align.Center
     Transparent = True
+  }
+  { ModeBox ComboBox
+    MoveScaled(1,36,15,3)
+    ReadOnly = True
+    List = [("NORMAL"), ("HIGHLIGHT")]
+    Text = ("ComboBox1")
+  }
+  { Color1Box ComboBox
+    MoveScaled(17,36,14,3)
+    ReadOnly = True
+    Text = ("ComboBox1")
+  }
+  { Color2Box ComboBox
+    MoveScaled(32,36,14,3)
+    ReadOnly = True
+    Text = ("ComboBox1")
   }
 }

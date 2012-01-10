@@ -1,0 +1,14 @@
+' Gambas class file
+
+PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", "/home")
+
+PUBLIC SUB Form_Open()
+  ME.Center
+  ME.Caption = "Grub2"
+  
+  Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_BACKGROUND=", Quote("/boot"))
+END
+
+PUBLIC SUB Quit_Click()
+  ME.Close
+END

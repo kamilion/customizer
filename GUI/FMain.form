@@ -46,6 +46,10 @@
     }
     { SysLinux Menu
       Text = ("SysLinux")
+      Picture = Picture["icon:/16/cdrom"]
+    }
+    { Grub2 Menu
+      Text = ("Grub2")
       Picture = Picture["icon:/16/properties"]
     }
     { List_Packages Menu

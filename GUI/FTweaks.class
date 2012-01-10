@@ -1,14 +1,13 @@
 ' Gambas class file
 
+PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
-  DIM sZone, Frame, WorkDir AS String
+  DIM sZone, Frame AS String
   DIM tz_array AS String[]
   
   Check.Conf_File()
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
+
   ME.Center
   ME.Caption = "Tweaks"
   
@@ -31,7 +30,7 @@ PUBLIC SUB Form_Open()
   ENDIF 
   
   IF Exist(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
-    Frame = Functions.Get_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=")
+    Frame = Functions.Get_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
   
     IF Frame = "y" THEN 
       Framebuffer.Value = TRUE
@@ -43,7 +42,7 @@ PUBLIC SUB Form_Open()
     Framebuffer.Enabled = FALSE
   ENDIF 
   
-  TTYs.Text = Replace$(Replace$(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES="), "/dev/tty[1-", ""), "]", "")
+  TTYs.Text = Replace$(Replace$(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES="), "/dev/tty[1-", ""), "]", "", "6")
   
   IF Exist(WorkDir & "/FileSystem/bin/ash") THEN 
     SShell.Add("/bin/ash")
@@ -89,16 +88,12 @@ PUBLIC SUB Form_Open()
     SShell.Add("/bin/yash")
   ENDIF
   
-  SShell.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=")
+  SShell.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", "/bin/bash")
   
   TRY Zone.Text = File.Load(WorkDir & "/FileSystem/etc/Zone")
 END
 
 PUBLIC SUB APT_Recommends_Click()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
   IF APT_Recommends.Value = TRUE THEN
     TRY KILL WorkDir & "/FileSystem/etc/apt/apt.conf"
   ELSE 
@@ -108,18 +103,11 @@ END
 
 
 PUBLIC SUB Time_Click()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
   TRY File.Save(WorkDir & "/FileSystem/etc/timezone", Zone.Text & "/" & Time.Text)
 END
 
 
 PUBLIC SUB Framebuffer_Click()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
   IF Framebuffer.Value = TRUE THEN 
     Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", Quote("y"))
   ELSE 
@@ -132,25 +120,15 @@ PUBLIC SUB Quit_Click()
 END
 
 PUBLIC SUB TTYs_Click()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-   
   Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", Quote("/dev/tty[1-" & TTYs.Text & "]"))
 END
 
 PUBLIC SUB SShell_Click()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-
   Functions.Replace_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", Quote(SShell.Text))
 END
 
 PUBLIC SUB Zone_Click()
-  DIM sZone, WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
+  DIM sZone AS String
   
   Time.Clear
   FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()

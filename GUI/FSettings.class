@@ -71,17 +71,17 @@ PUBLIC SUB Form_Open()
     EditorBox.Add("pico")
   ENDIF 
   
-  TRY WorkDir.Text = Functions.Get_Conf("WORK_DIR=")
-  TRY MountDir.Text = Functions.Get_Conf("MOUNT_DIR=")
-  TRY AppendTitle.Value = Functions.Get_Conf("APPEND_TITLE=")
-  TRY UseColors.Value = Functions.Get_Conf("MESSAGES_COLORS=")
-  TRY ForceChroot.Value = Functions.Get_Conf("FORCE_CHROOT=")
-  TRY AptHelper.Value = Functions.Get_Conf("APT_HELPER=")
-  TRY EditorBox.Text = Functions.Get_Conf("EDITOR=")
-  TRY BootFiles.Value = Functions.Get_Conf("BOOT_FILES=")
-  TRY VirtualMemBox.Text = Functions.Get_Conf("VRAM=")
-  TRY ResolutionBox.Text = Functions.Get_Conf("RESOLUTION=")
-  TRY CompressionBox.Text = Functions.Get_Conf("COMPRESSION=")
+  TRY WorkDir.Text = Functions.Get_Conf("WORK_DIR=", "/home")
+  TRY MountDir.Text = Functions.Get_Conf("MOUNT_DIR=", "/media/ISO")
+  TRY AppendTitle.Value = Functions.Get_Conf("APPEND_TITLE=", "1")
+  TRY UseColors.Value = Functions.Get_Conf("MESSAGES_COLORS=", "1")
+  TRY ForceChroot.Value = Functions.Get_Conf("FORCE_CHROOT=", "0")
+  TRY AptHelper.Value = Functions.Get_Conf("APT_HELPER=", "1")
+  TRY EditorBox.Text = Functions.Get_Conf("EDITOR=", "nano")
+  TRY BootFiles.Value = Functions.Get_Conf("BOOT_FILES=", "0")
+  TRY VirtualMemBox.Text = Functions.Get_Conf("VRAM=", "256")
+  TRY ResolutionBox.Text = Functions.Get_Conf("RESOLUTION=", "800x600")
+  TRY CompressionBox.Text = Functions.Get_Conf("COMPRESSION=", "tar")
   
   IF FMain.Build_ISO.Enabled = TRUE THEN 
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
@@ -145,7 +145,7 @@ END
 PUBLIC SUB Change_WDir_Click()
   DIM WDir AS String
 
-  WDir = Functions.Get_Conf("WORK_DIR=")
+  WDir = Functions.Get_Conf("WORK_DIR=", "/home")
   
   Dialog.Title = "Please, select work directory"
   
@@ -163,7 +163,7 @@ END
 PUBLIC SUB Change_MDir_Click()
   DIM MDir AS String
   
-  MDir = Functions.Get_Conf("MOUNT_DIR=")
+  MDir = Functions.Get_Conf("MOUNT_DIR=", "/media/ISO")
   
   Dialog.Title = "Please, select work directory"
   
