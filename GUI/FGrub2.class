@@ -3,12 +3,39 @@
 PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
+  DIM ColorsArray AS String[]
   ME.Center
   ME.Caption = "Grub2"
   
-  Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_BACKGROUND=", Quote("/boot"))
+  TRY SplashPic.Picture = Picture.Load(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_BACKGROUND=", "/boot/grubsplash.png"))
+  
+  Color1Box.Text = "light-blue"
+  Color2Box.Text = "black"
+  
+  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_NORMAL=", "light-blue/black"), "/")
+  Color1Box.Text = ColorsArray[0]
+  Color2Box.Text = ColorsArray[1]
+  
+  'CATCH 
+   ' Message.Error("Unable to load image")
 END
 
 PUBLIC SUB Quit_Click()
   ME.Close
+END
+
+PUBLIC SUB Color1Box_Click()
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_" & ModeBox.Text & "=", Quote(Color1Box.Text & "/" & Color2Box.Text))
+END
+
+PUBLIC SUB Color2Box_Click()
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_" & ModeBox.Text & "=", Quote(Color1Box.Text & "/" & Color2Box.Text))
+END
+
+PUBLIC SUB ModeBox_Click()
+  DIM ColorsArray AS String[]
+  
+  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_" & ModeBox.Text & "=", "light-blue/black"), "/")
+  Color1Box.Text = ColorsArray[0]
+  Color2Box.Text = ColorsArray[1]
 END

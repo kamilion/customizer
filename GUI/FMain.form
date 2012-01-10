@@ -64,16 +64,28 @@
       Text = ("FileSystem")
       Picture = Picture["icon:/16/directory"]
     }
-    { Browse_FS_etc_skel Menu
-      Text = ("FileSystem/etc/skel")
-      Picture = Picture["icon:/16/directory"]
-    }
     { Browse_FS_etc Menu
       Text = ("FileSystem/etc")
       Picture = Picture["icon:/16/directory"]
     }
+    { Browse_FS_etc_default Menu
+      Text = ("FileSystem/etc/default")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_etc_skel Menu
+      Text = ("FileSystem/etc/skel")
+      Picture = Picture["icon:/16/directory"]
+    }
     { Browse_FS_root Menu
       Text = ("FileSystem/root")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_usr Menu
+      Text = ("FileSystem/usr")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_usr_share Menu
+      Text = ("FileSystem/usr/share")
       Picture = Picture["icon:/16/directory"]
     }
     { Browse_ISO Menu
@@ -94,6 +106,10 @@
     }
     { Edit_lsb_release Menu
       Text = ("/etc/lsb-release")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Edit_etc_default_grub Menu
+      Text = ("/etc/default/grub")
       Picture = Picture["icon:/16/edit"]
     }
     { Edit_motd Menu

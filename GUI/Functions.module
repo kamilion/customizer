@@ -1,7 +1,7 @@
 ' Gambas module file
 
-PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", Quote("/home")) 
-PUBLIC ATitle AS String = Functions.Get_Conf("APPEND_TITLE=", Quote("1"))
+PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", "/home") 
+PUBLIC ATitle AS String = Functions.Get_Conf("APPEND_TITLE=", "1")
 
 PUBLIC FUNCTION Get_Conf(SrchStr AS String, Def AS String) AS Variant
   DIM content_array AS String[]
@@ -21,8 +21,8 @@ PUBLIC FUNCTION Get_Conf(SrchStr AS String, Def AS String) AS Variant
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n In: /opt/Customizer/settings.conf\n\nAppedning: " & SrchStr & Def & "\nTo: /opt/Customizer/settings.conf")
-    File.Save("/opt/Customizer/settings.conf", content & "\n" & SrchStr & Def)
+    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: /opt/Customizer/settings.conf\n\nAppedning: " & SrchStr & Quote(Def) & "\nTo: /opt/Customizer/settings.conf")
+    File.Save("/opt/Customizer/settings.conf", content & "\n" & SrchStr & Quote(Def))
   ENDIF 
   
   RETURN UnQuote(sLine)
@@ -46,8 +46,8 @@ PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Def & "\nTo: " & SrchFile)
-    File.Save(SrchFile, content & "\n" & SrchStr & Def)
+    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Quote(Def) & "\nTo: " & SrchFile)
+    File.Save(SrchFile, content & "\n" & SrchStr & Quote(Def))
   ENDIF 
   
   RETURN UnQuote(sLine)
@@ -71,7 +71,8 @@ PUBLIC FUNCTION Replace_Conf(SrchStr AS String, RpcStr AS String)
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n\n In: /opt/Customizer/settings.conf")
+    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: /opt/Customizer/settings.conf\n\nAppedning: " & SrchStr & RpcStr & "\nTo: /opt/Customizer/settings.conf")
+    File.Save("/opt/Customizer/settings.conf", content & "\n" & SrchStr & RpcStr)
   ENDIF 
 END
 
@@ -93,7 +94,7 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Error("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & RpcStr & "\nTo: " & SrchFile)
+    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & RpcStr & "\nTo: " & SrchFile)
     File.Save(SrchFile, content & "\n" & SrchStr & RpcStr)
   ENDIF 
 END

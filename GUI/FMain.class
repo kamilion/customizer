@@ -318,6 +318,21 @@ PUBLIC SUB Browse_ISO_isolinux_Click()
   Functions.Browse_Dir("/ISO/isolinux")
 END
 
+PUBLIC SUB Browse_FS_usr_share_Click()
+  Functions.Browse_Dir("/FileSystem/usr/share")
+END
+
+PUBLIC SUB Browse_FS_usr_Click()
+  Functions.Browse_Dir("/FileSystem/usr")
+END
+
+PUBLIC SUB Browse_FS_etc_default_Click()
+  Functions.Browse_Dir("/FileSystem/etc/default")
+END
+
+
+
+
 ' Edit files
 PUBLIC SUB Edit_casper_conf_Click()
   Functions.Edit_File("/FileSystem/etc/casper.conf")
@@ -331,6 +346,9 @@ PUBLIC SUB Edit_motd_Click()
   Functions.Edit_File("/FileSystem/etc/update-motd.d/10-help-text")
 END
 
+PUBLIC SUB Edit_etc_default_grub_Click()
+  Functions.Edit_File("/FileSystem/etc/default/grub")
+END
 
 
   'Menu - About
