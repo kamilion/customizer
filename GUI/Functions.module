@@ -23,9 +23,10 @@ PUBLIC FUNCTION Get_Conf(SrchStr AS String, Def AS String) AS Variant
   IF counter = content_array.Count THEN 
     Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: /opt/Customizer/settings.conf\n\nAppedning: " & SrchStr & Quote(Def) & "\nTo: /opt/Customizer/settings.conf")
     File.Save("/opt/Customizer/settings.conf", content & "\n" & SrchStr & Quote(Def))
+    RETURN UnQuote(Def)
+  ELSE 
+    RETURN UnQuote(sLine)
   ENDIF 
-  
-  RETURN UnQuote(sLine)
 END
 
 PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS Variant
@@ -46,11 +47,14 @@ PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Quote(Def) & "\nTo: " & SrchFile)
+    Message.Warning("Get_Str() unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Quote(Def) & "\nTo: " & SrchFile)
     File.Save(SrchFile, content & "\n" & SrchStr & Quote(Def))
+    RETURN UnQuote(Def)
+  ELSE 
+    RETURN UnQuote(sLine)
   ENDIF 
   
-  RETURN UnQuote(sLine)
+
 END
 
 PUBLIC FUNCTION Replace_Conf(SrchStr AS String, RpcStr AS String)
@@ -94,7 +98,7 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & RpcStr & "\nTo: " & SrchFile)
+    Message.Warning("Replace_Str() unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & RpcStr & "\nTo: " & SrchFile)
     File.Save(SrchFile, content & "\n" & SrchStr & RpcStr)
   ENDIF 
 END
