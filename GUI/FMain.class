@@ -350,6 +350,11 @@ PUBLIC SUB Edit_etc_default_grub_Click()
   Functions.Edit_File("/FileSystem/etc/default/grub")
 END
 
+PUBLIC SUB Edit_etc_grub_d_05_debian_theme_Click()
+  Functions.Edit_File("/FileSystem/etc/default/grub")
+END
+
+
 
   'Menu - About
 PUBLIC SUB About_Click()
@@ -363,3 +368,4 @@ END
 PUBLIC SUB Credits_Click()
   FCredits.Show
 END
+

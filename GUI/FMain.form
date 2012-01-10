@@ -112,6 +112,10 @@
       Text = ("/etc/default/grub")
       Picture = Picture["icon:/16/edit"]
     }
+    { Edit_etc_grub_d_05_debian_theme Menu
+      Text = ("FileSystem/etc/grub.d/05_debian_theme")
+      Picture = Picture["icon:/16/edit"]
+    }
     { Edit_motd Menu
       Text = ("/etc/update-motd.d/10-help-text")
       Picture = Picture["icon:/16/edit"]

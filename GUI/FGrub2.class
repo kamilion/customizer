@@ -10,11 +10,160 @@ PUBLIC SUB Form_Open()
   ModeBox.Add("NORMAL")
   ModeBox.Add("HIGHLIGHT")
   
-  SplashPic.Picture = Picture.Load(WorkDir & "/FileSystem/" & Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_BACKGROUND=", "/boot/grubsplash.png"))
+  TRY SplashPic.Picture = Picture.Load(WorkDir & "/FileSystem/" & Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_BACKGROUND=", "/boot/grubsplash.png"))
 
-  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_NORMAL=", "light-blue/black"), "/")
+  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLORS_NORMAL=", "light-blue/black"), "/")
   Color1Box.Text = ColorsArray[0]
   Color2Box.Text = ColorsArray[1]
+  
+    SELECT CASE Color1Box.Text
+      CASE "black"
+        Normal.ForeColor = Color.Transparent
+      CASE "blue"
+        Normal.ForeColor = Color.DarkBlue
+      CASE "white"
+        Normal.ForeColor = Color.White
+      CASE "brown"
+        Normal.ForeColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Normal.ForeColor = Color.DarkCyan
+      CASE "yellow"
+        Normal.ForeColor = Color.DarkYellow
+      CASE "magenta"
+        Normal.ForeColor = Color.DarkMagenta
+      CASE "red"
+        Normal.ForeColor = Color.DarkRed
+      CASE "green"
+        Normal.ForeColor = Color.DarkGreen
+      CASE "dark-grey"
+        Normal.ForeColor = Color.DarkGray
+      CASE "light-blue"
+        Normal.ForeColor = Color.Blue
+      CASE "light-cyan"
+        Normal.ForeColor = Color.Cyan
+      CASE "light-yellow"
+        Normal.ForeColor = Color.Yellow
+      CASE "light-magenta"
+        Normal.ForeColor = Color.Magenta
+      CASE "light-red"
+        Normal.ForeColor = Color.Red
+      CASE "light-green"
+        Normal.ForeColor = Color.Green
+      CASE "light-grey"
+        Normal.ForeColor = Color.Gray
+    END SELECT
+  
+  SELECT CASE Color2Box.Text
+      CASE "black"
+        Normal.BackColor = Color.Transparent
+      CASE "blue"
+        Normal.BackColor = Color.DarkBlue
+      CASE "white"
+        Normal.BackColor = Color.White
+      CASE "brown"
+        Normal.BackColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Normal.BackColor = Color.DarkCyan
+      CASE "yellow"
+        Normal.BackColor = Color.DarkYellow
+      CASE "magenta"
+        Normal.BackColor = Color.DarkMagenta
+      CASE "red"
+        Normal.BackColor = Color.DarkRed
+      CASE "green"
+        Normal.BackColor = Color.DarkGreen
+      CASE "dark-grey"
+        Normal.BackColor = Color.DarkGray
+      CASE "light-blue"
+        Normal.BackColor = Color.Blue
+      CASE "light-cyan"
+        Normal.BackColor = Color.Cyan
+      CASE "light-yellow"
+        Normal.BackColor = Color.Yellow
+      CASE "light-magenta"
+        Normal.BackColor = Color.Magenta
+      CASE "light-red"
+        Normal.BackColor = Color.Red
+      CASE "light-green"
+        Normal.BackColor = Color.Green
+      CASE "light-grey"
+        Normal.BackColor = Color.Gray
+    END SELECT
+    
+    SELECT CASE Color1Box.Text
+      CASE "black"
+        Selected.ForeColor = Color.Black
+      CASE "blue"
+        Selected.ForeColor = Color.DarkBlue
+      CASE "white"
+        Selected.ForeColor = Color.White
+      CASE "brown"
+        Selected.ForeColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Selected.ForeColor = Color.DarkCyan
+      CASE "yellow"
+        Selected.ForeColor = Color.DarkYellow
+      CASE "magenta"
+        Selected.ForeColor = Color.DarkMagenta
+      CASE "red"
+        Selected.ForeColor = Color.DarkRed
+      CASE "green"
+        Selected.ForeColor = Color.DarkGreen
+      CASE "dark-grey"
+        Selected.ForeColor = Color.DarkGray
+      CASE "light-blue"
+        Selected.ForeColor = Color.Blue
+      CASE "light-cyan"
+        Selected.ForeColor = Color.Cyan
+      CASE "light-yellow"
+        Selected.ForeColor = Color.Yellow
+      CASE "light-magenta"
+        Selected.ForeColor = Color.Magenta
+      CASE "light-red"
+        Selected.ForeColor = Color.Red
+      CASE "light-green"
+        Selected.ForeColor = Color.Green
+      CASE "light-grey"
+        Selected.ForeColor = Color.Gray
+    END SELECT 
+    
+    
+    SELECT CASE Color2Box.Text
+      CASE "black"
+        Selected.BackColor = Color.Transparent
+      CASE "blue"
+        Selected.BackColor = Color.DarkBlue
+      CASE "white"
+        Selected.BackColor = Color.White
+      CASE "brown"
+        Selected.BackColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Selected.BackColor = Color.DarkCyan
+      CASE "yellow"
+        Selected.BackColor = Color.DarkYellow
+      CASE "magenta"
+        Selected.BackColor = Color.DarkMagenta
+      CASE "red"
+        Selected.BackColor = Color.DarkRed
+      CASE "green"
+        Selected.BackColor = Color.DarkGreen
+      CASE "dark-grey"
+        Selected.BackColor = Color.DarkGray
+      CASE "light-blue"
+        Selected.BackColor = Color.Blue
+      CASE "light-cyan"
+        Selected.BackColor = Color.Cyan
+      CASE "light-yellow"
+        Selected.BackColor = Color.Yellow
+      CASE "light-magenta"
+        Selected.BackColor = Color.Magenta
+      CASE "light-red"
+        Selected.BackColor = Color.Red
+      CASE "light-green"
+        Selected.BackColor = Color.Green
+      CASE "light-grey"
+        Selected.BackColor = Color.Gray
+    END SELECT 
 END
 
 PUBLIC SUB Quit_Click()
@@ -22,17 +171,169 @@ PUBLIC SUB Quit_Click()
 END
 
 PUBLIC SUB Color1Box_Click()
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLORS_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
+
+  IF ModeBox.Text = "NORMAL" THEN
+    SELECT CASE Color1Box.Text
+      CASE "black"
+        Normal.ForeColor = Color.Transparent
+      CASE "blue"
+        Normal.ForeColor = Color.DarkBlue
+      CASE "white"
+        Normal.ForeColor = Color.White
+      CASE "brown"
+        Normal.ForeColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Normal.ForeColor = Color.DarkCyan
+      CASE "yellow"
+        Normal.ForeColor = Color.DarkYellow
+      CASE "magenta"
+        Normal.ForeColor = Color.DarkMagenta
+      CASE "red"
+        Normal.ForeColor = Color.DarkRed
+      CASE "green"
+        Normal.ForeColor = Color.DarkGreen
+      CASE "dark-grey"
+        Normal.ForeColor = Color.DarkGray
+      CASE "light-blue"
+        Normal.ForeColor = Color.Blue
+      CASE "light-cyan"
+        Normal.ForeColor = Color.Cyan
+      CASE "light-yellow"
+        Normal.ForeColor = Color.Yellow
+      CASE "light-magenta"
+        Normal.ForeColor = Color.Magenta
+      CASE "light-red"
+        Normal.ForeColor = Color.Red
+      CASE "light-green"
+        Normal.ForeColor = Color.Green
+      CASE "light-grey"
+        Normal.ForeColor = Color.Gray
+    END SELECT
+  ELSE  
+    SELECT CASE Color1Box.Text
+      CASE "black"
+        Selected.ForeColor = Color.Black
+      CASE "blue"
+        Selected.ForeColor = Color.DarkBlue
+      CASE "white"
+        Selected.ForeColor = Color.White
+      CASE "brown"
+        Selected.ForeColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Selected.ForeColor = Color.DarkCyan
+      CASE "yellow"
+        Selected.ForeColor = Color.DarkYellow
+      CASE "magenta"
+        Selected.ForeColor = Color.DarkMagenta
+      CASE "red"
+        Selected.ForeColor = Color.DarkRed
+      CASE "green"
+        Selected.ForeColor = Color.DarkGreen
+      CASE "dark-grey"
+        Selected.ForeColor = Color.DarkGray
+      CASE "light-blue"
+        Selected.ForeColor = Color.Blue
+      CASE "light-cyan"
+        Selected.ForeColor = Color.Cyan
+      CASE "light-yellow"
+        Selected.ForeColor = Color.Yellow
+      CASE "light-magenta"
+        Selected.ForeColor = Color.Magenta
+      CASE "light-red"
+        Selected.ForeColor = Color.Red
+      CASE "light-green"
+        Selected.ForeColor = Color.Green
+      CASE "light-grey"
+        Selected.ForeColor = Color.Gray
+    END SELECT 
+  ENDIF  
 END
 
 PUBLIC SUB Color2Box_Click()
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLORS_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
+
+  IF ModeBox.Text = "NORMAL" THEN
+    SELECT CASE Color2Box.Text
+      CASE "black"
+        Normal.BackColor = Color.Transparent
+      CASE "blue"
+        Normal.BackColor = Color.DarkBlue
+      CASE "white"
+        Normal.BackColor = Color.White
+      CASE "brown"
+        Normal.BackColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Normal.BackColor = Color.DarkCyan
+      CASE "yellow"
+        Normal.BackColor = Color.DarkYellow
+      CASE "magenta"
+        Normal.BackColor = Color.DarkMagenta
+      CASE "red"
+        Normal.BackColor = Color.DarkRed
+      CASE "green"
+        Normal.BackColor = Color.DarkGreen
+      CASE "dark-grey"
+        Normal.BackColor = Color.DarkGray
+      CASE "light-blue"
+        Normal.BackColor = Color.Blue
+      CASE "light-cyan"
+        Normal.BackColor = Color.Cyan
+      CASE "light-yellow"
+        Normal.BackColor = Color.Yellow
+      CASE "light-magenta"
+        Normal.BackColor = Color.Magenta
+      CASE "light-red"
+        Normal.BackColor = Color.Red
+      CASE "light-green"
+        Normal.BackColor = Color.Green
+      CASE "light-grey"
+        Normal.BackColor = Color.Gray
+    END SELECT
+  ELSE  
+    SELECT CASE Color2Box.Text
+      CASE "black"
+        Selected.BackColor = Color.Transparent
+      CASE "blue"
+        Selected.BackColor = Color.DarkBlue
+      CASE "white"
+        Selected.BackColor = Color.White
+      CASE "brown"
+        Selected.BackColor = Color.RGB(165, 42, 42)
+      CASE "cyan"
+        Selected.BackColor = Color.DarkCyan
+      CASE "yellow"
+        Selected.BackColor = Color.DarkYellow
+      CASE "magenta"
+        Selected.BackColor = Color.DarkMagenta
+      CASE "red"
+        Selected.BackColor = Color.DarkRed
+      CASE "green"
+        Selected.BackColor = Color.DarkGreen
+      CASE "dark-grey"
+        Selected.BackColor = Color.DarkGray
+      CASE "light-blue"
+        Selected.BackColor = Color.Blue
+      CASE "light-cyan"
+        Selected.BackColor = Color.Cyan
+      CASE "light-yellow"
+        Selected.BackColor = Color.Yellow
+      CASE "light-magenta"
+        Selected.BackColor = Color.Magenta
+      CASE "light-red"
+        Selected.BackColor = Color.Red
+      CASE "light-green"
+        Selected.BackColor = Color.Green
+      CASE "light-grey"
+        Selected.BackColor = Color.Gray
+    END SELECT 
+  ENDIF  
 END
 
 PUBLIC SUB ModeBox_Click()
   DIM ColorsArray AS String[]
   
-  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLOR_" & ModeBox.Text & "=", "light-blue/black"), "/")
+  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/etc/default/grub", "GRUB_COLORS_" & ModeBox.Text & "=", "light-blue/black"), "/")
   Color1Box.Text = ColorsArray[0]
   Color2Box.Text = ColorsArray[1]
 END

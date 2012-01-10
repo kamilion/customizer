@@ -32,7 +32,6 @@
     Font = Font["+2"]
     Text = ("Normal")
     Alignment = Align.Center
-    Transparent = True
   }
   { ModeBox ComboBox
     MoveScaled(1,36,15,3)
