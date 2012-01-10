@@ -65,11 +65,11 @@ PUBLIC SUB Existence()
     ELSE 
       IF NOT Exist(WorkDir & "/FileSystem/etc/casper.conf") OR NOT Exist(WorkDir & "/FileSystem/etc/lsb-release") THEN 
         Message.Error(WorkDir & "/FileSystem/etc/casper.conf or " & WorkDir & "/FileSystem/etc/lsb-release\nare deleted but are very essential for setting up some configuration.\nCreate them using a text editor or clean and start all over again!")
-        Module.Disable_Stuff()
+        Functions.Disable_Stuff()
         FMain.Clean.Enabled = TRUE
       ELSE 
         'Enable some elements
-        Module.Enable_Stuff()
+        Functions.Enable_Stuff
       
         'Get some configuration to display it in the text boxes
         FMain.HostName.Text = Functions.Get_Str(WorkDir & "/FileSystem/etc/casper.conf", "HOST=")

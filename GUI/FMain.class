@@ -41,7 +41,7 @@ PUBLIC SUB UseImage_Click()
   Functions.Replace_Conf("ISO=", Dialog.Path)
   
   IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Disassambling ISO image", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
+    EXEC ["x-terminal-emulator", "--title=Disssembling ISO image", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
   ELSE 
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
   ENDIF 
@@ -110,7 +110,7 @@ PUBLIC SUB Clean_Click()
   ELSE 
     EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
   ENDIF 
-  Module.Disable_Stuff
+  Functions.Disable_Stuff
   Build_ISO.Text = "Build ISO"
 END
 

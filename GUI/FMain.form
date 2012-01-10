@@ -223,8 +223,8 @@
   { Build_ISO Button
     MoveScaled(15,36,13,3)
     Enabled = False
-    ToolTip = ("Build the ISO Image")
-    Text = ("Build ISO")
+    ToolTip = ("Rebuild the ISO Image")
+    Text = ("Rebuild ISO")
     Picture = Picture["icon:/16/save"]
   }
   { Clean Button

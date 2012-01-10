@@ -141,3 +141,44 @@ PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
   ENDIF
   
 END
+
+PUBLIC FUNCTION Enable_Stuff()
+  FMain.Create_Snapshot.Enabled = TRUE
+  FMain.Edit_Sources.Enabled = TRUE
+  FMain.Install_DEB.Enabled = TRUE
+  FMain.Terminal.Enabled = TRUE
+  FMain.Build_ISO.Enabled = TRUE
+  FMain.Clean.Enabled = TRUE
+  FMain.Extras_Menu.Enabled = TRUE
+  FMain.Directories.Enabled = TRUE
+  FMain.Files.Enabled = TRUE
+  FMain.Archive.Enabled = TRUE
+  FMain.DistName.Enabled = TRUE
+  FMain.HostName.Enabled = TRUE
+  FMain.LiveCD_User.Enabled = TRUE
+  FMain.Version.Enabled = TRUE
+  FMain.ReleaseNotesURL.Enabled = TRUE
+  
+  'Check for installed Desktop env. or Window Manager
+  Check.X_session()
+  Check.Pkg_Manager()
+END
+
+PUBLIC FUNCTION Disable_Stuff()
+  FMain.Create_Snapshot.Enabled = FALSE
+  FMain.Edit_Sources.Enabled = FALSE
+  FMain.Install_DEB.Enabled = FALSE
+  FMain.Archive.Enabled = FALSE
+  FMain.Terminal.Enabled = FALSE
+  FMain.Build_ISO.Enabled = FALSE
+  FMain.Clean.Enabled = FALSE
+  FMain.Extras_Menu.Enabled = FALSE
+  FMain.Directories.Enabled = FALSE
+  FMain.Files.Enabled = FALSE
+  FMain.Desktop.Enabled = FALSE
+  FMain.DistName.Enabled = FALSE
+  FMain.HostName.Enabled = FALSE
+  FMain.LiveCD_User.Enabled = FALSE
+  FMain.Version.Enabled = FALSE
+  FMain.ReleaseNotesURL.Enabled = FALSE
+END
