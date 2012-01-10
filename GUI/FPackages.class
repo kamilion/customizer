@@ -1,6 +1,6 @@
 ' Gambas class file
 
-PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", "/home")
+PUBLIC WorkDir AS String = Functions.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM TempFile AS File

@@ -1,33 +1,7 @@
 ' Gambas module file
 
-PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", "/home") 
-PUBLIC ATitle AS String = Functions.Get_Conf("APPEND_TITLE=", "1")
-
-PUBLIC FUNCTION Get_Conf(SrchStr AS String, Def AS String) AS Variant
-  DIM content_array AS String[]
-  DIM sLine, content AS String
-  DIM counter AS Integer
-
-  content = File.Load("/opt/Customizer/settings.conf")
-  content_array = Split(File.Load("/opt/Customizer/settings.conf"), "\n")
-  
-  counter = 0
-  FOR EACH sLine IN content_array
-    IF sLine LIKE SrchStr & "*" THEN 
-      sLine = Replace$(sLine, SrchStr, "")
-      BREAK 
-    ENDIF 
-    counter += 1
-  NEXT 
-  
-  IF counter = content_array.Count THEN 
-    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: /opt/Customizer/settings.conf\n\nAppedning: " & SrchStr & Quote(Def) & "\nTo: /opt/Customizer/settings.conf")
-    File.Save("/opt/Customizer/settings.conf", content & "\n" & SrchStr & Quote(Def))
-    RETURN UnQuote(Def)
-  ELSE 
-    RETURN UnQuote(sLine)
-  ENDIF 
-END
+PUBLIC WorkDir AS String = Functions.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home") 
+PUBLIC ATitle AS String = Functions.Get_Str("/opt/Customizer/settings.conf", "APPEND_TITLE=", "1")
 
 PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS Variant
   DIM content_array AS String[]
@@ -53,34 +27,33 @@ PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS
   ELSE 
     RETURN UnQuote(sLine)
   ENDIF 
-  
-
 END
 
-PUBLIC FUNCTION Replace_Conf(SrchStr AS String, RpcStr AS String)
+PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS String)
   DIM content_array AS String[]
   DIM sLine, content AS String
   DIM counter AS Integer
   
-  content = File.Load("/opt/Customizer/settings.conf")
-  content_array = Split(File.Load("/opt/Customizer/settings.conf"), "\n")
+  content = File.Load(SrchFile)
+  content_array = Split(File.Load(SrchFile), "\n")
   
   counter = 0
   FOR EACH sLine IN content_array
     IF sLine LIKE SrchStr & "*" THEN 
-      File.Save("/opt/Customizer/settings.conf", Replace$(content, sLine, SrchStr & Quote(RpcStr)))
+      File.Save(SrchFile, Replace$(content, sLine, SrchStr & Quote(RpcStr)))
       BREAK 
     ENDIF 
     counter += 1
   NEXT 
   
   IF counter = content_array.Count THEN 
-    Message.Warning("Unable to find:\n\nString: " & SrchStr & "\n In: /opt/Customizer/settings.conf\n\nAppedning: " & SrchStr & RpcStr & "\nTo: /opt/Customizer/settings.conf")
-    File.Save("/opt/Customizer/settings.conf", content & "\n" & SrchStr & RpcStr)
+    Message.Warning("Replace_Str() unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Quote(RpcStr) & "\nTo: " & SrchFile)
+    File.Save(SrchFile, content & "\n" & SrchStr & Quote(RpcStr))
   ENDIF 
 END
 
-PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS String)
+
+PUBLIC FUNCTION Replace_Str_AsIs(SrchFile AS String, SrchStr AS String, RpcStr AS String)
   DIM content_array AS String[]
   DIM sLine, content AS String
   DIM counter AS Integer
@@ -103,11 +76,10 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   ENDIF 
 END
 
-
 PUBLIC FUNCTION Edit_File(EditFile AS String)
   DIM Editor AS String
 
-  Editor = Functions.Get_Conf("EDITOR=", "nano")
+  Editor = Functions.Get_Str("/opt/Customizer/settings.conf", "EDITOR=", "nano")
 
   IF NOT Exist("/usr/bin/" & Editor) THEN 
     Message.Warning("Change the prefered text-editor, " & Editor & " can not be used")
@@ -128,7 +100,9 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
 END
 
 PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
-  IF Exist("/usr/bin/nautilus") THEN 
+  IF NOT Exist(BrsDir) THEN 
+    Message.Error("The directory doesn't exists")
+  ELSE IF Exist("/usr/bin/nautilus") THEN 
     EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/dolphin") THEN 
     EXEC ["/usr/bin/dolphin", WorkDir & BrsDir]

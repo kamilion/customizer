@@ -37,19 +37,19 @@
   { ModeBox ComboBox
     MoveScaled(1,36,15,3)
     ReadOnly = True
-    List = [("NORMAL"), ("HIGHLIGHT")]
-    Text = ("ComboBox1")
+    List = []
+    Text = ("")
   }
   { Color1Box ComboBox
     MoveScaled(17,36,14,3)
     ReadOnly = True
     List = [("black"), ("blue"), ("white"), ("brown"), ("cyan"), ("yellow"), ("magenta"), ("red"), ("green"), ("dark-gray"), ("light-cyan"), ("light-blue"), ("light-green"), ("light-gray"), ("light-magenta"), ("light-red")]
-    Text = ("ComboBox1")
+    Text = ("")
   }
   { Color2Box ComboBox
     MoveScaled(32,36,14,3)
     ReadOnly = True
     List = [("black"), ("blue"), ("white"), ("brown"), ("cyan"), ("yellow"), ("magenta"), ("red"), ("green"), ("dark-gray"), ("light-cyan"), ("light-blue"), ("light-green"), ("light-gray"), ("light-magenta"), ("light-red")]
-    Text = ("ComboBox1")
+    Text = ("")
   }
 }

@@ -1,6 +1,6 @@
 ' Gambas class file
 
-PUBLIC WorkDir AS String = Functions.Get_Conf("WORK_DIR=", "/home")
+PUBLIC WorkDir AS String = Functions.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM sZone, Frame AS String
@@ -109,9 +109,9 @@ END
 
 PUBLIC SUB Framebuffer_Click()
   IF Framebuffer.Value = TRUE THEN 
-    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", Quote("y"))
+    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
   ELSE 
-    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", Quote("n"))
+    Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "n")
   ENDIF 
 END
 
@@ -120,11 +120,11 @@ PUBLIC SUB Quit_Click()
 END
 
 PUBLIC SUB TTYs_Click()
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", Quote("/dev/tty[1-" & TTYs.Text & "]"))
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", "/dev/tty[1-" & TTYs.Text & "]")
 END
 
 PUBLIC SUB SShell_Click()
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", Quote(SShell.Text))
+  Functions.Replace_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", SShell.Text)
 END
 
 PUBLIC SUB Zone_Click()
