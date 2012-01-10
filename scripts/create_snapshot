@@ -42,7 +42,7 @@ fi
 
 mkdir -p /tmp/snapshot
 cd "$WORK_DIR"
-INFO_MESSAGE "Compressing the root filesystem"
+INFO_MESSAGE "Compressing the FileSystem directory"
 $COMPRESSION_OPTIONS /tmp/snapshot/rootfs.$EXT FileSystem || ERROR_MESSAGE "An error accure while trying to compress the root filesystem"
 
 INFO_MESSAGE "Compressing the ISO directory"
