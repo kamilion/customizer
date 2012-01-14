@@ -76,6 +76,8 @@ PUBLIC FUNCTION Replace_Str_AsIs(SrchFile AS String, SrchStr AS String, RpcStr A
   ENDIF 
 END
 
+
+
 PUBLIC FUNCTION Edit_File(EditFile AS String)
   DIM Editor AS String
 
@@ -100,7 +102,7 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
 END
 
 PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
-  IF NOT Exist(BrsDir) THEN 
+  IF NOT Exist(WorkDir & BrsDir) THEN 
     Message.Error("The directory doesn't exists")
   ELSE IF Exist("/usr/bin/nautilus") THEN 
     EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]

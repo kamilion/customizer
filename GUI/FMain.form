@@ -113,7 +113,11 @@
       Picture = Picture["icon:/16/edit"]
     }
     { Edit_etc_grub_d_05_debian_theme Menu
-      Text = ("FileSystem/etc/grub.d/05_debian_theme")
+      Text = ("/etc/grub.d/05_debian_theme")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Edit_grub_background_sh Menu
+      Text = ("/usr/share/desktop-base/grub_background.sh")
       Picture = Picture["icon:/16/edit"]
     }
     { Edit_motd Menu

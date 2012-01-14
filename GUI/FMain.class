@@ -347,11 +347,15 @@ PUBLIC SUB Edit_motd_Click()
 END
 
 PUBLIC SUB Edit_etc_default_grub_Click()
-  Functions.Edit_File("/FileSystem/etc/default/grub")
+  Functions.Edit_File("/FileSystem/usr/share/desktop-base/grub_background.sh")
 END
 
 PUBLIC SUB Edit_etc_grub_d_05_debian_theme_Click()
-  Functions.Edit_File("/FileSystem/etc/default/grub")
+  Functions.Edit_File("/FileSystem/etc/grub.d/05_debian_theme")
+END
+
+PUBLIC SUB Edit_grub_background_sh_Click()
+  Functions.Edit_File("/FileSystem/usr/share/desktop-base/grub_background.sh")
 END
 
 

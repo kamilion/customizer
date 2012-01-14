@@ -12,7 +12,6 @@
     MoveScaled(2,2,45,34)
     ToolTip = ("Preview of the isolinux image")
     Stretch = True
-    Border = Border.Raised
   }
   { Quit Button
     MoveScaled(40,38,16,3)
