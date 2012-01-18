@@ -93,9 +93,11 @@ END
 
 PUBLIC SUB APT_Recommends_Click()
   IF APT_Recommends.Value = TRUE THEN
+    Func.Debug_Msg("[TRY] Deleting: " & WorkDir & "/FileSystem/etc/apt/apt.conf")
     TRY KILL WorkDir & "/FileSystem/etc/apt/apt.conf"
   ELSE 
-    Func.Save_File(WorkDir & "/FileSystem/etc/apt/apt.conf", "APT::Install-Recommends \"false\";\nAPT::Install-Suggests \"false\";")
+    Func.Debug_Msg("[TRY] Saving to: " & WorkDir & "/FileSystem/etc/apt/apt.conf")
+    TRY File.Save(WorkDir & "/FileSystem/etc/apt/apt.conf", "APT::Install-Recommends \"false\";\nAPT::Install-Suggests \"false\";")
   ENDIF 
 END
 

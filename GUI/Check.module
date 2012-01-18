@@ -74,7 +74,7 @@ PUBLIC SUB Existence()
         
         'Set/Load the release notes URL
         FMain.ReleaseNotesURL.Text = "http://www.ubuntu.com/getubuntu/releasenotes"
-        TRY FMain.ReleaseNotesURL.Text = Func.Load_File(WorkDir & "/ISO/.disk/release_notes_url")
+        FMain.ReleaseNotesURL.Text = Func.Load_File(WorkDir & "/ISO/.disk/release_notes_url")
         
         'Check if previously builded ISO image exists
         Check.ISO()

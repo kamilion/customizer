@@ -7,7 +7,11 @@ PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS
   DIM sLine, content AS String
   DIM counter AS Integer
 
-  Func.Debug_Msg("Searching in: " & SrchFile)
+  PRINT "\n===================== Get_Str() begin ====================="
+  Func.Debug_Msg("SrchFile: " & SrchFile)
+  Func.Debug_Msg("SrchStr: " & SrchStr)
+  Func.Debug_Msg("Def: " & Def)
+  
   content = Func.Load_File(SrchFile)
   content_array = Split(content, "\n")
   
@@ -21,10 +25,11 @@ PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS
   NEXT
   
   IF counter = content_array.Count THEN
-    Message.Warning("Get_Str() unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Quote(Def) & "\nTo: " & SrchFile)
     Func.Save_File(SrchFile, content & "\n" & SrchStr & Quote(Def))
     RETURN UnQuote(Def)
+    PRINT "================ Get_Str() end (appending) ================\n"
   ELSE
+    PRINT "================== Get_Str() end (found) ==================\n"
     RETURN UnQuote(sLine)
   ENDIF
 END
@@ -34,7 +39,11 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   DIM sLine, content AS String
   DIM counter AS Integer
   
-  Func.Debug_Msg("Replacing in: " & SrchFile)
+  PRINT "\n=================== Replace_Str() begin ==================="
+  Func.Debug_Msg("SrchFile: " & SrchFile)
+  Func.Debug_Msg("SrchStr: " & SrchStr)
+  Func.Debug_Msg("RpcStr: " & RpcStr)
+  
   content = Func.Load_File(SrchFile)
   content_array = Split(content, "\n")
   
@@ -42,14 +51,44 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   FOR EACH sLine IN content_array
     IF sLine LIKE SrchStr & "*" THEN
       Func.Save_File(SrchFile, Replace$(content, sLine, SrchStr & Quote(RpcStr)))
+      PRINT "================ Replace_Str() end (found) ================\n"
       BREAK
     ENDIF
     counter += 1
   NEXT
   
   IF counter = content_array.Count THEN
-    Message.Warning("Replace_Str() unable to find:\n\nString: " & SrchStr & "\n In: " & SrchFile & "\n\nAppedning: " & SrchStr & Quote(RpcStr) & "\nTo: " & SrchFile)
     Func.Save_File(SrchFile, content & "\n" & SrchStr & Quote(RpcStr))
+    PRINT "============== Replace_Str() end (appending) ==============\n"
+  ENDIF
+END
+
+PUBLIC FUNCTION Replace_Str_AsIs(SrchFile AS String, SrchStr AS String, RpcStr AS String)
+  DIM content_array AS String[]
+  DIM sLine, content AS String
+  DIM counter AS Integer
+  
+  PRINT "\n=============== Replace_Str_AsIs() begin ================"
+  Func.Debug_Msg("SrchFile: " & SrchFile)
+  Func.Debug_Msg("SrchStr: " & SrchStr)
+  Func.Debug_Msg("RpcStr: " & RpcStr)
+  
+  content = Func.Load_File(SrchFile)
+  content_array = Split(content, "\n")
+  
+  counter = 0
+  FOR EACH sLine IN content_array
+    IF sLine LIKE SrchStr & "*" THEN
+      Func.Save_File(SrchFile, Replace$(content, sLine, SrchStr & RpcStr))
+      PRINT "============= Replace_Str_AsIs() end (found) ==============\n"
+      BREAK
+    ENDIF
+    counter += 1
+  NEXT
+  
+  IF counter = content_array.Count THEN
+    Func.Save_File(SrchFile, content & "\n" & SrchStr & RpcStr)
+    PRINT "=========== Replace_Str_AsIs() end (appending) ============\n"
   ENDIF
 END
 
@@ -100,7 +139,7 @@ PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
   ELSE IF Exist("/usr/bin/rox-filer") THEN
     EXEC ["/usr/bin/rox-filer", WorkDir & BrsDir]
   ELSE
-    Message.Warning("No supported File-Manager was detected! \nSupported File-Managers are: \n\n<b>Nautilus (Gnome) \nDolphin (KDE) \n PCManFM (LXDE) \nThunar (XFCE4) \nXFE \nWorker \nGentoo \nFileRunner \nKrusader \nROX-Filer</b> \n\n Next time you try to browse folders \nmake sure you've installed one of these.")
+    Message.Warning("No supported File-Manager was detected! \nSupported are: \n\nNautilus, Dolphin, PCManFM, Thunar, XFE, Worker, Gentoo, FileRunner, Krusader and ROX-Filer")
   ENDIF
   
 END
@@ -182,18 +221,22 @@ PUBLIC FUNCTION Use_Term() AS String
     RETURN "/usr/bin/xfce4-terminal"
   ELSE IF Exist("/usr/bin/lxterminal") THEN
     RETURN "/usr/bin/lxterminal"
-  ELSE IF Exist("/usr/bin/urxterm") THEN
-    RETURN "/usr/bin/urxterm"
-  ELSE IF Exist("/usr/bin/xterm") THEN
-    RETURN "/usr/bin/xterm"
-  ELSE IF Exist("/usr/bin/Eterm") THEN
-    RETURN "/usr/bin/Eterm"
   ELSE IF Exist("/usr/bin/terminator") THEN
     RETURN "/usr/bin/terminator"
+  ELSE IF Exist("/usr/bin/sakura") THEN
+    RETURN "/usr/bin/sakura"
   ELSE IF Exist("/usr/bin/yakuake") THEN
     RETURN "/usr/bin/yakuake"
+  ELSE IF Exist("/usr/bin/urxterm") THEN
+    RETURN "/usr/bin/urxterm"
+  ELSE IF Exist("/usr/bin/aterm") THEN
+    RETURN "/usr/bin/aterm"
+  ELSE IF Exist("/usr/bin/Eterm") THEN
+    RETURN "/usr/bin/Eterm"
+  ELSE IF Exist("/usr/bin/xterm") THEN
+    RETURN "/usr/bin/xterm"
   ELSE 
-    Message.Error("Unable to detect Terminal Emulator")
+    Message.Error("Unable to detect Terminal Emulator! \nSupported are: \n\nGnome-terminal, Konsole, XFCE4-terminal, LXTerminal, Terminator, Sakura, Yakuake, urxterm, Eterm, xterm and aterm")
   ENDIF 
 END
 
