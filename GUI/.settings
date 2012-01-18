@@ -12,7 +12,7 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.form"
+File[1]="Func.module:165.17"
 Active=1
 Count=1
 

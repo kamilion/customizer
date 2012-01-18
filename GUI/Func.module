@@ -163,7 +163,7 @@ PUBLIC FUNCTION Save_File(sFile AS String, Cont AS String)
   Func.Debug_Msg("Saving file: " & sFile)
   IF Exist(sFile) THEN 
     IF Access(sFile, gb.Write) THEN 
-        Func.Load_File(sFile, Cont)
+        File.Save(sFile, Cont)
     ELSE 
       Message.Error(sFile & " is not writable!")
     ENDIF 
