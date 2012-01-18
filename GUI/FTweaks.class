@@ -89,8 +89,6 @@ PUBLIC SUB Form_Open()
   ENDIF
   
   SShell.Text = Func.Get_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", "/bin/bash")
-  
-  TRY Zone.Text = Func.Load_File(WorkDir & "/FileSystem/etc/Zone")
 END
 
 PUBLIC SUB APT_Recommends_Click()

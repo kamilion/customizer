@@ -182,8 +182,16 @@ PUBLIC FUNCTION Use_Term() AS String
     RETURN "/usr/bin/xfce4-terminal"
   ELSE IF Exist("/usr/bin/lxterminal") THEN
     RETURN "/usr/bin/lxterminal"
+  ELSE IF Exist("/usr/bin/urxterm") THEN
+    RETURN "/usr/bin/urxterm"
   ELSE IF Exist("/usr/bin/xterm") THEN
     RETURN "/usr/bin/xterm"
+  ELSE IF Exist("/usr/bin/Eterm") THEN
+    RETURN "/usr/bin/Eterm"
+  ELSE IF Exist("/usr/bin/terminator") THEN
+    RETURN "/usr/bin/terminator"
+  ELSE IF Exist("/usr/bin/yakuake") THEN
+    RETURN "/usr/bin/yakuake"
   ELSE 
     Message.Error("Unable to detect Terminal Emulator")
   ENDIF 

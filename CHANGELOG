@@ -3,6 +3,7 @@
 	* Removed double check for X-sessions and package manager on startup
 	* Avoided double loading files when gettings/replacing regexp
 	* Changed input-boxes events to reduce I/O
+	* Terminal emulator is detected instead of using x-terminal-emulator link for better compability
 	+ GUI will print debug messages in terminal for tracking events
 	+ Appending default values in files if match not found (by GUI)
 	+ Added Grub2 customization (splash and colors)
