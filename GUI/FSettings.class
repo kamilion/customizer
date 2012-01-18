@@ -71,17 +71,16 @@ PUBLIC SUB Form_Open()
     EditorBox.Add("pico")
   ENDIF 
   
-  TRY WorkDir.Text = Functions.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
-  TRY MountDir.Text = Functions.Get_Str("/opt/Customizer/settings.conf", "MOUNT_DIR=", "/media/ISO")
-  TRY AppendTitle.Value = Functions.Get_Str("/opt/Customizer/settings.conf", "APPEND_TITLE=", "1")
-  TRY UseColors.Value = Functions.Get_Str("/opt/Customizer/settings.conf", "MESSAGES_COLORS=", "1")
-  TRY ForceChroot.Value = Functions.Get_Str("/opt/Customizer/settings.conf", "FORCE_CHROOT=", "0")
-  TRY AptHelper.Value = Functions.Get_Str("/opt/Customizer/settings.conf", "APT_HELPER=", "1")
-  TRY EditorBox.Text = Functions.Get_Str("/opt/Customizer/settings.conf", "EDITOR=", "nano")
-  TRY BootFiles.Value = Functions.Get_Str("/opt/Customizer/settings.conf", "BOOT_FILES=", "0")
-  TRY VirtualMemBox.Text = Functions.Get_Str("/opt/Customizer/settings.conf", "VRAM=", "256")
-  TRY ResolutionBox.Text = Functions.Get_Str("/opt/Customizer/settings.conf", "RESOLUTION=", "800x600")
-  TRY CompressionBox.Text = Functions.Get_Str("/opt/Customizer/settings.conf", "COMPRESSION=", "tar")
+  TRY WorkDir.Text = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
+  TRY MountDir.Text = Func.Get_Str("/opt/Customizer/settings.conf", "MOUNT_DIR=", "/media/ISO")
+  TRY UseColors.Value = Func.Get_Str("/opt/Customizer/settings.conf", "MESSAGES_COLORS=", "1")
+  TRY ForceChroot.Value = Func.Get_Str("/opt/Customizer/settings.conf", "FORCE_CHROOT=", "0")
+  TRY AptHelper.Value = Func.Get_Str("/opt/Customizer/settings.conf", "APT_HELPER=", "1")
+  TRY EditorBox.Text = Func.Get_Str("/opt/Customizer/settings.conf", "EDITOR=", "nano")
+  TRY BootFiles.Value = Func.Get_Str("/opt/Customizer/settings.conf", "BOOT_FILES=", "0")
+  TRY VirtualMemBox.Text = Func.Get_Str("/opt/Customizer/settings.conf", "VRAM=", "256")
+  TRY ResolutionBox.Text = Func.Get_Str("/opt/Customizer/settings.conf", "RESOLUTION=", "800x600")
+  TRY CompressionBox.Text = Func.Get_Str("/opt/Customizer/settings.conf", "COMPRESSION=", "tar")
   
   IF FMain.Build_ISO.Enabled = TRUE THEN 
     Message.Warning("Changing the working directory while in the middle of\ncustomization proccess is a stupid idea! To prevent you\nfrom doing so and probably harm your host OS this feature\nwill be disabled and you will have to clean to change it.")
@@ -90,62 +89,54 @@ PUBLIC SUB Form_Open()
   ENDIF 
 END
 
-PUBLIC SUB AppendTitle_Click()
-  IF AppendTitle.Value = 0 THEN 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "APPEND_TITLE=", "0")
-  ELSE 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "APPEND_TITLE=", "1")
-  ENDIF 
-END
-
 PUBLIC SUB UseColors_Click()
   IF UseColors.Value = 0 THEN 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "MESSAGES_COLORS=", "0")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "MESSAGES_COLORS=", "0")
   ELSE 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "MESSAGES_COLORS=", "1")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "MESSAGES_COLORS=", "1")
   ENDIF 
 END
 
 PUBLIC SUB ForceChroot_Click()
   IF ForceChroot.Value = 0 THEN 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "FORCE_CHROOT=", "0")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "FORCE_CHROOT=", "0")
   ELSE 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "FORCE_CHROOT=", "1")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "FORCE_CHROOT=", "1")
   ENDIF 
 END
 
 PUBLIC SUB AptHelper_Click()
   IF AptHelper.Value = 0 THEN 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "APT_HELPER=", "0")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "APT_HELPER=", "0")
   ELSE 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "APT_HELPER=", "1")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "APT_HELPER=", "1")
   ENDIF 
 END
 
 PUBLIC SUB BootFiles_Click()
   IF BootFiles.Value = 0 THEN 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "BOOT_FILES=", "0")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "BOOT_FILES=", "0")
   ELSE 
-    Functions.Replace_Str("/opt/Customizer/settings.conf", "BOOT_FILES=", "1")
+    Func.Replace_Str("/opt/Customizer/settings.conf", "BOOT_FILES=", "1")
   ENDIF 
 END
 
 PUBLIC SUB ResolutionBox_Click()
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "RESOLUTION=", ResolutionBox.Text)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "RESOLUTION=", ResolutionBox.Text)
 END
 
 PUBLIC SUB EditorBox_Click()
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "EDITOR=", EditorBox.Text)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "EDITOR=", EditorBox.Text)
 END
 
 PUBLIC SUB VirtualMemBox_Click()
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "VRAM=", VirtualMemBox.Text)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "VRAM=", VirtualMemBox.Text)
 END
 
 PUBLIC SUB Change_WDir_Click()
   DIM WDir AS String
 
-  WDir = Functions.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
+  WDir = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
   
   Dialog.Title = "Please, select work directory"
   
@@ -156,14 +147,14 @@ PUBLIC SUB Change_WDir_Click()
   ENDIF 
   
   IF Dialog.SelectDirectory() THEN RETURN 
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "WORK_DIR=", Dialog.Path)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "WORK_DIR=", Dialog.Path)
   WorkDir.Text = Dialog.Path
 END
 
 PUBLIC SUB Change_MDir_Click()
   DIM MDir AS String
   
-  MDir = Functions.Get_Str("/opt/Customizer/settings.conf", "MOUNT_DIR=", "/media/ISO")
+  MDir = Func.Get_Str("/opt/Customizer/settings.conf", "MOUNT_DIR=", "/media/ISO")
   
   Dialog.Title = "Please, select work directory"
   
@@ -174,12 +165,12 @@ PUBLIC SUB Change_MDir_Click()
   ENDIF 
   
   IF Dialog.SelectDirectory() THEN RETURN 
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "MOUNT_DIR=", Dialog.Path)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "MOUNT_DIR=", Dialog.Path)
   MountDir.Text = Dialog.Path
 END
 
 PUBLIC SUB CompressionBox_Click()
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "COMPRESSION=", CompressionBox.Text)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "COMPRESSION=", CompressionBox.Text)
 END
 
 PUBLIC SUB Quit_Click()

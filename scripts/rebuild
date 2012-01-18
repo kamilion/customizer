@@ -95,25 +95,6 @@ for i in $to_clean;do
 	fi
 done
 
-INFO_MESSAGE "Rebranding motd"
-echo -e "$DIST $VERSION \n\n Welcome to $DIST! \n * $RELEASE_NOTES_URL\n\n" > "$WORK_DIR/FileSystem/etc/motd"
-cat > "$WORK_DIR/FileSystem/etc/update-motd.d/10-help-text" << EOF
-#!/bin/sh
-if uname -r | grep -qs "\-server"; then
-	echo
-	echo "Welcome to $DIST Server!"
-	echo " * $RELEASE_NOTES_URL"
-	echo
-	echo
-else
-	echo
-	echo "Welcome to $DIST!"
-	echo " * $RELEASE_NOTES_URL"
-	echo
-	echo
-fi
-EOF
-
 __mount_sys__
 __chroot__ "if [ ! -e /initrd.img ] || [ ! -e /vmlinuz ]; then
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then

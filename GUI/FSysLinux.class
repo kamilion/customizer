@@ -1,6 +1,6 @@
 ' Gambas class file
 
-PUBLIC WorkDir AS String = Functions.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
+PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM HFColor, HBColor, HSColor, SplashFile AS Variant
@@ -28,9 +28,9 @@ PUBLIC SUB Form_Open()
     SetColourMode.Enabled = FALSE
     ColorChooser1.Enabled = FALSE
   ELSE 
-    HFColor = Functions.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "foreground=0x", "0x000000")
-    HBColor = Functions.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "background=0x", "000000")
-    HSColor = Functions.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "screen-colour=0x", "000000")
+    HFColor = Func.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "foreground=0x", "0x000000")
+    HBColor = Func.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "background=0x", "000000")
+    HSColor = Func.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "screen-colour=0x", "000000")
     
     Selected.ForeColor = Val("&H" & HFColor) 
     Selected.BackColor = Val("&H" & HSColor)
@@ -53,7 +53,7 @@ END
 PUBLIC SUB ChangePic_Click()
   DIM PIC, SplashFile AS String
 
-  PIC = Functions.Get_Str("/opt/Customizer/settings.conf", "PIC=", "")
+  PIC = Func.Get_Str("/opt/Customizer/settings.conf", "PIC=", "")
   
   Dialog.Title = "Please select picture"
   Dialog.Filter = ["*.pcx;*.png;*.bmp;*.jpeg;*.jpg", "Pictures"]
@@ -71,7 +71,7 @@ PUBLIC SUB ChangePic_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "PIC=", Dialog.Path)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "PIC=", Dialog.Path)
   SHELL "convert -resize 640x480! -colors 256 '" & Dialog.Path & "' '" & WorkDir & "/ISO/isolinux/" & SplashFile & "'" WAIT
   SplashPic.Picture = Picture.Load(WorkDir & "/ISO/isolinux/" & SplashFile)
 END
@@ -80,14 +80,14 @@ PUBLIC SUB ColorChooser1_Change()
   SELECT CASE SetColourMode.Text
     CASE "Selected"
     Selected.ForeColor = ColorChooser1.Value
-    Functions.Replace_Str_AsIs(WorkDir & "/ISO/isolinux/gfxboot.cfg", "foreground=0x", LCase(Hex(ColorChooser1.Value, 6)))
+    Func.Replace_Str_AsIs(WorkDir & "/ISO/isolinux/gfxboot.cfg", "foreground=0x", LCase(Hex(ColorChooser1.Value, 6)))
   CASE "Normal"
     Normal.ForeColor = ColorChooser1.Value
-    Functions.Replace_Str_AsIs(WorkDir & "/ISO/isolinux/gfxboot.cfg", "background=0x", LCase(Hex(ColorChooser1.Value, 6)))
+    Func.Replace_Str_AsIs(WorkDir & "/ISO/isolinux/gfxboot.cfg", "background=0x", LCase(Hex(ColorChooser1.Value, 6)))
   CASE "Screen-Colour"
     Panel1.BackColor = ColorChooser1.Value
     Selected.BackColor = ColorChooser1.Value
-    Functions.Replace_Str_AsIs(WorkDir & "/ISO/isolinux/gfxboot.cfg", "screen-colour=0x", LCase(Hex(ColorChooser1.Value, 6)))
+    Func.Replace_Str_AsIs(WorkDir & "/ISO/isolinux/gfxboot.cfg", "screen-colour=0x", LCase(Hex(ColorChooser1.Value, 6)))
   END SELECT
 END
 

@@ -1,27 +1,32 @@
 ' Gambas class file
 
-PUBLIC WorkDir AS String = Functions.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
+PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
+  DIM SplashStr, Colors2Str, Colors1Str AS String
   DIM ColorsArray AS String[]
   ME.Center
   ME.Caption = "Grub2"
   
-  IF Exist(WorkDir & "/FileSystem/usr/share/desktop-base") THEN 
-    IF NOT Exist(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh") THEN 
-      Message.Warning("Creating grub_background.sh with defaults!")
-      File.Save(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh", "WALLPAPER=\"\"\nCOLOR_NORMAL=\"light-blue/black\"\nCOLOR_HIGHLIGHT=\"light-blue/black\"")
-    ENDIF 
-  ELSE 
-    Message.Warning("Install desktop-base package and retry!")
-    ME.Close
-  ENDIF 
-  
   ModeBox.Add("NORMAL")
   ModeBox.Add("HIGHLIGHT")
   
-  TRY SplashPic.Picture = Picture.Load(WorkDir & "/FileSystem/" & Functions.Get_Str(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh", "WALLPAPER=", "/boot/grubsplash.png"))
-  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh", "COLOR_NORMAL=", "light-blue/black"), "/")
+  SELECT CASE Func.Get_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_CODENAME=", "")
+    CASE "lucid", "maverick"
+      SplashStr = "WALLPAPER="
+      Colors1Str = "COLOR_NORMAL="
+      Colors2Str = "COLOR_HIGHLIGHT="
+    CASE "natty", "oneiric"
+      SplashStr = "WALLPAPER="
+      Colors1Str = "COLOR_NORMAL="
+      Colors2Str = "COLOR_HIGHLIGHT="
+    CASE ELSE 
+      Message.Warning("Unsupported Ubuntu release")
+      ME.Close
+  END SELECT 
+  
+  TRY SplashPic.Picture = Picture.Load(WorkDir & "/FileSystem/" & Func.Get_Str(WorkDir & "/FileSystem/etc/grub.d/05_debian_theme", "WALLPAPER=", "/boot/grub/splash.png"))
+  ColorsArray = Split(Func.Get_Str(WorkDir & "/FileSystem/etc/grub.d/05_debian_theme", "COLOR_NORMAL=", "light-blue/black"), "/")
   Color1Box.Text = ColorsArray[0]
   Color2Box.Text = ColorsArray[1]
   
@@ -197,7 +202,7 @@ PUBLIC SUB Quit_Click()
 END
 
 PUBLIC SUB Color1Box_Click()
-  Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh", "COLOR_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/grub.d/05_debian_theme", "COLOR_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
 
   IF ModeBox.Text = "NORMAL" THEN
     SELECT CASE Color1Box.Text
@@ -294,7 +299,7 @@ PUBLIC SUB Color1Box_Click()
 END
 
 PUBLIC SUB Color2Box_Click()
-  Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh", "COLOR_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/grub.d/05_debian_theme", "COLOR_" & ModeBox.Text & "=", Color1Box.Text & "/" & Color2Box.Text)
 
   IF ModeBox.Text = "NORMAL" THEN
     SELECT CASE Color2Box.Text
@@ -376,7 +381,7 @@ END
 PUBLIC SUB ModeBox_Click()
   DIM ColorsArray AS String[]
   
-  ColorsArray = Split(Functions.Get_Str(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh", "COLOR_" & ModeBox.Text & "=", "light-blue/black"), "/")
+  ColorsArray = Split(Func.Get_Str(WorkDir & "/FileSystem/etc/grub.d/05_debian_theme", "COLOR_" & ModeBox.Text & "=", "light-blue/black"), "/")
   Color1Box.Text = ColorsArray[0]
   Color2Box.Text = ColorsArray[1]
 END
@@ -384,7 +389,7 @@ END
 PUBLIC SUB ChangePic_Click()
   DIM PIC AS String
 
-  PIC = Functions.Get_Str("/opt/Customizer/settings.conf", "PIC=", "")
+  PIC = Func.Get_Str("/opt/Customizer/settings.conf", "PIC=", "")
   
   Dialog.Title = "Please select picture"
   Dialog.Filter = ["*.png;*.bmp;*.jpeg;*.jpg", "Pictures"]
@@ -396,8 +401,7 @@ PUBLIC SUB ChangePic_Click()
   ENDIF  
   
   IF Dialog.OpenFile() THEN RETURN 
-  Functions.Replace_Str("/opt/Customizer/settings.conf", "PIC=", Dialog.Path)
-  SHELL "convert -resize 800x600! -channel rgb '" & Dialog.Path & "' '" & WorkDir & "/FileSystem/boot/grubsplash.png'" WAIT
-  Functions.Replace_Str(WorkDir & "/FileSystem/usr/share/desktop-base/grub_background.sh", "WALLPAPER=", "/boot/grubsplash.png")
-  SplashPic.Picture = Picture.Load(WorkDir & "/FileSystem/boot/grubsplash.png")
+  Func.Replace_Str("/opt/Customizer/settings.conf", "PIC=", Dialog.Path)
+  SHELL "convert -resize 800x600! -channel rgb '" & Dialog.Path & "' '" & WorkDir & "/FileSystem/boot/grub/splash.png'" WAIT
+  SplashPic.Picture = Picture.Load(WorkDir & "/FileSystem/boot/grub/splash.png")
 END

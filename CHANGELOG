@@ -1,5 +1,12 @@
 	* Using public variables in GUI to abvoid re-reading of files
 	* Other manor corrections
+	* Removed double check for X-sessions and package manager on startup
+	* Avoided double loading files when gettings/replacing regexp
+	* Changed input-boxes events to reduce I/O
+	+ GUI will print debug messages in terminal for tracking events
 	+ Appending default values in files if match not found (by GUI)
 	+ Added Grub2 customization (splash and colors)
 	+ Added more essential files and directories
+	- Motd is not rebrended anymore
+	- Titles are no longer appended to the terminal (may be temporary)
+	- Checking for another running instance of the GUI is removed, unreliable (may be temprary)
