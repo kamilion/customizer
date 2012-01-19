@@ -1,0 +1,56 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,49,47)
+  Text = ("")
+  { Panel1 Panel
+    MoveScaled(1,1,47,36)
+  }
+  { SplashPic PictureBox
+    MoveScaled(2,2,45,34)
+    ToolTip = ("Preview of the isolinux image")
+    Stretch = True
+  }
+  { Quit Button
+    MoveScaled(28,43,16,3)
+    ToolTip = ("Close this window")
+    Text = ("Close")
+    Picture = Picture["icon:/16/close"]
+  }
+  { Selected Label
+    MoveScaled(13,20,24,4)
+    Font = Font["+2"]
+    Text = ("Selected")
+    Alignment = Align.Center
+  }
+  { ChangePic Button
+    MoveScaled(5,43,16,3)
+    ToolTip = ("Change isolinux image")
+    Text = ("Change Splash")
+    Picture = Picture["icon:/16/image"]
+  }
+  { Normal Label
+    MoveScaled(13,25,24,4)
+    Font = Font["+2"]
+    Text = ("Normal")
+    Alignment = Align.Center
+  }
+  { ModeBox ComboBox
+    MoveScaled(2,39,15,3)
+    ReadOnly = True
+    List = []
+    Text = ("")
+  }
+  { Color1Box ComboBox
+    MoveScaled(18,39,14,3)
+    ReadOnly = True
+    List = [("black"), ("blue"), ("white"), ("brown"), ("cyan"), ("yellow"), ("magenta"), ("red"), ("green"), ("dark-gray"), ("light-cyan"), ("light-blue"), ("light-green"), ("light-gray"), ("light-magenta"), ("light-red")]
+    Text = ("")
+  }
+  { Color2Box ComboBox
+    MoveScaled(33,39,14,3)
+    ReadOnly = True
+    List = [("black"), ("blue"), ("white"), ("brown"), ("cyan"), ("yellow"), ("magenta"), ("red"), ("green"), ("dark-gray"), ("light-cyan"), ("light-blue"), ("light-green"), ("light-gray"), ("light-magenta"), ("light-red")]
+    Text = ("")
+  }
+}

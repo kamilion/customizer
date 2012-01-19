@@ -1,16 +1,15 @@
 ' Gambas class file
 
+PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM TempFile AS File
   DIM items AS String[]
   DIM i, key AS Integer
-  DIM textLine, WorkDir AS String
+  DIM textLine AS String
   
   Check.Conf_File()
   
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-
   ME.Center
   ME.Caption = "Installed Packages "
 
@@ -46,12 +45,6 @@ PUBLIC SUB Quit_Click()
 END
 
 PUBLIC SUB Save_Click()
-  DIM WorkDir AS String
-  DIM tmpStr AS String
-  
-  tmpStr = "WORK_DIR="
-  WorkDir = Functions.Get_Conf(tmpStr)
-  
   Dialog.Title = "Select where to save the list"
   Dialog.Filter = ["*.txt", "Text Files"]
   Dialog.Path = WorkDir

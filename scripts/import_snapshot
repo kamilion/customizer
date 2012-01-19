@@ -45,10 +45,10 @@ cd "$WORK_DIR"
 INFO_MESSAGE "De-Compressing snapshot"
 tar -axf "$SNAPSHOT" || ERROR_MESSAGE "An error accure while trying to decompress the snapshot"
 
-INFO_MESSAGE "De-Compressing root filesystem"
+INFO_MESSAGE "De-Compressing FileSystem directory"
 tar -axf rootfs.* || ERROR_MESSAGE "An error accure while trying to de-compress FileSystem"
 
-INFO_MESSAGE "De-Compressing ISO folder"
+INFO_MESSAGE "De-Compressing ISO directory"
 tar -axf isofolder.* || ERROR_MESSAGE "An error accure while trying to de-compress ISO"
 
 INFO_MESSAGE "Deleting temp files"

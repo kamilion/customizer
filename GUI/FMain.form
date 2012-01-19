@@ -46,6 +46,10 @@
     }
     { SysLinux Menu
       Text = ("SysLinux")
+      Picture = Picture["icon:/16/cdrom"]
+    }
+    { Grub2 Menu
+      Text = ("Grub2")
       Picture = Picture["icon:/16/properties"]
     }
     { List_Packages Menu
@@ -60,16 +64,32 @@
       Text = ("FileSystem")
       Picture = Picture["icon:/16/directory"]
     }
-    { Browse_FS_etc_skel Menu
-      Text = ("FileSystem/etc/skel")
+    { Browse_FS_boot Menu
+      Text = ("FileSystem/boot")
       Picture = Picture["icon:/16/directory"]
     }
     { Browse_FS_etc Menu
       Text = ("FileSystem/etc")
       Picture = Picture["icon:/16/directory"]
     }
+    { Browse_FS_etc_default Menu
+      Text = ("FileSystem/etc/default")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_etc_skel Menu
+      Text = ("FileSystem/etc/skel")
+      Picture = Picture["icon:/16/directory"]
+    }
     { Browse_FS_root Menu
       Text = ("FileSystem/root")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_usr Menu
+      Text = ("FileSystem/usr")
+      Picture = Picture["icon:/16/directory"]
+    }
+    { Browse_FS_usr_share Menu
+      Text = ("FileSystem/usr/share")
       Picture = Picture["icon:/16/directory"]
     }
     { Browse_ISO Menu
@@ -90,6 +110,18 @@
     }
     { Edit_lsb_release Menu
       Text = ("/etc/lsb-release")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Edit_etc_default_grub Menu
+      Text = ("/etc/default/grub")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Edit_etc_grub_d_05_debian_theme Menu
+      Text = ("/etc/grub.d/05_debian_theme")
+      Picture = Picture["icon:/16/edit"]
+    }
+    { Edit_grub_background_sh Menu
+      Text = ("/usr/share/desktop-base/grub_background.sh")
       Picture = Picture["icon:/16/edit"]
     }
     { Edit_motd Menu
@@ -223,8 +255,8 @@
   { Build_ISO Button
     MoveScaled(15,36,13,3)
     Enabled = False
-    ToolTip = ("Build the ISO Image")
-    Text = ("Build ISO")
+    ToolTip = ("Rebuild the ISO Image")
+    Text = ("Rebuild ISO")
     Picture = Picture["icon:/16/save"]
   }
   { Clean Button
@@ -251,7 +283,7 @@
   { Label8 Label
     MoveScaled(12,1,43,4)
     Font = Font["Bold,+6"]
-    Text = ("Customizer v3.2.0")
+    Text = ("Customizer v3.2.1")
     Alignment = Align.Center
   }
   { Label9 Label

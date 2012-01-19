@@ -12,7 +12,6 @@
     MoveScaled(2,2,45,34)
     ToolTip = ("Preview of the isolinux image")
     Stretch = True
-    Border = Border.Raised
   }
   { Quit Button
     MoveScaled(40,38,16,3)
@@ -39,7 +38,7 @@
   { ChangePic Button
     MoveScaled(15,38,16,3)
     ToolTip = ("Change isolinux image")
-    Text = ("Change")
+    Text = ("Change Splash")
     Picture = Picture["icon:/16/image"]
   }
   { Normal Label

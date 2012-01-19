@@ -1,7 +1,7 @@
 ' Gambas class file
 ' Main Form
 
-'PUBLIC WorkDir = Functions.Get_Conf("WORK_DIR=") AS String
+PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home") 
 
 PUBLIC SUB Form_Open()
   DIM STATUS AS Variant
@@ -11,23 +11,16 @@ PUBLIC SUB Form_Open()
   HostName.MaxLength = 16
   LiveCD_User.MaxLength = 16
 
-  SHELL "pgrep customizer | wc -l" TO STATUS
-  IF Val(STATUS) > 1 THEN 
-    Message.Warning("Another instance of Customizer is already running!")
-    ME.Close
-  ENDIF 
-
   Check.Conf_File()
   Check.Existence()
 END
 
 ' Main Buttons
 PUBLIC SUB UseImage_Click()
-  DIM ISO, ATitle AS String
+  DIM ISO AS String
   
-  ISO = Functions.Get_Conf("ISO=")
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
+  ISO = Func.Get_Str("/opt/Customizer/settings.conf", "ISO=", "")
+
   Dialog.Title = "Please select ISO Image"
   Dialog.Filter = ["*.iso", "ISO Images"]
   
@@ -38,87 +31,56 @@ PUBLIC SUB UseImage_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  Functions.Replace_Conf("ISO=", Dialog.Path)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "ISO=", Dialog.Path)
   
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Disassembling ISO image", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
-  ENDIF 
+  Func.Debug_Msg("Extracting ISO")
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
   
   Check.Existence()
 END
 
 PUBLIC SUB Edit_Sources_Click()
-  Functions.Edit_File("/FileSystem/etc/apt/sources.list")
+  Func.Edit_File("/FileSystem/etc/apt/sources.list")
 END
 
 PUBLIC SUB Desktop_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Running Desktop session", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
-  ENDIF 
+  Func.Debug_Msg("Launching nested X-session")
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
   
   Check.Pkg_Manager()
 END
 
 PUBLIC SUB Terminal_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Chroot Terminal", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
-  ENDIF 
+  Func.Debug_Msg("Launching chroot Terminal")
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
 END
 
 PUBLIC SUB Build_ISO_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
   IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN 
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
   ELSE
-    IF ATitle = 1 THEN 
-      EXEC ["x-terminal-emulator", "--title=Building ISO Image", "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
-    ELSE 
-      EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
-    ENDIF 
+    Func.Debug_Msg("Rebuilding ISO image")
+    EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
   ENDIF 
   
   Check.ISO()
 END
 
 PUBLIC SUB Clean_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Cleaning up", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
-  ENDIF 
-  Module.Disable_Stuff
+  Func.Debug_Msg("Cleaning working directories")
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
+    
+  Func.Disable_Stuff
   Build_ISO.Text = "Build ISO"
 END
 
 PUBLIC SUB Install_DEB_Click()
-  DIM DEB, ATitle AS String
+  DIM DEB AS String
   
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  DEB = Functions.Get_Conf("DEB=")
+  DEB = Func.Get_Str("/opt/Customizer/settings.conf", "DEB=", "")
   
   Dialog.Title = "Please select a DEB package"
   Dialog.Filter = ["*.deb", "Debian Packages"]
@@ -130,43 +92,26 @@ PUBLIC SUB Install_DEB_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  Functions.Replace_Conf("DEB=", Dialog.Path)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "DEB=", Dialog.Path)
 
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Installing DEB Package", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
-  ENDIF 
+  Func.Debug_Msg("Installing DEB package")
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
 END
 
 PUBLIC SUB Archive_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Running Package Manager", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
-  ENDIF 
+  Func.Debug_Msg("Launching Package Manager")
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   
   Check.X_session()
 END
 
 
 PUBLIC SUB QEMU_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Emulating ISO Image with QEMU", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
-  ENDIF 
+  Func.Debug_Msg("Launching QEMU")
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
 END
 
 
@@ -175,59 +120,39 @@ END
 
 
 ' Change Configs
-PUBLIC SUB DistName_Change()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
+PUBLIC SUB DistName_KeyPress()
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=", Quote(DistName.Text))
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", Quote(DistName.Text & " " & Version.Text))
-  TRY File.Save(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
-  TRY File.Save(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=", DistName.Text)
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
+  Func.Save_File(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
+  Func.Save_File(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
-PUBLIC SUB HostName_Change()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
+PUBLIC SUB HostName_KeyPress()
   HostName.Text = Trim(LCase(HostName.Text))
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", Quote(HostName.Text))
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
 END
 
-PUBLIC SUB LiveCD_User_Change()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
+PUBLIC SUB LiveCD_User_KeyPress()
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", Quote(LiveCD_User.Text))
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
 END
 
-PUBLIC SUB Version_Change()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
+PUBLIC SUB Version_KeyPress()
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=", Quote(Version.Text))
-  Functions.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", Quote(DistName.Text & " " & Version.Text))
-  TRY File.Save(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
-  TRY File.Save(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=", Version.Text)
+  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
+  Func.Save_File(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
+  Func.Save_File(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
-PUBLIC SUB ReleaseNotesURL_Change()
-  DIM WorkDir AS String
-  
-  WorkDir = Functions.Get_Conf("WORK_DIR=")
-  
+PUBLIC SUB ReleaseNotesURL_KeyPress()
   Trim(ReleaseNotesURL.Text)
-  TRY File.Save(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
+  Func.Save_File(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
 END
 
 PUBLIC SUB Form_Close()
@@ -238,7 +163,7 @@ END
 
   'Menu - Main
 PUBLIC SUB Quit_Click()
-  FMain.Close()
+  ME.Close(0)
 END
 
   
@@ -247,10 +172,9 @@ PUBLIC SUB Settings_Click()
 END
 
 PUBLIC SUB Import_Snapshot_Click()
-  DIM SNAPSHOT, ATitle AS String
+  DIM SNAPSHOT AS String
   
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  SNAPSHOT = Functions.Get_Conf("SNAPSHOT=")
+  SNAPSHOT = Func.Get_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", "")
   
   Dialog.Title = "Please select Customizer project snapshot"
   Dialog.Filter = ["*.cps", "Snapshots"]
@@ -262,35 +186,22 @@ PUBLIC SUB Import_Snapshot_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN
-  Functions.Replace_Conf("SNAPSHOT=", Dialog.Path)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", Dialog.Path)
 
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Importing Snapshot", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
-  ENDIF 
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
   
   Check.Existence()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Creatings Snapshot", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
-  ENDIF 
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
 END
 
   'Menu - Extras
 PUBLIC SUB Exec_Hook_Click()
-  DIM HOOK, ATitle AS String
+  DIM HOOK AS String
   
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  HOOK = Functions.Get_Conf("HOOK=")
+  HOOK = Func.Get_Str("/opt/Customizer/settings.conf", "HOOK=", "")
   
   Dialog.Title = "Please select hook file"
   
@@ -301,28 +212,16 @@ PUBLIC SUB Exec_Hook_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
-  Functions.Replace_Conf("HOOK=", Dialog.Path)
+  Func.Replace_Str("/opt/Customizer/settings.conf", "HOOK=", Dialog.Path)
   
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Executing Chroot Hook", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
-  ENDIF 
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
 END
 
 PUBLIC SUB Install_GUI_Click()
-  DIM ATitle AS String
-  
-  ATitle = Functions.Get_Conf("APPEND_TITLE=")
-  
-  IF ATitle = 1 THEN 
-    EXEC ["x-terminal-emulator", "--title=Installing GUI", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
-  ELSE 
-    EXEC ["x-terminal-emulator", "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
-  ENDIF 
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
@@ -341,43 +240,79 @@ PUBLIC SUB SysLinux_Click()
 END
 
 
+PUBLIC SUB Grub2_Click()
+  FGrub2.Show
+END
+
+
   
 ' Browse directories
 PUBLIC SUB Browse_FS_Click()
-  Functions.Browse_Dir("/FileSystem")
+  Func.Browse_Dir("/FileSystem")
 END
 
 PUBLIC SUB Browse_ISO_Click()
-  Functions.Browse_Dir("/ISO")
+  Func.Browse_Dir("/ISO")
 END
 
 PUBLIC SUB Browse_FS_etc_skel_Click()
-  Functions.Browse_Dir("/FileSystem/etc/skel")
+  Func.Browse_Dir("/FileSystem/etc/skel")
 END
 
 PUBLIC SUB Browse_FS_etc_Click()
-  Functions.Browse_Dir("/FileSystem/etc")
+  Func.Browse_Dir("/FileSystem/etc")
 END
 
 PUBLIC SUB Browse_FS_root_Click()
-  Functions.Browse_Dir("/FileSystem/root")
+  Func.Browse_Dir("/FileSystem/root")
 END
 
 PUBLIC SUB Browse_ISO_isolinux_Click()
-  Functions.Browse_Dir("/ISO/isolinux")
+  Func.Browse_Dir("/ISO/isolinux")
 END
+
+PUBLIC SUB Browse_FS_usr_share_Click()
+  Func.Browse_Dir("/FileSystem/usr/share")
+END
+
+PUBLIC SUB Browse_FS_usr_Click()
+  Func.Browse_Dir("/FileSystem/usr")
+END
+
+PUBLIC SUB Browse_FS_etc_default_Click()
+  Func.Browse_Dir("/FileSystem/etc/default")
+END
+
+PUBLIC SUB Browse_FS_boot_Click()
+  Func.Browse_Dir("/FileSystem/boot")
+END
+
+
+
 
 ' Edit files
 PUBLIC SUB Edit_casper_conf_Click()
-  Functions.Edit_File("/FileSystem/etc/casper.conf")
+  Func.Edit_File("/FileSystem/etc/casper.conf")
 END
 
 PUBLIC SUB Edit_lsb_release_Click()
-  Functions.Edit_File("/FileSystem/etc/lsb-release")
+  Func.Edit_File("/FileSystem/etc/lsb-release")
 END
 
 PUBLIC SUB Edit_motd_Click()
-  Functions.Edit_File("/FileSystem/etc/update-motd.d/10-help-text")
+  Func.Edit_File("/FileSystem/etc/update-motd.d/10-help-text")
+END
+
+PUBLIC SUB Edit_etc_default_grub_Click()
+  Func.Edit_File("/FileSystem/etc/default/grub")
+END
+
+PUBLIC SUB Edit_etc_grub_d_05_debian_theme_Click()
+  Func.Edit_File("/FileSystem/etc/grub.d/05_debian_theme")
+END
+
+PUBLIC SUB Edit_grub_background_sh_Click()
+  Func.Edit_File("/FileSystem/usr/share/desktop-base/grub_background.sh")
 END
 
 

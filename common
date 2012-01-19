@@ -170,37 +170,6 @@ fi
 export HOME=/root
 export LC_ALL=C
 
-if [ ! -e \"/sbin/initctl.blocked\" ];then
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-		echo -e \"[${Yellow}*${Reset}] ${Green}Blocking initctl${Reset}\"
-	else
-		echo -e \"[*] Blocking initctl\"
-	fi
-	mv /sbin/initctl /sbin/initctl.blocked
-	ln -s /bin/true /sbin/initctl
-else
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-		echo -e \"[${Red}!${Reset}] ${Yellow}Blocking of initctl skipped${Reset}\"
-	else
-		echo -e \"[*] Blocking of initctl skipped\"
-	fi
-fi
-
-if [ ! -e \"/usr/sbin/update-grub.blocked\" ];then
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-		echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
-	else
-		echo -e \"[*] Blocking update-grub\"
-	fi
-	mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
-	ln -s /bin/true /usr/sbin/update-grub
-else
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-		echo -e \"[${Red}!${Reset}] ${Yellow}Blocking of update-grub skipped${Reset}\"
-	else
-		echo -e \"[!] Blocking of update-grub skipped\"
-	fi
-fi
 
 if [ \"$APT_HELPER\" = \"1\" ];then
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
@@ -221,25 +190,6 @@ fi
 
 ${@}
 
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-	echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking initctl${Reset}\"
-else
-	echo -e \"[*] Unblocking initctl\"
-fi
-mv -f /sbin/initctl.blocked /sbin/initctl
-
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-	echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
-else
-	echo -e \"[*] Unblocking update-grub\"
-fi
-mv -f /usr/sbin/update-grub.blocked /usr/sbin/update-grub
-
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-	echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
-else
-	echo -e \"[*] Cleaning up\"
-fi
 apt-get clean
 rm -f /etc/debian_chroot
 rm -f /etc/hosts
