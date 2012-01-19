@@ -11,3 +11,4 @@
 	- Motd is not rebrended anymore
 	- Titles are no longer appended to the terminal (may be temporary)
 	- Checking for another running instance of the GUI is removed, unreliable (may be temprary)
+	- Text-editor is no longer set, detected whenever it is needed

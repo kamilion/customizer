@@ -1,12 +1,12 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,47,48)
+  MoveScaled(0,0,47,44)
   Text = ("")
   Icon = Picture["icon:/small/options"]
   Border = Window.Fixed
   { Quit Button
-    MoveScaled(17,44,13,3)
+    MoveScaled(17,40,13,3)
     ToolTip = ("Close this window")
     Text = ("Close")
     Picture = Picture["icon:/16/close"]
@@ -28,26 +28,15 @@
     Text = ("'Desktop' (Xephyr) resolution")
     Alignment = Align.Center
   }
-  { EditorBox ComboBox
-    MoveScaled(2,32,13,3)
-    ToolTip = ("Set the desired text editor to be used when editing files")
-    ReadOnly = True
-    Text = ("")
-  }
-  { Label3 Label
-    MoveScaled(16,32,30,3)
-    Text = ("Desired text editor")
-    Alignment = Align.Center
-  }
   { VirtualMemBox ComboBox
-    MoveScaled(2,36,13,3)
+    MoveScaled(2,32,13,3)
     ToolTip = ("Set the amount of virtual RAM used by QEMU, the highed the value - the better performance you will get while emulating your ISO but it's recommended to be half of your RAM installed on your PC")
     ReadOnly = True
     List = [("64"), ("96"), ("128"), ("256"), ("384"), ("512"), ("768"), ("1024")]
     Text = ("ComboBox1")
   }
   { Label1 Label
-    MoveScaled(16,36,30,3)
+    MoveScaled(16,32,30,3)
     Text = ("QEMU virtual RAM (in megabytes)")
     Alignment = Align.Center
   }
@@ -68,12 +57,12 @@
     Alignment = Align.Center
   }
   { Label5 Label
-    MoveScaled(16,40,30,3)
+    MoveScaled(16,36,30,3)
     Text = ("Snapshots compression format")
     Alignment = Align.Center
   }
   { CompressionBox ComboBox
-    MoveScaled(2,40,13,3)
+    MoveScaled(2,36,13,3)
     ToolTip = ("Choose compression format for the created snapshots")
     ReadOnly = True
     List = [("bzip2"), ("gzip"), ("tar")]

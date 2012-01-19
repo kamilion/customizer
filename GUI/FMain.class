@@ -283,6 +283,10 @@ PUBLIC SUB Browse_FS_etc_default_Click()
   Func.Browse_Dir("/FileSystem/etc/default")
 END
 
+PUBLIC SUB Browse_FS_boot_Click()
+  Func.Browse_Dir("/FileSystem/boot")
+END
+
 
 
 
@@ -308,7 +312,7 @@ PUBLIC SUB Edit_etc_grub_d_05_debian_theme_Click()
 END
 
 PUBLIC SUB Edit_grub_background_sh_Click()
-  Func.Edit_File("/FileSystem/etc/grub.d/05_debian_theme")
+  Func.Edit_File("/FileSystem/usr/share/desktop-base/grub_background.sh")
 END
 
 
@@ -325,4 +329,3 @@ END
 PUBLIC SUB Credits_Click()
   FCredits.Show
 END
-

@@ -64,6 +64,10 @@
       Text = ("FileSystem")
       Picture = Picture["icon:/16/directory"]
     }
+    { Browse_FS_boot Menu
+      Text = ("FileSystem/boot")
+      Picture = Picture["icon:/16/directory"]
+    }
     { Browse_FS_etc Menu
       Text = ("FileSystem/etc")
       Picture = Picture["icon:/16/directory"]

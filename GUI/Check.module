@@ -3,10 +3,10 @@
 PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
 
 PUBLIC SUB Conf_File()
-  Func.Debug_Msg("Checking /opt/Customizer/settings.conf")
+  Func.Event_Msg("Checking configuration file")
   IF NOT Exist("/opt/Customizer/settings.conf") THEN 
     Message.Warning("Configuration file doesn't exists, creating one with the default values")
-    Func.Save_File("/opt/Customizer/settings.conf", "# Main settings\nWORK_DIR=\"/home\"\nMOUNT_DIR=\"/media/ISO\"\n\n# Preferences\nMESSAGES_COLORS=1\nFORCE_CHROOT=0\nAPT_HELPER=1\nEDITOR=nano\nRESOLUTION=800x600\nBOOT_FILES=0\nVRAM=256\nCOMPRESSION=tar\n\n# Saved variables\nISO=\"\"\nSNAPSHOT=\"\"\nDEB=\"\"\nHOOK=\"\"\nPIC=\"\"")
+    Func.Save_File("/opt/Customizer/settings.conf", "# Main settings\nWORK_DIR=\"/home\"\nMOUNT_DIR=\"/media/ISO\"\n\n# Preferences\nMESSAGES_COLORS=1\nFORCE_CHROOT=0\nAPT_HELPER=1\nRESOLUTION=800x600\nBOOT_FILES=0\nVRAM=256\nCOMPRESSION=tar\n\n# Saved variables\nISO=\"\"\nSNAPSHOT=\"\"\nDEB=\"\"\nHOOK=\"\"\nPIC=\"\"")
     
     CATCH 
       Message.Error("Unable to create configuration file, check your permissions")
@@ -17,7 +17,7 @@ END
 PUBLIC SUB X_session()
   DIM Xsessions AS Variant
   
-  Func.Debug_Msg("Checking for X-sessions links")
+  Func.Event_Msg("Checking for X-sessions links")
   Xsessions = 0
   TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions").Count
 
@@ -29,7 +29,7 @@ PUBLIC SUB X_session()
 END
 
 PUBLIC SUB Pkg_Manager()
-  Func.Debug_Msg("Checking for package-manager")
+  Func.Event_Msg("Checking for package-manager")
   IF Exist(WorkDir & "/FileSystem/usr/bin/synaptic") OR Exist(WorkDir & "/FileSystem/usr/sbin/aptitude") THEN
     FMain.Archive.Enabled = TRUE
   ELSE 
@@ -40,7 +40,7 @@ END
 PUBLIC SUB ISO()
   DIM Dist, Arch, Rel AS String
   
-  Func.Debug_Msg("Checking ISO image existence")
+  Func.Event_Msg("Checking ISO image existence")
   Dist = Func.Get_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=", "Custom")
   Rel = Func.Get_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=", "0.1")
   
@@ -52,7 +52,7 @@ PUBLIC SUB ISO()
 END
 
 PUBLIC SUB Existence()
-  Func.Debug_Msg("Checking essential directories and files")
+  Func.Event_Msg("Checking essential directories and files")
   IF Exist(WorkDir & "/FileSystem") AND Exist(WorkDir & "/ISO") THEN 
     IF NOT Exist(WorkDir & "/FileSystem/root") OR NOT Exist(WorkDir & "/FileSystem/etc") OR NOT Exist(WorkDir & "/FileSystem/usr") THEN 
       Message.Error("Some important folder are missing which mait be result\nof unsuccessful cleaning or deleted by accident, clean and start\nall over again or import your latest snapshot (if you had created one).")
