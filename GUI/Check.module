@@ -64,7 +64,7 @@ PUBLIC SUB Existence()
         FMain.Clean.Enabled = TRUE
       ELSE 
         'Enable some elements
-        Func.Enable_Stuff
+        Func.Enable_Stuff()
       
         'Get some configuration to display it in the text boxes
         FMain.HostName.Text = Func.Get_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", "host")
@@ -86,5 +86,7 @@ PUBLIC SUB Existence()
         Check.Pkg_Manager()
       ENDIF 
     ENDIF
+  ELSE 
+    Func.Disable_Stuff()
   ENDIF 
 END
