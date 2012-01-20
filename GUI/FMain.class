@@ -33,7 +33,7 @@ PUBLIC SUB UseImage_Click()
   IF Dialog.OpenFile() THEN RETURN 
   Func.Replace_Str("/opt/Customizer/settings.conf", "ISO=", Dialog.Path)
   
-  Func.Debug_Msg("Extracting ISO")
+  Func.Event_Msg("Extracting ISO")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
   
   Check.Existence()
@@ -120,7 +120,9 @@ END
 
 
 ' Change Configs
-PUBLIC SUB DistName_KeyPress()
+PUBLIC SUB DistName_Change()
+  Func.Event_Msg("DistName.Text changed")
+
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
@@ -130,17 +132,17 @@ PUBLIC SUB DistName_KeyPress()
   Func.Save_File(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
-PUBLIC SUB HostName_KeyPress()
+PUBLIC SUB HostName_Change()
   HostName.Text = Trim(LCase(HostName.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
 END
 
-PUBLIC SUB LiveCD_User_KeyPress()
+PUBLIC SUB LiveCD_User_Change()
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
 END
 
-PUBLIC SUB Version_KeyPress()
+PUBLIC SUB Version_Change()
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
@@ -150,7 +152,7 @@ PUBLIC SUB Version_KeyPress()
   Func.Save_File(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
-PUBLIC SUB ReleaseNotesURL_KeyPress()
+PUBLIC SUB ReleaseNotesURL_Change()
   Trim(ReleaseNotesURL.Text)
   Func.Save_File(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
 END
