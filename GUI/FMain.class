@@ -62,7 +62,7 @@ PUBLIC SUB Build_ISO_Click()
   IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN 
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
   ELSE
-    Func.Debug_Msg("Rebuilding ISO image")
+    Func.Event_Msg("Rebuilding ISO image")
     EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
   ENDIF 
   
@@ -70,7 +70,7 @@ PUBLIC SUB Build_ISO_Click()
 END
 
 PUBLIC SUB Clean_Click()
-  Func.Debug_Msg("Cleaning working directories")
+  Func.Event_Msg("Cleaning working directories")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
     
   Func.Disable_Stuff
@@ -94,7 +94,7 @@ PUBLIC SUB Install_DEB_Click()
   IF Dialog.OpenFile() THEN RETURN 
   Func.Replace_Str("/opt/Customizer/settings.conf", "DEB=", Dialog.Path)
 
-  Func.Debug_Msg("Installing DEB package")
+  Func.Event_Msg("Installing DEB package")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
   
   Check.X_session()
@@ -102,7 +102,7 @@ PUBLIC SUB Install_DEB_Click()
 END
 
 PUBLIC SUB Archive_Click()
-  Func.Debug_Msg("Launching Package Manager")
+  Func.Event_Msg("Launching Package Manager")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
   
   Check.X_session()
@@ -110,7 +110,7 @@ END
 
 
 PUBLIC SUB QEMU_Click()
-  Func.Debug_Msg("Launching QEMU")
+  Func.Event_Msg("Launching QEMU")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
 END
 
@@ -174,6 +174,7 @@ END
 PUBLIC SUB Import_Snapshot_Click()
   DIM SNAPSHOT AS String
   
+  Func.Event_Msg("Importing snapshot")
   SNAPSHOT = Func.Get_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", "")
   
   Dialog.Title = "Please select Customizer project snapshot"
@@ -194,6 +195,7 @@ PUBLIC SUB Import_Snapshot_Click()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
+  Func.Event_Msg("Creating snapshot")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
 END
 
@@ -212,6 +214,7 @@ PUBLIC SUB Exec_Hook_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
+  Func.Event_Msg("Executing hook")
   Func.Replace_Str("/opt/Customizer/settings.conf", "HOOK=", Dialog.Path)
   
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
@@ -221,6 +224,7 @@ PUBLIC SUB Exec_Hook_Click()
 END
 
 PUBLIC SUB Install_GUI_Click()
+  Func.Event_Msg("Installing GUI")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
   
   Check.X_session()

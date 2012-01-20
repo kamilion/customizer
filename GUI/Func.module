@@ -146,7 +146,7 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
 END
 
 PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
-  Func.Debug_Msg("Browsing directory: " & BrsDir)
+  Func.Event_Msg("Browsing directory: " & BrsDir)
 
   IF NOT Exist(WorkDir & BrsDir) THEN
     Message.Error("The directory doesn't exists")
