@@ -34,7 +34,7 @@ PUBLIC SUB UseImage_Click()
   Func.Replace_Str("/opt/Customizer/settings.conf", "ISO=", Dialog.Path)
   
   Func.Event_Msg("Extracting ISO")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-u"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
   
   Check.Existence()
 END
