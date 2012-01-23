@@ -170,26 +170,77 @@ fi
 export HOME=/root
 export LC_ALL=C
 
-
-if [ \"$APT_HELPER\" = \"1\" ];then
+if [ ! -e \"/sbin/initctl.blocked\" ];then
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-		echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
-	else
-		echo -e \"[*] Updating packages database\"
+	    echo -e \"[${Yellow}*${Reset}] ${Green}Blocking initctl${Reset}\"
+    else
+        echo -e \"[*] Blocking initctl\"
 	fi
-	apt-get update -qq
 	
+	mv /sbin/initctl /sbin/initctl.blocked
+	ln -s /bin/true /sbin/initctl
+else
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-		echo -e \"[${Yellow}*${Reset}] ${Green}Making sure everything is configured${Reset}\"
-	else
-		echo -e \"[*] Making sure everything is configured\"
+	    echo -e \"[${Red}!${Yellow}] ${Green}Blocking of initctl skipped${Reset}\"
+    else
+        echo -e \"[!] Blocking of initctl skipped\"
 	fi
-	dpkg --configure -a
-	apt-get install -f -y -q
 fi
+
+if [ ! -e \"/usr/sbin/update-gru.blocked\" ];then
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
+    else
+        echo -e \"[*] Blocking update-grub\"
+	fi
+	
+	mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
+	ln -s /bin/true /usr/sbin/update-grub
+else
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Red}!${Reset}] ${Yellow}Blocking of update-grub skipped${Reset}\"
+    else
+        echo -e \"[!] Blocking of update-grub skipped\"
+	fi
+fi
+
+
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
+    else
+        echo -e \"[*] Updating packages database\"
+fi
+apt-get update -qq
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Making sure everything is configured${Reset}\"
+    else
+        echo -e \"[*] Making sure everything is configured\"
+fi
+dpkg --configure -a
+apt-get install -f -y -q
 
 ${@}
 
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking initctl${Reset}\"
+    else
+        echo -e \"[*] Unblocking initctl\"
+fi
+rm -f /sbin/initctl
+mv /sbin/initctl.blocked /sbin/initctl
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
+    else
+        echo -e \"[*] Unblocking update-grub\"
+fi
+rm -f /usr/sbin/update-grub
+mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
+
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
+    else
+        echo -e \"[*] Cleaning up\"
+fi
 apt-get clean
 rm -f /etc/debian_chroot
 rm -f /etc/hosts
@@ -198,8 +249,12 @@ rm -f ~/.bash_history
 rm -f /boot/*.bak
 rm -f /var/lib/dpkg/*-old
 rm -f /var/lib/aptitude/*.old
-rm -f /var/cache/debconf/*.dat-old
+rm -f /var/cache/debconf/*-old
 rm -f /var/log/*.gz
+rm -f /etc/apt/trusted.gpg~
+rm -f /etc/group- /etc/passwd-
+rm -f /etc/gshadow- /etc/shadow-
+rm -f /var/log/apt/term.log
 rm -rf /tmp
 mkdir /tmp
 " > "$WORK_DIR/FileSystem/tmp/script.sh"
