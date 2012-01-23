@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Customizer - Advanced LiveCD Remastering Tool
-# Copyright (C) 2010-2012  Ivailo Monev
+# Copyright (C) 2011  Ivailo Monev
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -181,13 +181,13 @@ if [ ! -e \"/sbin/initctl.blocked\" ];then
 	ln -s /bin/true /sbin/initctl
 else
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-	    echo -e \"[${Yellow}*${Reset}] ${Green}Blocking of initctl skipped${Reset}\"
+	    echo -e \"[${Red}!${Yellow}] ${Green}Blocking of initctl skipped${Reset}\"
     else
-        echo -e \"[*] Blocking of initctl skipped\"
+        echo -e \"[!] Blocking of initctl skipped\"
 	fi
 fi
 
-if [ ! -e \"/usr/sbin/update-grub\" ];then
+if [ ! -e \"/usr/sbin/update-gru.blocked\" ];then
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
         echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
     else
@@ -198,9 +198,9 @@ if [ ! -e \"/usr/sbin/update-grub\" ];then
 	ln -s /bin/true /usr/sbin/update-grub
 else
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Blocking of update-grub skipped${Reset}\"
+        echo -e \"[${Red}!${Reset}] ${Yellow}Blocking of update-grub skipped${Reset}\"
     else
-        echo -e \"[*] Blocking of update-grub skipped\"
+        echo -e \"[!] Blocking of update-grub skipped\"
 	fi
 fi
 
@@ -241,7 +241,6 @@ if [ \"$MESSAGES_COLORS\" = \"1\" ];then
     else
         echo -e \"[*] Cleaning up\"
 fi
-
 apt-get clean
 rm -f /etc/debian_chroot
 rm -f /etc/hosts
@@ -252,7 +251,6 @@ rm -f /var/lib/dpkg/*-old
 rm -f /var/lib/aptitude/*.old
 rm -f /var/cache/debconf/*-old
 rm -f /var/log/*.gz
-rm -f /etc/fstab
 rm -f /etc/apt/trusted.gpg~
 rm -f /etc/group- /etc/passwd-
 rm -f /etc/gshadow- /etc/shadow-
@@ -265,7 +263,7 @@ INFO_MESSAGE "Doing some preparations"
 cp -f /etc/hosts "$WORK_DIR/FileSystem/etc"
 cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
 echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
-ln -fs "/proc/mounts" "$WORK_DIR/FileSystem/etc/mtab"
+ln -sf /proc/mounts "$WORK_DIR/FileSystem/etc/mtab"
 touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
 
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || WARNING_MESSAGE "The chroot hook has returned exit status by internal command"
