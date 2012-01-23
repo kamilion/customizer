@@ -133,10 +133,10 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
     Message.Error("Unable to detect Terminal Emulator! \nSupported are: \n\nGnome-terminal, Konsole, XFCE4-terminal, LXTerminal, Terminator, Sakura, Yakuake, urxterm, Eterm, xterm and aterm")
   ENDIF 
 
-  Func.Debug_Msg("Editing file: " & EditFile)
+  Func.Event_Msg("Editing file: " & EditFile)
 
   IF Editor = "nano" OR Editor = "pico" OR Editor = "vi" OR Editor = "vim" THEN
-    EXEC [Func.Use_Term(), "-e", Editor, WorkDir & EditFile] WAIT
+    EXEC [Func.Use_Term(), "-e", Editor & " " & WorkDir & EditFile] WAIT
   ELSE
     EXEC [Editor, WorkDir & EditFile]
   ENDIF
@@ -146,7 +146,7 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
 END
 
 PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
-  Func.Debug_Msg("Browsing directory: " & BrsDir)
+  Func.Event_Msg("Browsing directory: " & BrsDir)
 
   IF NOT Exist(WorkDir & BrsDir) THEN
     Message.Error("The directory doesn't exists")
