@@ -40,7 +40,6 @@ echo "
      -u|--use       Exctract ISO image
      -c|--chroot    Chroot into the filesystem
      -x|--xnest     Execute nested X-session
-     -e|--sources   Edit sources.list
      -p|--pkgm      Execute package manager
      -d|--deb       Install Debian package
      -k|--hook      Execute hook
