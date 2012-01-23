@@ -123,7 +123,7 @@ else
     else
             echo -e \"[*] Updating/creating Kernel image\"
     fi
-	update-initramfs -u
+	update-initramfs -k all -t -u
 fi"
 __umount_sys__
 __recursive_umount__
