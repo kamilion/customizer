@@ -3,7 +3,7 @@
 Title=Customizer
 Startup=FMain
 Icon=logo.png
-Version=3.2.497
+Version=3.2.498
 Library=gb.gui
 Library=gb.form
 Description=GUI for Customizer (previuosly known as U-Customizer)
@@ -12,7 +12,7 @@ TabSize=2
 State=2
 ControlPublic=1
 ModulePublic=1
-ExecPath=/opt/Customizer_org/GUI.gambas
+ExecPath=/opt/Customizer/GUI.gambas
 SourcePath=/opt/Customizer/GUI
 Maintainer=SmiL3y
 Address=xakepa10@gmail.com
