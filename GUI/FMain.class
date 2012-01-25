@@ -34,7 +34,7 @@ PUBLIC SUB UseImage_Click()
   Func.Replace_Str("/opt/Customizer/settings.conf", "ISO=", Dialog.Path)
   
   Func.Event_Msg("Extracting ISO")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-e"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -e"] WAIT
   
   Check.Existence()
 END
@@ -45,14 +45,14 @@ END
 
 PUBLIC SUB Desktop_Click()
   Func.Debug_Msg("Launching nested X-session")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-x"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -x"] WAIT
   
   Check.Pkg_Manager()
 END
 
 PUBLIC SUB Terminal_Click()
   Func.Debug_Msg("Launching chroot Terminal")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-c"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -c"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
@@ -63,7 +63,7 @@ PUBLIC SUB Build_ISO_Click()
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
   ELSE
     Func.Event_Msg("Rebuilding ISO image")
-    EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-r"] WAIT
+    EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -r"] WAIT
   ENDIF 
   
   Check.ISO()
@@ -71,7 +71,7 @@ END
 
 PUBLIC SUB Clean_Click()
   Func.Event_Msg("Cleaning working directories")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-t"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -t"] WAIT
     
   Func.Disable_Stuff
   Build_ISO.Text = "Build ISO"
@@ -95,7 +95,7 @@ PUBLIC SUB Install_DEB_Click()
   Func.Replace_Str("/opt/Customizer/settings.conf", "DEB=", Dialog.Path)
 
   Func.Event_Msg("Installing DEB package")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-d"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -d"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
@@ -103,7 +103,7 @@ END
 
 PUBLIC SUB Archive_Click()
   Func.Event_Msg("Launching Package Manager")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-p"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -p"] WAIT
   
   Check.X_session()
 END
@@ -111,7 +111,7 @@ END
 
 PUBLIC SUB QEMU_Click()
   Func.Event_Msg("Launching QEMU")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-q"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -q"] WAIT
 END
 
 
@@ -191,14 +191,14 @@ PUBLIC SUB Import_Snapshot_Click()
   IF Dialog.OpenFile() THEN RETURN
   Func.Replace_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", Dialog.Path)
 
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-i"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -i"] WAIT
   
   Check.Existence()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
   Func.Event_Msg("Creating snapshot")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-s"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -s"] WAIT
 END
 
   'Menu - Extras
@@ -219,7 +219,7 @@ PUBLIC SUB Exec_Hook_Click()
   Func.Event_Msg("Executing hook")
   Func.Replace_Str("/opt/Customizer/settings.conf", "HOOK=", Dialog.Path)
   
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-k"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -k"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
@@ -227,7 +227,7 @@ END
 
 PUBLIC SUB Install_GUI_Click()
   Func.Event_Msg("Installing GUI")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh", "-g"] WAIT
+  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -g"] WAIT
   
   Check.X_session()
   Check.Pkg_Manager()
