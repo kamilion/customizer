@@ -8,7 +8,7 @@
   }
   { SplashPic PictureBox
     MoveScaled(2,2,45,34)
-    ToolTip = ("Preview of the isolinux image")
+    ToolTip = ("Preview of Grub splash image")
     Stretch = True
   }
   { Quit Button
@@ -25,7 +25,7 @@
   }
   { ChangePic Button
     MoveScaled(5,43,16,3)
-    ToolTip = ("Change isolinux image")
+    ToolTip = ("Change Grub splash image")
     Text = ("Change Splash")
     Picture = Picture["icon:/16/image"]
   }
@@ -37,6 +37,7 @@
   }
   { ModeBox ComboBox
     MoveScaled(2,39,15,3)
+    ToolTip = ("Set which colour should be changed")
     ReadOnly = True
     List = []
     Text = ("")

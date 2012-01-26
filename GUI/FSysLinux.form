@@ -10,7 +10,7 @@
   }
   { SplashPic PictureBox
     MoveScaled(2,2,45,34)
-    ToolTip = ("Preview of the isolinux image")
+    ToolTip = ("Preview of isolinux splash image")
     Stretch = True
   }
   { Quit Button
@@ -37,7 +37,7 @@
   }
   { ChangePic Button
     MoveScaled(15,38,16,3)
-    ToolTip = ("Change isolinux image")
+    ToolTip = ("Change isolinux splash image")
     Text = ("Change Splash")
     Picture = Picture["icon:/16/image"]
   }
