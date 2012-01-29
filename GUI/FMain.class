@@ -133,16 +133,22 @@ PUBLIC SUB DistName_Change()
 END
 
 PUBLIC SUB HostName_Change()
+  Func.Event_Msg("HostName.Text changed")
+
   HostName.Text = Trim(LCase(HostName.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
 END
 
 PUBLIC SUB LiveCD_User_Change()
+  Func.Event_Msg("LiveCD_User.Text changed")
+
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
 END
 
 PUBLIC SUB Version_Change()
+  Func.Event_Msg("Version.Text changed")
+
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
@@ -153,6 +159,8 @@ PUBLIC SUB Version_Change()
 END
 
 PUBLIC SUB ReleaseNotesURL_Change()
+  Func.Event_Msg("ReleaseNotesURL.Text changed")
+
   Trim(ReleaseNotesURL.Text)
   Func.Save_File(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
 END

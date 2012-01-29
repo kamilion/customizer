@@ -1,3 +1,4 @@
 	* Updated license year
 	* Event/Debug messages changes/added
-	* Linking /proc/mounts to /etc/mtab applications relying on it work as expected
+	* Linking /proc/mounts to /etc/mtab so that applications relying on it work as expected
+	* Blocking/unblocking /sbin/initctl and /sbin/update-grub is done outside of chroot as well as the clean-up
