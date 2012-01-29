@@ -255,8 +255,7 @@ rm -f /etc/apt/trusted.gpg~
 rm -f /etc/group- /etc/passwd-
 rm -f /etc/gshadow- /etc/shadow-
 rm -f /var/log/apt/term.log
-rm -rf /tmp
-mkdir /tmp
+rm -rf /tmp/* /tmp/.??*
 " > "$WORK_DIR/FileSystem/tmp/script.sh"
 
 INFO_MESSAGE "Doing some preparations"
