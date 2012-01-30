@@ -28,7 +28,7 @@ source /opt/Customizer/settings.conf
 
 __create_work_dirs__() {
 	INFO_MESSAGE "Creating work directories"
-	mkdir -p "$MOUNT_DIR" "$WORK_DIR/ISO" "$WORK_DIR/FileSystem" || ERROR_MESSAGE "Unable to create working directories"
+	mkdir -p "$WORK_DIR/{FileSystem,ISO}" || ERROR_MESSAGE "Unable to create working directories"
 }
 
 __clean__() {
@@ -52,6 +52,8 @@ else
 fi
 
 ############################# Mounting the ISO image #############################
+MOUNT_DIR="`mktemp -d --tmpdir=\"$MOUNT_DIR\"`"
+
 INFO_MESSAGE "Mounting ISO"
 mount -t iso9660 -o loop "$ISO" "$MOUNT_DIR" || ERROR_MESSAGE "Unable to mount the ISO"
 
