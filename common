@@ -187,7 +187,7 @@ else
 	fi
 fi
 
-if [ ! -e \"/usr/sbin/update-gru.blocked\" ];then
+if [ ! -e \"/usr/sbin/update-grub.blocked\" ];then
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
         echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
     else
