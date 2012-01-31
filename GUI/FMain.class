@@ -150,7 +150,7 @@ END
 
 PUBLIC SUB LiveCD_User_Change()
   Func.Event_Msg("LiveCD_User.Text changed")
-
+  
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
 END

@@ -97,7 +97,9 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
   DIM Editor AS String
 
   Func.Event_Msg("Detecting Text Editor")
-  IF Exist("/usr/bin/gedit") THEN
+  IF Exist("/usr/bin/xdg-open") THEN
+    Editor = "/usr/bin/xdg-open"
+  ELSE IF Exist("/usr/bin/gedit") THEN
     Editor = "/usr/bin/gedit"
   ELSE IF Exist("/usr/bin/kate") THEN
     Editor = "/usr/bin/kate"
@@ -150,6 +152,8 @@ PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
 
   IF NOT Exist(WorkDir & BrsDir) THEN
     Message.Error("The directory doesn't exists")
+  ELSE IF Exist("/usr/bin/xdg-open") THEN
+    EXEC ["/usr/bin/xdg-open", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/nautilus") THEN
     EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/dolphin") THEN
