@@ -14,7 +14,7 @@
     Stretch = True
   }
   { Quit Button
-    MoveScaled(40,38,16,3)
+    MoveScaled(39,38,16,3)
     ToolTip = ("Close this window")
     Text = ("Close")
     Picture = Picture["icon:/16/close"]

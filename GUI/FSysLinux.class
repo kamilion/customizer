@@ -25,9 +25,15 @@ PUBLIC SUB Form_Open()
   ENDIF 
 
   IF NOT Exist(WorkDir & "/ISO/isolinux/gfxboot.cfg") THEN 
+    Func.Event_Msg("Removing colours widgets and re-ordering the rest")
     Message.Warning("gfxboot.cfg doesn't exists")
-    SetColourMode.Enabled = FALSE
-    ColorChooser1.Enabled = FALSE
+    ColorChooser1.Delete
+    SetColourMode.Delete
+    
+    ChangePic.X = 60
+    Quit.X = 270
+    ME.W = 490
+    ME.Center
   ELSE 
     HFColor = Func.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "foreground=0x", "0x000000")
     HBColor = Func.Get_Str(WorkDir & "/ISO/isolinux/gfxboot.cfg", "background=0x", "000000")

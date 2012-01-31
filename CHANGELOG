@@ -4,3 +4,4 @@
 	* Blocking/unblocking /sbin/initctl and /sbin/update-grub is done outside of chroot as well as the clean-up
 	* Mounting the ISO image in random sub-directory of MOUNT_DIR
 	+ Locking GUI via /opt/Customizer/gui_lock to prevent multiple instances
+	+ If gfxboot.cfg doesn't exists only splash picture widgets left in SysLinux form
