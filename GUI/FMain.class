@@ -10,7 +10,16 @@ PUBLIC SUB Form_Open()
   DistName.MaxLength = 16
   HostName.MaxLength = 16
   LiveCD_User.MaxLength = 16
-
+  
+  Func.Event_Msg("Checking if GUI is locked")
+  IF Exist("/opt/Customizer/gui_lock") THEN 
+    Message.Warning("Another instance of the GUI is already running!")
+    ME.Close
+  ELSE 
+    Func.Event_Msg("Locking GUI")
+    TRY File.Save("/opt/Customizer/gui_lock", "")
+  ENDIF 
+  
   Check.Conf_File()
   Check.Existence()
 END
@@ -166,7 +175,7 @@ PUBLIC SUB ReleaseNotesURL_Change()
 END
 
 PUBLIC SUB Form_Close()
-  EXEC ["killall", "customizer"]
+  TRY KILL "/opt/Customizer/gui_lock"
 END
 
 
