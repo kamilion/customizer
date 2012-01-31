@@ -243,8 +243,6 @@ rm -f "$WORK_DIR/FileSystem/etc/group-" "$WORK_DIR/FileSystem/etc/passwd-"
 rm -f "$WORK_DIR/FileSystem/etc/gshadow-" "$WORK_DIR/FileSystem/etc/shadow-"
 rm -f "$WORK_DIR/FileSystem/var/log/apt/term.log"
 rm -rf "$WORK_DIR/FileSystem/tmp/"* "$WORK_DIR/FileSystem/tmp/".??* 
-
-
 rm -f "$WORK_DIR/FileSystem/tmp/lock_chroot"
 rm -f "$WORK_DIR/FileSystem/etc/mtab"
 }

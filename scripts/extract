@@ -28,7 +28,7 @@ source /opt/Customizer/settings.conf
 
 __create_work_dirs__() {
 	INFO_MESSAGE "Creating work directories"
-	mkdir -p "$WORK_DIR/{FileSystem,ISO}" || ERROR_MESSAGE "Unable to create working directories"
+	mkdir -p "$WORK_DIR/"{FileSystem,ISO} || ERROR_MESSAGE "Unable to create working directories"
 }
 
 __clean__() {
