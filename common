@@ -117,7 +117,7 @@ EXTRA_ERROR_MESSAGE_NOT_EXIT() {
 __check_lock__() {
     INFO_MESSAGE "Checking lock"
     if [ "$FORCE_CHROOT" = "1" ];then
-        WARNING_MESSAGE "Forcing chroot"
+        WARNING_MESSAGE "Filesystem lock-check skipped"
     else
         if [ -e "$WORK_DIR/FileSystem/tmp/lock_chroot" ];then 
             ERROR_MESSAGE "The filesystem is locked"
