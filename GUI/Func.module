@@ -97,7 +97,9 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
   DIM Editor AS String
 
   Func.Event_Msg("Detecting Text Editor")
-  IF Exist("/usr/bin/gedit") THEN
+  IF Exist("/usr/bin/xdg-open") THEN
+    Editor = "/usr/bin/xdg-open"
+  ELSE IF Exist("/usr/bin/gedit") THEN
     Editor = "/usr/bin/gedit"
   ELSE IF Exist("/usr/bin/kate") THEN
     Editor = "/usr/bin/kate"
@@ -133,10 +135,10 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
     Message.Error("Unable to detect Terminal Emulator! \nSupported are: \n\nGnome-terminal, Konsole, XFCE4-terminal, LXTerminal, Terminator, Sakura, Yakuake, urxterm, Eterm, xterm and aterm")
   ENDIF 
 
-  Func.Event_Msg("Editing file: " & EditFile)
+  Func.Debug_Msg("Editing file: " & EditFile)
 
   IF Editor = "nano" OR Editor = "pico" OR Editor = "vi" OR Editor = "vim" THEN
-    EXEC [Func.Use_Term(), "-e", Editor & " " & WorkDir & EditFile] WAIT
+    EXEC [Func.Use_Term(), "-e", Editor, WorkDir & EditFile] WAIT
   ELSE
     EXEC [Editor, WorkDir & EditFile]
   ENDIF
@@ -150,6 +152,8 @@ PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
 
   IF NOT Exist(WorkDir & BrsDir) THEN
     Message.Error("The directory doesn't exists")
+  ELSE IF Exist("/usr/bin/xdg-open") THEN
+    EXEC ["/usr/bin/xdg-open", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/nautilus") THEN
     EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/dolphin") THEN

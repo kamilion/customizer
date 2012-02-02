@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Customizer - Advanced LiveCD Remastering Tool
-# Copyright (C) 2011  Ivailo Monev
+# Copyright (C) 2010-2012  Ivailo Monev
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -37,7 +37,7 @@ Usage () {
 echo "
  Main options:
 
-     -e|--extract       Exctract ISO image
+     -e|--extract   Exctract ISO image
      -c|--chroot    Chroot into the filesystem
      -x|--xnest     Execute nested X-session
      -p|--pkgm      Execute package manager
@@ -59,7 +59,7 @@ echo "
 
 Version () {
 echo "
-Customizer v3.2.1
+Customizer v3.2.2
 
 Links:
 

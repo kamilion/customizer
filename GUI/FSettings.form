@@ -70,8 +70,8 @@
   }
   { ForceChroot CheckBox
     MoveScaled(2,18,44,3)
-    ToolTip = ("Tick this and the scripts will chroot into the filesystem even if it is locked, this is useful ONLY if there is a bug in the application")
-    Text = ("Force chroot enter even if it is locked")
+    ToolTip = ("Tick this and the scripts will not check if the filesystem is locked or not when chrooting into it and/or need to purge it. This is useful ONLY if there is a bug in the application or something bad happened")
+    Text = ("Skip FileSystem lock check")
   }
   { UseColors CheckBox
     MoveScaled(2,15,44,3)

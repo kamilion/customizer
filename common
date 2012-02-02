@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Customizer - Advanced LiveCD Remastering Tool
-# Copyright (C) 2011  Ivailo Monev
+# Copyright (C) 2010-2012  Ivailo Monev
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -117,7 +117,7 @@ EXTRA_ERROR_MESSAGE_NOT_EXIT() {
 __check_lock__() {
     INFO_MESSAGE "Checking lock"
     if [ "$FORCE_CHROOT" = "1" ];then
-        WARNING_MESSAGE "Forcing chroot"
+        WARNING_MESSAGE "Filesystem lock-check skipped"
     else
         if [ -e "$WORK_DIR/FileSystem/tmp/lock_chroot" ];then 
             ERROR_MESSAGE "The filesystem is locked"
@@ -170,40 +170,6 @@ fi
 export HOME=/root
 export LC_ALL=C
 
-if [ ! -e \"/sbin/initctl.blocked\" ];then
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-	    echo -e \"[${Yellow}*${Reset}] ${Green}Blocking initctl${Reset}\"
-    else
-        echo -e \"[*] Blocking initctl\"
-	fi
-	
-	mv /sbin/initctl /sbin/initctl.blocked
-	ln -s /bin/true /sbin/initctl
-else
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-	    echo -e \"[${Red}!${Yellow}] ${Green}Blocking of initctl skipped${Reset}\"
-    else
-        echo -e \"[!] Blocking of initctl skipped\"
-	fi
-fi
-
-if [ ! -e \"/usr/sbin/update-grub.blocked\" ];then
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Blocking update-grub${Reset}\"
-    else
-        echo -e \"[*] Blocking update-grub\"
-	fi
-	
-	mv /usr/sbin/update-grub /usr/sbin/update-grub.blocked
-	ln -s /bin/true /usr/sbin/update-grub
-else
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Red}!${Reset}] ${Yellow}Blocking of update-grub skipped${Reset}\"
-    else
-        echo -e \"[!] Blocking of update-grub skipped\"
-	fi
-fi
-
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
         echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"
@@ -221,52 +187,64 @@ apt-get install -f -y -q
 
 ${@}
 
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking initctl${Reset}\"
-    else
-        echo -e \"[*] Unblocking initctl\"
-fi
-rm -f /sbin/initctl
-mv /sbin/initctl.blocked /sbin/initctl
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Unblocking update-grub${Reset}\"
-    else
-        echo -e \"[*] Unblocking update-grub\"
-fi
-rm -f /usr/sbin/update-grub
-mv /usr/sbin/update-grub.blocked /usr/sbin/update-grub
-
-if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Cleaning up${Reset}\"
-    else
-        echo -e \"[*] Cleaning up\"
-fi
-apt-get clean
-rm -f /etc/debian_chroot
-rm -f /etc/hosts
-rm -f /etc/resolv.conf
-rm -f ~/.bash_history
-rm -f /boot/*.bak
-rm -f /var/lib/dpkg/*-old
-rm -f /var/lib/aptitude/*.old
-rm -f /var/cache/debconf/*-old
-rm -f /var/log/*.gz
-rm -f /etc/apt/trusted.gpg~
-rm -f /etc/group- /etc/passwd-
-rm -f /etc/gshadow- /etc/shadow-
-rm -f /var/log/apt/term.log
-rm -rf /tmp/* /tmp/.??*
 " > "$WORK_DIR/FileSystem/tmp/script.sh"
 
 INFO_MESSAGE "Doing some preparations"
 cp -f /etc/hosts "$WORK_DIR/FileSystem/etc"
 cp -f /etc/resolv.conf "$WORK_DIR/FileSystem/etc"
 echo chroot > "$WORK_DIR/FileSystem/etc/debian_chroot"
+ln -sf /proc/mounts "$WORK_DIR/FileSystem/etc/mtab"
 touch "$WORK_DIR/FileSystem/tmp/lock_chroot"
+
+if [ ! -e "$WORK_DIR/FileSystem/sbin/initctl.blocked" ];then
+	INFO_MESSAGE "Blocking initctl"
+	
+	mv "$WORK_DIR/FileSystem/sbin/initctl" "$WORK_DIR/FileSystem/sbin/initctl.blocked"
+	ln -s "$WORK_DIR/FileSystem/bin/true" "$WORK_DIR/FileSystem/sbin/initctl"
+else
+	WARNING_MESSAGE "Blocking of initctl skipped"
+fi
+
+if [ ! -e "$WORK_DIR/FileSystem/usr/sbin/update-grub.blocked" ];then
+	INFO_MESSAGE "Blocking update-grub"
+	
+	mv "$WORK_DIR/FileSystem/usr/sbin/update-grub" "$WORK_DIR/FileSystem/usr/sbin/update-grub.blocked"
+	ln -s "$WORK_DIR/FileSystem/bin/true" "$WORK_DIR/FileSystem/usr/sbin/update-grub"
+else
+	WARNING_MESSAGE "Blocking of update-grub skipped"
+fi
 
 chroot "$WORK_DIR/FileSystem" bash /tmp/script.sh || WARNING_MESSAGE "The chroot hook has returned exit status by internal command"
 
+
+
+INFO_MESSAGE "Unblocking initctl"
+rm -f "$WORK_DIR/FileSystem/sbin/initctl"
+mv "$WORK_DIR/FileSystem/sbin/initctl.blocked" "$WORK_DIR/FileSystem/sbin/initctl"
+
+INFO_MESSAGE "Unblocking update-grub"
+rm -f "$WORK_DIR/FileSystem/usr/sbin/update-grub"
+mv "$WORK_DIR/FileSystem/usr/sbin/update-grub.blocked" "$WORK_DIR/FileSystem/usr/sbin/update-grub"
+
+
+INFO_MESSAGE "Cleaning up"
+chroot "$WORK_DIR/FileSystem" apt-get clean
+rm -f "$WORK_DIR/FileSystem/etc/debian_chroot"
+rm -f "$WORK_DIR/FileSystem/etc/hosts"
+rm -f "$WORK_DIR/FileSystem/etc/resolv.conf"
+rm -f "$WORK_DIR/FileSystem/root/.bash_history"
+rm -f "$WORK_DIR/FileSystem/boot/"*.bak
+rm -f "$WORK_DIR/FileSystem/var/lib/dpkg/"*-old
+rm -f "$WORK_DIR/FileSystem/var/lib/aptitude/"*.old
+rm -f "$WORK_DIR/FileSystem/var/cache/debconf/"*-old
+rm -f "$WORK_DIR/FileSystem/var/log/"*.gz
+rm -f "$WORK_DIR/FileSystem/etc/apt/trusted.gpg~"
+rm -f "$WORK_DIR/FileSystem/etc/group-" "$WORK_DIR/FileSystem/etc/passwd-"
+rm -f "$WORK_DIR/FileSystem/etc/gshadow-" "$WORK_DIR/FileSystem/etc/shadow-"
+rm -f "$WORK_DIR/FileSystem/var/log/apt/term.log"
+rm -rf "$WORK_DIR/FileSystem/tmp/"* "$WORK_DIR/FileSystem/tmp/".??* 
 rm -f "$WORK_DIR/FileSystem/tmp/lock_chroot"
+rm -f "$WORK_DIR/FileSystem/etc/mtab"
 }
 
 __mount_sys__ () {

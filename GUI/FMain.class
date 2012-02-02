@@ -10,7 +10,16 @@ PUBLIC SUB Form_Open()
   DistName.MaxLength = 16
   HostName.MaxLength = 16
   LiveCD_User.MaxLength = 16
-
+  
+  Func.Event_Msg("Checking if GUI is locked")
+  IF Exist("/opt/Customizer/gui_lock") THEN 
+    Message.Warning("Another instance of the GUI is already running!")
+    ME.Close
+  ELSE 
+    Func.Event_Msg("Locking GUI")
+    TRY File.Save("/opt/Customizer/gui_lock", "")
+  ENDIF 
+  
   Check.Conf_File()
   Check.Existence()
 END
@@ -44,14 +53,14 @@ PUBLIC SUB Edit_Sources_Click()
 END
 
 PUBLIC SUB Desktop_Click()
-  Func.Event_Msg("Launching nested X-session")
+  Func.Debug_Msg("Launching nested X-session")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -x"] WAIT
   
   Check.Pkg_Manager()
 END
 
 PUBLIC SUB Terminal_Click()
-  Func.Event_Msg("Launching chroot Terminal")
+  Func.Debug_Msg("Launching chroot Terminal")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -c"] WAIT
   
   Check.X_session()
@@ -121,6 +130,8 @@ END
 
 ' Change Configs
 PUBLIC SUB DistName_Change()
+  Func.Event_Msg("DistName.Text changed")
+
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
@@ -131,16 +142,22 @@ PUBLIC SUB DistName_Change()
 END
 
 PUBLIC SUB HostName_Change()
+  Func.Event_Msg("HostName.Text changed")
+
   HostName.Text = Trim(LCase(HostName.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
 END
 
 PUBLIC SUB LiveCD_User_Change()
+  Func.Event_Msg("LiveCD_User.Text changed")
+  
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
 END
 
 PUBLIC SUB Version_Change()
+  Func.Event_Msg("Version.Text changed")
+
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
@@ -151,12 +168,14 @@ PUBLIC SUB Version_Change()
 END
 
 PUBLIC SUB ReleaseNotesURL_Change()
+  Func.Event_Msg("ReleaseNotesURL.Text changed")
+
   Trim(ReleaseNotesURL.Text)
   Func.Save_File(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
 END
 
 PUBLIC SUB Form_Close()
-  EXEC ["killall", "customizer"]
+  TRY KILL "/opt/Customizer/gui_lock"
 END
 
 
@@ -174,6 +193,7 @@ END
 PUBLIC SUB Import_Snapshot_Click()
   DIM SNAPSHOT AS String
   
+  Func.Event_Msg("Importing snapshot")
   SNAPSHOT = Func.Get_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", "")
   
   Dialog.Title = "Please select Customizer project snapshot"
@@ -194,6 +214,7 @@ PUBLIC SUB Import_Snapshot_Click()
 END
 
 PUBLIC SUB Create_Snapshot_Click()
+  Func.Event_Msg("Creating snapshot")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -s"] WAIT
 END
 
@@ -212,6 +233,7 @@ PUBLIC SUB Exec_Hook_Click()
   ENDIF 
   
   IF Dialog.OpenFile() THEN RETURN 
+  Func.Event_Msg("Executing hook")
   Func.Replace_Str("/opt/Customizer/settings.conf", "HOOK=", Dialog.Path)
   
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -k"] WAIT
@@ -221,6 +243,7 @@ PUBLIC SUB Exec_Hook_Click()
 END
 
 PUBLIC SUB Install_GUI_Click()
+  Func.Event_Msg("Installing GUI")
   EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -g"] WAIT
   
   Check.X_session()

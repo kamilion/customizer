@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Customizer - Advanced LiveCD Remastering Tool
-# Copyright (C) 2011  Ivailo Monev
+# Copyright (C) 2010-2012  Ivailo Monev
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -95,49 +95,53 @@ for i in $to_clean;do
 	fi
 done
 
-__mount_sys__
-__chroot__ "if [ ! -e /initrd.img ] || [ ! -e /vmlinuz ]; then
+INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
+VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
+if [ ! -e "$INITRD_SOURCE" ] || [ ! -e "$VMLINUZ_SOURCE" ] ; then
+	__mount_sys__
+	__chroot__ "
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-            echo -e \"[${Yellow}*${Reset}] ${Green}Purging Kernels (if any)${Reset}\"
-    else
-            echo -e \"[*] Purging Kernels (if any)\"
-    fi
+        echo -e \"[${Yellow}*${Reset}] ${Green}Purging Kernels (if any)${Reset}\"
+	else
+        echo -e \"[*] Purging Kernels (if any)\"
+	fi
 
 	apt-get purge --yes linux-image* linux-headers* -qq
 	
 	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-            echo -e \"[${Yellow}*${Reset}] ${Green}Installing Kernel${Reset}\"
-    else
-            echo -e \"[*] Installing Kernel\"
-    fi
-    apt-get install --yes linux-image-generic linux-headers-generic -qq
-else
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-            echo -e \"[${Yellow}*${Reset}] ${Green}Installing the latest initramfs-tools${Reset}\"
-    else
-            echo -e \"[*] Installing the latest initramfs-tools\"
-    fi
-	apt-get install --yes initramfs-tools -qq
-    if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-            echo -e \"[${Yellow}*${Reset}] ${Green}Updating/creating Kernel image${Reset}\"
-    else
-            echo -e \"[*] Updating/creating Kernel image\"
-    fi
-	update-initramfs -k all -t -u
-fi"
-__umount_sys__
-__recursive_umount__
-
-INITRD_SOURCE="$WORK_DIR/FileSystem/initrd.img"
-VMLINUZ_SOURCE="$WORK_DIR/FileSystem/vmlinuz"
-if [ ! -e "$INITRD_SOURCE" ] || [ ! -e "$VMLINUZ_SOURCE" ] ; then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Installing Kernel${Reset}\"
+	else
+        echo -e \"[*] Installing Kernel\"
+	fi
+	apt-get install --yes linux-image-generic linux-headers-generic -qq"
+	__umount_sys__
+	__recursive_umount__
+	
 	INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
 	VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
-	WARNING_MESSAGE "Using the most recent kernel"
+else
+	__mount_sys__
+	__chroot__ "
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Installing the latest initramfs-tools${Reset}\"
+	else
+        echo -e \"[*] Installing the latest initramfs-tools\"
+	fi
+	apt-get install --yes initramfs-tools -qq
+	
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Updating/creating Kernel image${Reset}\"
+	else
+        echo -e \"[*] Updating/creating Kernel image\"
+	fi
+	update-initramfs -k all -t -u"
+	__umount_sys__
+	__recursive_umount__
 fi
 
-INFO_MESSAGE "Copying boot files"
+EXTRA_INFO_MESSAGE "Copying initrd" "${INITRD_SOURCE#$WORK_DIR/FileSystem/boot/}"
 cp -f "$INITRD_SOURCE" "$WORK_DIR/ISO/casper/initrd.lz" || ERROR_MESSAGE "Unable to copy initrd.img"
+EXTRA_INFO_MESSAGE "Copying vmlinuz" "${VMLINUZ_SOURCE#$WORK_DIR/FileSystem/boot/}"
 cp -f "$VMLINUZ_SOURCE" "$WORK_DIR/ISO/casper/vmlinuz" || ERROR_MESSAGE "Unable to copy vmlinuz"
 
 if [ "$BOOT_FILES" = "1" ]; then

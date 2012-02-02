@@ -13,6 +13,7 @@ PUBLIC SUB Form_Open()
   ME.Center
   ME.Caption = "Installed Packages "
 
+  Func.Event_Msg("Getting packages list")
   SHELL "chroot '" & WorkDir & "/FileSystem' dpkg-query -W --showformat='${Package},${Version},${Priority},${Installed-Size}\n' | tee /tmp/PACKAGESLIST" WAIT
 
   OPEN "/tmp/PACKAGESLIST" FOR READ AS #TempFile
@@ -50,6 +51,7 @@ PUBLIC SUB Save_Click()
   Dialog.Path = WorkDir
 
   IF Dialog.SaveFile() THEN RETURN
+  Func.Debug_Msg("Saving packages list: " & Dialog.Path & ".txt")
   COPY "/tmp/PACKAGESLIST" TO Dialog.Path & ".txt"
   
   CATCH 
