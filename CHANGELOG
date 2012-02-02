@@ -3,6 +3,7 @@
 	* Linking /proc/mounts to /etc/mtab so that applications relying on it work as expected
 	* Blocking/unblocking /sbin/initctl and /sbin/update-grub is done outside of chroot as well as the clean-up
 	* Mounting the ISO image in random sub-directory of MOUNT_DIR
+	* Always picking-up the most recent Kernel when rebuilding ISO
 	+ Locking GUI via /opt/Customizer/gui_lock to prevent multiple instances
 	+ If gfxboot.cfg doesn't exists only splash picture widgets left in SysLinux form
 	+ xdg-open is priority when detecting editor/file manager to use the system defaults if possible

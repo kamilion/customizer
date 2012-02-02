@@ -37,7 +37,7 @@ Usage () {
 echo "
  Main options:
 
-     -u|--use       Exctract ISO image
+     -e|--extract   Exctract ISO image
      -c|--chroot    Chroot into the filesystem
      -x|--xnest     Execute nested X-session
      -p|--pkgm      Execute package manager
