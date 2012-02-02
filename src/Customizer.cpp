@@ -3,7 +3,7 @@
 // Author      : SmiL3y
 // Version     :
 // Copyright   : Copyright (C) 2010-2012  Ivailo Monev
-// Description : Hello World in C++, Ansi-style
+// Description : Customizer - Advanced LiveCD Remastering Tool
 //============================================================================
 
 #include <iostream>
@@ -70,16 +70,45 @@ int Usage() {
 int main(int argc, char* argv[]) {
 	int arguments;
 
-	if (argc < 2)
-		Usage();
-	else
-	{
-	while ((arguments = getopt (argc, argv, "hv")) != -1)
+	while ((arguments = getopt (argc, argv, "ecxpdkgsirqthv")) != -1)
 	         switch (arguments)
 	           {
-	           case 'a':
-	             cout << "called A" << endl;
+	           case 'e':
+	             cout << "EXTRACTING ISO" << endl;
 	             break;
+	           case 'c':
+	           	 cout << "CHROOTING" << endl;
+	           	 break;
+	           case 'x':
+	           	  cout << "NESTED-X" << endl;
+	           	  break;
+	           case 'p':
+	        	   cout << "RUNNINIG PACKAGE MANAGER" << endl;
+	        	   break;
+	           case 'd':
+	        	   cout << "INSTALLING DEB" << endl;
+	        	   break;
+	           case 'k':
+	        	   cout << "EXECUTING HOOK" << endl;
+	        	   break;
+	           case 'g':
+	        	   cout << "INSTALLING GUI" << endl;
+	        	   break;
+	           case 's':
+	           	   cout << "CREATING SNAPSHOT" << endl;
+	           	   break;
+	           case 'i':
+	           	   cout << "IMPORING SNAPSHOT" << endl;
+	           	   break;
+	           case 'r':
+	        	   cout << "REBUILDING ISO" << endl;
+	        	   break;
+	           case 'q':
+	        	   cout << "EMULATING ISO" << endl;
+	        	   break;
+	           case 't':
+	        	   cout << "CLEANING UP" << endl;
+	        	   break;
 	           case 'h':
 	        	 Usage();
 	        	 break;
@@ -89,6 +118,9 @@ int main(int argc, char* argv[]) {
 	           case '?':
 	        	 break;
 	             return 1;
+	           default:
+	        	   Usage();
+	        	   break;
+	        	   return 1;
 	           }
-	}
 }
