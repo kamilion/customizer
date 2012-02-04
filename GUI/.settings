@@ -14,8 +14,7 @@ SearchString=True
 [OpenFile]
 File[1]="FMain.form"
 Active=1
-File[2]="FSettings.form"
-Count=2
+Count=1
 
 [Watches]
 Count=0
