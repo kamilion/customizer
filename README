@@ -1,4 +1,4 @@
-Customizer v4.0.0
+Customizer v3.2.2
 
 Application info:
 
@@ -32,7 +32,5 @@ Credits:
 	  <clearkimura@gmail.com>
 	  
 Other:
-
-	WARNING! I'm planning to re-write Customizer in C++ so this will take time and the tool will be incomplete! If you want a working application, please download from the stable branch!
 
 	Attention, reporting bugs/issues is very important for the developing process! Please, spare a few minutes to report them. Also, spreading the word about it will not hurt, write reviews in your blogs, make tutorials, edit the wiki and such will help us all so if you have some spare time please do so.
