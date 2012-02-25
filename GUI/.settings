@@ -13,8 +13,10 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-Active=1
-Count=1
+File[2]="FMain.class:28.2"
+File[3]="Func.module:38.30"
+Active=3
+Count=3
 
 [Watches]
 Count=0

@@ -154,15 +154,16 @@ fi
 #################### creting ISO image #####################
 
 INFO_MESSAGE "Creating squashed FileSystem"
-mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" || ERROR_MESSAGE "Unable to squash the filesystem"
+mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs -wildcards -ef /opt/Customizer/exclude.list" || ERROR_MESSAGE "Unable to squash the filesystem"
 
 INFO_MESSAGE "Checking filesystem size"
-if (( "`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`" > "4000000" ));then
+FS_SIZE="`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
+if (( "$FS_SIZE" > "4000000" ));then
 	ERROR_MESSAGE" The squashed filesystem size is greater than 4GB"
 fi
 
 INFO_MESSAGE "Creating filesystem.size"
-echo "`du -sx --block-size=1 $WORK_DIR/FileSystem | cut -f1`" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR_MESSAGE "Unable to calculate the size of the filesystem"
+echo "$FS_SIZE" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR_MESSAGE "Unable to calculate the size of the filesystem"
 
 INFO_MESSAGE "Creating filesystem.manifest"
 chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || ERROR_MESSAGE "Unable to create the filesystem.manifest"

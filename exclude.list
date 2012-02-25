@@ -1,0 +1,15 @@
+dev/*
+cdrom/*
+media/*
+swapfile
+mnt/*
+sys/*
+proc/*
+tmp/*
+boot/grub/grub.cfg
+boot/grub/menu.lst
+boot/grub/device.map
+etc/udev/rules.d/70-persistent-cd.rules
+etc/udev/rules.d/70-persistent-net.rules
+var/log/[a-b,d-z]*
+var/log/[A-B,D-Z]*

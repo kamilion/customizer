@@ -91,3 +91,4 @@ rsync --exclude=/casper/* --exclude=/md5sum.txt --exclude=/README.diskdefines -a
 ############################## Unmount the ISO image ##############################
 INFO_MESSAGE "Unmounting ISO"
 umount -f "$MOUNT_DIR" || EXTRA_ERROR_MESSAGE "Unable to unmount the ISO from" "$MOUNT_DIR"
+rm -rf "$MOUNT_DIR"
