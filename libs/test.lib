@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# BashLibs - libraries for Bash
+# Copyright (C) 2012  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/BashStuff
+#
+
+# Test - test variables, files and directorys
+
+# Check if the proccess is running as root (UID 0)
+CHECK_UID() {
+	if [ "$UID" != "0" ] || [ "`id -u`" != "0" ];then
+		ERROR "You are not root!" sexit
+	fi
+}
+
+# Find executables
+# $@ - no limit to arguments
+FIND_BIN() {
+	for i in $@;do
+		if [ -e "/bin/$i" ];then
+			i="/bin/grep"
+		elif [ -e "/usr/bin/grep" ];then
+			i="/usr/bin/grep"
+		elif [ -e "/usr/local/bin/grep" ];then
+			i="/usr/local/bin/grep"
+		elif [ -e "/sbin/grep" ];then
+			i="/sbin/grep"
+		elif [ -e "/usr/sbin/grep" ];then
+			i="/usr/sbin/grep"
+		elif [ -e "/usr/local/sbin/grep" ];then
+			i="/usr/local/sbin/grep"
+		else
+			EXTRA_ERROR "Unable to locate" "$i"
+		fi
+	done
+}
+
+# TEST_VAR
+# TEST_FILE
+# TEST_DIR
+
+

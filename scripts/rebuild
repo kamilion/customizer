@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+# Customizer - Advanced LiveCD Remastering Tool
+# Copyright (C) 2010-2012  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/Customizer
+# Wiki: https://github.com/fluxer/Customizer/wiki
+# Issues: https://github.com/fluxer/Customizer/issues
+#
+set -u
+source /opt/Customizer/libs/source.lib
+source /opt/Customizer/settings.conf
+
+#################### check configs & dirs before going further ####################
+
+__check_fs_dir__
+__check_lock__
+__check_sources_list__
+
+if [ ! -d "$WORK_DIR/ISO/isolinux" ]; then
+	ERROR "$WORK_DIR/ISO/isolinux doesnt exist"
+fi
+
+if [ ! -d "$WORK_DIR/ISO/.disk" ]; then
+	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk"
+	mkdir -p "$WORK_DIR/ISO/.disk"
+fi
+
+if [ ! -d "$WORK_DIR/ISO/casper" ]; then
+	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/casper"
+	mkdir -p "$WORK_DIR/ISO/casper"
+fi
+
+if [ ! -e "$WORK_DIR/ISO/.disk/cd_type" ]; then
+	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk/cd_type"
+	echo "full_cd/single" > "$WORK_DIR/ISO/.disk/cd_type"
+fi
+
+if [ -e "$WORK_DIR/usr/bin/ubiquity" ] && [ ! -e "$WORK_DIR/ISO/.disk/base_installable" ]; then
+	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk/base_installable"
+	echo > "$WORK_DIR/ISO/.disk/base_installable"
+else
+	rm -f "$WORK_DIR/ISO/.disk/base_installable"
+fi
+
+if [ ! -e "$WORK_DIR/ISO/.disk/casper-uuid-generic" ]; then
+	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk/casper-uuid-generic"
+	echo "f01d0b93-4f0e-4e95-93ae-e3d0e114d4f7" > "$WORK_DIR/ISO/.disk/casper-uuid-generic"
+fi
+
+if [ ! -e "$WORK_DIR/ISO/.disk/release_notes_url" ]; then
+	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk/release_notes_url"
+	echo "http://www.ubuntu.com/getubuntu/releasenotes" > "$WORK_DIR/ISO/.disk/release_notes_url"
+fi
+
+if [ ! -e "$WORK_DIR/FileSystem/etc/lsb-release" ]; then
+	ERROR "$WORK_DIR/FileSystem/etc/lsb-release dosn't exists"
+fi
+
+if [ ! -e "$WORK_DIR/FileSystem/etc/casper.conf" ]; then
+	ERROR "$WORK_DIR/FileSystem/etc/casper.conf dosn't exists"
+fi
+
+#################### setting up the root filesystem #####################
+
+INFO "Loading configs"
+ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || ERROR "Unable to chroot and get the architecture"
+RELEASE_NOTES_URL="`cat "$WORK_DIR/ISO/.disk/release_notes_url"`"
+DIST=`grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//;s/\"//g'` || ERROR "Unable to chroot and get the distribution ID"
+VERSION=`grep DISTRIB_RELEASE= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//;s/\"//g'` || ERROR "Unable to get the distribution version"
+CODENAME=`grep DISTRIB_CODENAME= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//;s/\"//g'` || ERROR "Unable to get the distribution codename"
+LIVEUSERNAME=`grep "export USERNAME=" "$WORK_DIR/FileSystem/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g'` || ERROR "Unable get the username"
+
+to_clean="$WORK_DIR/$DIST-$ARCH-$VERSION.iso $WORK_DIR/ISO/casper/filesystem.squashfs \
+$WORK_DIR/ISO/casper/initrd.lz $WORK_DIR/ISO/casper/vmlinuz $WORK_DIR/ISO/casper/filesystem.manifest \
+$WORK_DIR/ISO/casper/filesystem.manifest-desktop $WORK_DIR/ISO/casper/filesystem.size \
+$WORK_DIR/ISO/casper/README.diskdefines $WORK_DIR/ISO/md5sum.txt"
+for i in $to_clean;do
+	if [ -e "$i" ];then
+		EXTRA_INFO "Purging" "$i"
+		rm -f "$i" || EXTRA_WARNING "Unable to delete" "$i"
+	fi
+done
+
+INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
+VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
+if [ ! -e "$INITRD_SOURCE" ] || [ ! -e "$VMLINUZ_SOURCE" ] ; then
+	__mount_sys__
+	__chroot__ "
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Purging Kernels (if any)${Reset}\"
+	else
+        echo -e \"[*] Purging Kernels (if any)\"
+	fi
+
+	apt-get purge --yes linux-image* linux-headers* -qq
+	
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Installing Kernel${Reset}\"
+	else
+        echo -e \"[*] Installing Kernel\"
+	fi
+	apt-get install --yes linux-image-generic linux-headers-generic -qq"
+	__umount_sys__
+	__recursive_umount__
+	
+	INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
+	VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
+else
+	__mount_sys__
+	__chroot__ "
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Installing the latest initramfs-tools${Reset}\"
+	else
+        echo -e \"[*] Installing the latest initramfs-tools\"
+	fi
+	apt-get install --yes initramfs-tools -qq
+	
+	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Updating/creating Kernel image${Reset}\"
+	else
+        echo -e \"[*] Updating/creating Kernel image\"
+	fi
+	update-initramfs -k all -t -u"
+	__umount_sys__
+	__recursive_umount__
+fi
+
+EXTRA_INFO "Copying initrd" "${INITRD_SOURCE#$WORK_DIR/FileSystem/boot/}"
+cp -f "$INITRD_SOURCE" "$WORK_DIR/ISO/casper/initrd.lz" || ERROR "Unable to copy initrd.img"
+EXTRA_INFO "Copying vmlinuz" "${VMLINUZ_SOURCE#$WORK_DIR/FileSystem/boot/}"
+cp -f "$VMLINUZ_SOURCE" "$WORK_DIR/ISO/casper/vmlinuz" || ERROR "Unable to copy vmlinuz"
+
+if [ "$BOOT_FILES" = "1" ]; then
+	INFO "Deleteing boot files"
+	rm -f "$WORK_DIR/FileSystem/boot/initrd.img"*
+	rm -f "$WORK_DIR/FileSystem/boot/vmlinuz"*
+	rm -f "$WORK_DIR/FileSystem/boot/config"*
+fi
+
+#################### creting ISO image #####################
+
+INFO "Creating squashed FileSystem"
+mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list || ERROR "Unable to squash the filesystem"
+
+INFO "Checking filesystem size"
+FS_SIZE="`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
+if (( "$FS_SIZE" > "4000000" ));then
+	ERROR" The squashed filesystem size is greater than 4GB"
+fi
+
+INFO "Creating filesystem.size"
+echo "$FS_SIZE" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR "Unable to calculate the size of the filesystem"
+
+INFO "Creating filesystem.manifest"
+chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || ERROR "Unable to create the filesystem.manifest"
+INFO "Creating filesystem.manifest-desktop"
+cp -f "$WORK_DIR/ISO/casper/filesystem.manifest" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
+REMOVE='ubiquity casper live-initramfs user-setup discover1 xresprobe os-prober libdebian-installer4'
+for i in $REMOVE ; do
+        sed -i "/${i}/d" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
+done
+
+INFO "Creating README.diskdefines"
+cat > "$WORK_DIR/ISO/README.diskdefines" << EOF
+#define DISKNAME  $DIST $VERSION "$CODENAME" - Release $ARCH
+#define TYPE  binary
+#define TYPEbinary  1
+#define ARCH  $ARCH
+#define ARCH$ARCH  1
+#define DISKNUM  1
+#define DISKNUM1  1
+#define TOTALNUM  0
+#define TOTALNUM0  1
+EOF
+
+INFO "Creating disk info"
+echo "$DIST $VERSION "$CODENAME" - Release $ARCH (`date "+%Y%m%d"`)" > "$WORK_DIR/ISO/.disk/info"
+
+################# Creating md5sum and ISO  #################
+cd "$WORK_DIR/ISO"
+INFO "Creating MD5Sums"
+(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt") > md5sum.txt || ERROR "Unable to create the md5sum"
+
+INFO "Creating ISO"
+(genisoimage -r -V "$DIST-$ARCH-$VERSION" -b isolinux/isolinux.bin -c isolinux/boot.cat \
+-cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table \
+-o "$WORK_DIR/$DIST-$ARCH-$VERSION.iso" -input-charset utf-8 .
+
+chmod 555 $WORK_DIR/$DIST-$ARCH-$VERSION.iso
+EXTRA_INFO "Successfuly created ISO image" "$WORK_DIR/$DIST-$ARCH-$VERSION.iso"; read nada) \
+|| ERROR "Unable to create ISO image"

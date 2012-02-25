@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Customizer - Advanced LiveCD Remastering Tool
+# Copyright (C) 2010-2012  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/Customizer
+# Wiki: https://github.com/fluxer/Customizer/wiki
+# Issues: https://github.com/fluxer/Customizer/issues
+#
+set -u
+source /opt/Customizer/libs/source.lib
+source /opt/Customizer/settings.conf
+
+INFO "Checking snapshot"
+if [ ! -e "$SNAPSHOT" ];then
+    ERROR "Snapshot doesn't exists"
+fi
+
+case "$SNAPSHOT" in
+	*.cps) true ;;
+	*) ERROR "This is not Customizer project snapshot" ;;
+esac
+
+if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ]; then
+	__purge_work_dirs__
+fi
+
+__check_lock__
+mkdir -p "$WORK_DIR"
+cd "$WORK_DIR"
+
+INFO "De-Compressing snapshot"
+tar -axf "$SNAPSHOT" || ERROR "An error accure while trying to decompress the snapshot"
+
+INFO "De-Compressing FileSystem directory"
+tar -axf rootfs.* || ERROR "An error accure while trying to de-compress FileSystem"
+
+INFO "De-Compressing ISO directory"
+tar -axf isofolder.* || ERROR "An error accure while trying to de-compress ISO"
+
+INFO "Deleting temp files"
+rm -rf rootfs.* isofolder.* || WARNING "Unable to purge the temp files"

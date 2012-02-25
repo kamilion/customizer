@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# Customizer - Advanced LiveCD Remastering Tool
+# Copyright (C) 2010-2012  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/Customizer
+# Wiki: https://github.com/fluxer/Customizer/wiki
+# Issues: https://github.com/fluxer/Customizer/issues
+#
+set -u
+source /opt/Customizer/libs/source.lib
+source /opt/Customizer/settings.conf
+
+__check_for_X__
+__check_fs_dir__
+__check_lock__
+__check_sources_list__
+
+AVAILABLE=`(ls "$WORK_DIR/FileSystem/usr/share/xsessions" | wc -l) 2> /dev/null`
+case $AVAILABLE in
+	0) ERROR "There are not X-sessions available" ;;
+	1) choise="`ls -F "$WORK_DIR/FileSystem/usr/share/xsessions" | sed 's/\.desktop//'`"
+	   EXTRA_WARNING "There is only one X-session available" "$choise" ;;
+	*) WARNING "Multiple X-sessions available, choose which one to execute:"
+	
+	while true;do
+	echo
+	for i in `ls "$WORK_DIR/FileSystem/usr/share/xsessions" | sed 's/.desktop//'`;do
+		echo -e "${Green}$i${Reset}"
+	done
+	
+	echo
+	QUESTION "What shall it be?"
+	read choise
+	
+	if [ ! -e "$WORK_DIR/FileSystem/usr/share/xsessions/$choise.desktop" ];then
+		WARNING "This is not an option"	
+	else
+		break
+	fi
+	done ;;
+esac
+
+EXEC_COMMAND="`grep -m 1 'Exec=' "$WORK_DIR/FileSystem/usr/share/xsessions/$choise.desktop" | sed 's/Exec=//'`"
+# FIXME: error not shown when unable to execute Xephyr
+# (Xephyr -ac -screen $RESOLUTION -br :9 &) || error
+INFO "Starting Xephyr"
+Xephyr -ac -screen $RESOLUTION -br :9 &
+
+__allow_local_X_access__
+__mount_sys__
+__mount_dbus__
+__chroot__ "apt-get install dbus -y -f
+export DISPLAY=localhost:9
+dbus-uuidgen --ensure;
+$EXEC_COMMAND"
+__umount_sys__
+__recursive_umount__
+__block_local_X_access__
+
+INFO "Stoping Xephyr"
+killall Xephyr
+
+INFO "Remove some unwanted files/dirs"
+rm -rf "$WORK_DIR/FileSystem/root/.kde/share/apps/nepomuk"
+rm -rf "$WORK_DIR/FileSystem/root/.cache"
+rm -rf "$WORK_DIR/FileSystem/root/.dbus"
+rm -rf "$WORK_DIR/FileSystem/root/.thumbnails"
+
+rm -rf "$WORK_DIR/FileSystem/root/.aptitude"
+rm -rf "$WORK_DIR/FileSystem/root/.cups"
+rm -rf "$WORK_DIR/FileSystem/root/.adobe"
+rm -rf "$WORK_DIR/FileSystem/root/.gvfs"
+rm -rf "$WORK_DIR/FileSystem/root/.local/share/gvfs-metadata"
+
+INFO "Copying the changes to skel"
+cp -ru "$WORK_DIR/FileSystem/root/"* "$WORK_DIR/FileSystem/etc/skel" 2> /dev/null
+cp -ru "$WORK_DIR/FileSystem/root/".??* "$WORK_DIR/FileSystem/etc/skel" 2> /dev/null
+
+INFO "Fixinig path to /home directory"
+LIVEUSERNAME=`grep "export USERNAME=" "$WORK_DIR/FileSystem/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g'` || ERROR "Unable get the username"
+find "$WORK_DIR/FileSystem/etc/skel" -type f | xargs sed -i "s@/home/root/@/home/$LIVEUSERNAME@g" || WARNING "Unable fix home path"
+
+INFO "Fixinig display entries"
+find "$WORK_DIR/FileSystem/etc/skel" -type f | xargs sed -i "s@localhost:9.0@:0.0@g" || WARNING "Unable get fix display entries"

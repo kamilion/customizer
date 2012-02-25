@@ -1,0 +1,20 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,62,37)
+  Text = ("")
+  Icon = Picture["icon:/small/text"]
+  Border = Window.Fixed
+  { Quit Button
+    MoveScaled(25,33,11,3)
+    ToolTip = ("Close this window")
+    Text = ("Close")
+    Picture = Picture["icon:/16/close"]
+  }
+  { TextArea1 TextArea
+    MoveScaled(1,1,60,31)
+    Text = ("Customizer - Advanced LiveCD Remastering Tool\nCopyright (C) 2010-2012  Ivailo Monev\n\nThis program is free software; you can redistribute it and/or\nmodify it under the terms of the GNU General Public License\nas published by the Free Software Foundation; either version 2\nof the License, or (at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.")
+    ReadOnly = True
+    Wrap = True
+  }
+}

@@ -1,0 +1,228 @@
+#!/usr/bin/env bash
+# BashLibs - libraries for Bash
+# Copyright (C) 2012  Ivailo Monev
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Homepage: https://github.com/fluxer/BashStuff
+#
+
+# Message - echo messages to stdout with color
+#
+# Depending on $MESSAGES_COLORS
+
+# Setup color variables
+if [ "$MESSAGES_COLORS" = "1" ];then
+	if [ -t 1 ]; then
+		if [ $(tput colors) -ge 8 ]; then
+			bold="$(tput bold)"
+			normal="$(tput sgr0)"
+			black="$(tput setaf 0)"
+			red="$(tput setaf 1)"
+			green="$(tput setaf 2)"
+			yellow="$(tput setaf 3)"
+			blue="$(tput setaf 4)"
+			magenta="$(tput setaf 5)"
+			cyan="$(tput setaf 6)"
+			white="$(tput setaf 7)"
+			
+			bblack="${bold}${black}${normal}"
+			bred="${bold}${red}${normal}"
+			bgreen="${bold}${green}${normal}"
+			byellow="${bold}${yellow}${normal}"
+			bblue="${bold}${blue}${normal}"
+			bmagenta="${bold}${magenta}${normal}"
+			bcyan="${bold}${cyan}${normal}"
+			bwhite="${bold}${white}${normal}"
+		fi
+	fi
+fi
+
+# $1 - message to echo
+INFO() {
+	echo -e "[${yellow}*${normal}] ${green}$1${normal}"
+	
+	case "$2" in
+		stop) read nothing ;;
+		exit) if [ "$3" ];then
+				  exit "$3"
+			  else
+			      exit
+			  fi ;;
+		sexit) if [ "$3" ];then
+				  read nothing
+				  exit "$3"
+			  else
+			      read nothing
+			      exit
+			  fi ;;
+	esac
+}
+
+QUESTION() {
+	echo -ne "[${yellow}?${normal}] ${green}$1${normal}? "
+	
+	case "$2" in
+		stop) read nothing ;;
+		exit) if [ "$3" ];then
+				  exit "$3"
+			  else
+			      exit
+			  fi ;;
+		sexit) if [ "$3" ];then
+				  read nothing
+				  exit "$3"
+			  else
+			      read nothing
+			      exit
+			  fi ;;
+	esac
+}
+
+WARNING() {
+	echo -e "[${red}!${normal}] ${yellow}$1${normal}"
+	
+	case "$2" in
+		stop) read nothing ;;
+		exit) if [ "$3" ];then
+				  exit "$3"
+			  else
+			      exit
+			  fi ;;
+		sexit) if [ "$3" ];then
+				  read nothing
+				  exit "$3"
+			  else
+			      read nothing
+			      exit
+			  fi ;;
+	esac
+}
+
+ERROR() {
+	echo -e "[${red}X${normal}] ${red}$1${normal}"
+	exit
+}
+
+DEBUG() {
+	if [ "$DEBUG" = "1" ];then
+		echo -e "[${magenta}D${normal}] ${cyan}$1${normal}"
+	
+		case "$2" in
+			stop) read nothing ;;
+			exit) if [ "$3" ];then
+					  exit "$3"
+				  else
+				      exit
+				  fi ;;
+			sexit) if [ "$3" ];then
+					  read nothing
+					  exit "$3"
+				  else
+				      read nothing
+			      exit
+				  fi ;;
+		esac
+	fi
+}
+
+# $1 - 1st part of the message to echo
+# $2 - 2nd part of the message to echo
+EXTRA_INFO() {
+	echo -e "[${yellow}*${normal}] ${green}$1${normal}: ${yellow}${2}${normal}"
+	
+	case "$2" in
+		stop) read nothing ;;
+		exit) if [ "$3" ];then
+				  exit "$3"
+			  else
+			      exit
+			  fi ;;
+		sexit) if [ "$3" ];then
+				  read nothing
+				  exit "$3"
+			  else
+			      read nothing
+			      exit
+			  fi ;;
+	esac
+}
+
+EXTRA_QUESTION() {
+	echo -ne "[${yellow}?${normal}] ${green}$1${normal}? [${yellow}${2}${normal}] "
+	
+	case "$2" in
+		stop) read nothing ;;
+		exit) if [ "$3" ];then
+				  exit "$3"
+			  else
+			      exit
+			  fi ;;
+		sexit) if [ "$3" ];then
+				  read nothing
+				  exit "$3"
+			  else
+			      read nothing
+			      exit
+			  fi ;;
+	esac
+}
+
+EXTRA_WARNING() {
+	echo -e "[${red}!${normal}] ${yellow}$1${normal}: ${red}${2}${normal}"
+	
+	case "$2" in
+		stop) read nothing ;;
+		exit) if [ "$3" ];then
+				  exit "$3"
+			  else
+			      exit
+			  fi ;;
+		sexit) if [ "$3" ];then
+				  read nothing
+				  exit "$3"
+			  else
+			      read nothing
+			      exit
+			  fi ;;
+	esac
+}
+
+EXTRA_ERROR() {
+	echo -e "[${red}X${normal}] ${red}$1${normal}: ${yellow}${2}${normal}"
+	exit
+}
+
+EXTRA_DEBUG() {
+	if [ "$DEBUG" = "1" ];then
+		echo -e "[${magenta}D${normal}] ${cyan}$1${normal}: ${magenta}${2}${normal}"
+	
+		case "$2" in
+			stop) read nothing ;;
+			exit) if [ "$3" ];then
+					  exit "$3"
+				  else
+				      exit
+				  fi ;;
+			sexit) if [ "$3" ];then
+					  read nothing
+					  exit "$3"
+				  else
+				      read nothing
+			      exit
+				  fi ;;
+		esac
+	fi
+}

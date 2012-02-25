@@ -1,0 +1,30 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,40,43)
+  Text = ("")
+  Icon = Picture["icon:/small/info"]
+  Border = Window.Fixed
+  { Label12 Label
+    MoveScaled(1,2,38,4)
+    Font = Font["URW Bookman L,Bold,+5"]
+    Text = ("Customizer v3.2.2")
+    Alignment = Align.Center
+  }
+  { Quit Button
+    MoveScaled(15,39,11,3)
+    ToolTip = ("Close this window")
+    Text = ("Close")
+    Picture = Picture["icon:/16/close"]
+  }
+  { PictureBox1 PictureBox
+    MoveScaled(14,7,11,11)
+    Picture = Picture["logo.png"]
+    Stretch = True
+  }
+  { Credits Label
+    MoveScaled(1,19,38,19)
+    Text = ("Home:\nhttps://github.com/fluxer/Customizer\n\nWiki:\nhttps://github.com/fluxer/Customizer/wiki\n\nIssues:\nhttps://github.com/fluxer/Customizer/issues")
+    Alignment = Align.Center
+  }
+}

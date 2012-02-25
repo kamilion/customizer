@@ -1,0 +1,19 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,40,29)
+  Text = ("")
+  Icon = Picture["icon:/small/people"]
+  Border = Window.Fixed
+  { Credits Label
+    MoveScaled(1,1,38,23)
+    Text = ("Coding:\nIvailo Monev (a.k.a. SmiL3y)\n\nPPA maintainer:\nMicha\xC5\x82 G\xC5\x82owienka (a.k.a. eloaders)\n<eloaders@yahoo.com>\n\nDocumentation:\nMubiin Kimura (a.k.a. clearkimura)\n<clearkimura@gmail.com>")
+    Alignment = Align.Center
+  }
+  { Quit Button
+    MoveScaled(15,25,11,3)
+    ToolTip = ("Close this window")
+    Text = ("Close")
+    Picture = Picture["icon:/16/close"]
+  }
+}

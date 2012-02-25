@@ -1,0 +1,102 @@
+# Gambas Form File 2.0
+
+{ Form Form
+  MoveScaled(0,0,47,44)
+  Text = ("")
+  Icon = Picture["icon:/small/options"]
+  Border = Window.Fixed
+  { Quit Button
+    MoveScaled(17,40,13,3)
+    ToolTip = ("Close this window")
+    Text = ("Close")
+    Picture = Picture["icon:/16/close"]
+  }
+  { BootFiles CheckBox
+    MoveScaled(2,24,44,3)
+    ToolTip = ("By ticking this the build script will delete initrd and vmlinuz to save some MBs, however it should be used only when building LiveCDs not meant to be installed")
+    Text = ("Delete Boot files before creating the filesystem.squashfs")
+  }
+  { ResolutionBox ComboBox
+    MoveScaled(2,28,13,3)
+    ToolTip = ("Change the resolution used by Xephyr to start desktop session")
+    ReadOnly = True
+    List = [("1920x1200"), ("1920x1080"), ("1600x1200"), ("1600x900"), ("1280x1024"), ("1280x960"), ("1280x800"), ("1280x768"), ("1024x768"), ("800x600"), ("640x480")]
+    Text = ("ComboBox1")
+  }
+  { Label2 Label
+    MoveScaled(16,28,30,3)
+    Text = ("'Desktop' (Xephyr) resolution")
+    Alignment = Align.Center
+  }
+  { VirtualMemBox ComboBox
+    MoveScaled(2,32,13,3)
+    ToolTip = ("Set the amount of virtual RAM used by QEMU, the highed the value - the better performance you will get while emulating your ISO but it's recommended to be half of your RAM installed on your PC")
+    ReadOnly = True
+    List = [("64"), ("96"), ("128"), ("256"), ("384"), ("512"), ("768"), ("1024")]
+    Text = ("ComboBox1")
+  }
+  { Label1 Label
+    MoveScaled(16,32,30,3)
+    Text = ("QEMU virtual RAM (in megabytes)")
+    Alignment = Align.Center
+  }
+  { WorkDir TextBox
+    MoveScaled(2,4,29,3)
+    Text = ("")
+    ReadOnly = True
+  }
+  { Change_WDir Button
+    MoveScaled(32,4,13,3)
+    ToolTip = ("Change the work directory where temp folders are palced to be used in the customization proccess")
+    Text = ("Change")
+    Picture = Picture["icon:/16/directory"]
+  }
+  { Label4 Label
+    MoveScaled(2,1,43,3)
+    Text = ("Working directory")
+    Alignment = Align.Center
+  }
+  { Label5 Label
+    MoveScaled(16,36,30,3)
+    Text = ("Snapshots compression format")
+    Alignment = Align.Center
+  }
+  { CompressionBox ComboBox
+    MoveScaled(2,36,13,3)
+    ToolTip = ("Choose compression format for the created snapshots")
+    ReadOnly = True
+    List = [("bzip2"), ("gzip"), ("tar")]
+    Text = ("ComboBox1")
+  }
+  { ForceChroot CheckBox
+    MoveScaled(2,18,44,3)
+    ToolTip = ("Tick this and the scripts will not check if the filesystem is locked or not when chrooting into it and/or need to purge it. This is useful ONLY if there is a bug in the application or something bad happened")
+    Text = ("Skip FileSystem lock check")
+  }
+  { UseColors CheckBox
+    MoveScaled(2,15,44,3)
+    ToolTip = ("By default messages (infos, warnings and/or errors) are ouptuted with colors for better tracking of issues and overall overview but by unticking this the messages will be displayed with the default colors set in the Terminal emulator or TTY console")
+    Text = ("Use colors in messages")
+  }
+  { AptHelper CheckBox
+    MoveScaled(2,21,44,3)
+    ToolTip = ("Whenever you chroot, if this option is ticked, the scripts will update the packages database and try to remove unnecessary or install missing dependecies packages. In most cases it's very useful but people with slow connection may disable this to prevent apt-get update on every chroot to save time and network bandwidth")
+    Text = ("Use apt-helper")
+  }
+  { MountDir TextBox
+    MoveScaled(2,11,29,3)
+    Text = ("")
+    ReadOnly = True
+  }
+  { Change_MDir Button
+    MoveScaled(32,11,13,3)
+    ToolTip = ("Change the work directory where temp folders are palced to be used in the customization proccess")
+    Text = ("Change")
+    Picture = Picture["icon:/16/directory"]
+  }
+  { Label6 Label
+    MoveScaled(2,8,43,3)
+    Text = ("ISO mount directory")
+    Alignment = Align.Center
+  }
+}
