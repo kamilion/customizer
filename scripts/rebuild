@@ -154,7 +154,7 @@ fi
 #################### creting ISO image #####################
 
 INFO_MESSAGE "Creating squashed FileSystem"
-mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs -wildcards -ef /opt/Customizer/exclude.list" || ERROR_MESSAGE "Unable to squash the filesystem"
+mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list || ERROR_MESSAGE "Unable to squash the filesystem"
 
 INFO_MESSAGE "Checking filesystem size"
 FS_SIZE="`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
