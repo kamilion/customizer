@@ -1,7 +1,8 @@
 ' Gambas class file
 ' Main Form
 
-PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home") 
+PUBLIC FSDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "FILESYSTEM_DIR=", "/home") 
+PUBLIC ISODir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "ISO_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM STATUS AS Variant
@@ -49,7 +50,7 @@ PUBLIC SUB UseImage_Click()
 END
 
 PUBLIC SUB Edit_Sources_Click()
-  Func.Edit_File("/FileSystem/etc/apt/sources.list")
+  Func.Edit_File("/etc/apt/sources.list")
 END
 
 PUBLIC SUB Desktop_Click()
@@ -74,8 +75,6 @@ PUBLIC SUB Build_ISO_Click()
     Func.Event_Msg("Rebuilding ISO image")
     EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -r"] WAIT
   ENDIF 
-  
-  Check.ISO()
 END
 
 PUBLIC SUB Clean_Click()
@@ -118,12 +117,6 @@ PUBLIC SUB Archive_Click()
 END
 
 
-PUBLIC SUB QEMU_Click()
-  Func.Event_Msg("Launching QEMU")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -q"] WAIT
-END
-
-
 
 
 
@@ -135,24 +128,24 @@ PUBLIC SUB DistName_Change()
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_ID=", DistName.Text)
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
-  Func.Save_File(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
-  Func.Save_File(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
+  Func.Replace_Str(FSDir & "/etc/lsb-release", "DISTRIB_ID=", DistName.Text)
+  Func.Replace_Str(FSDir & "/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
+  Func.Save_File(FSDir & "/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
+  Func.Save_File(FSDir & "/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
 PUBLIC SUB HostName_Change()
   Func.Event_Msg("HostName.Text changed")
 
   HostName.Text = Trim(LCase(HostName.Text))
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
+  Func.Replace_Str(FSDir & "/etc/casper.conf", "export HOST=", HostName.Text)
 END
 
 PUBLIC SUB LiveCD_User_Change()
   Func.Event_Msg("LiveCD_User.Text changed")
   
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
+  Func.Replace_Str(FSDir & "/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
 END
 
 PUBLIC SUB Version_Change()
@@ -161,17 +154,17 @@ PUBLIC SUB Version_Change()
   DistName.Text = Trim(DistName.Text)
   Version.Text = Trim(Version.Text)
   
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_RELEASE=", Version.Text)
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
-  Func.Save_File(WorkDir & "/FileSystem/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
-  Func.Save_File(WorkDir & "/FileSystem/etc/issue.net", DistName.Text & " " & Version.Text)
+  Func.Replace_Str(FSDir & "/etc/lsb-release", "DISTRIB_RELEASE=", Version.Text)
+  Func.Replace_Str(FSDir & "/etc/lsb-release", "DISTRIB_DESCRIPTION=", DistName.Text & " " & Version.Text)
+  Func.Save_File(FSDir & "/etc/issue", DistName.Text & " " & Version.Text & " \\n \\l")
+  Func.Save_File(FSDir & "/etc/issue.net", DistName.Text & " " & Version.Text)
 END
 
 PUBLIC SUB ReleaseNotesURL_Change()
   Func.Event_Msg("ReleaseNotesURL.Text changed")
 
   Trim(ReleaseNotesURL.Text)
-  Func.Save_File(WorkDir & "/ISO/.disk/release_notes_url", ReleaseNotesURL.Text)
+  Func.Save_File(ISODir & "/.disk/release_notes_url", ReleaseNotesURL.Text)
 END
 
 PUBLIC SUB Form_Close()
@@ -188,34 +181,6 @@ END
   
 PUBLIC SUB Settings_Click()
   FSettings.Show
-END
-
-PUBLIC SUB Import_Snapshot_Click()
-  DIM SNAPSHOT AS String
-  
-  Func.Event_Msg("Importing snapshot")
-  SNAPSHOT = Func.Get_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", "")
-  
-  Dialog.Title = "Please select Customizer project snapshot"
-  Dialog.Filter = ["*.cps", "Snapshots"]
-  
-  IF Exist(SNAPSHOT) THEN 
-    Dialog.Path = SNAPSHOT
-  ELSE 
-    Dialog.Path = "/home"
-  ENDIF 
-  
-  IF Dialog.OpenFile() THEN RETURN
-  Func.Replace_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", Dialog.Path)
-
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -i"] WAIT
-  
-  Check.Existence()
-END
-
-PUBLIC SUB Create_Snapshot_Click()
-  Func.Event_Msg("Creating snapshot")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -s"] WAIT
 END
 
   'Menu - Extras
@@ -271,43 +236,43 @@ END
   
 ' Browse directories
 PUBLIC SUB Browse_FS_Click()
-  Func.Browse_Dir("/FileSystem")
+  Func.Browse_Dir(FSDir)
 END
 
 PUBLIC SUB Browse_ISO_Click()
-  Func.Browse_Dir("/ISO")
+  Func.Browse_Dir(ISODir)
 END
 
 PUBLIC SUB Browse_FS_etc_skel_Click()
-  Func.Browse_Dir("/FileSystem/etc/skel")
+  Func.Browse_Dir(FSDir & "/etc/skel")
 END
 
 PUBLIC SUB Browse_FS_etc_Click()
-  Func.Browse_Dir("/FileSystem/etc")
+  Func.Browse_Dir(FSDir & "/etc")
 END
 
 PUBLIC SUB Browse_FS_root_Click()
-  Func.Browse_Dir("/FileSystem/root")
+  Func.Browse_Dir(FSDir & "/root")
 END
 
 PUBLIC SUB Browse_ISO_isolinux_Click()
-  Func.Browse_Dir("/ISO/isolinux")
+  Func.Browse_Dir(ISODir & "/isolinux")
 END
 
 PUBLIC SUB Browse_FS_usr_share_Click()
-  Func.Browse_Dir("/FileSystem/usr/share")
+  Func.Browse_Dir(FSDir & "/usr/share")
 END
 
 PUBLIC SUB Browse_FS_usr_Click()
-  Func.Browse_Dir("/FileSystem/usr")
+  Func.Browse_Dir(FSDir & "/usr")
 END
 
 PUBLIC SUB Browse_FS_etc_default_Click()
-  Func.Browse_Dir("/FileSystem/etc/default")
+  Func.Browse_Dir(FSDir & "/etc/default")
 END
 
 PUBLIC SUB Browse_FS_boot_Click()
-  Func.Browse_Dir("/FileSystem/boot")
+  Func.Browse_Dir(FSDir & "/boot")
 END
 
 
@@ -315,27 +280,27 @@ END
 
 ' Edit files
 PUBLIC SUB Edit_casper_conf_Click()
-  Func.Edit_File("/FileSystem/etc/casper.conf")
+  Func.Edit_File("/etc/casper.conf")
 END
 
 PUBLIC SUB Edit_lsb_release_Click()
-  Func.Edit_File("/FileSystem/etc/lsb-release")
+  Func.Edit_File("/etc/lsb-release")
 END
 
 PUBLIC SUB Edit_motd_Click()
-  Func.Edit_File("/FileSystem/etc/update-motd.d/10-help-text")
+  Func.Edit_File("/etc/update-motd.d/10-help-text")
 END
 
 PUBLIC SUB Edit_etc_default_grub_Click()
-  Func.Edit_File("/FileSystem/etc/default/grub")
+  Func.Edit_File("/etc/default/grub")
 END
 
 PUBLIC SUB Edit_etc_grub_d_05_debian_theme_Click()
-  Func.Edit_File("/FileSystem/etc/grub.d/05_debian_theme")
+  Func.Edit_File("/etc/grub.d/05_debian_theme")
 END
 
 PUBLIC SUB Edit_grub_background_sh_Click()
-  Func.Edit_File("/FileSystem/usr/share/desktop-base/grub_background.sh")
+  Func.Edit_File("/usr/share/desktop-base/grub_background.sh")
 END
 
 

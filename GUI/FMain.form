@@ -1,7 +1,7 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,56,44)
+  MoveScaled(0,0,56,43)
   Text = ("")
   Icon = Picture["logo.png"]
   Border = Window.Fixed
@@ -11,17 +11,6 @@
       Text = ("Settings")
       Picture = Picture["icon:/16/options"]
       Shortcut = "Ctrl+S"
-    }
-    { Import_Snapshot Menu
-      Text = ("Import Snapshot")
-      Picture = Picture["icon:/16/open"]
-      Shortcut = "Ctrl+Z"
-    }
-    { Create_Snapshot Menu
-      Text = ("Create Snapshot")
-      Picture = Picture["icon:/16/save"]
-      Enabled = False
-      Shortcut = "Ctrl+X"
     }
     { Quit Menu
       Text = ("Quit")
@@ -245,29 +234,22 @@
       Alignment = Align.Center
     }
   }
-  { QEMU Button
-    MoveScaled(29,36,13,3)
-    Enabled = False
-    ToolTip = ("Emulate ISO with QEMU")
-    Text = ("QEMU")
-    Picture = Picture["icon:/16/cdrom"]
-  }
   { Build_ISO Button
-    MoveScaled(15,36,13,3)
+    MoveScaled(19,36,16,3)
     Enabled = False
     ToolTip = ("Rebuild the ISO Image")
     Text = ("Rebuild ISO")
     Picture = Picture["icon:/16/save"]
   }
   { Clean Button
-    MoveScaled(43,36,12,3)
+    MoveScaled(38,36,16,3)
     Enabled = False
     ToolTip = ("Clean all temp files and directories")
     Text = ("Clean")
     Picture = Picture["icon:/16/clear"]
   }
   { UseImage Button
-    MoveScaled(1,36,13,3)
+    MoveScaled(1,36,16,3)
     ToolTip = ("Select ISO image to be used as base for your distro")
     Text = ("Select ISO")
     Picture = Picture["icon:/16/open"]
@@ -283,7 +265,7 @@
   { Label8 Label
     MoveScaled(12,1,43,4)
     Font = Font["Bold,+6"]
-    Text = ("Customizer v3.2.2")
+    Text = ("Customizer v3.3.0")
     Alignment = Align.Center
   }
   { Label9 Label

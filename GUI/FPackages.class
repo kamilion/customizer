@@ -1,6 +1,6 @@
 ' Gambas class file
 
-PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
+PUBLIC FSDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "FILESYSTEM_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM TempFile AS File
@@ -14,7 +14,7 @@ PUBLIC SUB Form_Open()
   ME.Caption = "Installed Packages "
 
   Func.Event_Msg("Getting packages list")
-  SHELL "chroot '" & WorkDir & "/FileSystem' dpkg-query -W --showformat='${Package},${Version},${Priority},${Installed-Size}\n' | tee /tmp/PACKAGESLIST" WAIT
+  SHELL "chroot '" & FSDir & "' dpkg-query -W --showformat='${Package},${Version},${Priority},${Installed-Size}\n' | tee /tmp/PACKAGESLIST" WAIT
 
   OPEN "/tmp/PACKAGESLIST" FOR READ AS #TempFile
   ' Setup ColumnView
@@ -48,7 +48,7 @@ END
 PUBLIC SUB Save_Click()
   Dialog.Title = "Select where to save the list"
   Dialog.Filter = ["*.txt", "Text Files"]
-  Dialog.Path = WorkDir
+  Dialog.Path = FSDir
 
   IF Dialog.SaveFile() THEN RETURN
   Func.Debug_Msg("Saving packages list: " & Dialog.Path & ".txt")

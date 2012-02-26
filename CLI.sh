@@ -21,8 +21,8 @@
 # Issues: https://github.com/fluxer/Customizer/issues
 #
 set -e
-source /opt/Customizer/libs/source.lib
 source /opt/Customizer/settings.conf
+source /opt/Customizer/libs/source.lib
 
 Root_it() {
 	if [ "$UID" != "0" ];then
@@ -59,7 +59,7 @@ echo "
 
 Version () {
 echo "
-Customizer v3.2.2
+Customizer v3.3.0
 
 Links:
 

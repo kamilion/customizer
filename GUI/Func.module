@@ -1,16 +1,13 @@
 ' Gambas module file
 
-PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
+PUBLIC FSDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "FILESYSTEM_DIR=", "/home")
 
 PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS Variant
   DIM content_array AS String[]
   DIM sLine, content AS String
   DIM counter AS Integer
 
-  PRINT "\n===================== Get_Str() begin ====================="
-  Func.Debug_Msg("SrchFile: " & SrchFile)
-  Func.Debug_Msg("SrchStr: " & SrchStr)
-  Func.Debug_Msg("Def: " & Def)
+  Event_Msg("Getting conf value from: " & SrchFile)
   
   content = Func.Load_File(SrchFile)
   content_array = Split(content, "\n")
@@ -27,9 +24,7 @@ PUBLIC FUNCTION Get_Str(SrchFile AS String, SrchStr AS String, Def AS String) AS
   IF counter = content_array.Count THEN
     Func.Save_File(SrchFile, content & "\n" & SrchStr & Quote(Def))
     RETURN UnQuote(Def)
-    PRINT "================ Get_Str() end (appending) ================\n"
   ELSE
-    PRINT "================== Get_Str() end (found) ==================\n"
     RETURN UnQuote(sLine)
   ENDIF
 END
@@ -39,10 +34,7 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   DIM sLine, content AS String
   DIM counter AS Integer
   
-  PRINT "\n=================== Replace_Str() begin ==================="
-  Func.Debug_Msg("SrchFile: " & SrchFile)
-  Func.Debug_Msg("SrchStr: " & SrchStr)
-  Func.Debug_Msg("RpcStr: " & RpcStr)
+  Event_Msg("Replacing conf value in: " & SrchFile)
   
   content = Func.Load_File(SrchFile)
   content_array = Split(content, "\n")
@@ -51,7 +43,6 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   FOR EACH sLine IN content_array
     IF sLine LIKE SrchStr & "*" THEN
       Func.Save_File(SrchFile, Replace$(content, sLine, SrchStr & Quote(RpcStr)))
-      PRINT "================ Replace_Str() end (found) ================\n"
       BREAK
     ENDIF
     counter += 1
@@ -59,7 +50,6 @@ PUBLIC FUNCTION Replace_Str(SrchFile AS String, SrchStr AS String, RpcStr AS Str
   
   IF counter = content_array.Count THEN
     Func.Save_File(SrchFile, content & "\n" & SrchStr & Quote(RpcStr))
-    PRINT "============== Replace_Str() end (appending) ==============\n"
   ENDIF
 END
 
@@ -68,10 +58,7 @@ PUBLIC FUNCTION Replace_Str_AsIs(SrchFile AS String, SrchStr AS String, RpcStr A
   DIM sLine, content AS String
   DIM counter AS Integer
   
-  PRINT "\n=============== Replace_Str_AsIs() begin ================"
-  Func.Debug_Msg("SrchFile: " & SrchFile)
-  Func.Debug_Msg("SrchStr: " & SrchStr)
-  Func.Debug_Msg("RpcStr: " & RpcStr)
+  Event_Msg("Replacing in: " & SrchFile)
   
   content = Func.Load_File(SrchFile)
   content_array = Split(content, "\n")
@@ -80,7 +67,6 @@ PUBLIC FUNCTION Replace_Str_AsIs(SrchFile AS String, SrchStr AS String, RpcStr A
   FOR EACH sLine IN content_array
     IF sLine LIKE SrchStr & "*" THEN
       Func.Save_File(SrchFile, Replace$(content, sLine, SrchStr & RpcStr))
-      PRINT "============= Replace_Str_AsIs() end (found) ==============\n"
       BREAK
     ENDIF
     counter += 1
@@ -88,7 +74,6 @@ PUBLIC FUNCTION Replace_Str_AsIs(SrchFile AS String, SrchStr AS String, RpcStr A
   
   IF counter = content_array.Count THEN
     Func.Save_File(SrchFile, content & "\n" & SrchStr & RpcStr)
-    PRINT "=========== Replace_Str_AsIs() end (appending) ============\n"
   ENDIF
 END
 
@@ -136,9 +121,9 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
   Func.Debug_Msg("Editing file: " & EditFile)
 
   IF Editor = "nano" OR Editor = "pico" OR Editor = "vi" OR Editor = "vim" THEN
-    EXEC [Func.Use_Term(), "-e", Editor, WorkDir & EditFile] WAIT
+    EXEC [Func.Use_Term(), "-e", Editor, FSDir & EditFile] WAIT
   ELSE
-    EXEC [Editor, WorkDir & EditFile]
+    EXEC [Editor, FSDir & EditFile]
   ENDIF
   
   CATCH
@@ -148,28 +133,28 @@ END
 PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
   Func.Event_Msg("Browsing directory: " & BrsDir)
 
-  IF NOT Exist(WorkDir & BrsDir) THEN
+  IF NOT Exist(FSDir & BrsDir) THEN
     Message.Error("The directory doesn't exists")
   ELSE IF Exist("/usr/bin/nautilus") THEN
-    EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]
+    EXEC ["/usr/bin/nautilus", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/dolphin") THEN
-    EXEC ["/usr/bin/dolphin", WorkDir & BrsDir]
+    EXEC ["/usr/bin/dolphin", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/pcmanfm") THEN
-    EXEC ["/usr/bin/pcmanfm", WorkDir & BrsDir]
+    EXEC ["/usr/bin/pcmanfm", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/xfe") THEN
-    EXEC ["/usr/bin/xfe", WorkDir & BrsDir]
+    EXEC ["/usr/bin/xfe", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/worker") THEN
-    EXEC ["/usr/bin/worker", WorkDir & BrsDir]
+    EXEC ["/usr/bin/worker", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/gentoo") THEN
-    EXEC ["/usr/bin/gentoo", WorkDir & BrsDir]
+    EXEC ["/usr/bin/gentoo", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/thunar") THEN
-    EXEC ["/usr/bin/thunar", WorkDir & BrsDir]
+    EXEC ["/usr/bin/thunar", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/filerunner") THEN
-    EXEC ["/usr/bin/filerunner", WorkDir & BrsDir]
+    EXEC ["/usr/bin/filerunner", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/krusader") THEN
-    EXEC ["/usr/bin/krusader", WorkDir & BrsDir]
+    EXEC ["/usr/bin/krusader", FSDir & BrsDir]
   ELSE IF Exist("/usr/bin/rox-filer") THEN
-    EXEC ["/usr/bin/rox-filer", WorkDir & BrsDir]
+    EXEC ["/usr/bin/rox-filer", FSDir & BrsDir]
   ELSE
     Message.Warning("No supported File-Manager was detected! \nSupported are: \n\nNautilus, Dolphin, PCManFM, Thunar, XFE, Worker, Gentoo, FileRunner, Krusader and ROX-Filer")
   ENDIF
@@ -178,7 +163,6 @@ END
 PUBLIC FUNCTION Enable_Stuff()
   Func.Event_Msg("Enabling widgets")
   
-  FMain.Create_Snapshot.Enabled = TRUE
   FMain.Edit_Sources.Enabled = TRUE
   FMain.Install_DEB.Enabled = TRUE
   FMain.Terminal.Enabled = TRUE
@@ -198,7 +182,6 @@ END
 PUBLIC FUNCTION Disable_Stuff()
   Func.Event_Msg("Disabling widgets")
 
-  FMain.Create_Snapshot.Enabled = FALSE
   FMain.Edit_Sources.Enabled = FALSE
   FMain.Install_DEB.Enabled = FALSE
   FMain.Archive.Enabled = FALSE

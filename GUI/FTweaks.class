@@ -1,6 +1,6 @@
 ' Gambas class file
 
-PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
+PUBLIC FSDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "FILESYSTEM_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM sZone, Frame AS String
@@ -11,26 +11,26 @@ PUBLIC SUB Form_Open()
   ME.Center
   ME.Caption = "Tweaks"
   
-  FOR EACH sZone IN RDir(WorkDir & "/FileSystem/usr/share/zoneinfo/", "*", gb.Directory).Sort()
+  FOR EACH sZone IN RDir(FSDir & "/usr/share/zoneinfo/", "*", gb.Directory).Sort()
     Zone.Add(sZone)
   NEXT
   
-  tz_array = Split(Func.Load_File(WorkDir & "/FileSystem/etc/timezone"), "/")
+  tz_array = Split(Func.Load_File(FSDir & "/etc/timezone"), "/")
   Zone.Text = tz_array[0]
   
-  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()
+  FOR EACH sZone IN Dir(FSDir & "/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()
     Time.Add(sZone)
   NEXT
   Time.Text = tz_array[1]
 
-  IF Exist(WorkDir & "/FileSystem/etc/apt/apt.conf") THEN
+  IF Exist(FSDir & "/etc/apt/apt.conf") THEN
     APT_Recommends.Value = FALSE
   ELSE 
     APT_Recommends.Value = TRUE
   ENDIF 
   
-  IF Exist(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
-    Frame = Func.Get_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
+  IF Exist(FSDir & "/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
+    Frame = Func.Get_Str(FSDir & "/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
   
     IF Frame = "y" THEN 
       Framebuffer.Value = TRUE
@@ -42,76 +42,76 @@ PUBLIC SUB Form_Open()
     Framebuffer.Enabled = FALSE
   ENDIF 
   
-  TTYs.Text = Replace$(Replace$(Func.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", "6"), "/dev/tty[1-", ""), "]", "")
+  TTYs.Text = Replace$(Replace$(Func.Get_Str(FSDir & "/etc/default/console-setup", "ACTIVE_CONSOLES=", "6"), "/dev/tty[1-", ""), "]", "")
   
-  IF Exist(WorkDir & "/FileSystem/bin/ash") THEN 
+  IF Exist(FSDir & "/bin/ash") THEN 
     SShell.Add("/bin/ash")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/sh") THEN 
+  IF Exist(FSDir & "/bin/sh") THEN 
     SShell.Add("/bin/sh")
   ENDIF 
   
-  IF Exist(WorkDir & "/FileSystem/bin/csh") THEN 
+  IF Exist(FSDir & "/bin/csh") THEN 
     SShell.Add("/bin/csh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/ksh") THEN 
+  IF Exist(FSDir & "/bin/ksh") THEN 
     SShell.Add("/bin/ksh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/mksh") THEN 
+  IF Exist(FSDir & "/bin/mksh") THEN 
     SShell.Add("/bin/mksh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/tcsh") THEN 
+  IF Exist(FSDir & "/bin/tcsh") THEN 
     SShell.Add("/bin/tcsh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/bash") THEN 
+  IF Exist(FSDir & "/bin/bash") THEN 
     SShell.Add("/bin/bash")
   ENDIF 
   
-  IF Exist(WorkDir & "/FileSystem/bin/dash") THEN 
+  IF Exist(FSDir & "/bin/dash") THEN 
     SShell.Add("/bin/dash")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/psh") THEN 
+  IF Exist(FSDir & "/bin/psh") THEN 
     SShell.Add("/bin/psh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/zsh") THEN 
+  IF Exist(FSDir & "/bin/zsh") THEN 
     SShell.Add("/bin/zsh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/yash") THEN 
+  IF Exist(FSDir & "/bin/yash") THEN 
     SShell.Add("/bin/yash")
   ENDIF
   
-  SShell.Text = Func.Get_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", "/bin/bash")
+  SShell.Text = Func.Get_Str(FSDir & "/etc/adduser.conf", "DSHELL=", "/bin/bash")
 END
 
 PUBLIC SUB APT_Recommends_Click()
   IF APT_Recommends.Value = TRUE THEN
-    Func.Debug_Msg("[TRY] Deleting: " & WorkDir & "/FileSystem/etc/apt/apt.conf")
-    TRY KILL WorkDir & "/FileSystem/etc/apt/apt.conf"
+    Func.Debug_Msg("[TRY] Deleting: " & FSDir & "/etc/apt/apt.conf")
+    TRY KILL FSDir & "/etc/apt/apt.conf"
   ELSE 
-    Func.Debug_Msg("[TRY] Saving to: " & WorkDir & "/FileSystem/etc/apt/apt.conf")
-    TRY File.Save(WorkDir & "/FileSystem/etc/apt/apt.conf", "APT::Install-Recommends \"false\";\nAPT::Install-Suggests \"false\";")
+    Func.Debug_Msg("[TRY] Saving to: " & FSDir & "/etc/apt/apt.conf")
+    TRY File.Save(FSDir & "/etc/apt/apt.conf", "APT::Install-Recommends \"false\";\nAPT::Install-Suggests \"false\";")
   ENDIF 
 END
 
 
 PUBLIC SUB Time_Click()
-  Func.Save_File(WorkDir & "/FileSystem/etc/timezone", Zone.Text & "/" & Time.Text)
+  Func.Save_File(FSDir & "/etc/timezone", Zone.Text & "/" & Time.Text)
 END
 
 
 PUBLIC SUB Framebuffer_Click()
   IF Framebuffer.Value = TRUE THEN 
-    Func.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
+    Func.Replace_Str(FSDir & "/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
   ELSE 
-    Func.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "n")
+    Func.Replace_Str(FSDir & "/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "n")
   ENDIF 
 END
 
@@ -120,18 +120,18 @@ PUBLIC SUB Quit_Click()
 END
 
 PUBLIC SUB TTYs_Click()
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", "/dev/tty[1-" & TTYs.Text & "]")
+  Func.Replace_Str(FSDir & "/etc/default/console-setup", "ACTIVE_CONSOLES=", "/dev/tty[1-" & TTYs.Text & "]")
 END
 
 PUBLIC SUB SShell_Click()
-  Func.Replace_Str(WorkDir & "/FileSystem/etc/adduser.conf", "DSHELL=", SShell.Text)
+  Func.Replace_Str(FSDir & "/etc/adduser.conf", "DSHELL=", SShell.Text)
 END
 
 PUBLIC SUB Zone_Click()
   DIM sZone AS String
   
   Time.Clear
-  FOR EACH sZone IN Dir(WorkDir & "/FileSystem/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()
+  FOR EACH sZone IN Dir(FSDir & "/usr/share/zoneinfo/" & Zone.Text, "*", gb.File).Sort()
     Time.Add(sZone)
   NEXT
 END

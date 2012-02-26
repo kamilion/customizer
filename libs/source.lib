@@ -22,7 +22,7 @@
 # Source - import all libraries for later use
 
 # Change according to the path were the libs are stored
-cd /opt/live/libs
+cd /opt/Customizer/libs
 
 source message.lib
 source test.lib

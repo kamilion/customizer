@@ -21,11 +21,11 @@
 
 # Chroot - chroot into Debian/Ubuntu filesystem
 #
-# Depending on $FILESYSTEM_DIR
+# Depending on $FILESYSTEM_DIR and $CHROOT_HELPER
 
 CHECK_FILESYSTEM() {
     INFO "Checking filesystem"
-    if [ ! "$FILESYSTEM_DIR" ];then
+    if [ -z "$FILESYSTEM_DIR" ];then
 		ERROR "FILESYSTEM_DIR is null"
 	elif [ ! -d "$FILESYSTEM_DIR" ];then
         ERROR "The filesystem path doesn't exists"
