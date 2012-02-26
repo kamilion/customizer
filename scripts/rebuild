@@ -158,18 +158,18 @@ mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wi
 
 INFO_MESSAGE "Checking filesystem size"
 FS_SIZE="`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
-if (( "$FS_SIZE" > "4000000" ));then
+if [ "$FS_SIZE" > "4000000" ];then
 	ERROR_MESSAGE" The squashed filesystem size is greater than 4GB"
 fi
 
 INFO_MESSAGE "Creating filesystem.size"
-echo "$FS_SIZE" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR_MESSAGE "Unable to calculate the size of the filesystem"
+echo "`du -sx --block-size=1 $WORK_DIR/FileSystem | cut -f1`" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR_MESSAGE "Unable to calculate the size of the filesystem"
 
 INFO_MESSAGE "Creating filesystem.manifest"
 chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || ERROR_MESSAGE "Unable to create the filesystem.manifest"
 INFO_MESSAGE "Creating filesystem.manifest-desktop"
 cp -f "$WORK_DIR/ISO/casper/filesystem.manifest" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
-REMOVE='ubiquity casper live-initramfs user-setup discover1 xresprobe os-prober libdebian-installer4'
+REMOVE='ubiquity casper live-initramfs user-setup discover1 xresprobe libdebian-installer4'
 for i in $REMOVE ; do
         sed -i "/${i}/d" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
 done
