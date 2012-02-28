@@ -151,19 +151,19 @@ if [ "$BOOT_FILES" = "1" ]; then
 	rm -f "$WORK_DIR/FileSystem/boot/config"*
 fi
 
-#################### creting ISO image #####################
+#################### creating ISO image #####################
 
 INFO_MESSAGE "Creating squashed FileSystem"
 mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list || ERROR_MESSAGE "Unable to squash the filesystem"
 
 INFO_MESSAGE "Checking filesystem size"
-FS_SIZE="`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
-if [ "$FS_SIZE" > "4000000" ];then
-	ERROR_MESSAGE" The squashed filesystem size is greater than 4GB"
+FS_SIZE="`du -sx  --block-size=1 "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
+if [ "$FS_SIZE" -gt "4000000000" ];then
+	ERROR_MESSAGE "The squashed filesystem size is greater than 4GB"
 fi
 
 INFO_MESSAGE "Creating filesystem.size"
-echo "`du -sx --block-size=1 $WORK_DIR/FileSystem | cut -f1`" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR_MESSAGE "Unable to calculate the size of the filesystem"
+echo "$FS_SIZE" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR_MESSAGE "Unable to calculate the size of the filesystem"
 
 INFO_MESSAGE "Creating filesystem.manifest"
 chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || ERROR_MESSAGE "Unable to create the filesystem.manifest"
@@ -200,6 +200,6 @@ INFO_MESSAGE "Creating ISO"
 -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table \
 -o "$WORK_DIR/$DIST-$ARCH-$VERSION.iso" -input-charset utf-8 .
 
-chmod 555 $WORK_DIR/$DIST-$ARCH-$VERSION.iso
+chmod 555 "$WORK_DIR/$DIST-$ARCH-$VERSION.iso"
 EXTRA_INFO_MESSAGE "Successfuly created ISO image" "$WORK_DIR/$DIST-$ARCH-$VERSION.iso"; read nada) \
 || ERROR_MESSAGE "Unable to create ISO image"
