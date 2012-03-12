@@ -24,30 +24,13 @@
 # Depending on $MESSAGES_COLORS
 
 # Setup color variables
-if [ "$MESSAGES_COLORS" = "1" ];then
-	if [ -t 1 ]; then
-		if [ $(tput colors) -ge 8 ]; then
-			bold="$(tput bold)"
-			normal="$(tput sgr0)"
-			black="$(tput setaf 0)"
-			red="$(tput setaf 1)"
-			green="$(tput setaf 2)"
-			yellow="$(tput setaf 3)"
-			blue="$(tput setaf 4)"
-			magenta="$(tput setaf 5)"
-			cyan="$(tput setaf 6)"
-			white="$(tput setaf 7)"
-			
-			bblack="${bold}${black}${normal}"
-			bred="${bold}${red}${normal}"
-			bgreen="${bold}${green}${normal}"
-			byellow="${bold}${yellow}${normal}"
-			bblue="${bold}${blue}${normal}"
-			bmagenta="${bold}${magenta}${normal}"
-			bcyan="${bold}${cyan}${normal}"
-			bwhite="${bold}${white}${normal}"
-		fi
-	fi
+if [ "$MESSAGES_COLORS" = "1" ] && [ -t 1 ] && [ $(tput colors) -ge 8 ]; then
+		normal="$(tput sgr0)"
+		red="$(tput setaf 1)"
+		green="$(tput setaf 2)"
+		yellow="$(tput setaf 3)"
+		magenta="$(tput setaf 5)"
+		cyan="$(tput setaf 6)"
 fi
 
 # $1 - message to echo

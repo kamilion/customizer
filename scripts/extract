@@ -20,7 +20,6 @@
 # Wiki: https://github.com/fluxer/Customizer/wiki
 # Issues: https://github.com/fluxer/Customizer/issues
 #
-set -u
 source /opt/Customizer/settings.conf
 source /opt/Customizer/libs/source.lib
 
@@ -28,7 +27,7 @@ source /opt/Customizer/libs/source.lib
 
 __create_work_dirs__() {
 	INFO "Creating work directories"
-	mkdir -p "$WORK_DIR/"{FileSystem,ISO} || ERROR "Unable to create working directories"
+	mkdir -p "$FILESYSTEM_DIR" "$ISO_DIR" || ERROR "Unable to create working directories"
 }
 
 __clean__() {
@@ -44,7 +43,7 @@ fi
 
 ################## Cleaning up previous temp folders if exists ##################
 
-if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ];then
+if [ -d "$FILESYSTEM_DIR" ] || [ -d "$ISO_DIR" ];then
     __clean__
     __create_work_dirs__
 else
@@ -52,7 +51,7 @@ else
 fi
 
 ############################# Mounting the ISO image #############################
-MOUNT_DIR="`mktemp -d --tmpdir=\"$MOUNT_DIR\"`"
+MOUNT_DIR="`mktemp -d --tmpdir="$MOUNT_DIR"`"
 
 INFO "Mounting ISO"
 mount -t iso9660 -o loop "$ISO" "$MOUNT_DIR" || ERROR "Unable to mount the ISO"
@@ -70,12 +69,12 @@ fi
 ######################### Extraction filesystem.squashfs ##########################
 
 INFO "Extracting FileSystem"
-unsquashfs -f -d "$WORK_DIR/FileSystem" "$MOUNT_DIR/casper/filesystem.squashfs" || ERROR "Unable to extract the filesystem.squashfs"
+unsquashfs -f -d "$FILESYSTEM_DIR" "$MOUNT_DIR/casper/filesystem.squashfs" || ERROR "Unable to extract the filesystem.squashfs"
 
 ################## Check the architecture of the root filesystem ##################
 
 INFO "Checking architecture"
-ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || ERROR "Unable to chroot and get the architecture"
+ARCH=`chroot "$FILESYSTEM_DIR" dpkg --print-architecture` || ERROR "Unable to chroot and get the architecture"
 if [ "$ARCH" = "amd64" -o "" ] && [ "`uname -m`" != "x86_64" ]; then
 	ERROR_NO_EXIT "The ISOs architecture is amd64 and yours is not"
 	__clean__
@@ -86,7 +85,7 @@ fi
 ############ rsync the some files but exclude some that are not needed ############
 
 INFO "Copying ISO files"
-rsync --exclude=/casper/* --exclude=/md5sum.txt --exclude=/README.diskdefines -a "$MOUNT_DIR/" "$WORK_DIR/ISO" || ERROR "Unable to rsync files"
+rsync --exclude=/casper/* --exclude=/md5sum.txt --exclude=/README.diskdefines -a "$MOUNT_DIR/" "$ISO_DIR" || ERROR "Unable to rsync files"
 
 ############################## Unmount the ISO image ##############################
 INFO "Unmounting ISO"

@@ -21,7 +21,7 @@
 
 # Log - log messages to stdout, file or both
 #
-# Depending on $LOG_TYPE and $LOG_FILE
+# Depending on $MESSAGES_COLORS, $LOG_TYPE and $LOG_FILE
 # 
 # $1 - message to log
 # $2 - whether to stop or not (pause)
@@ -29,19 +29,13 @@
 # $4 - exit status (optional)
 
 # Setup color variables
-if [ -t 1 ]; then
-	if [ $(tput colors) -ge 8 ]; then
-		bold="$(tput bold)"
+if [ "$MESSAGES_COLORS" = "1" ] && [ -t 1 ] && [ $(tput colors) -ge 8 ]; then
 		normal="$(tput sgr0)"
-		black="$(tput setaf 0)"
 		red="$(tput setaf 1)"
 		green="$(tput setaf 2)"
 		yellow="$(tput setaf 3)"
-		blue="$(tput setaf 4)"
 		magenta="$(tput setaf 5)"
 		cyan="$(tput setaf 6)"
-		white="$(tput setaf 7)"
-	fi
 fi
 
 LOG_INFO() {
