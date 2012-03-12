@@ -6,6 +6,27 @@ mnt/*
 sys/*
 proc/*
 tmp/*
+boot/*.bak
 boot/grub/grub.cfg
 boot/grub/menu.lst
 boot/grub/device.map
+etc/hostname
+etc/hosts
+etc/resolv.conf
+etc/fstab
+etc/mtab
+etc/group-
+etc/passwd-
+etc/gshadow-
+etc/shadow-
+root/.bash_history
+etc/skel/.bash_history
+var/log/*.gz
+var/lib/dpkg/*-old
+var/lib/aptitude/*.old
+var/cache/debconf/*-old
+etc/apt/trusted.gpg~
+# etc/udev/rules.d/70-persistent-cd.rules
+# etc/udev/rules.d/70-persistent-net.rules
+# var/log/[a-b,d-z]*
+# var/log/[A-B,D-Z]*
