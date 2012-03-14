@@ -23,35 +23,36 @@
 source /opt/Customizer/settings.conf
 source /opt/Customizer/libs/source.lib
 
+MOUNT_DIR="$(mktemp -d --tmpdir="$MOUNT_DIR")"
+
 #################### Some functions used when error accures #####################
 
-__create_work_dirs__() {
-	INFO "Creating work directories"
-	mkdir -p "$FILESYSTEM_DIR" "$ISO_DIR" || ERROR "Unable to create working directories"
+_CLEAN_() {
+    umount -fl "$MOUNT_DIR" 2> /dev/null
+    INFO "Purging working direcotries"
+    for i in "$FILESYSTEM_DIR" "$ISO_DIR" "$MOUNT_DIR";do
+	EXTRA_DEBUG "$i"
+	rm -rf "$i" || EXTRA_ERROR "Unable to purge" "$i"
+    done
 }
 
-__clean__() {
-	umount -fl "$MOUNT_DIR" 2> /dev/null
-    __purge_work_dirs__
-}
+########### Checking and cleaning up previous temp folders if exists ############
 
-####################### Checking if the ISO image exists ########################
-
+if [ -z "$ISO" ];then
+	ERROR '$ISO is null'
 if [ ! -e "$ISO" ];then
 	ERROR "The ISO image doesn't exists."
-fi
+elif [ -d "$FILESYSTEM_DIR" ] || [ -d "$ISO_DIR" ];then
+    _CLEAN_
 
-################## Cleaning up previous temp folders if exists ##################
-
-if [ -d "$FILESYSTEM_DIR" ] || [ -d "$ISO_DIR" ];then
-    __clean__
-    __create_work_dirs__
+    INFO "Creating work directories"
+    mkdir -p "$FILESYSTEM_DIR" "$ISO_DIR" "$MOUNT_DIR" || ERROR "Unable to create the working directories"
 else
-	__create_work_dirs__
+    INFO "Creating work directories"
+    mkdir -p "$FILESYSTEM_DIR" "$ISO_DIR" "$MOUNT_DIR" || ERROR "Unable to create the working directories"
 fi
 
 ############################# Mounting the ISO image #############################
-MOUNT_DIR="`mktemp -d --tmpdir="$MOUNT_DIR"`"
 
 INFO "Mounting ISO"
 mount -t iso9660 -o loop "$ISO" "$MOUNT_DIR" || ERROR "Unable to mount the ISO"
@@ -61,9 +62,13 @@ mount -t iso9660 -o loop "$ISO" "$MOUNT_DIR" || ERROR "Unable to mount the ISO"
 INFO "Checking ISO image"
 if [ ! -d "$MOUNT_DIR/casper" ] || [ ! -d "$MOUNT_DIR/.disk" ] || \
  [ ! -d "$MOUNT_DIR/isolinux" ] || [ ! -e "$MOUNT_DIR/casper/filesystem.squashfs" ]; then
-	ERROR_NO_EXIT "This is not a usable ISO image"
-	__clean__
-    exit 2
+    umount -fl "$MOUNT_DIR" 2> /dev/null
+    INFO "Purging working direcotries"
+    for i in "$FILESYSTEM_DIR" "$ISO_DIR" "$MOUNT_DIR";do
+	EXTRA_DEBUG "$i"
+	rm -rf "$i" || EXTRA_ERROR "Unable to purge" "$i"
+    done
+    ERROR "This is not a usable ISO image"
 fi
 
 ######################### Extraction filesystem.squashfs ##########################
@@ -74,11 +79,10 @@ unsquashfs -f -d "$FILESYSTEM_DIR" "$MOUNT_DIR/casper/filesystem.squashfs" || ER
 ################## Check the architecture of the root filesystem ##################
 
 INFO "Checking architecture"
-ARCH=`chroot "$FILESYSTEM_DIR" dpkg --print-architecture` || ERROR "Unable to chroot and get the architecture"
+ARCH="$(chroot "$FILESYSTEM_DIR" dpkg --print-architecture)" || ERROR "Unable to chroot and get the architecture"
 if [ "$ARCH" = "amd64" -o "" ] && [ "`uname -m`" != "x86_64" ]; then
-	ERROR_NO_EXIT "The ISOs architecture is amd64 and yours is not"
-	__clean__
-    exit 2
+    __clean__
+    ERROR "The ISOs architecture is amd64 and yours is not"
 fi
 
 
