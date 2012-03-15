@@ -24,8 +24,11 @@ set -u
 source /opt/Customizer/settings.conf
 source /opt/Customizer/libs/source.lib
 
-if [ -d "$WORK_DIR/FileSystem" ] || [ -d "$WORK_DIR/ISO" ];then
-    __purge_work_dirs__
+if [ -d "$FILESYSTEM_DIR" ] || [ -d "$ISO_DIR" ];then
+    EXTRA_INFO "Purging" "$FILESYSTEM_DIR"
+    rm -rf "$FILESYSTEM_DIR" || ERROR "Unable to purge the filesystem direcotry"
+    EXTRA_INFO "Purging" "$ISO_DIR"
+    rm -rf "$ISO_DIR" || ERROR "Unable to purge the ISO directory"
 else
 	INFO "There is nothing to clean"
 fi
