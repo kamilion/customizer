@@ -34,6 +34,8 @@ if [ "$MESSAGES_COLORS" = "1" ] && [ -t 1 ] && [ $(tput colors) -ge 8 ]; then
 fi
 
 # $1 - message to echo
+# $2 - what to do (stop|exit|sexit) [optional]
+# $3 - exit status [optional]
 INFO() {
 	echo -e "[${yellow}*${normal}] ${green}$1${normal}"
 	
@@ -123,6 +125,8 @@ DEBUG() {
 
 # $1 - 1st part of the message to echo
 # $2 - 2nd part of the message to echo
+# $3 - what to do (stop|exit|sexit) [optional]
+# $4 - exit status [optional]
 EXTRA_INFO() {
 	echo -e "[${yellow}*${normal}] ${green}$1${normal}: ${yellow}${2}${normal}"
 	

@@ -21,12 +21,14 @@
 
 # Wget - download files via wget
 #
+# Depending on $DEBUG
+#
 # $1 - URL to download
 # $2 - path where to store the file (optional)
 
 WGET_FILE() {
 	EXTRA_DEBUG "Downloading" "$1"
-	if [ "$DOWNLOAD_VERBOSE" = "1" ];then
+	if [ "$DEBUG" = "1" ];then
 		local OPTIONS=" --verbose"
 	else
 		local OPTIONS=" --quiet"
@@ -41,7 +43,7 @@ WGET_FILE() {
 
 WGET_DIR() {
 	EXTRA_DEBUG "Downloading" "$1"
-	if [ "$DOWNLOAD_VERBOSE" = "1" ];then
+	if [ "$DEBUG" = "1" ];then
 		local OPTIONS=" -m --verbose"
 	else
 		local OPTIONS=" -m --quiet"

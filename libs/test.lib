@@ -28,7 +28,7 @@ CHECK_UID() {
 	fi
 }
 
-# Find executables
+# Find executables and set them for later use
 # $@ - no limit to arguments
 FIND_BIN() {
 	for i in $@;do

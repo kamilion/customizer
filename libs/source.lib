@@ -26,7 +26,6 @@ cd /opt/Customizer/libs
 
 source message.lib
 source test.lib
-source log.lib
 source lock.lib
 source chroot.lib
 source config.lib

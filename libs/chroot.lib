@@ -50,7 +50,7 @@ CHROOT_FIX() {
 			mv "$FILESYSTEM_DIR/$i" "$FILESYSTEM_DIR/$i.blocked"
 			ln -s "$FILESYSTEM_DIR/bin/true" "$FILESYSTEM_DIR/$i"
 		else
-			WARNING "Skipped blocking of" "/$i"
+			EXTRA_WARNING "Skipped blocking of" "/$i"
 		fi
 	done
 }
@@ -85,7 +85,7 @@ CHROOT_UNDO_FIX() {
 			EXTRA_INFO "Unblocking" "/$i"
 			mv -f "$FILESYSTEM_DIR/$i.blocked" "$FILESYSTEM_DIR/$i"
 		else
-			WARNING "Skipped unblocking of" "/$i"
+			EXTRA_WARNING "Skipped unblocking of" "/$i"
 		fi
 	done
 }

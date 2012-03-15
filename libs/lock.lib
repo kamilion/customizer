@@ -24,11 +24,11 @@
 # Optional $FORCE
 
 # $1 - file/directory to lock/check/unlock
-# $2 - whether to be silent (no messages)
+# $2 - whether to be silent (no messages) [optional]
 LOCK() {
 	if [ -e "$1" ];then
 		local lock="${1}.lock"
-		EXTRA_DEBUG "File lock" "$lock"
+		EXTRA_DEBUG "Lock file" "$lock"
 		if [ -e "$lock" ];then
 			if [ ! "$2" = "quite" ];then
 				WARNING "$1 is already locked"
@@ -49,7 +49,7 @@ LOCK() {
 CHECK_LOCK() {
 	if [ -e "$1" ];then
 		local lock="${1}.lock"
-		DEBUG "$lock"
+		EXTRA_DEBUG "Lock file" "$lock"
 		if [ "$FORCE" = "1" ];then
             EXTRA_WARNING "Lock check skipped for" "$1"
         elif [ -e "$lock" ];then
@@ -70,6 +70,7 @@ CHECK_LOCK() {
 UNLOCK() {
 	if [ -e "$1" ];then
 		local lock="${1}.lock"
+		EXTRA_DEBUG "Lock file" "$lock"
 		if [ -e "$lock" ];then
 			if [ ! "$2" = "quite" ];then
 				EXTRA_INFO "Unlocking" "$1"
