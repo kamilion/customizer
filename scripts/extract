@@ -23,6 +23,7 @@
 source /opt/Customizer/settings.conf
 source /opt/Customizer/libs/source.lib
 
+set +x
 MOUNT_DIR="$(mktemp -d --tmpdir="$MOUNT_DIR")"
 
 #################### Some functions used when error accures #####################
@@ -31,8 +32,8 @@ _CLEAN_() {
     umount -fl "$MOUNT_DIR" 2> /dev/null
     INFO "Purging working direcotries"
     for i in "$FILESYSTEM_DIR" "$ISO_DIR" "$MOUNT_DIR";do
-	EXTRA_DEBUG "$i"
-	rm -rf "$i" || EXTRA_ERROR "Unable to purge" "$i"
+	    EXTRA_DEBUG "$i"
+	    rm -rf "$i" || EXTRA_ERROR "Unable to purge" "$i"
     done
 }
 
@@ -40,7 +41,7 @@ _CLEAN_() {
 
 if [ -z "$ISO" ];then
 	ERROR '$ISO is null'
-if [ ! -e "$ISO" ];then
+elif [ ! -e "$ISO" ];then
 	ERROR "The ISO image doesn't exists."
 elif [ -d "$FILESYSTEM_DIR" ] || [ -d "$ISO_DIR" ];then
     _CLEAN_
@@ -80,8 +81,8 @@ unsquashfs -f -d "$FILESYSTEM_DIR" "$MOUNT_DIR/casper/filesystem.squashfs" || ER
 
 INFO "Checking architecture"
 ARCH="$(chroot "$FILESYSTEM_DIR" dpkg --print-architecture)" || ERROR "Unable to chroot and get the architecture"
-if [ "$ARCH" = "amd64" -o "" ] && [ "`uname -m`" != "x86_64" ]; then
-    __clean__
+if [ "$ARCH" = "amd64" -o "" ] && [ "$(uname -m)" != "x86_64" ]; then
+    _CLEAN__
     ERROR "The ISOs architecture is amd64 and yours is not"
 fi
 
