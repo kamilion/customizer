@@ -99,6 +99,8 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
   Func.Event_Msg("Detecting Text Editor")
   IF Exist("/usr/bin/gedit") THEN
     Editor = "/usr/bin/gedit"
+  ELSE IF Exist("/usr/bin/pluma") THEN
+    Editor = "/usr/bin/pluma"
   ELSE IF Exist("/usr/bin/kate") THEN
     Editor = "/usr/bin/kate"
   ELSE IF Exist("/usr/bin/kwrite") THEN
@@ -152,6 +154,8 @@ PUBLIC FUNCTION Browse_Dir(BrsDir AS String)
     Message.Error("The directory doesn't exists")
   ELSE IF Exist("/usr/bin/nautilus") THEN
     EXEC ["/usr/bin/nautilus", WorkDir & BrsDir]
+  ELSE IF Exist("/usr/bin/caja") THEN
+    EXEC ["/usr/bin/caja", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/dolphin") THEN
     EXEC ["/usr/bin/dolphin", WorkDir & BrsDir]
   ELSE IF Exist("/usr/bin/pcmanfm") THEN
@@ -246,6 +250,8 @@ PUBLIC FUNCTION Use_Term() AS String
   Func.Event_Msg("Detecting Terminal Emulator")
   IF Exist("/usr/bin/gnome-terminal") THEN
     RETURN "/usr/bin/gnome-terminal"
+  ELSE IF Exist("/usr/bin/mate-terminal") THEN
+    RETURN "/usr/bin/mate-terminal"
   ELSE IF Exist("/usr/bin/konsole") THEN
     RETURN "/usr/bin/konsole"
   ELSE IF Exist("/usr/bin/xfce4-terminal") THEN
