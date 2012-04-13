@@ -13,11 +13,10 @@ SearchString=True
 
 [OpenFile]
 File[1]="FMain.form"
-File[2]="Check.module:3.0"
-File[3]="Func.module:102.28"
+File[2]="FTweaks.form"
+File[3]="FTweaks.class:105.2"
 Active=3
-File[4]="FMain.class:5.0"
-Count=4
+Count=3
 
 [Watches]
 Count=0
