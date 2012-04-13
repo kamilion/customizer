@@ -167,9 +167,17 @@ if [ \"$MESSAGES_COLORS\" = \"1\" ];then
 else
 	echo -e \"[*] Setting up\"
 fi
-export HOME=/root
-export LC_ALL=C
 
+if [ \"$MESSAGES_COLORS\" = \"1\" ];then
+        echo -e \"[${Yellow}*${Reset}] ${Green}Setting up locales${Reset}\"
+    else
+        echo -e \"[*] Setting up locales\"
+fi
+export HOME=/root
+export LC_ALL=${LOCALES}
+export LANGUAGE=${LOCALES}
+export LANG=${LOCALES}
+locale-gen ${LOCALES}
 
 if [ \"$MESSAGES_COLORS\" = \"1\" ];then
         echo -e \"[${Yellow}*${Reset}] ${Green}Updating packages database${Reset}\"

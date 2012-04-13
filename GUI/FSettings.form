@@ -1,12 +1,12 @@
 # Gambas Form File 2.0
 
 { Form Form
-  MoveScaled(0,0,47,44)
+  MoveScaled(0,0,48,48)
   Text = ("")
   Icon = Picture["icon:/small/options"]
   Border = Window.Fixed
   { Quit Button
-    MoveScaled(17,40,13,3)
+    MoveScaled(17,44,13,3)
     ToolTip = ("Close this window")
     Text = ("Close")
     Picture = Picture["icon:/16/close"]
@@ -17,26 +17,26 @@
     Text = ("Delete Boot files before creating the filesystem.squashfs")
   }
   { ResolutionBox ComboBox
-    MoveScaled(2,28,13,3)
+    MoveScaled(2,32,13,3)
     ToolTip = ("Change the resolution used by Xephyr to start desktop session")
     ReadOnly = True
     List = [("1920x1200"), ("1920x1080"), ("1600x1200"), ("1600x900"), ("1280x1024"), ("1280x960"), ("1280x800"), ("1280x768"), ("1024x768"), ("800x600"), ("640x480")]
     Text = ("ComboBox1")
   }
   { Label2 Label
-    MoveScaled(16,28,30,3)
+    MoveScaled(16,32,30,3)
     Text = ("'Desktop' (Xephyr) resolution")
     Alignment = Align.Center
   }
   { VirtualMemBox ComboBox
-    MoveScaled(2,32,13,3)
+    MoveScaled(2,36,13,3)
     ToolTip = ("Set the amount of virtual RAM used by QEMU, the highed the value - the better performance you will get while emulating your ISO but it's recommended to be half of your RAM installed on your PC")
     ReadOnly = True
     List = [("64"), ("96"), ("128"), ("256"), ("384"), ("512"), ("768"), ("1024")]
     Text = ("ComboBox1")
   }
   { Label1 Label
-    MoveScaled(16,32,30,3)
+    MoveScaled(16,36,30,3)
     Text = ("QEMU virtual RAM (in megabytes)")
     Alignment = Align.Center
   }
@@ -57,12 +57,12 @@
     Alignment = Align.Center
   }
   { Label5 Label
-    MoveScaled(16,36,30,3)
+    MoveScaled(16,40,30,3)
     Text = ("Snapshots compression format")
     Alignment = Align.Center
   }
   { CompressionBox ComboBox
-    MoveScaled(2,36,13,3)
+    MoveScaled(2,40,13,3)
     ToolTip = ("Choose compression format for the created snapshots")
     ReadOnly = True
     List = [("bzip2"), ("gzip"), ("tar")]
@@ -97,6 +97,16 @@
   { Label6 Label
     MoveScaled(2,8,43,3)
     Text = ("ISO mount directory")
+    Alignment = Align.Center
+  }
+  { LocalesBox ComboBox
+    MoveScaled(2,28,13,3)
+    ReadOnly = True
+    Text = ("ComboBox1")
+  }
+  { Label3 Label
+    MoveScaled(16,28,30,3)
+    Text = ("Locales to be setuped in the chroot")
     Alignment = Align.Center
   }
 }
