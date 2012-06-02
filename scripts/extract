@@ -55,7 +55,7 @@ fi
 MOUNT_DIR="`mktemp -d --tmpdir=\"$MOUNT_DIR\"`"
 
 INFO_MESSAGE "Mounting ISO"
-mount -t iso9660 -o loop "$ISO" "$MOUNT_DIR" || ERROR_MESSAGE "Unable to mount the ISO"
+mount -t iso9660 -o ro,loop "$ISO" "$MOUNT_DIR" || ERROR_MESSAGE "Unable to mount the ISO"
 
 ######################## Check if the ISO image is usable ########################
 

@@ -25,12 +25,16 @@ source /opt/Customizer/common
 source /opt/Customizer/settings.conf
 
 Root_it() {
-	if [ "$UID" != "0" ];then
-		WARNING_MESSAGE "You are not root! Promting for password"
-		su -c "$1"
-    else
-        "$1"
+  EXTRA_INFO_MESSAGE "Executing $(basename ${1}) at" "$(date +%X/%d-%m-%Y)"
+  if [ "${UID}" != "0" ];then 
+      WARNING_MESSAGE "You are not root! Promting for password"
+      su -c "${1}"
+  else
+      EXTRA_INFO_MESSAGE "Executing $(basename ${1}) at" "$(date +%X/%d-%m-%Y)"
+      "${1}"
+      
 	fi
+  EXTRA_INFO_MESSAGE "Finished $(basename ${1}) at" "$(date +%X/%d-%m-%Y)"
 }
 
 Usage () {
