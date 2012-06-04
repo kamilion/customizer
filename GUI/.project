@@ -1,9 +1,9 @@
 # Gambas Project File 2.0
-# Compiled with Gambas 2.23.1
+# Compiled with Gambas 2.24.0
 Title=Customizer
 Startup=FMain
 Icon=logo.png
-Version=3.2.580
+Version=3.2.582
 Library=gb.gui
 Library=gb.form
 Description=GUI for Customizer (previuosly known as U-Customizer)

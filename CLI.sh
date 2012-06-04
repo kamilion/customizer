@@ -30,7 +30,6 @@ Root_it() {
       WARNING_MESSAGE "You are not root! Promting for password"
       su -c "${1}"
   else
-      EXTRA_INFO_MESSAGE "Executing $(basename ${1}) at" "$(date +%X/%d-%m-%Y)"
       "${1}"
       
 	fi

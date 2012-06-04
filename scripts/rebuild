@@ -99,21 +99,10 @@ INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
 VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
 if [ ! -e "$INITRD_SOURCE" ] || [ ! -e "$VMLINUZ_SOURCE" ] ; then
 	__mount_sys__
-	__chroot__ "
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Purging Kernels (if any)${Reset}\"
-	else
-        echo -e \"[*] Purging Kernels (if any)\"
-	fi
-
-	apt-get purge --yes linux-image* linux-headers* -qq
-	
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Installing Kernel${Reset}\"
-	else
-        echo -e \"[*] Installing Kernel\"
-	fi
-	apt-get install --yes linux-image-generic linux-headers-generic -qq"
+  INFO_MESSAGE "Purging Kernels (if any)"
+	__chroot__ apt-get purge --yes linux-image* linux-headers* -qq
+  INFO_MESSAGE "Installing Kernel"
+  __chroot__ apt-get install --yes linux-image-generic linux-headers-generic -qq
 	__umount_sys__
 	__recursive_umount__
 	
@@ -121,20 +110,8 @@ if [ ! -e "$INITRD_SOURCE" ] || [ ! -e "$VMLINUZ_SOURCE" ] ; then
 	VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
 else
 	__mount_sys__
-	__chroot__ "
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Installing the latest initramfs-tools${Reset}\"
-	else
-        echo -e \"[*] Installing the latest initramfs-tools\"
-	fi
-	apt-get install --yes initramfs-tools -qq
-	
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Updating/creating Kernel image${Reset}\"
-	else
-        echo -e \"[*] Updating/creating Kernel image\"
-	fi
-	update-initramfs -k all -t -u"
+  INFO_MESSAGE "Updating/creating Kernel image"
+	__chroot__ update-initramfs -k all -t -u
 	__umount_sys__
 	__recursive_umount__
 fi
@@ -169,9 +146,8 @@ INFO_MESSAGE "Creating filesystem.manifest"
 chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || ERROR_MESSAGE "Unable to create the filesystem.manifest"
 INFO_MESSAGE "Creating filesystem.manifest-desktop"
 cp -f "$WORK_DIR/ISO/casper/filesystem.manifest" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
-REMOVE='ubiquity casper live-initramfs user-setup discover1 xresprobe libdebian-installer4'
-for i in $REMOVE ; do
-        sed -i "/${i}/d" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
+for i in ubiquity casper live-initramfs user-setup discover1 xresprobe libdebian-installer4;do
+    sed -i "/${i}/d" "$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
 done
 
 INFO_MESSAGE "Creating README.diskdefines"
