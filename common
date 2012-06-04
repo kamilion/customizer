@@ -190,9 +190,14 @@ __chroot__() {
 
     INFO_MESSAGE "Unblocking files"
     for f in "$WORK_DIR/FileSystem/sbin/initctl.blocked" "$WORK_DIR/FileSystem/usr/sbin/update-grub.blocked" $(find "$WORK_DIR/FileSystem/etc/init.d" -type f -name "*.blocked");do
-        if [ -e "${f}" ];then
+        if [ -h "${f//.blocked/}" ];then
             rm -f "${f//.blocked/}"
             mv "${f}" "${f//.blocked/}"
+        elif [ -f "${f}" ];then
+            _f="${f##*FileSystem}"
+            _f="${f//.blocked/}"
+            WARNING_MESSAGE "${_f} has been updated, removing blocked file"
+            rm -f "${f}"
         else
             WARNING_MESSAGE "Unblocking of ${f} skipped"
         fi
@@ -201,7 +206,6 @@ __chroot__() {
     INFO_MESSAGE "Cleaning up"
     chroot "$WORK_DIR/FileSystem" ${CHROOT_OPTS} apt-get clean
     rm -f "$WORK_DIR/FileSystem/etc/"{debian_chroot,hosts,resolv.conf,mtab}
-    rm -f "$WORK_DIR/FileSystem/root/.bash_history"
     rm -f "$WORK_DIR/FileSystem/boot/"*.bak
     rm -f "$WORK_DIR/FileSystem/var/lib/dpkg/"*-old
     rm -f "$WORK_DIR/FileSystem/var/lib/aptitude/"*.old

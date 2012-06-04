@@ -6,6 +6,7 @@ mnt/*
 sys/*
 proc/*
 tmp/*
+root/.bash_history
 boot/grub/grub.cfg
 boot/grub/menu.lst
 boot/grub/device.map
