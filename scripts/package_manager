@@ -43,7 +43,9 @@ fi
 __allow_local_X_access__
 __mount_sys__
 __mount_dbus__
-__chroot__ "apt-get install dbus -y -f; dbus-uuidgen --ensure; $PKGM"
+__chroot__ apt-get install dbus -y -f
+__chroot__ dbus-uuidgen --ensure
+__chroot__ $PKGM
 __umount_sys__
 __recursive_umount__
 __block_local_X_access__
