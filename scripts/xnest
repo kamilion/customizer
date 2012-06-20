@@ -24,7 +24,7 @@ set -u
 source /opt/Customizer/common
 source /opt/Customizer/settings.conf
 
-__check_for_X__
+# __check_for_X__
 __check_fs_dir__
 __check_lock__
 __check_sources_list__
@@ -65,7 +65,7 @@ __mount_sys__
 __mount_dbus__
 __chroot__ apt-get install dbus -y -f
 __chroot__ dbus-uuidgen --ensure
-__chroot__ env DISPLAY=localhost:9 $EXEC_COMMAND
+__chroot__ export DISPLAY=localhost:9 $EXEC_COMMAND
 __umount_sys__
 __recursive_umount__
 __block_local_X_access__

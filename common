@@ -194,7 +194,7 @@ __chroot__() {
             rm -f "${f//.blocked/}"
             mv "${f}" "${f//.blocked/}"
         elif [ -f "${f}" ];then
-            _f="${f##*FileSystem}"
+            _f="${f//*FileSystem/}"
             _f="${f//.blocked/}"
             WARNING_MESSAGE "${_f} has been updated, removing blocked file"
             rm -f "${f}"

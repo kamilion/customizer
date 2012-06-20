@@ -30,7 +30,7 @@ __check_sources_list__
 
 INFO_MESSAGE "Detecting package manager"
 if [ -e "$WORK_DIR/FileSystem/usr/sbin/synaptic" ];then
-	__check_for_X__
+	# __check_for_X__
 	PKGM="synaptic"
 	EXTRA_INFO_MESSAGE "Will run" "$PKGM"
 elif [ -e "$WORK_DIR/FileSystem/usr/bin/aptitude" ];then
