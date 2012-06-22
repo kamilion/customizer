@@ -63,7 +63,7 @@
   }
   { CompressionBox ComboBox
     MoveScaled(2,40,13,3)
-    ToolTip = ("Choose compression format for the root filesystem (SquashFS image) and snapshots")
+    ToolTip = ("Choose compression format for the root filesystem (SquashFS image)")
     ReadOnly = True
     List = [("gzip"), ("lzo"), ("xz")]
     Text = ("")

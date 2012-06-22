@@ -182,7 +182,6 @@ END
 PUBLIC FUNCTION Enable_Stuff()
   Func.Event_Msg("Enabling widgets")
   
-  FMain.Create_Snapshot.Enabled = TRUE
   FMain.Edit_Sources.Enabled = TRUE
   FMain.Install_DEB.Enabled = TRUE
   FMain.Terminal.Enabled = TRUE
@@ -202,7 +201,6 @@ END
 PUBLIC FUNCTION Disable_Stuff()
   Func.Event_Msg("Disabling widgets")
 
-  FMain.Create_Snapshot.Enabled = FALSE
   FMain.Edit_Sources.Enabled = FALSE
   FMain.Install_DEB.Enabled = FALSE
   FMain.Archive.Enabled = FALSE

@@ -190,34 +190,6 @@ PUBLIC SUB Settings_Click()
   FSettings.Show
 END
 
-PUBLIC SUB Import_Snapshot_Click()
-  DIM SNAPSHOT AS String
-  
-  Func.Event_Msg("Importing snapshot")
-  SNAPSHOT = Func.Get_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", "")
-  
-  Dialog.Title = "Please select Customizer project snapshot"
-  Dialog.Filter = ["*.cps", "Snapshots"]
-  
-  IF Exist(SNAPSHOT) THEN 
-    Dialog.Path = SNAPSHOT
-  ELSE 
-    Dialog.Path = "/home"
-  ENDIF 
-  
-  IF Dialog.OpenFile() THEN RETURN
-  Func.Replace_Str("/opt/Customizer/settings.conf", "SNAPSHOT=", Dialog.Path)
-
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -i"] WAIT
-  
-  Check.Existence()
-END
-
-PUBLIC SUB Create_Snapshot_Click()
-  Func.Event_Msg("Creating snapshot")
-  EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -s"] WAIT
-END
-
   'Menu - Extras
 PUBLIC SUB Exec_Hook_Click()
   DIM HOOK AS String

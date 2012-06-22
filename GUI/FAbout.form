@@ -8,7 +8,7 @@
   { Label12 Label
     MoveScaled(1,2,38,4)
     Font = Font["URW Bookman L,Bold,+5"]
-    Text = ("Customizer v3.2.2")
+    Text = ("Customizer v3.2.3")
     Alignment = Align.Center
   }
   { Quit Button

@@ -12,17 +12,6 @@
       Picture = Picture["icon:/16/options"]
       Shortcut = "Ctrl+S"
     }
-    { Import_Snapshot Menu
-      Text = ("Import Snapshot")
-      Picture = Picture["icon:/16/open"]
-      Shortcut = "Ctrl+Z"
-    }
-    { Create_Snapshot Menu
-      Text = ("Create Snapshot")
-      Picture = Picture["icon:/16/save"]
-      Enabled = False
-      Shortcut = "Ctrl+X"
-    }
     { Quit Menu
       Text = ("Quit")
       Picture = Picture["icon:/16/quit"]
@@ -283,7 +272,7 @@
   { Label8 Label
     MoveScaled(12,1,43,4)
     Font = Font["Bold,+6"]
-    Text = ("Customizer v3.2.2")
+    Text = ("Customizer v3.2.3")
     Alignment = Align.Center
   }
   { Label9 Label

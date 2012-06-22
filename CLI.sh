@@ -47,8 +47,6 @@ echo "
      -d|--deb       Install Debian package
      -k|--hook      Execute hook
      -g|--gui       Install GUI (DE/WM)
-     -s|--snapshot  Creates snapshot of your current work
-     -i|--import    Imports created snapshot
      -r|--rebuild   Rebuild the ISO image
      -q|--qemu      Test the builded image with QEMU
      -t|--clean     Clean all temporary files and folders
@@ -62,7 +60,7 @@ echo "
 
 Version () {
 echo "
-Customizer v3.2.2
+Customizer v3.2.3
 
 Links:
 
@@ -97,12 +95,10 @@ if [ "$#" != "0" ];then
 			-d|--deb) Root_it /opt/Customizer/scripts/deb ;;
 			-k|--hook) Root_it /opt/Customizer/scripts/hook ;;
 			-g|--gui) Root_it /opt/Customizer/scripts/gui ;;
-			-s|--snapshot) Root_it /opt/Customizer/scripts/snapshot ;;
-			-i|--import) Root_it /opt/Customizer/scripts/import ;;
 			-r|--rebuild) Root_it /opt/Customizer/scripts/rebuild ;;
 			-q|--qemu) Root_it /opt/Customizer/scripts/qemu ;;
 			-t|--clean) Root_it /opt/Customizer/scripts/clean ;;
-            -v|--version) Version ;;
+      -v|--version) Version ;;
 			-h|--help) Usage ;;
 			*) EXTRA_ERROR_MESSAGE "Unrecognized argument" "$arg" ;;
 		esac
