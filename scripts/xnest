@@ -65,7 +65,7 @@ __mount_sys__
 __mount_dbus__
 __chroot__ apt-get install dbus -y -f
 __chroot__ dbus-uuidgen --ensure
-__chroot__ export DISPLAY=localhost:9 $EXEC_COMMAND
+__chroot__ env DISPLAY=localhost:9 $EXEC_COMMAND
 __umount_sys__
 __recursive_umount__
 __block_local_X_access__
