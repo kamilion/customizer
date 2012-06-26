@@ -33,13 +33,13 @@ if [ ! -e "$DEB" ];then
 fi
 
 case "$DEB" in
-	*.deb) cp -f "$DEB" "$WORK_DIR/FileSystem/tmp" ;;
+	*.deb) cp -f "$DEB" "$WORK_DIR/FileSystem/tmp/temp.deb" ;;
 	*) ERROR_MESSAGE "This is not DEB package" ;;
 esac
 
 __allow_local_X_access__
 __mount_sys__
-__chroot__ dpkg -i /tmp/*.deb
+__chroot__ dpkg -i /tmp/temp.deb
 __chroot__ apt-get install -f -y
 __umount_sys__
 __recursive_umount__
