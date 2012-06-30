@@ -3,8 +3,8 @@
 Title=Customizer
 Startup=FMain
 Icon=logo.png
-Version=3.2.588
-Library=gb.gui
+Version=3.2.589
+Library=gb.gtk
 Library=gb.form
 Description=GUI for Customizer (previuosly known as U-Customizer)
 Authors=SmiL3y
