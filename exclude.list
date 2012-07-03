@@ -10,9 +10,9 @@ tmp/*
 
 # Useless files
 root/.bash_history
-boot/grub/grub.cfg
-boot/grub/menu.lst
-boot/grub/device.map
+boot/grub/*
+boot/syslinux/*
+boot/lilo/*
 etc/hostname
 etc/hosts
 etc/resolv.conf
