@@ -90,16 +90,14 @@ if [ "$#" != "0" ];then
 			-e|--extract) Root_it /opt/Customizer/scripts/extract ;;
 			-c|--chroot) Root_it /opt/Customizer/scripts/chroot ;;
 			-x|--xnest) Root_it /opt/Customizer/scripts/xnest ;;
-			-p|--pkgm) Root_it /opt/Customizer/scripts/package_manager ;;
-			-d|--deb) Root_it /opt/Customizer/scripts/install_deb ;;
+			-p|--pkgm) Root_it /opt/Customizer/scripts/pkgm ;;
+			-d|--deb) Root_it /opt/Customizer/scripts/deb ;;
 			-k|--hook) Root_it /opt/Customizer/scripts/hook ;;
-			-g|--gui) Root_it /opt/Customizer/scripts/install_gui ;;
-			-s|--snapshot) Root_it /opt/Customizer/scripts/create_snapshot ;;
-			-i|--import) Root_it /opt/Customizer/scripts/import_snapshot ;;
+			-g|--gui) Root_it /opt/Customizer/scripts/gui ;;
 			-r|--rebuild) Root_it /opt/Customizer/scripts/rebuild ;;
 			-q|--qemu) Root_it /opt/Customizer/scripts/qemu ;;
 			-t|--clean) Root_it /opt/Customizer/scripts/clean ;;
-            -v|--version) Version ;;
+      -v|--version) Version ;;
 			-h|--help) Usage ;;
 			*) EXTRA_ERROR "Unrecognized argument" "$arg" ;;
 		esac

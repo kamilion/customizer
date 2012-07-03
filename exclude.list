@@ -1,3 +1,4 @@
+# Pseudo filesystems and others
 dev/*
 cdrom/*
 media/*
@@ -6,7 +7,9 @@ mnt/*
 sys/*
 proc/*
 tmp/*
-boot/*.bak
+
+# Useless files
+root/.bash_history
 boot/grub/grub.cfg
 boot/grub/menu.lst
 boot/grub/device.map
@@ -19,14 +22,30 @@ etc/group-
 etc/passwd-
 etc/gshadow-
 etc/shadow-
-root/.bash_history
-etc/skel/.bash_history
+etc/apt/trusted.gpg~
 var/log/*.gz
 var/lib/dpkg/*-old
 var/lib/aptitude/*.old
 var/cache/debconf/*-old
-etc/apt/trusted.gpg~
-# etc/udev/rules.d/70-persistent-cd.rules
-# etc/udev/rules.d/70-persistent-net.rules
-# var/log/[a-b,d-z]*
-# var/log/[A-B,D-Z]*
+
+# APT cache files (deb packages)
+var/cache/apt/archives/*.deb
+
+# User config files which should not be there
+{root,etc/skel,home/*}/.mozilla/*/Cache/*
+{root,etc/skel,home/*}/.adobe
+{root,etc/skel,home/*}/.macromedia
+{root,etc/skel,home/*}/.thumbnails
+{root,etc/skel,home/*}/.Trash*
+{root,etc/skel,home/*}/.local/share/Trash/*
+{root,etc/skel,home/*}/.cache
+{root,etc/skel,home/*}/.dbus
+{root,etc/skel,home/*}/.gvfs
+{root,etc/skel,home/*}/.local/share/gvfs-metadata
+{root,etc/skel,home/*}/.bash_history
+{root,etc/skel,home/*}/.recently-used
+{root,etc/skel,home/*}/.recently-used.xbel
+{root,etc/skel,home/*}/.xchat2
+{root,etc/skel,home/*}/.cups
+{root,etc/skel,home/*}/.kde/share/apps/nepomuk
+{root,etc/skel,home/*}/.aptitude
