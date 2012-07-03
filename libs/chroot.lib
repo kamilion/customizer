@@ -44,11 +44,11 @@ CHROOT_PREPARE() {
 }
 
 CHROOT_FIX() {
-	for i in "sbin/initctl" "usr/sbin/update-grub";do
+	for i in "$FILESYSTEM_DIR/sbin/initctl" "$FILESYSTEM_DIR/usr/sbin/update-grub" $(find "$FILESYSTEM_DIR/etc/init.d" -type f ! -name "*.blocked");do
 		if [ -e "$FILESYSTEM_DIR/$i" ] && [ ! -e "$FILESYSTEM_DIR/$i.blocked" ];then
 			EXTRA_INFO "Blocking" "/$i"
 			mv "$FILESYSTEM_DIR/$i" "$FILESYSTEM_DIR/$i.blocked"
-			ln -s "$FILESYSTEM_DIR/bin/true" "$FILESYSTEM_DIR/$i"
+      chroot "$WORK_DIR/FileSystem" ln -s /bin/true "${i##*FileSystem}"
 		else
 			EXTRA_WARNING "Skipped blocking of" "/$i"
 		fi
@@ -64,37 +64,42 @@ CHROOT_HELPER() {
 	if [ "$CHROOT_HELPER" = "1" ];then
 		INFO "Updating packages database"
 		if [ "$DEBUG" = "1" ];then
-            CHROOT_EXECUTE "apt-get update"
-        else
-            CHROOT_EXECUTE "apt-get update -qq"
-        fi
+        CHROOT_EXECUTE "apt-get update"
+    else
+        CHROOT_EXECUTE "apt-get update -qq"
+    fi
         
 		INFO "Making sure everything is configured"
 		CHROOT_EXECUTE "dpkg --configure -a"
 		if [ "$DEBUG" = "1" ];then
-            CHROOT_EXECUTE "apt-get install -f"
-        else
-            CHROOT_EXECUTE "apt-get install -f -y -q"
-        fi
+        CHROOT_EXECUTE "apt-get install -f"
+    else
+        CHROOT_EXECUTE "apt-get install -f -y -q"
+    fi
 	fi
 }
 
 CHROOT_UNDO_FIX() {	
-	for i in "sbin/initctl" "usr/sbin/update-grub";do
-		if [ -e "$FILESYSTEM_DIR/$i.blocked" ];then
-			EXTRA_INFO "Unblocking" "/$i"
-			mv -f "$FILESYSTEM_DIR/$i.blocked" "$FILESYSTEM_DIR/$i"
-		else
-			EXTRA_WARNING "Skipped unblocking of" "/$i"
-		fi
-	done
+    for i in "$FILESYSTEM_DIR/sbin/initctl.blocked" "$FILESYSTEM_DIR/usr/sbin/update-grub.blocked" $(find "$FILESYSTEM_DIR/etc/init.d" -type f -name "*.blocked");do
+        if [ -h "${i//.blocked/}" ];then
+            rm -f "${i//.blocked/}"
+            mv "${i}" "${i//.blocked/}"
+        elif [ -f "${i}" ];then
+            _i="${i//*FileSystem/}"
+            _i="${i//.blocked/}"
+            WARNING_MESSAGE "${_i} has been updated, removing blocked file"
+            rm -f "${i}"
+        else
+            WARNING_MESSAGE "Unblocking of ${f} skipped"
+        fi
+    done
 }
 
 CHROOT_CLEAN() {	
-	INFO "Cleaning up chroot"
-	CHROOT_EXECUTE "apt-get clean"
-	rm -f "$FILESYSTEM_DIR/etc/"{hostname,hosts,resolv.conf,debian_chroot}
-	rm -rf "$FILESYSTEM_DIR/tmp/"* "$FILESYSTEM_DIR/tmp/".??* 
+    INFO "Cleaning up chroot"
+    CHROOT_EXECUTE "apt-get clean"
+    rm -f "$FILESYSTEM_DIR/etc/"{hostname,hosts,resolv.conf,debian_chroot}
+    rm -rf "$FILESYSTEM_DIR/tmp/"* "$FILESYSTEM_DIR/tmp/".??* 
 }
 
 CHROOT_MOUNT_PSEUDO() {
