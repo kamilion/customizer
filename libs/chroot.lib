@@ -51,7 +51,7 @@ CHROOT_FIX() {
       else
           EXTRA_DEBUG "Blocking" "$i"
           CHROOT_EXECUTE "dpkg-divert --local --rename --add --quiet ${i##*FileSystem}"
-          CHROOT_EXECUTE "ln -s /bin/true ${i##*FileSystem}"
+          CHROOT_EXECUTE "ln -sf /bin/true ${i##*FileSystem}"
       fi
   done
 }
