@@ -45,7 +45,7 @@ CHROOT_PREPARE() {
 
 CHROOT_FIX() {
   INFO "Blocking files"
-	for i in "$FILESYSTEM_DIR/sbin/initctl" "$FILESYSTEM_DIR/usr/sbin/update-grub" $(find "$FILESYSTEM_DIR/etc/init.d" -type f ! name "*.distrib");do
+	for i in "$FILESYSTEM_DIR/sbin/initctl" "$FILESYSTEM_DIR/usr/sbin/update-grub" $(find "$FILESYSTEM_DIR/etc/init.d" -type f ! -name "*.distrib");do
       if [ -e "$FILESYSTEM_DIR/$i.distrib" ];then
           EXTRA_WARNING "Skipped blocking of" "$i"
       else
