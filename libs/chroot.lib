@@ -44,11 +44,16 @@ CHROOT_PREPARE() {
 }
 
 CHROOT_FIX() {
-	for i in "$FILESYSTEM_DIR/sbin/initctl" "$FILESYSTEM_DIR/usr/sbin/update-grub" $(find "$FILESYSTEM_DIR/etc/init.d" -type f);do
-			EXTRA_INFO "Blocking" "$i"
-      CHROOT_EXECUTE "dpkg-divert --local --rename --add ${i##*FileSystem}"
-      CHROOT_EXECUTE "ln -s /bin/true ${i##*FileSystem}"
-	done
+  INFO "Blocking files"
+	for i in "$FILESYSTEM_DIR/sbin/initctl" "$FILESYSTEM_DIR/usr/sbin/update-grub" $(find "$FILESYSTEM_DIR/etc/init.d" -type f ! name "*.distrib");do
+      if [ -e "$FILESYSTEM_DIR/$i.distrib"
+          EXTRA_WARNING "Skipped blocking of" "$i"
+      else
+          EXTRA_DEBUG "Blocking" "$i"
+          CHROOT_EXECUTE "dpkg-divert --local --rename --add --quiet ${i##*FileSystem}"
+          CHROOT_EXECUTE "ln -s /bin/true ${i##*FileSystem}"
+      fi
+  done
 }
 
 CHROOT_EXECUTE() {
@@ -75,10 +80,12 @@ CHROOT_HELPER() {
 	fi
 }
 
-CHROOT_UNDO_FIX() {	
+CHROOT_UNDO_FIX() {
+    INFO "Unblocking files"
     for i in "$FILESYSTEM_DIR/sbin/initctl.blocked" "$FILESYSTEM_DIR/usr/sbin/update-grub.blocked" $(find "$FILESYSTEM_DIR/etc/init.d" -type f);do
+        EXTRA_DEBUG "Unblocking" "$i"
         rm -f "$FILESYSTEM_DIR/$i"
-        CHROOT_EXECUTE "dpkg-divert --rename --remove ${i##*FileSystem}"
+        CHROOT_EXECUTE "dpkg-divert --rename --remove --quiet ${i##*FileSystem}"
     done
 }
 
