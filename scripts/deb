@@ -24,6 +24,8 @@ set -u
 source /opt/Customizer/libs/source.lib
 source /opt/Customizer/settings.conf
 
+CHECK_FILESYSTEM
+
 if [ ! -e "$DEB" ];then
 	ERROR "DEB package doesn't exists"
 fi
@@ -34,14 +36,13 @@ case "$DEB" in
 	*) ERROR "This is not DEB package" ;;
 esac
 
-CHECK_FILESYSTEM
 CHROOT_PREPARE
 CHROOT_MOUNT_PSEUDO
 CHROOT_FIX
 CHROOT_HELPER
 EXTRA_INFO "Installing deb package" "$(basename $DEB)"
 CHROOT_EXECUTE "dpkg -i /tmp/*.deb"
-INFO "Installing dependencies for the deb package"
+INFO "Installing dependencies for the package"
 CHROOT_EXECUTE "apt-get install -f -y"
 CHROOT_UNDO_FIX
 CHROOT_UNMOUNT_PSEUDO
