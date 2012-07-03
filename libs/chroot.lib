@@ -44,14 +44,10 @@ CHROOT_PREPARE() {
 }
 
 CHROOT_FIX() {
-	for i in "$FILESYSTEM_DIR/sbin/initctl" "$FILESYSTEM_DIR/usr/sbin/update-grub" $(find "$FILESYSTEM_DIR/etc/init.d" -type f ! -name "*.blocked");do
-		if [ -e "$FILESYSTEM_DIR/$i" ] && [ ! -e "$FILESYSTEM_DIR/$i.blocked" ];then
-			EXTRA_INFO "Blocking" "/$i"
-			mv "$FILESYSTEM_DIR/$i" "$FILESYSTEM_DIR/$i.blocked"
-      chroot "$WORK_DIR/FileSystem" ln -s /bin/true "${i##*FileSystem}"
-		else
-			EXTRA_WARNING "Skipped blocking of" "/$i"
-		fi
+	for i in "$FILESYSTEM_DIR/sbin/initctl" "$FILESYSTEM_DIR/usr/sbin/update-grub" $(find "$FILESYSTEM_DIR/etc/init.d" -type f);do
+			EXTRA_INFO "Blocking" "$i"
+      CHROOT_EXECUTE "dpkg-divert --local --rename --add ${i##*FileSystem}"
+      CHROOT_EXECUTE "ln -s /bin/true ${i##*FileSystem}"
 	done
 }
 
@@ -80,18 +76,9 @@ CHROOT_HELPER() {
 }
 
 CHROOT_UNDO_FIX() {	
-    for i in "$FILESYSTEM_DIR/sbin/initctl.blocked" "$FILESYSTEM_DIR/usr/sbin/update-grub.blocked" $(find "$FILESYSTEM_DIR/etc/init.d" -type f -name "*.blocked");do
-        if [ -h "${i//.blocked/}" ];then
-            rm -f "${i//.blocked/}"
-            mv "${i}" "${i//.blocked/}"
-        elif [ -f "${i}" ];then
-            _i="${i//*FileSystem/}"
-            _i="${i//.blocked/}"
-            WARNING_MESSAGE "${_i} has been updated, removing blocked file"
-            rm -f "${i}"
-        else
-            WARNING_MESSAGE "Unblocking of ${f} skipped"
-        fi
+    for i in "$FILESYSTEM_DIR/sbin/initctl.blocked" "$FILESYSTEM_DIR/usr/sbin/update-grub.blocked" $(find "$FILESYSTEM_DIR/etc/init.d" -type f);do
+        rm -f "$FILESYSTEM_DIR/$i"
+        CHROOT_EXECUTE "dpkg-divert --rename --remove ${i##*FileSystem}"
     done
 }
 
