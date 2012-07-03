@@ -30,8 +30,8 @@ CHECK_FILESYSTEM
 if [ ! -e "$HOOK" ];then
 	ERROR "The hook files doesn't exists"
 else
-    cp -f "$HOOK" "$WORK_DIR/FileSystem/tmp/HOOK"
-    chmod +x "$WORK_DIR/FileSystem/tmp/HOOK"
+    cp -f "$HOOK" "$FILESYSTEM_DIR/tmp/HOOK"
+    chmod +x "$$FILESYSTEM_DIR/tmp/HOOK"
 fi
 
 CHROOT_PREPARE
