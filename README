@@ -37,4 +37,5 @@ Other:
   
 TODO:
 
-  Update pkgm, rebuild and xnest to use the libs
+  Update rebuild and xnest to use the libs
+  Write GUI in Gambas3
