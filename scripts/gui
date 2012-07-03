@@ -21,8 +21,8 @@
 # Issues: https://github.com/fluxer/Customizer/issues
 #
 set -u
-source /opt/Customizer/libs/source.lib
 source /opt/Customizer/settings.conf
+source /opt/Customizer/libs/source.lib
 
 CHECK_UID
 CHECK_FILESYSTEM
