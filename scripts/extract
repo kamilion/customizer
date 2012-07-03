@@ -56,7 +56,7 @@ fi
 ############################# Mounting the ISO image #############################
 
 INFO "Mounting ISO"
-mount -t iso9660 -o loop "$ISO" "$MOUNT_DIR" || ERROR "Unable to mount the ISO"
+mount -t iso9660 -o ro,loop "$ISO" "$MOUNT_DIR" || ERROR "Unable to mount the ISO"
 
 ######################## Check if the ISO image is usable ########################
 
@@ -66,8 +66,8 @@ if [ ! -d "$MOUNT_DIR/casper" ] || [ ! -d "$MOUNT_DIR/.disk" ] || \
     umount -fl "$MOUNT_DIR" 2> /dev/null
     INFO "Purging working direcotries"
     for i in "$FILESYSTEM_DIR" "$ISO_DIR" "$MOUNT_DIR";do
-	EXTRA_DEBUG "$i"
-	rm -rf "$i" || EXTRA_ERROR "Unable to purge" "$i"
+	      EXTRA_DEBUG "$i"
+	      rm -rf "$i" || EXTRA_ERROR "Unable to purge" "$i"
     done
     ERROR "This is not a usable ISO image"
 fi
