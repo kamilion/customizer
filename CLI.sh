@@ -44,8 +44,6 @@ echo "
      -d|--deb       Install Debian package
      -k|--hook      Execute hook
      -g|--gui       Install GUI (DE/WM)
-     -s|--snapshot  Creates snapshot of your current work
-     -i|--import    Imports created snapshot
      -r|--rebuild   Rebuild the ISO image
      -q|--qemu      Test the builded image with QEMU
      -t|--clean     Clean all temporary files and folders
