@@ -21,24 +21,28 @@
 # Issues: https://github.com/fluxer/Customizer/issues
 #
 set -u
-source /opt/Customizer/libs/source.lib
 source /opt/Customizer/settings.conf
+source /opt/Customizer/libs/source.lib
 
-__check_fs_dir__
-__check_lock__
-__check_sources_list__
+CHECK_UID
+CHECK_FILESYSTEM
 
 if [ ! -e "$HOOK" ];then
 	ERROR "The hook files doesn't exists"
 else
-    cp -f "$HOOK" "$WORK_DIR/FileSystem/tmp/HOOK"
-	chmod +x "$WORK_DIR/FileSystem/tmp/HOOK"
+    cp -f "$HOOK" "$FILESYSTEM_DIR/tmp/HOOK"
+    chmod +x "$$FILESYSTEM_DIR/tmp/HOOK"
 fi
 
-__allow_local_X_access__
-__mount_sys__
-__mount_dbus__
-__chroot__ "exec /tmp/HOOK"
-__umount_sys__
-__recursive_umount__
-__block_local_X_access__
+CHROOT_PREPARE
+CHROOT_MOUNT_PSEUDO
+CHROOT_FIX
+CHROOT_HELPER
+ALLOW_LOCAL_X
+INFO "Executing chroot hook" "$(basename $HOOK)"
+CHROOT_EXECUTE "exec /tmp/HOOK"
+BLOCK_LOCAL_X
+CHROOT_UNDO_FIX
+CHROOT_UNMOUNT_PSEUDO
+CHROOT_VERB_UNMOUNT_PSEUDO
+CHROOT_CLEAN
