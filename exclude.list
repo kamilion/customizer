@@ -1,3 +1,8 @@
+# pseudo filesystems
+dev/*
+sys/*
+proc/*
+# tepmorary directories
 # Pseudo filesystems and others
 dev/*
 cdrom/*
@@ -13,6 +18,7 @@ root/.bash_history
 boot/grub/*
 boot/syslinux/*
 boot/lilo/*
+boot/*.bak
 etc/hostname
 etc/hosts
 etc/resolv.conf

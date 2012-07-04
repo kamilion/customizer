@@ -50,8 +50,8 @@ CHROOT_FIX() {
           EXTRA_WARNING "Skipped blocking of" "$i"
       else
           EXTRA_DEBUG "Blocking" "$i"
-          CHROOT_EXECUTE "dpkg-divert --local --rename --add --quiet ${i##*FileSystem}"
-          CHROOT_EXECUTE "ln -sf /bin/true ${i##*FileSystem}"
+          CHROOT_EXECUTE "dpkg-divert --local --rename --add --quiet ${i##*$FILESYSTEM_DIR}"
+          CHROOT_EXECUTE "ln -sf /bin/true ${i##*$FILESYSTEM_DIR}"
       fi
   done
 }
