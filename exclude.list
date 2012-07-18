@@ -1,16 +1,11 @@
-# pseudo filesystems
+# Pseudo filesystems and others
 dev/*
 sys/*
 proc/*
-# tepmorary directories
-# Pseudo filesystems and others
-dev/*
 cdrom/*
 media/*
 swapfile
 mnt/*
-sys/*
-proc/*
 tmp/*
 
 # Useless files
