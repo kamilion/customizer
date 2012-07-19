@@ -26,9 +26,8 @@ source /opt/Customizer/settings.conf
 
 #################### check configs & dirs before going further ####################
 
-__check_fs_dir__
-__check_lock__
-__check_sources_list__
+CHECK_UID
+CHECK_FILESYSTEM
 
 if [ ! -d "$WORK_DIR/ISO/isolinux" ]; then
 	ERROR "$WORK_DIR/ISO/isolinux doesnt exist"
@@ -49,95 +48,86 @@ if [ ! -e "$WORK_DIR/ISO/.disk/cd_type" ]; then
 	echo "full_cd/single" > "$WORK_DIR/ISO/.disk/cd_type"
 fi
 
-if [ -e "$WORK_DIR/usr/bin/ubiquity" ] && [ ! -e "$WORK_DIR/ISO/.disk/base_installable" ]; then
+if [ -e "$WORK_DIR/usr/bin/ubiquity" ]; then
 	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk/base_installable"
 	echo > "$WORK_DIR/ISO/.disk/base_installable"
 else
 	rm -f "$WORK_DIR/ISO/.disk/base_installable"
 fi
 
-if [ ! -e "$WORK_DIR/ISO/.disk/casper-uuid-generic" ]; then
+if [ ! -f "$WORK_DIR/ISO/.disk/casper-uuid-generic" ]; then
 	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk/casper-uuid-generic"
 	echo "f01d0b93-4f0e-4e95-93ae-e3d0e114d4f7" > "$WORK_DIR/ISO/.disk/casper-uuid-generic"
 fi
 
-if [ ! -e "$WORK_DIR/ISO/.disk/release_notes_url" ]; then
+if [ ! -f "$WORK_DIR/ISO/.disk/release_notes_url" ]; then
 	EXTRA_WARNING "Creating" "$WORK_DIR/ISO/.disk/release_notes_url"
 	echo "http://www.ubuntu.com/getubuntu/releasenotes" > "$WORK_DIR/ISO/.disk/release_notes_url"
 fi
 
-if [ ! -e "$WORK_DIR/FileSystem/etc/lsb-release" ]; then
+if [ ! -f "${FILESYSTEM_DIR}/etc/lsb-release" ]; then
 	ERROR "$WORK_DIR/FileSystem/etc/lsb-release dosn't exists"
 fi
 
-if [ ! -e "$WORK_DIR/FileSystem/etc/casper.conf" ]; then
+if [ ! -f "$WORK_DIR/FileSystem/etc/casper.conf" ]; then
 	ERROR "$WORK_DIR/FileSystem/etc/casper.conf dosn't exists"
 fi
 
 #################### setting up the root filesystem #####################
 
 INFO "Loading configs"
-ARCH=`chroot "$WORK_DIR/FileSystem" dpkg --print-architecture` || ERROR "Unable to chroot and get the architecture"
-RELEASE_NOTES_URL="`cat "$WORK_DIR/ISO/.disk/release_notes_url"`"
-DIST=`grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//;s/\"//g'` || ERROR "Unable to chroot and get the distribution ID"
-VERSION=`grep DISTRIB_RELEASE= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//;s/\"//g'` || ERROR "Unable to get the distribution version"
-CODENAME=`grep DISTRIB_CODENAME= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//;s/\"//g'` || ERROR "Unable to get the distribution codename"
-LIVEUSERNAME=`grep "export USERNAME=" "$WORK_DIR/FileSystem/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g'` || ERROR "Unable get the username"
+ARCH=$(chroot "$WORK_DIR/FileSystem" dpkg --print-architecture) || ERROR "Unable to chroot and get the architecture"
+RELEASE_NOTES_URL="$(cat $WORK_DIR/ISO/.disk/release_notes_url)"
+DIST=$(grep DISTRIB_ID= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_ID=//;s/\"//g') || ERROR "Unable to chroot and get the distribution ID"
+VERSION=$(grep DISTRIB_RELEASE= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//;s/\"//g') || ERROR "Unable to get the distribution version"
+CODENAME=$(grep DISTRIB_CODENAME= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//;s/\"//g') || ERROR "Unable to get the distribution codename"
+LIVEUSERNAME=$(grep "export USERNAME=" "$WORK_DIR/FileSystem/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g') || ERROR "Unable get the username"
 
-to_clean="$WORK_DIR/$DIST-$ARCH-$VERSION.iso $WORK_DIR/ISO/casper/filesystem.squashfs \
-$WORK_DIR/ISO/casper/initrd.lz $WORK_DIR/ISO/casper/vmlinuz $WORK_DIR/ISO/casper/filesystem.manifest \
-$WORK_DIR/ISO/casper/filesystem.manifest-desktop $WORK_DIR/ISO/casper/filesystem.size \
-$WORK_DIR/ISO/casper/README.diskdefines $WORK_DIR/ISO/md5sum.txt"
-for i in $to_clean;do
-	if [ -e "$i" ];then
-		EXTRA_INFO "Purging" "$i"
-		rm -f "$i" || EXTRA_WARNING "Unable to delete" "$i"
+to_clean=(
+"$WORK_DIR/$DIST-$ARCH-$VERSION.iso"
+"$WORK_DIR/ISO/casper/filesystem.squashfs"
+"$WORK_DIR/ISO/casper/initrd.lz"
+"$WORK_DIR/ISO/casper/vmlinuz"
+"$WORK_DIR/ISO/casper/filesystem.manifest"
+"$WORK_DIR/ISO/casper/filesystem.manifest-desktop"
+"$WORK_DIR/ISO/casper/filesystem.size"
+"$WORK_DIR/ISO/casper/README.diskdefines"
+"$WORK_DIR/ISO/md5sum.txt"
+)
+
+for i in ${to_clean};do
+	if [ -e "${i}" ];then
+		EXTRA_INFO "Purging" "${i}"
+		rm -f "${i}" || EXTRA_WARNING "Unable to delete" "${i}"
 	fi
 done
 
-INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
+INITRD_SOURCE="(ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1)"
 VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
-if [ ! -e "$INITRD_SOURCE" ] || [ ! -e "$VMLINUZ_SOURCE" ] ; then
-	__mount_sys__
-	__chroot__ "
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Purging Kernels (if any)${Reset}\"
-	else
-        echo -e \"[*] Purging Kernels (if any)\"
-	fi
 
-	apt-get purge --yes linux-image* linux-headers* -qq
-	
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Installing Kernel${Reset}\"
-	else
-        echo -e \"[*] Installing Kernel\"
-	fi
-	apt-get install --yes linux-image-generic linux-headers-generic -qq"
-	__umount_sys__
-	__recursive_umount__
-	
-	INITRD_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1`"
-	VMLINUZ_SOURCE="`ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1`"
+CHROOT_PREPARE
+CHROOT_MOUNT_PSEUDO
+CHROOT_FIX
+CHROOT_HELPER
+if [ ! -e "${INITRD_SOURCE}" ] || [ ! -e "${VMLINUZ_SOURCE}" ] ; then
+        INFO "Purging Kernels (if any)"
+	CHROOT_EXECUTE "apt-get purge --yes linux-image* linux-headers* -qq"
+	INFO "Installing Kernel"
+	CHROOT_EXECUTE "apt-get install --yes linux-image-generic linux-headers-generic -qq"
+
+
+	INITRD_SOURCE="$(ls \"$WORK_DIR/FileSystem/boot/\"initrd.img-* | tail -1)"
+	VMLINUZ_SOURCE="$(ls \"$WORK_DIR/FileSystem/boot/\"vmlinuz-* | tail -1)"
 else
-	__mount_sys__
-	__chroot__ "
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Installing the latest initramfs-tools${Reset}\"
-	else
-        echo -e \"[*] Installing the latest initramfs-tools\"
-	fi
-	apt-get install --yes initramfs-tools -qq
-	
-	if [ \"$MESSAGES_COLORS\" = \"1\" ];then
-        echo -e \"[${Yellow}*${Reset}] ${Green}Updating/creating Kernel image${Reset}\"
-	else
-        echo -e \"[*] Updating/creating Kernel image\"
-	fi
-	update-initramfs -k all -t -u"
-	__umount_sys__
-	__recursive_umount__
+        INFO "Installing the latest initramfs-tools"
+	CHROOT_EXECUTE "apt-get install --yes initramfs-tools -qq"
+	INFO "Updating/creating Kernel image"
+	CHROOT_EXECUTE "update-initramfs -k all -t -u"
 fi
+CHROOT_UNDO_FIX
+CHROOT_UNMOUNT_PSEUDO
+CHROOT_VERB_UNMOUNT_PSEUDO
+CHROOT_CLEAN
 
 EXTRA_INFO "Copying initrd" "${INITRD_SOURCE#$WORK_DIR/FileSystem/boot/}"
 cp -f "$INITRD_SOURCE" "$WORK_DIR/ISO/casper/initrd.lz" || ERROR "Unable to copy initrd.img"
@@ -151,19 +141,17 @@ if [ "$BOOT_FILES" = "1" ]; then
 	rm -f "$WORK_DIR/FileSystem/boot/config"*
 fi
 
-#################### creting ISO image #####################
-
 INFO "Creating squashed FileSystem"
-mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list || ERROR "Unable to squash the filesystem"
+mksquashfs "${FILESYSTEM_DIR}" "${ISO_DIR}/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list || ERROR "Unable to squash the filesystem"
 
 INFO "Checking filesystem size"
-FS_SIZE="`du -sx "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
-if (( "$FS_SIZE" > "4000000" ));then
-	ERROR" The squashed filesystem size is greater than 4GB"
+FS_SIZE=$(du -sx "${ISO_DIR}/casper/filesystem.squashfs" | cut -f1)
+if [ "$FS_SIZE" -qt "4000000" ];then
+	ERROR "The squashed filesystem size is greater than 4GB"
 fi
 
 INFO "Creating filesystem.size"
-echo "$FS_SIZE" > "$WORK_DIR/ISO/casper/filesystem.size" || ERROR "Unable to calculate the size of the filesystem"
+echo "${FS_SIZE}" > "${ISO_DIR}/casper/filesystem.size" || ERROR "Unable to calculate the size of the filesystem"
 
 INFO "Creating filesystem.manifest"
 chroot "$WORK_DIR/FileSystem" dpkg-query -W --showformat='${Package} ${Version}\n' > "$WORK_DIR/ISO/casper/filesystem.manifest" || ERROR "Unable to create the filesystem.manifest"
