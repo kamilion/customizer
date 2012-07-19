@@ -14,7 +14,7 @@
   { BootFiles CheckBox
     MoveScaled(2,24,44,3)
     ToolTip = ("By ticking this the build script will delete initrd and vmlinuz to save some MBs, however it should be used only when building LiveCDs not meant to be installed")
-    Text = ("Delete Boot files before creating the filesystem.squashfs")
+    Text = ("Delete Boot files before creating the SquashFS image")
   }
   { ResolutionBox ComboBox
     MoveScaled(2,32,13,3)
