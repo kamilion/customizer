@@ -65,18 +65,18 @@ CHROOT_HELPER() {
 	if [ "$CHROOT_HELPER" = "1" ];then
 		INFO "Updating packages database"
 		if [ "$DEBUG" = "1" ];then
-        CHROOT_EXECUTE "apt-get update"
-    else
-        CHROOT_EXECUTE "apt-get update -qq"
-    fi
+			CHROOT_EXECUTE "apt-get update"
+		else
+			CHROOT_EXECUTE "apt-get update -qq"
+		fi
         
 		INFO "Making sure everything is configured"
 		CHROOT_EXECUTE "dpkg --configure -a"
 		if [ "$DEBUG" = "1" ];then
-        CHROOT_EXECUTE "apt-get install -f"
-    else
-        CHROOT_EXECUTE "apt-get install -f -y -q"
-    fi
+			CHROOT_EXECUTE "apt-get install -f"
+		else
+			CHROOT_EXECUTE "apt-get install -f -y -q"
+		fi
 	fi
 }
 

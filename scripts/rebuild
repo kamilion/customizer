@@ -20,7 +20,6 @@
 # Wiki: https://github.com/fluxer/Customizer/wiki
 # Issues: https://github.com/fluxer/Customizer/issues
 #
-set -u
 source /opt/Customizer/settings.conf
 source /opt/Customizer/libs/source.lib
 
@@ -82,18 +81,13 @@ DIST=$(grep DISTRIB_ID= "${FILESYSTEM_DIR}/etc/lsb-release" | sed 's/DISTRIB_ID=
 VERSION=$(grep DISTRIB_RELEASE= "${FILESYSTEM_DIR}/etc/lsb-release" | sed 's/DISTRIB_RELEASE=//;s/\"//g') || ERROR "Unable to get the distribution version"
 CODENAME=$(grep DISTRIB_CODENAME= "${FILESYSTEM_DIR}/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//;s/\"//g') || ERROR "Unable to get the distribution codename"
 LIVEUSERNAME=$(grep "export USERNAME=" "${FILESYSTEM_DIR}/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g') || ERROR "Unable get the username"
+ISO_NAME="${DIST}-${ARCH}-${VERSION}"
 
-to_clean=(
-"$WORK_DIR/$DIST-$ARCH-$VERSION.iso"
-"${ISO_DIR}/casper/filesystem.squashfs"
-"${ISO_DIR}/casper/initrd.lz"
-"${ISO_DIR}/casper/vmlinuz"
-"${ISO_DIR}/casper/filesystem.manifest"
-"${ISO_DIR}/casper/filesystem.manifest-desktop"
-"${ISO_DIR}/casper/filesystem.size"
-"${ISO_DIR}/casper/README.diskdefines"
-"${ISO_DIR}/md5sum.txt"
-)
+to_clean="/home/${ISO_NAME}.iso ${ISO_DIR}/casper/filesystem.squashfs \
+${ISO_DIR}/casper/initrd.lz ${ISO_DIR}/casper/vmlinuz \
+${ISO_DIR}/casper/filesystem.manifest ${ISO_DIR}/casper/filesystem.manifest-desktop \
+${ISO_DIR}/casper/filesystem.size ${ISO_DIR}/casper/README.diskdefines \
+${ISO_DIR}/md5sum.txt"
 
 for i in ${to_clean};do
 	if [ -e "${i}" ];then
@@ -102,22 +96,22 @@ for i in ${to_clean};do
 	fi
 done
 
-INITRD_SOURCE="(ls \"${FILESYSTEM_DIR}/boot/\"initrd.img-* | tail -1)"
-VMLINUZ_SOURCE="`ls \"${FILESYSTEM_DIR}/boot/\"vmlinuz-* | tail -1`"
+INITRD_SOURCE="$(ls ${FILESYSTEM_DIR}/boot/initrd.img-* | tail -1)"
+VMLINUZ_SOURCE="$(ls ${FILESYSTEM_DIR}/boot/vmlinuz-* | tail -1)"
 
 CHROOT_PREPARE
 CHROOT_MOUNT_PSEUDO
 CHROOT_FIX
 CHROOT_HELPER
-if [ ! -e "${INITRD_SOURCE}" ] || [ ! -e "${VMLINUZ_SOURCE}" ] ; then
-        INFO "Purging Kernels (if any)"
+if [ -z "${INITRD_SOURCE}" ] || [ -z "${VMLINUZ_SOURCE}" ] ; then
+	INFO "Purging Kernels (if any)"
 	CHROOT_EXECUTE "apt-get purge --yes linux-image* linux-headers* -qq"
 	INFO "Installing Kernel"
 	CHROOT_EXECUTE "apt-get install --yes linux-image-generic linux-headers-generic -qq"
 
 
-	INITRD_SOURCE="$(ls \"${FILESYSTEM_DIR}/boot/\"initrd.img-* | tail -1)"
-	VMLINUZ_SOURCE="$(ls \"${FILESYSTEM_DIR}/boot/\"vmlinuz-* | tail -1)"
+	INITRD_SOURCE="$(ls ${FILESYSTEM_DIR}/boot/initrd.img-* | tail -1)"
+	VMLINUZ_SOURCE="$(ls ${FILESYSTEM_DIR}/boot/vmlinuz-* | tail -1)"
 else
 	INFO "Installing the latest initramfs-tools"
 	CHROOT_EXECUTE "apt-get install --yes initramfs-tools -qq"
@@ -142,11 +136,11 @@ if [ "$BOOT_FILES" = "1" ]; then
 fi
 
 INFO "Creating squashed FileSystem"
-mksquashfs "${FILESYSTEM_DIR}" "${ISO_DIR}/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list || ERROR "Unable to squash the filesystem"
+mksquashfs "${FILESYSTEM_DIR}" "${ISO_DIR}/casper/filesystem.squashfs" -noappend -wildcards -ef /opt/Customizer/exclude.list -comp ${COMPRESSION} || ERROR "Unable to squash the filesystem"
 
 INFO "Checking filesystem size"
 FS_SIZE=$(du -sx "${ISO_DIR}/casper/filesystem.squashfs" | cut -f1)
-if [ "$FS_SIZE" -qt "4000000" ];then
+if [ "${FS_SIZE}" -gt "4000000" ];then
 	ERROR "The squashed filesystem size is greater than 4GB"
 fi
 
@@ -158,7 +152,7 @@ chroot "${FILESYSTEM_DIR}" dpkg-query -W --showformat='${Package} ${Version}\n' 
 INFO "Creating filesystem.manifest-desktop"
 cp -f "${ISO_DIR}/casper/filesystem.manifest" "${ISO_DIR}/casper/filesystem.manifest-desktop"
 for i in ubiquity casper live-initramfs user-setup discover1 xresprobe os-prober libdebian-installer4 ; do
-        sed -i "|${i}|d" "${ISO_DIR}/casper/filesystem.manifest-desktop"
+        sed -i "/${i}/d" "${ISO_DIR}/casper/filesystem.manifest-desktop"
 done
 
 INFO "Creating README.diskdefines"
@@ -183,10 +177,10 @@ INFO "Creating MD5Sums"
 (find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt") > md5sum.txt || ERROR "Unable to create the md5sum"
 
 INFO "Creating ISO"
-(genisoimage -r -V "${DIST}-${ARCH}-${VERSION}" -b isolinux/isolinux.bin -c isolinux/boot.cat \
+(genisoimage -r -V "${ISO_NAME}" -b isolinux/isolinux.bin -c isolinux/boot.cat \
 -cache-inodes -J -l -no-emul-boot -boot-load-size 4 -boot-info-table \
--o "${WORK_DIR}/${DIST}-${ARCH}-${VERSION}.iso" -input-charset utf-8 .
+-o "/home/${ISO_NAME}.iso" -input-charset utf-8 .
 
-chmod 555 "${WORK_DIR}/${DIST}-${ARCH}-${VERSION}.iso"
-EXTRA_INFO "Successfuly created ISO image" "${WORK_DIR}/${DIST}-${ARCH}-${VERSION}.iso"; read nada) \
+chmod 555 "/home/${ISO_NAME}.iso"
+EXTRA_INFO "Successfuly created ISO image" "/home/${ISO_NAME}.iso"; read nada) \
 || ERROR "Unable to create ISO image"
