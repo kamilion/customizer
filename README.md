@@ -1,16 +1,16 @@
-## NAME
+# NAME
 
 customizer - Advanced Live CD/DVD remastering tool
 
 	
 	
-## SYNOPSIS
+# SYNOPSIS
 
 > /opt/Customizer/CLI.sh \[OPTION\] ...
 
 
 
-## DESCRIPTION
+# DESCRIPTION
 
 Looking for a tool that will allow You to customize Ubuntu, Kubuntu, Lubuntu, Xubuntu ,
 Linux Mint or  other Ubuntu based ISO images? Well, you've found it! Customizer is the
@@ -20,7 +20,7 @@ environment) and even more so you can modify the images to fit your needs.
 
 	
 	
-## OPTIONS
+# OPTIONS
 
 > -e,   --extract   Exctract ISO image
 > -c,   --chroot    Chroot into the filesystem
@@ -37,22 +37,22 @@ environment) and even more so you can modify the images to fit your needs.
 
 
 
-## ENVIRONMENT
+# ENVIRONMENT
 
     Configuration file:
 	
 	  /opt/Customizer/settings.conf 
 
-## REQUIREMENTS
+# REQUIREMENTS
 
-# Core dependencies
+### Core dependencies
 > coreutils
 > sed
 > grep
 > rsync
 > squashfs-tools => 4.2
 
-# GUI dependencies
+### GUI dependencies
 > dbus
 > xephyr
 > genisoimage
@@ -60,20 +60,20 @@ environment) and even more so you can modify the images to fit your needs.
 
 
 
-## AUTHORS
+# AUTHORS
 
-# Coding
+### Coding
 > Ivailo Monev (a.k.a SmiL3y) `xakepa10@gmail.com`
     
-# PPA maintainer
+### PPA maintainer
 > Michal Glowienka (a.k.a. eloaders) `eloaders@yahoo.com`
     
-# Documentation
+### Documentation
 > Mubiin Kimura (a.k.a. clearkimura) `clearkimura@gmail.com`
 
 
 
-## REPORTING BUGS
+# REPORTING BUGS
 
 To report a bug, create and submit your issue on [this page] (https://github.com/fluxer/Customizer/issues). The developers will look
 into submitted issues from time to time, usually a day or two. Only issues found in
@@ -82,14 +82,14 @@ be ignored.
 
 
 
-## COPYRIGHT
+# COPYRIGHT
     
 Copyright (C) 2010-2012  Ivailo Monev
 License: GPLv2
 
 
 
-## HISTORY
+# HISTORY
 
 In late 2010, this project was [registered on Sourceforge.net](http://sourceforge.net/projects/u-customizer/). Since November 2011,
 documentation is contributed. As December 2011, Customizer development has moved to
@@ -99,15 +99,15 @@ changes made to Customizer is found under [this log](https://github.com/fluxer/C
 
 
 
-## SEE ALSO
+# SEE ALSO
 
-# Customizer in action
+### Customizer in action
 [Screenshots of version 3.2.x](https://docs.google.com/drawings/d/1-XP1LZFIPF0kT1Toet1tGOks27qPqC488NHasmQHVuU/edit), uploaded by clearkimura.
 
 [First screencast HD-1024p OGV, 104MB](http://dl.dropbox.com/u/54183088/out-4.ogv), uploaded by smil3y.
 [First screencast SD-480p MPG, 65MB](http://dl.dropbox.com/u/54183088/out-4_small_size.mpg), uploaded by smil3y, decoded by clearkimura.
 
-# Customizer official user guides
+### Customizer official user guides
 [Quick Guide 1: How to Install Customizer](https://docs.google.com/document/d/1MF-GZYX90E4JKHGtnAKK3LHFYVV3ArC641QFOr3lgNU/edit) on Google Docs, shared by clearkimura.
 [Quick Guide 2: How to Setup Customizer](https://docs.google.com/document/d/149ug1YfiO-6OiCUqa9XTI1E1HjEYRKRkQZ4QTa54BW8/edit) on Google Docs, shared by clearkimura.
 Quick Guide 3: How to Use Customizer ---*planning
