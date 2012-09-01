@@ -92,6 +92,7 @@ be ignored.
 ## COPYRIGHT
     
 Copyright (C) 2010-2012  Ivailo Monev
+
 License: GPLv2
 
 
