@@ -55,15 +55,23 @@ environment) and even more so you can modify the images to fit your needs.
 
 > squashfs-tools => 4.2
 
+> genisoimage
+
 ### GUI dependencies
 
 > dbus
 
 > xephyr
 
-> genisoimage
-
 > qemu
+
+> imagemagick
+
+> gambas2-gui
+
+> gambas2-form
+
+> gambas2-runtime
 
 
 
