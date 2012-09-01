@@ -1,44 +1,88 @@
-Customizer v3.3.0
+## NAME
+      customizer - Advanced Live CD/DVD remastering tool
 
-## Application info
+## SYNOPSIS
 
-Looking for a tool that will allow You to customize Ubuntu, Kubuntu, Lubuntu, Xubuntu , Linux Mint or  other Ubuntu based ISO images? Well, you've found it! Customizer is the right choise - it allows you to customize them the way you want to within the matter of few minutes (on a modern PC) running Terminal, Synaptic, Desktop session (in chroot environment) and even more so you can modify the images to fit your needs.
+    /opt/Customizer/CLI.sh [OPTION]...
 
-Home: https://github.com/fluxer/Customizer/
+## DESCRIPTION
 
-Issues: https://github.com/fluxer/Customizer/issues
+    Looking for a tool that will allow You to customize Ubuntu, Kubuntu, Lubuntu, Xubuntu ,
+    Linux Mint or  other Ubuntu based ISO images? Well, you've found it! Customizer is the
+    right choise - it allows you to customize them the way you want to within the matter of
+    few minutes (on a modern PC) running Terminal, Synaptic, Desktop session (in chroot
+    environment) and even more so you can modify the images to fit your needs.
 
-Wiki: https://github.com/fluxer/Customizer/wiki
+## OPTIONS
 
+    -e,   --extract   Exctract ISO image
+    -c,   --chroot    Chroot into the filesystem
+    -x,   --xnest     Execute nested X-session
+    -p,   --pkgm      Execute package manager
+    -d,   --deb       Install Debian package
+    -k,   --hook      Execute hook
+    -g,   --gui       Install GUI (DE/WM)
+    -r,   --rebuild   Rebuild the ISO image
+    -q,   --qemu      Test the builded image with QEMU
+    -t,   --clean     Clean all temporary files and folders
+    -h,   --help      Display this message
+    -v,   --version   Show the current version and more
 
-## Features
+ENVIRONMENT
 
-* Customize Ubuntu and derivateves (i.e. Linux Mint) Live CD/DVD ISO images
-* Quick access to chrooted Terminal, X-nested session, Package Manager and more
-* Accessible from CLI and GUI, GUI has more options/features
+    Configuration file:
 	
+	  /opt/Customizer/settings.conf 
 
-## Credits
+REQUIREMENTS
 
-Coding:
-Ivailo Monev (a.k.a. SmiL3y)
-<xakepa10@gmail.com>
-	
-PPA maintainer:
-Michał Głowienka (a.k.a. eloaders)
-<eloaders@yahoo.com>
-        
-Documentation:
-Mubiin Kimura (a.k.a. clearkimura)
-<clearkimura@gmail.com>
-	  
-## Other
+    coreutils
+	sed
+	grep
+	rsync
+	squashfs-tools => 4.2
+	dbus
+	xephyr
+	genisoimage
+	qemu
 
-Attention, reporting bugs/issues is very important for the developing process! Please, spare a few minutes to report them. Also, spreading the word about it will not hurt, write reviews in your blogs, make tutorials, edit the wiki and such will help us all so if you have some spare time please do so.
-  
-  
-## TODO
+## AUTHORS
 
-Update rebuild and xnest to use the libs
+    Coding&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;Ivailo Monev (a.k.a SmiL3y) `xakepa10@gmail.com`
+    PPA maintainer&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;Michal Glowienka (a.k.a. eloaders) `eloaders@yahoo.com`
+    Documentation&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;Mubiin Kimura (a.k.a. clearkimura) `clearkimura@gmail.com`
 
-Write GUI in Gambas3
+## REPORTING BUGS
+
+    To report a bug, create and submit your issue on [this page] (https://github.com/fluxer/Customizer/issues). The developers will look
+	into submitted issues from time to time, usually a day or two. Only issues found in
+	latest versions of Customizer are concerned. Therefore, issues in older versions will
+	be ignored.
+
+## COPYRIGHT
+    
+	Copyright (C) 2010-2012  Ivailo Monev
+    License: GPLv2
+
+## HISTORY
+
+    In late 2010, this project was [registered on Sourceforge.net](http://sourceforge.net/projects/u-customizer/). Since November 2011,
+	documentation is contributed. As December 2011, Customizer development has moved to
+	GitHub, maintained up to version 3.1.1, has been tested thoroughly on Ubuntu 10.04
+	(Lucid Lynx). Presently maintained for compatibility fixes and documentation. Latest
+	changes made to Customizer is found under [this log](https://github.com/fluxer/Customizer/wiki/Changes-log).
+
+## SEE ALSO
+
+    [Screenshots of version 3.2.x](https://docs.google.com/drawings/d/1-XP1LZFIPF0kT1Toet1tGOks27qPqC488NHasmQHVuU/edit), uploaded by clearkimura.
+
+    [First screencast HD-1024p OGV, 104MB](http://dl.dropbox.com/u/54183088/out-4.ogv), uploaded by smil3y.
+    [First screencast SD-480p MPG, 65MB](http://dl.dropbox.com/u/54183088/out-4_small_size.mpg), uploaded by smil3y, decoded by clearkimura.
+
+	[Quick Guide 1: How to Install Customizer](https://docs.google.com/document/d/1MF-GZYX90E4JKHGtnAKK3LHFYVV3ArC641QFOr3lgNU/edit) on Google Docs, shared by clearkimura.
+	[Quick Guide 2: How to Setup Customizer](https://docs.google.com/document/d/149ug1YfiO-6OiCUqa9XTI1E1HjEYRKRkQZ4QTa54BW8/edit) on Google Docs, shared by clearkimura.
+    Quick Guide 3: How to Use Customizer ---*planning
+
+	[Full user guide](https://docs.google.com/document/d/1PfhHnSBjv-IDI7Yh5obhMGYCAV9Gw1NPEynU4GqKTsA/edit) on Google Docs, shared by clearkimura.
+    [Old user guide](http://sourceforge.net/apps/phpbb/u-customizer/viewtopic.php?f=1&t=10&start=0) on Sourceforge Forum. Obsolete.
+
