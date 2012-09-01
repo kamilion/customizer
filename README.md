@@ -1,16 +1,16 @@
-# NAME
+## NAME
 
 customizer - Advanced Live CD/DVD remastering tool
 
 	
 	
-# SYNOPSIS
+## SYNOPSIS
 
 > /opt/Customizer/CLI.sh \[OPTION\] ...
 
 
 
-# DESCRIPTION
+## DESCRIPTION
 
 Looking for a tool that will allow You to customize Ubuntu, Kubuntu, Lubuntu, Xubuntu ,
 Linux Mint or  other Ubuntu based ISO images? Well, you've found it! Customizer is the
@@ -20,7 +20,7 @@ environment) and even more so you can modify the images to fit your needs.
 
 	
 	
-# OPTIONS
+## OPTIONS
 
 > -e,   --extract   Exctract ISO image
 > -c,   --chroot    Chroot into the filesystem
@@ -37,13 +37,13 @@ environment) and even more so you can modify the images to fit your needs.
 
 
 
-# ENVIRONMENT
+## ENVIRONMENT
 
     Configuration file:
 	
 	  /opt/Customizer/settings.conf 
 
-# REQUIREMENTS
+## REQUIREMENTS
 
 ### Core dependencies
 > coreutils
@@ -60,7 +60,7 @@ environment) and even more so you can modify the images to fit your needs.
 
 
 
-# AUTHORS
+## AUTHORS
 
 ### Coding
 > Ivailo Monev (a.k.a SmiL3y) `xakepa10@gmail.com`
@@ -73,7 +73,7 @@ environment) and even more so you can modify the images to fit your needs.
 
 
 
-# REPORTING BUGS
+## REPORTING BUGS
 
 To report a bug, create and submit your issue on [this page] (https://github.com/fluxer/Customizer/issues). The developers will look
 into submitted issues from time to time, usually a day or two. Only issues found in
@@ -82,14 +82,14 @@ be ignored.
 
 
 
-# COPYRIGHT
+## COPYRIGHT
     
 Copyright (C) 2010-2012  Ivailo Monev
 License: GPLv2
 
 
 
-# HISTORY
+## HISTORY
 
 In late 2010, this project was [registered on Sourceforge.net](http://sourceforge.net/projects/u-customizer/). Since November 2011,
 documentation is contributed. As December 2011, Customizer development has moved to
@@ -99,7 +99,7 @@ changes made to Customizer is found under [this log](https://github.com/fluxer/C
 
 
 
-# SEE ALSO
+## SEE ALSO
 
 ### Customizer in action
 [Screenshots of version 3.2.x](https://docs.google.com/drawings/d/1-XP1LZFIPF0kT1Toet1tGOks27qPqC488NHasmQHVuU/edit), uploaded by clearkimura.
