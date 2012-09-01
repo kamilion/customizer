@@ -77,9 +77,11 @@
 	(Lucid Lynx). Presently maintained for compatibility fixes and documentation. Latest
 	changes made to Customizer is found under [this log](https://github.com/fluxer/Customizer/wiki/Changes-log).
 
-## SEE ALSO
+SEE ALSO
+========
 
-    # Customizer in action
+    Customizer in action
+	--------------------
     [Screenshots of version 3.2.x](https://docs.google.com/drawings/d/1-XP1LZFIPF0kT1Toet1tGOks27qPqC488NHasmQHVuU/edit), uploaded by clearkimura.
 
     [First screencast HD-1024p OGV, 104MB](http://dl.dropbox.com/u/54183088/out-4.ogv), uploaded by smil3y.
