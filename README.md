@@ -22,18 +22,18 @@ environment) and even more so you can modify the images to fit your needs.
 	
 ## OPTIONS
 
-> -e,   --extract   Exctract ISO image
-> -c,   --chroot    Chroot into the filesystem
-> -x,   --xnest     Execute nested X-session
-> -p,   --pkgm      Execute package manager
-> -d,   --deb       Install Debian package
-> -k,   --hook      Execute hook
-> -g,   --gui       Install GUI (DE/WM)
-> -r,   --rebuild   Rebuild the ISO image
-> -q,   --qemu      Test the builded image with QEMU
-> -t,   --clean     Clean all temporary files and folders
-> -h,   --help      Display this message
-> -v,   --version   Show the current version and more
+    -e,   --extract   Exctract ISO image
+    -c,   --chroot    Chroot into the filesystem
+    -x,   --xnest     Execute nested X-session
+    -p,   --pkgm      Execute package manager
+    -d,   --deb       Install Debian package
+    -k,   --hook      Execute hook
+    -g,   --gui       Install GUI (DE/WM)
+    -r,   --rebuild   Rebuild the ISO image
+    -q,   --qemu      Test the builded image with QEMU
+    -t,   --clean     Clean all temporary files and folders
+    -h,   --help      Display this message
+    -v,   --version   Show the current version and more
 
 
 
@@ -46,30 +46,30 @@ environment) and even more so you can modify the images to fit your needs.
 ## REQUIREMENTS
 
 ### Core dependencies
-> coreutils
-> sed
-> grep
-> rsync
-> squashfs-tools => 4.2
+    coreutils
+    sed
+    grep
+    rsync
+    squashfs-tools => 4.2
 
 ### GUI dependencies
-> dbus
-> xephyr
-> genisoimage
-> qemu
+    dbus
+    xephyr
+    genisoimage
+    qemu
 
 
 
 ## AUTHORS
 
 ### Coding
-> Ivailo Monev (a.k.a SmiL3y) `xakepa10@gmail.com`
+    Ivailo Monev (a.k.a SmiL3y) `xakepa10@gmail.com`
     
 ### PPA maintainer
-> Michal Glowienka (a.k.a. eloaders) `eloaders@yahoo.com`
+    Michal Glowienka (a.k.a. eloaders) `eloaders@yahoo.com`
     
 ### Documentation
-> Mubiin Kimura (a.k.a. clearkimura) `clearkimura@gmail.com`
+    Mubiin Kimura (a.k.a. clearkimura) `clearkimura@gmail.com`
 
 
 
