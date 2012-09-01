@@ -1,5 +1,5 @@
 ## NAME
-      customizer - Advanced Live CD/DVD remastering tool
+    customizer - Advanced Live CD/DVD remastering tool
 
 ## SYNOPSIS
 
