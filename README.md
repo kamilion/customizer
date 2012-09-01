@@ -70,13 +70,13 @@ environment) and even more so you can modify the images to fit your needs.
 ## AUTHORS
 
 ### Coding
-    Ivailo Monev (a.k.a SmiL3y) `xakepa10@gmail.com`
+> Ivailo Monev (a.k.a SmiL3y) `xakepa10@gmail.com`
     
 ### PPA maintainer
-    Michal Glowienka (a.k.a. eloaders) `eloaders@yahoo.com`
+> Michal Glowienka (a.k.a. eloaders) `eloaders@yahoo.com`
     
 ### Documentation
-    Mubiin Kimura (a.k.a. clearkimura) `clearkimura@gmail.com`
+> Mubiin Kimura (a.k.a. clearkimura) `clearkimura@gmail.com`
 
 
 
