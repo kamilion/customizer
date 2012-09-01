@@ -39,24 +39,31 @@ environment) and even more so you can modify the images to fit your needs.
 
 ## ENVIRONMENT
 
-Configuration file:
-	
-	/opt/Customizer/settings.conf 
+### Configuration file
+> /opt/Customizer/settings.conf 
 
 ## REQUIREMENTS
 
 ### Core dependencies
-    coreutils
-    sed
-    grep
-    rsync
-    squashfs-tools => 4.2
+> coreutils
+
+> sed
+
+> grep
+
+> rsync
+
+> squashfs-tools => 4.2
 
 ### GUI dependencies
-    dbus
-    xephyr
-    genisoimage
-    qemu
+
+> dbus
+
+> xephyr
+
+> genisoimage
+
+> qemu
 
 
 
