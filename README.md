@@ -104,14 +104,21 @@ changes made to Customizer is found under [this log](https://github.com/fluxer/C
 ### Customizer in action
 > [Screenshots of version 3.2.x](https://docs.google.com/drawings/d/1-XP1LZFIPF0kT1Toet1tGOks27qPqC488NHasmQHVuU/edit), uploaded by clearkimura.
 
+
 > [First screencast HD-1024p OGV, 104MB](http://dl.dropbox.com/u/54183088/out-4.ogv), uploaded by smil3y.
+
 > [First screencast SD-480p MPG, 65MB](http://dl.dropbox.com/u/54183088/out-4_small_size.mpg), uploaded by smil3y, decoded by clearkimura.
 
 ### Customizer official user guides
+
 > [Quick Guide 1: How to Install Customizer](https://docs.google.com/document/d/1MF-GZYX90E4JKHGtnAKK3LHFYVV3ArC641QFOr3lgNU/edit) on Google Docs, shared by clearkimura.
+
 > [Quick Guide 2: How to Setup Customizer](https://docs.google.com/document/d/149ug1YfiO-6OiCUqa9XTI1E1HjEYRKRkQZ4QTa54BW8/edit) on Google Docs, shared by clearkimura.
+
 > Quick Guide 3: How to Use Customizer ---*planning
 
+
 > [Full user guide](https://docs.google.com/document/d/1PfhHnSBjv-IDI7Yh5obhMGYCAV9Gw1NPEynU4GqKTsA/edit) on Google Docs, shared by clearkimura.
+
 > [Old user guide](http://sourceforge.net/apps/phpbb/u-customizer/viewtopic.php?f=1&t=10&start=0) on Sourceforge Forum. Obsolete.
 
