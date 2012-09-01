@@ -6,7 +6,7 @@ customizer - Advanced Live CD/DVD remastering tool
 	
 ## SYNOPSIS
 
-/opt/Customizer/CLI.sh [OPTION]...
+/opt/Customizer/CLI.sh [OPTION] \.\.\.
 
 
 
