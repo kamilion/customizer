@@ -152,12 +152,12 @@ changes made to Customizer is found under [this log](https://github.com/fluxer/C
 
 > 2011.11.01 -- Customizer is featured in [Ubuntu User magazine issue 11](http://www.ubuntu-user.com/Magazine/Archive/2011/11), reported via [Ubuntu forums](http://ubuntuforums.org/showthread.php?p=11414452#post11414452).
 
-The featured article, "Ubuntu Remastering: Make your own Ubuntu with Customizer", is not available as sample article at Ubuntu User magazine site. Community may contribute scanned copy, if any.
+    The featured article, "Ubuntu Remastering: Make your own Ubuntu with Customizer", is not available as sample article at Ubuntu User magazine site. Community may contribute scanned copy, if any.
 
-* 2011.08.21 -- Customizer is suggested by [Saptarshi Ghosh](https://answers.launchpad.net/ubuntu/+source/software-center/+question/168651) in Ubuntu Launchpad
+> 2011.08.21 -- Customizer is suggested by [Saptarshi Ghosh](https://answers.launchpad.net/ubuntu/+source/software-center/+question/168651) in Ubuntu Launchpad
 
-* 2011.07.12 -- Customizer naming and logo discussion on [hikarilabs forum](http://hikarilabs.forumcommunity.net/?t=42321393&st=150)
+> 2011.07.12 -- Customizer naming and logo discussion on [hikarilabs forum](http://hikarilabs.forumcommunity.net/?t=42321393&st=150)
 
-* 2011.05.15 -- Customizer 2.2.0 review by [shiliarr95z](http://shiliarr95z.weebly.com/2/post/2011/05/using-u-customizer-remixing-ubuntu-mini-remix-1104.html)
+> 2011.05.15 -- Customizer 2.2.0 review by [shiliarr95z](http://shiliarr95z.weebly.com/2/post/2011/05/using-u-customizer-remixing-ubuntu-mini-remix-1104.html)
 
-* 2010.10.15 -- Earliest mention of Customizer is found under [this thread](http://ubuntuforums.org/showthread.php?t=1597825) on Ubuntu Forums.
+> 2010.10.15 -- Earliest mention of Customizer is found under [this thread](http://ubuntuforums.org/showthread.php?t=1597825) on Ubuntu Forums.
