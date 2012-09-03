@@ -138,3 +138,26 @@ changes made to Customizer is found under [this log](https://github.com/fluxer/C
 
 > [Old user guide](http://sourceforge.net/apps/phpbb/u-customizer/viewtopic.php?f=1&t=10&start=0) on Sourceforge Forum. Obsolete.
 
+### Notable mentions
+
+> 2012.07.03 -- Customizer 3.3.0 is listed by [Gaurav Joshi](http://alllinuxstuff.blogspot.com/2012/07/five-tools-to-build-your-own-ubuntu.html) as one of tools to build your own Ubuntu based distribution
+
+> 2012.06.08 -- Customizer 3.2.2 review in Indonesian by [amrinz](http://www.berugak.com/komputer/linux/remastering-ubuntu-dengan-customizer.html)
+
+> 2012.01.01 -- Customizer 3.1.1 review in Indonesian by [WAHYU AGUNG](http://www.linuk.web.id/2012/01/customize-ubuntu-based-livecd-dengan.html)
+
+> 2011.12.17 -- Customizer 3.0.7 review in Indonesian by [WAHYU AGUNG](http://www.linuk.web.id/2011/12/customizer-advanced-livecd.html)
+
+> 2011.11.14 -- Customizer is mentioned by [kapitanluffy](http://askubuntu.com/questions/79089/minimal-ubuntu-remastering) on askubuntu.com
+
+> 2011.11.01 -- Customizer is featured in [Ubuntu User magazine issue 11](http://www.ubuntu-user.com/Magazine/Archive/2011/11), reported via [Ubuntu forums](http://ubuntuforums.org/showthread.php?p=11414452#post11414452).
+
+The featured article, "Ubuntu Remastering: Make your own Ubuntu with Customizer", is not available as sample article at Ubuntu User magazine site. Community may contribute scanned copy, if any.
+
+* 2011.08.21 -- Customizer is suggested by [Saptarshi Ghosh](https://answers.launchpad.net/ubuntu/+source/software-center/+question/168651) in Ubuntu Launchpad
+
+* 2011.07.12 -- Customizer naming and logo discussion on [hikarilabs forum](http://hikarilabs.forumcommunity.net/?t=42321393&st=150)
+
+* 2011.05.15 -- Customizer 2.2.0 review by [shiliarr95z](http://shiliarr95z.weebly.com/2/post/2011/05/using-u-customizer-remixing-ubuntu-mini-remix-1104.html)
+
+* 2010.10.15 -- Earliest mention of Customizer is found under [this thread](http://ubuntuforums.org/showthread.php?t=1597825) on Ubuntu Forums.
