@@ -74,11 +74,18 @@ Mubiin Kimura 'clearkimura' (documentation) `clearkimura@gmail.com`
 
 ### BUGS
 
-To report a bug, create and submit your issue at https://github.com/fluxer/Customizer/issues
-
+To report a bug, you should include the following details: what version of system host, 
+what version of customizer, what ISO image, description of problem and screenshot, if possible.
 The developers will look into submitted issues from time to time, usually a day or two.
-Only issues found in latest versions of Customizer are concerned. Therefore, issues in
-older versions will be ignored.
+Only issues found in latest versions of Customizer are concerned. Issues in older versions will
+be ignored.
+
+Example of issue submission details:
+Ubuntu 12.04, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64.
+Using GUI, after select 'Build', cannot create ISO image file and application exits immediately,
+Terminal shows Error 119: No kernel found when compiling image.
+
+Create and submit your issue at https://github.com/fluxer/Customizer/issues
 
 
 ### COPYRIGHT
@@ -92,20 +99,20 @@ License: GPLv2
 
 In late 2010, this project was registered on Sourceforge.net. Since November 2011,
 documentation is contributed. As December 2011, Customizer development has moved to
-GitHub, maintained up to version 3.1.1, has been tested thoroughly on Ubuntu 10.04
-(Lucid Lynx). Presently maintained for compatibility fixes and documentation.
+GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). Presently
+maintained for compatibility fixes and documentation.
 
-Latest changes made to Customizer is found at https://github.com/fluxer/Customizer/wiki/Changes-log
+See latest changes at https://github.com/fluxer/Customizer/wiki/Changes-log
 
 
 ### SEE ALSO
 
 [Quick Guide 1](https://docs.google.com/document/d/1MF-GZYX90E4JKHGtnAKK3LHFYVV3ArC641QFOr3lgNU/edit)
  for installing Customizer.
-
+ 
 [Quick Guide 2](https://docs.google.com/document/d/149ug1YfiO-6OiCUqa9XTI1E1HjEYRKRkQZ4QTa54BW8/edit)
  for running and setting up Customizer.
-
+ 
 [Full user guide](https://docs.google.com/document/d/1PfhHnSBjv-IDI7Yh5obhMGYCAV9Gw1NPEynU4GqKTsA/edit)
  for troubleshooting and others.
 
