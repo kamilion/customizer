@@ -61,9 +61,22 @@ GUI dependencies are:
     gambas2-runtime
 
 
-### AUTHORS
+### INSTALL AND RUN
 
-Customizer active contributors are:
+This is how you can download and install using script from Terminal.
+
+    wget https://github.com/downloads/fluxer/Customizer/install.sh
+    chmod +x install.sh
+    sudo ./install.sh -i
+
+This is how you can run Customizer from program launcher or Terminal
+
+    su-to-root -X -c /opt/Customizer/GUI.gambas
+
+For alternative methods or more details, refer to the official user guides at https://github.com/fluxer/Customizer/wiki
+
+    
+### AUTHORS
 
 Ivailo Monev 'SmiL3y' (code developer) `xakepa10@gmail.com`
 
@@ -81,9 +94,9 @@ Only issues found in latest versions of Customizer are concerned. Issues in olde
 be ignored.
 
 Example of issue submission details:
-Ubuntu 12.04, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64.
-Using GUI, after select 'Build', cannot create ISO image file and application exits immediately,
-Terminal shows Error 119: No kernel found when compiling image.
+
+    Ubuntu 12.04, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64. Using GUI, after select 'Build',
+    cannot create ISO image file, Terminal shows Error 119: No kernel found when compiling image.
 
 Create and submit your issue at https://github.com/fluxer/Customizer/issues
 
@@ -102,18 +115,13 @@ documentation is contributed. As December 2011, Customizer development has moved
 GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). Presently
 maintained for compatibility fixes and documentation.
 
-See latest changes at https://github.com/fluxer/Customizer/wiki/Changes-log
+View latest changes at https://github.com/fluxer/Customizer/wiki/Changes-log
 
 
 ### SEE ALSO
 
-[Quick Guide 1](https://docs.google.com/document/d/1MF-GZYX90E4JKHGtnAKK3LHFYVV3ArC641QFOr3lgNU/edit)
- for installing Customizer.
- 
-[Quick Guide 2](https://docs.google.com/document/d/149ug1YfiO-6OiCUqa9XTI1E1HjEYRKRkQZ4QTa54BW8/edit)
- for running and setting up Customizer.
- 
-[Full user guide](https://docs.google.com/document/d/1PfhHnSBjv-IDI7Yh5obhMGYCAV9Gw1NPEynU4GqKTsA/edit)
- for troubleshooting and others.
+PPA stable at https://launchpad.net/~customizer-dev-team/+archive/stable
+
+PPA devel at https://launchpad.net/~customizer-dev-team/+archive/devel
 
 You can find more information about Customizer at https://github.com/fluxer/Customizer/wiki
