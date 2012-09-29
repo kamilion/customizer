@@ -47,8 +47,9 @@ while true;do
     case $choise in
         1) GUI_PACKAGES="xserver-xorg xinit gnome-session gnome-panel gdm gnome-terminal gtk2-engines gnome-themes-selected"; break ;;
         2) GUI_PACKAGES="xserver-xorg xinit unity unity-2d gnome-session gnome-terminal gnome-icon-theme"; break ;;
-		3) GUI_PACKAGES="xserver-xorg xinit kde-standard"; break ;;
-        4) GUI_PACKAGES="xserver-xorg xinit xfce4 # xfce4-session xfce4-panel xfce4-terminal"; break ;;
+	3) GUI_PACKAGES="xserver-xorg xinit kde-standard"; break ;;
+        # TODO: xfce4-session xfce4-panel xfce4-terminal
+        4) GUI_PACKAGES="xserver-xorg xinit xfce4"; break ;;
         5) GUI_PACKAGES="xserver-xorg xinit lxde-core lxterminal lxdm"; break ;;
         6) GUI_PACKAGES="xserver-xorg xinit xterm openbox menu slim"; break ;;
         7) GUI_PACKAGES="xserver-xorg xinit xterm fluxbox menu slim"; break ;;
