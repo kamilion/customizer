@@ -60,6 +60,8 @@ done
 
 __mount_sys__
 __mount_dbus__
-__chroot__ "apt-get install dbus -f -y; dbus-uuidgen --ensure; apt-get install -y $GUI_PACKAGES --no-install-recommends"
+__chroot__ apt-get install dbus -f -y
+__chroot__ dbus-uuidgen --ensure
+__chroot__ apt-get install -y ${GUI_PACKAGES} --no-install-recommends
 __umount_sys__
 __recursive_umount__
