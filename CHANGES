@@ -6,6 +6,8 @@
      * Fixed QEMU start on Ubuntu 12.04 (issue #11)
      * Fixed regression in deb script (issue #9)
      * Fixed regression in xnest script (issue #7)
+     * Fixed gui and hook scripts
+     * Look only for files in /usr/share/xsession to enable 'Desktop' button
      - Snapshots feature is no more
 
 -- SmiL3y <xakepa10@gmail.com>  Thu, 19 Jul 2012 03:26:23 UTC
