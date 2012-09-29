@@ -38,7 +38,7 @@ fi
 __allow_local_X_access__
 __mount_sys__
 __mount_dbus__
-__chroot__ "exec /tmp/HOOK"
+__chroot__ exec /tmp/HOOK
 __umount_sys__
 __recursive_umount__
 __block_local_X_access__
