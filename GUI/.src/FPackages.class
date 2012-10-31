@@ -16,7 +16,8 @@ PUBLIC SUB Form_Open()
   Func.Event_Msg("Getting packages list")
   SHELL "chroot '" & WorkDir & "/FileSystem' dpkg-query -W --showformat='${Package},${Version},${Priority},${Installed-Size}\n' | tee /tmp/PACKAGESLIST" WAIT
 
-  OPEN "/tmp/PACKAGESLIST" FOR READ AS #TempFile
+  ' [GB2:OPEN] OPEN "/tmp/PACKAGESLIST" FOR READ AS #TempFile
+  TempFile = OPEN "/tmp/PACKAGESLIST" FOR READ
   ' Setup ColumnView
   ColumnView1.Columns.Count = 4
   ColumnView1.Columns[0].Text = "Package"
@@ -39,7 +40,7 @@ PUBLIC SUB Form_Open()
   CLOSE #TempFile
   CATCH
     TRY CLOSE #TempFile
-END 
+END
 
 PUBLIC SUB Quit_Click()
   ME.Close
@@ -54,6 +55,6 @@ PUBLIC SUB Save_Click()
   Func.Debug_Msg("Saving packages list: " & Dialog.Path & ".txt")
   COPY "/tmp/PACKAGESLIST" TO Dialog.Path & ".txt"
   
-  CATCH 
+  CATCH
     Message.Error("Unable to copy /tmp/PACKAGESLIST to" & Dialog.Path)
 END

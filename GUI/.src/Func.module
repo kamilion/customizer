@@ -131,9 +131,9 @@ PUBLIC FUNCTION Edit_File(EditFile AS String)
     Editor = "/usr/bin/nano"
   ELSE IF Exist("/usr/bin/pico") THEN
     Editor = "/usr/bin/pico"
-  ELSE 
+  ELSE
     Message.Error("Unable to detect Text-Editor!")
-  ENDIF 
+  ENDIF
 
   Func.Debug_Msg("Editing file: " & EditFile)
 
@@ -220,28 +220,28 @@ END
 
 PUBLIC FUNCTION Load_File(lFile AS String) AS Variant
   Func.Debug_Msg("Loading file: " & lFile)
-  IF Exist(lFile) THEN 
-    IF Access(lFile, gb.Read) THEN 
+  IF Exist(lFile) THEN
+    IF Access(lFile, gb.Read) THEN
       RETURN File.Load(lFile)
-    ELSE 
+    ELSE
       Message.Error(lFile & " is not readable!")
-    ENDIF 
-  ELSE 
+    ENDIF
+  ELSE
     Message.Error(lFile & " does not exists!")
-  ENDIF 
+  ENDIF
 END
 
 PUBLIC FUNCTION Save_File(sFile AS String, Cont AS String)
   Func.Debug_Msg("Saving file: " & sFile)
-  IF Exist(sFile) THEN 
-    IF Access(sFile, gb.Write) THEN 
+  IF Exist(sFile) THEN
+    IF Access(sFile, gb.Write) THEN
         File.Save(sFile, Cont)
-    ELSE 
+    ELSE
       Message.Error(sFile & " is not writable!")
-    ENDIF 
-  ELSE 
+    ENDIF
+  ELSE
     Message.Error(sFile & " does not exists!")
-  ENDIF 
+  ENDIF
 END
 
 PUBLIC FUNCTION Use_Term() AS String
@@ -270,9 +270,9 @@ PUBLIC FUNCTION Use_Term() AS String
     RETURN "/usr/bin/Eterm"
   ELSE IF Exist("/usr/bin/xterm") THEN
     RETURN "/usr/bin/xterm"
-  ELSE 
+  ELSE
     Message.Error("Unable to detect Terminal Emulator! \nSupported are: \n\nGnome-terminal, Konsole, XFCE4-terminal, LXTerminal, Terminator, Sakura, Yakuake, urxterm, Eterm, xterm and aterm")
-  ENDIF 
+  ENDIF
 END
 
 PUBLIC FUNCTION Event_Msg(Msg AS String)

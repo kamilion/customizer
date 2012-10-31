@@ -25,66 +25,66 @@ PUBLIC SUB Form_Open()
 
   IF Exist(WorkDir & "/FileSystem/etc/apt/apt.conf") THEN
     APT_Recommends.Value = FALSE
-  ELSE 
+  ELSE
     APT_Recommends.Value = TRUE
-  ENDIF 
+  ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN 
+  IF Exist(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper") THEN
     Frame = Func.Get_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
   
-    IF Frame = "y" THEN 
+    IF Frame = "y" THEN
       Framebuffer.Value = TRUE
-    ELSE 
+    ELSE
       Framebuffer.Value = FALSE
-    ENDIF 
-  ELSE 
+    ENDIF
+  ELSE
     Message.Warning("The casper hook file doesn't exist! You will\nnot be able to choose wheter to use or not framebuffer.")
     Framebuffer.Enabled = FALSE
-  ENDIF 
+  ENDIF
   
   TTYs.Text = Replace$(Replace$(Func.Get_Str(WorkDir & "/FileSystem/etc/default/console-setup", "ACTIVE_CONSOLES=", "6"), "/dev/tty[1-", ""), "]", "")
   
-  IF Exist(WorkDir & "/FileSystem/bin/ash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/ash") THEN
     SShell.Add("/bin/ash")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/sh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/sh") THEN
     SShell.Add("/bin/sh")
-  ENDIF 
+  ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/csh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/csh") THEN
     SShell.Add("/bin/csh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/ksh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/ksh") THEN
     SShell.Add("/bin/ksh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/mksh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/mksh") THEN
     SShell.Add("/bin/mksh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/tcsh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/tcsh") THEN
     SShell.Add("/bin/tcsh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/bash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/bash") THEN
     SShell.Add("/bin/bash")
-  ENDIF 
+  ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/dash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/dash") THEN
     SShell.Add("/bin/dash")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/psh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/psh") THEN
     SShell.Add("/bin/psh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/zsh") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/zsh") THEN
     SShell.Add("/bin/zsh")
   ENDIF
   
-  IF Exist(WorkDir & "/FileSystem/bin/yash") THEN 
+  IF Exist(WorkDir & "/FileSystem/bin/yash") THEN
     SShell.Add("/bin/yash")
   ENDIF
   
@@ -95,10 +95,10 @@ PUBLIC SUB APT_Recommends_Click()
   IF APT_Recommends.Value = TRUE THEN
     Func.Debug_Msg("[TRY] Deleting: " & WorkDir & "/FileSystem/etc/apt/apt.conf")
     TRY KILL WorkDir & "/FileSystem/etc/apt/apt.conf"
-  ELSE 
+  ELSE
     Func.Debug_Msg("[TRY] Saving to: " & WorkDir & "/FileSystem/etc/apt/apt.conf")
     TRY File.Save(WorkDir & "/FileSystem/etc/apt/apt.conf", "APT::Install-Recommends \"false\";\nAPT::Install-Suggests \"false\";")
-  ENDIF 
+  ENDIF
 END
 
 
@@ -108,11 +108,11 @@ END
 
 
 PUBLIC SUB Framebuffer_Click()
-  IF Framebuffer.Value = TRUE THEN 
+  IF Framebuffer.Value = TRUE THEN
     Func.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "y")
-  ELSE 
+  ELSE
     Func.Replace_Str(WorkDir & "/FileSystem/usr/share/initramfs-tools/conf-hooks.d/casper", "FRAMEBUFFER=", "n")
-  ENDIF 
+  ENDIF
 END
 
 PUBLIC SUB Quit_Click()

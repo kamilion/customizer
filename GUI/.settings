@@ -12,8 +12,8 @@ SearchComment=False
 SearchString=True
 
 [OpenFile]
-File[1]="FMain.form"
 Active=1
+File[1]=".src/FMain.form"
 Count=1
 
 [Watches]

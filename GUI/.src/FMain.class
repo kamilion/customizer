@@ -1,7 +1,7 @@
 ' Gambas class file
 ' Main Form
 
-PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home") 
+PUBLIC WorkDir AS String = Func.Get_Str("/opt/Customizer/settings.conf", "WORK_DIR=", "/home")
 
 PUBLIC SUB Form_Open()
   DIM STATUS AS Variant
@@ -12,13 +12,13 @@ PUBLIC SUB Form_Open()
   LiveCD_User.MaxLength = 16
   
   Func.Event_Msg("Checking if GUI is locked")
-  IF Exist("/opt/Customizer/gui_lock") THEN 
+  IF Exist("/opt/Customizer/gui_lock") THEN
     Message.Warning("Another instance of the GUI is already running!")
     ME.Close
-  ELSE 
+  ELSE
     Func.Event_Msg("Locking GUI")
     TRY File.Save("/opt/Customizer/gui_lock", "")
-  ENDIF 
+  ENDIF
   
   Check.Conf_File()
   Check.Existence()
@@ -33,13 +33,13 @@ PUBLIC SUB UseImage_Click()
   Dialog.Title = "Please select ISO Image"
   Dialog.Filter = ["*.iso", "ISO Images"]
   
-  IF Exist(ISO) THEN 
+  IF Exist(ISO) THEN
     Dialog.Path = ISO
-  ELSE 
+  ELSE
     Dialog.Path = "/home"
-  ENDIF 
+  ENDIF
   
-  IF Dialog.OpenFile() THEN RETURN 
+  IF Dialog.OpenFile() THEN RETURN
   Func.Replace_Str("/opt/Customizer/settings.conf", "ISO=", Dialog.Path)
   
   Func.Event_Msg("Extracting ISO")
@@ -68,12 +68,12 @@ PUBLIC SUB Terminal_Click()
 END
 
 PUBLIC SUB Build_ISO_Click()
-  IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN 
+  IF DistName.Text = "" OR IF HostName.Text = "" OR IF LiveCD_User.Text = "" OR IF Version.Text = "" OR IF ReleaseNotesURL.Text = "" THEN
     Message.Warning("One or more of the configuration fields are blank! Just type in something.")
   ELSE
     Func.Event_Msg("Rebuilding ISO image")
     EXEC [Func.Use_Term(), "-e", "/opt/Customizer/CLI.sh -r"] WAIT
-  ENDIF 
+  ENDIF
   
   Check.ISO()
 END
@@ -94,13 +94,13 @@ PUBLIC SUB Install_DEB_Click()
   Dialog.Title = "Please select a DEB package"
   Dialog.Filter = ["*.deb", "Debian Packages"]
   
-  IF Exist(DEB) THEN 
+  IF Exist(DEB) THEN
     Dialog.Path = DEB
-  ELSE 
+  ELSE
     Dialog.Path = "/home"
-  ENDIF 
+  ENDIF
   
-  IF Dialog.OpenFile() THEN RETURN 
+  IF Dialog.OpenFile() THEN RETURN
   Func.Replace_Str("/opt/Customizer/settings.conf", "DEB=", Dialog.Path)
 
   Func.Event_Msg("Installing DEB package")
@@ -198,13 +198,13 @@ PUBLIC SUB Exec_Hook_Click()
   
   Dialog.Title = "Please select hook file"
   
-  IF Exist(HOOK) THEN 
+  IF Exist(HOOK) THEN
     Dialog.Path = HOOK
-  ELSE 
+  ELSE
     Dialog.Path = "/home"
-  ENDIF 
+  ENDIF
   
-  IF Dialog.OpenFile() THEN RETURN 
+  IF Dialog.OpenFile() THEN RETURN
   Func.Event_Msg("Executing hook")
   Func.Replace_Str("/opt/Customizer/settings.conf", "HOOK=", Dialog.Path)
   
@@ -315,7 +315,7 @@ END
   'Menu - About
 PUBLIC SUB About_Click()
   FAbout.Show
-END 
+END
 
 PUBLIC SUB License_Click()
   FLicense.Show
