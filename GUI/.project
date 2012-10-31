@@ -1,5 +1,5 @@
 # Gambas Project File 3.0
-# Compiled with Gambas 3.1.1
+# Compiled with Gambas 3.3.3
 Title=Customizer
 Startup=FMain
 Icon=logo.png
@@ -8,7 +8,7 @@ Component=gb.image
 Component=gb.gtk
 Component=gb.form
 Description="GUI for Customizer (previuosly known as U-Customizer)"
-Authors="SmiL3y"
+Authors="Ivailo Monev (a.k.a SmiL3y)\n<xakepa10@gmail.com>\n\nThiago Abreu (a.k.a thiagoabreu)\n<thiagoa7@gmail.com>"
 TabSize=2
 ControlPublic=1
 ModulePublic=1

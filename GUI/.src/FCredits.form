@@ -1,17 +1,17 @@
 # Gambas Form File 3.0
-{ Form Form 
-  MoveScaled(0,0,40,29)
+
+{ Form Form
+  MoveScaled(0,0,43,40)
   Icon = Picture["icon:/small/people"]
   Resizable = False
-  { Credits Label 
-    MoveScaled(1,1,38,23)
-    Text = ("Coding:\nIvailo Monev (a.k.a. SmiL3y)\n\nPPA maintainer:\nMicha\xC5\x82 G\xC5\x82owienka (a.k.a. eloaders)\n<eloaders@yahoo.com>\n\nDocumentation:\nMubiin Kimura (a.k.a. clearkimura)\n<clearkimura@gmail.com>")
-    Alignment = Align.Center
-  }
-  { Quit Button 
-    MoveScaled(15,25,11,4)
+  { Quit Button
+    MoveScaled(16,35,11,4)
     ToolTip = ("Close this window")
     Text = ("Close")
     Picture = Picture["icon:/16/close"]
+  }
+  { TextArea1 TextArea
+    MoveScaled(1,1,41,33)
+    Text = ("Main developer:\nIvailo Monev (a.k.a. SmiL3y)\n<xakepa10@gmail.com>\n\nPPA maintainer:\nMichał Głowienka (a.k.a. eloaders)\n<eloaders@yahoo.com>\n\nDocumentation:\nMubiin Kimura (a.k.a. clearkimura)\n<clearkimura@gmail.com>\n\nGambas3 port:\nThiago Abreu (a.k.a thiagoabreu)\n<thiagoa7@gmail.com>")
   }
 }

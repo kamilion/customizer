@@ -82,6 +82,10 @@ Credits:
   Documentation:
     Mubiin Kimura (a.k.a. clearkimura)
     <clearkimura@gmail.com>
+    
+  Gambas3 port:
+    Thiago Abreu (a.k.a thiagoabreu)
+    <thiagoa7@gmail.com>
 "
 }
 
