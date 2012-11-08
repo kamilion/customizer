@@ -3,7 +3,7 @@
 Title=Customizer
 Startup=FMain
 Icon=logo.png
-Version=3.2.591
+Version=3.2.592
 Component=gb.image
 Component=gb.gtk
 Component=gb.form
@@ -12,7 +12,7 @@ Authors="SmiL3y"
 TabSize=2
 ControlPublic=1
 ModulePublic=1
-ExecPath=/home/jedi/Projetos/Customizer/GUI.gambas
+ExecPath=/opt/Customizer/GUI.gambas
 SourcePath=/opt/Customizer/GUI
 Maintainer=SmiL3y
 Address=xakepa10@gmail.com
