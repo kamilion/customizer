@@ -47,7 +47,7 @@ Core dependencies are:
     sed
     grep
     rsync
-    squashfs-tools (version 4.2 or above)
+    squashfs-tools (>=4.2)
     genisoimage
 
 GUI dependencies are:
@@ -56,9 +56,9 @@ GUI dependencies are:
     xephyr
     qemu
     imagemagick
-    gambas2-gui
-    gambas2-form
-    gambas2-runtime
+    gambas2-gui | gambas3-gb-gui
+    gambas2-form | gambas3-gb-form
+    gambas2-runtime | gambas3-runtime
 
 
 ### INSTALL AND RUN
