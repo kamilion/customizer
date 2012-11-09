@@ -71,7 +71,7 @@ This is how you can download and install using script from Terminal.
 
 This is how you can run Customizer from program launcher or Terminal
 
-    su-to-root -X -c /opt/Customizer/GUI.gambas
+    sudo /opt/Customizer/GUI.gambas
 
 For alternative methods or more details, refer to the official user guides at https://github.com/fluxer/Customizer/wiki
 
