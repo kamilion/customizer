@@ -92,6 +92,38 @@ PUBLIC FUNCTION Replace_Str_AsIs(SrchFile AS String, SrchStr AS String, RpcStr A
   ENDIF
 END
 
+PUBLIC FUNCTION Use_Term() AS String
+  Func.Event_Msg("Detecting Terminal Emulator")
+  IF Exist("/usr/bin/gnome-terminal") THEN
+    RETURN "/usr/bin/gnome-terminal"
+  ELSE IF Exist("/usr/bin/mate-terminal") THEN
+    RETURN "/usr/bin/mate-terminal"
+  ELSE IF Exist("/usr/bin/konsole") THEN
+    RETURN "/usr/bin/konsole"
+  ELSE IF Exist("/usr/bin/xfce4-terminal") THEN
+    RETURN "/usr/bin/xfce4-terminal"
+  ELSE IF Exist("/usr/bin/terminal") THEN
+    RETURN "/usr/bin/terminal"
+  ELSE IF Exist("/usr/bin/lxterminal") THEN
+    RETURN "/usr/bin/lxterminal"
+  ELSE IF Exist("/usr/bin/terminator") THEN
+    RETURN "/usr/bin/terminator"
+  ELSE IF Exist("/usr/bin/sakura") THEN
+    RETURN "/usr/bin/sakura"
+  ELSE IF Exist("/usr/bin/yakuake") THEN
+    RETURN "/usr/bin/yakuake"
+  ELSE IF Exist("/usr/bin/urxterm") THEN
+    RETURN "/usr/bin/urxterm"
+  ELSE IF Exist("/usr/bin/aterm") THEN
+    RETURN "/usr/bin/aterm"
+  ELSE IF Exist("/usr/bin/Eterm") THEN
+    RETURN "/usr/bin/Eterm"
+  ELSE IF Exist("/usr/bin/xterm") THEN
+    RETURN "/usr/bin/xterm"
+  ELSE 
+    Message.Error("Unable to detect Terminal Emulator! \nSupported are: \n\nGnome-terminal, Konsole, XFCE4-terminal, LXTerminal, Terminator, Sakura, Yakuake, urxterm, Eterm, xterm and aterm")
+  ENDIF 
+END
 
 PUBLIC FUNCTION Edit_File(EditFile AS String)
   DIM Editor AS String
@@ -241,37 +273,6 @@ PUBLIC FUNCTION Save_File(sFile AS String, Cont AS String)
     ENDIF 
   ELSE 
     Message.Error(sFile & " does not exists!")
-  ENDIF 
-END
-
-PUBLIC FUNCTION Use_Term() AS String
-  Func.Event_Msg("Detecting Terminal Emulator")
-  IF Exist("/usr/bin/gnome-terminal") THEN
-    RETURN "/usr/bin/gnome-terminal"
-  ELSE IF Exist("/usr/bin/mate-terminal") THEN
-    RETURN "/usr/bin/mate-terminal"
-  ELSE IF Exist("/usr/bin/konsole") THEN
-    RETURN "/usr/bin/konsole"
-  ELSE IF Exist("/usr/bin/xfce4-terminal") THEN
-    RETURN "/usr/bin/xfce4-terminal"
-  ELSE IF Exist("/usr/bin/lxterminal") THEN
-    RETURN "/usr/bin/lxterminal"
-  ELSE IF Exist("/usr/bin/terminator") THEN
-    RETURN "/usr/bin/terminator"
-  ELSE IF Exist("/usr/bin/sakura") THEN
-    RETURN "/usr/bin/sakura"
-  ELSE IF Exist("/usr/bin/yakuake") THEN
-    RETURN "/usr/bin/yakuake"
-  ELSE IF Exist("/usr/bin/urxterm") THEN
-    RETURN "/usr/bin/urxterm"
-  ELSE IF Exist("/usr/bin/aterm") THEN
-    RETURN "/usr/bin/aterm"
-  ELSE IF Exist("/usr/bin/Eterm") THEN
-    RETURN "/usr/bin/Eterm"
-  ELSE IF Exist("/usr/bin/xterm") THEN
-    RETURN "/usr/bin/xterm"
-  ELSE 
-    Message.Error("Unable to detect Terminal Emulator! \nSupported are: \n\nGnome-terminal, Konsole, XFCE4-terminal, LXTerminal, Terminator, Sakura, Yakuake, urxterm, Eterm, xterm and aterm")
   ENDIF 
 END
 
