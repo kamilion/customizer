@@ -20,7 +20,7 @@ PUBLIC SUB X_session()
   
   Func.Event_Msg("Checking for X-sessions links")
   Xsessions = 0
-  TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions", gb.File).Count
+  TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions").Count
 
   IF Xsessions >= 1 THEN
     FMain.Desktop.Enabled = TRUE
