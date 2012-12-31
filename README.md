@@ -1,6 +1,6 @@
 ### NAME
 
-customizer - advanced Live CD/DVD remastering tool
+Customizer (formerly known as U-Customizer)
 
 	
 ### SYNOPSIS
@@ -10,11 +10,8 @@ customizer - advanced Live CD/DVD remastering tool
 
 ### DESCRIPTION
 
-Looking for a tool that will allow you to customize Ubuntu, Kubuntu, Lubuntu, Xubuntu,
-Linux Mint or other Ubuntu based ISO images? Well, you've found it! Customizer allows
-you to customize them the way you want, within few minutes (on a modern PC), running 
-Terminal, Synaptic, Desktop session (in chroot environment) and even more so you can
-modify the images to fit your needs.
+Customizer is an advanced LiveCD customization and remastering tool. With it, you can build own Ubuntu-based remix
+using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image with a few mouse clicks.
 
 
 ### OPTIONS
@@ -85,20 +82,24 @@ Michal Glowienka 'eloaders' (PPA maintainer) `eloaders@yahoo.com`
 Mubiin Kimura 'clearkimura' (documentation) `clearkimura@gmail.com`
 
 
-### BUGS
+### BUGS REPORT
 
-To report a bug, you should include the following details: what version of system host, 
-what version of customizer, what ISO image, description of problem and screenshot, if possible.
-The developers will look into submitted issues from time to time, usually a day or two.
-Only issues found in latest versions of Customizer are concerned. Issues in older versions will
-be ignored.
+Create and submit your issue at https://github.com/fluxer/Customizer/issues
+
+**IMPORTANT** You should include the following details: what version of system host, 
+what version of customizer, what ISO image, description of problem, full output log that is 
+not just the part of what you consider relevant, and if possible, relevant screenshots.
 
 Example of issue submission details:
 
     Ubuntu 12.04, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64. Using GUI, after select 'Build',
     cannot create ISO image file, Terminal shows Error 119: No kernel found when compiling image.
 
-Create and submit your issue at https://github.com/fluxer/Customizer/issues
+The developers will look into submitted issues from time to time, usually a day or two.
+Only issues found in latest versions of Customizer are concerned. Issues in older versions will
+be ignored.
+
+To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Changes-log
 
 
 ### COPYRIGHT
@@ -112,16 +113,16 @@ License: GPLv2
 
 In late 2010, this project was registered on Sourceforge.net. Since November 2011,
 documentation is contributed. As December 2011, Customizer development has moved to
-GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). Presently
-maintained for compatibility fixes and documentation.
+GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). One year later, 
+as December 2012, Customizer stable release has hit 3.2.3.
 
-View latest changes at https://github.com/fluxer/Customizer/wiki/Changes-log
+Presently maintained for compatibility fixes and documentation.
 
 
 ### SEE ALSO
 
-PPA stable at https://launchpad.net/~customizer-dev-team/+archive/stable
+PPA stable  https://launchpad.net/~customizer-dev-team/+archive/stable
 
-PPA devel at https://launchpad.net/~customizer-dev-team/+archive/devel
+PPA devel  https://launchpad.net/~customizer-dev-team/+archive/devel
 
 You can find more information about Customizer at https://github.com/fluxer/Customizer/wiki
