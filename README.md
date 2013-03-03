@@ -53,8 +53,11 @@ GUI dependencies are:
     xephyr
     qemu
     imagemagick
-    gambas2-gui | gambas3-gb-gui
-    gambas2-form | gambas3-gb-form
+    gambas2-gb-gui | gambas3-gb-gui
+    gambas2-gb-gtk | gambas3-gb-gtk
+    gambas2-gb-form | gambas3-gb-form
+    gambas2-gb-settings | gambas3-gb-settings
+    gambas2-gb-image | gambas3-gb-image
     gambas2-runtime | gambas3-runtime
 
 
