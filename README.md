@@ -54,11 +54,14 @@ GUI dependencies are:
     qemu
     imagemagick
     gambas2-gb-gui | gambas3-gb-gui
-    gambas2-gb-gtk | gambas3-gb-gtk
     gambas2-gb-form | gambas3-gb-form
     gambas2-gb-settings | gambas3-gb-settings
-    gambas2-gb-image | gambas3-gb-image
     gambas2-runtime | gambas3-runtime
+    gambas3-gb-image
+
+For 12.04 or older, install gambas2-* packages.
+
+For 12.10 or newer, install gambas3-* packages.
 
 
 ### INSTALL AND RUN
@@ -71,7 +74,7 @@ This is how you can download and install using script from Terminal.
 
 This is how you can run Customizer from program launcher or Terminal
 
-    sudo /opt/Customizer/GUI.gambas
+    gksu /opt/Customizer/GUI.gambas
 
 For alternative methods or more details, refer to the official user guides at https://github.com/fluxer/Customizer/wiki
 
@@ -95,8 +98,9 @@ not just the part of what you consider relevant, and if possible, relevant scree
 
 Example of issue submission details:
 
-    Ubuntu 12.04, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64. Using GUI, after select 'Build',
-    cannot create ISO image file, Terminal shows Error 119: No kernel found when compiling image.
+    Ubuntu 12.04 32-bit, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64.iso.
+    Using GUI, after select 'Build', cannot create ISO image file, Terminal shows
+    Error 119: No kernel found when compiling image.
 
 The developers will look into submitted issues from time to time, usually a day or two.
 Only issues found in latest versions of Customizer are concerned. Issues in older versions will
