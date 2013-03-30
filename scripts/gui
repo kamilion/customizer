@@ -49,7 +49,7 @@ while true;do
         2) GUI_PACKAGES="xserver-xorg xinit unity unity-2d gnome-session gnome-terminal gnome-icon-theme"; break ;;
 	3) GUI_PACKAGES="xserver-xorg xinit kde-standard"; break ;;
         # TODO: xfce4-session xfce4-panel xfce4-terminal
-        4) GUI_PACKAGES="xserver-xorg xinit xfce4-panel xfce4-session xfwm4 xfdesktop4 xfce4-terminal thunar"; break ;;
+        4) GUI_PACKAGES="xserver-xorg xinit xfce4-panel xfce4-session xfwm4 xfdesktop4 xfce4-terminal thunar xfce4-utils"; break ;;
         5) GUI_PACKAGES="xserver-xorg xinit lxde-core lxterminal lxdm"; break ;;
         6) GUI_PACKAGES="xserver-xorg xinit xterm openbox menu slim"; break ;;
         7) GUI_PACKAGES="xserver-xorg xinit xterm fluxbox menu slim"; break ;;
