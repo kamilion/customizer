@@ -38,14 +38,14 @@ CHROOT_MOUNT_PSEUDO
 CHROOT_FIX
 CHROOT_HELPER
 
-if [ -e "$FILESYSTEM_DIR/usr/sbin/synaptic" ];then
+if [ -x "$FILESYSTEM_DIR/usr/sbin/synaptic" ] || [ -x "$FILESYSTEM_DIR/usr/bin/synaptic" ];then
 	INFO "Installing dbus"
 	CHROOT_EXECUTE "apt-get install dbus -y -f"
 	ALLOW_LOCAL_X
 	INFO "Attempting to package manager" "$PKGM"
 	CHROOT_EXECUTE "dbus-uuidgen --ensure && synaptic"
 	BLOCK_LOCAL_X
-elif [ -e "$FILESYSTEM_DIR/usr/bin/aptitude" ];then
+elif [ -x "$FILESYSTEM_DIR/usr/bin/aptitude" ] || [ -x "$FILESYSTEM_DIR/usr/sbin/aptitude" ];then
 	CHROOT_EXECUTE "aptitude"
 fi
 
