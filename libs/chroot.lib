@@ -92,7 +92,7 @@ CHROOT_UNDO_FIX() {
 CHROOT_CLEAN() {	
     INFO "Cleaning up chroot"
     CHROOT_EXECUTE "apt-get clean"
-    rm -f "$FILESYSTEM_DIR/etc/"{hostname,hosts,resolv.conf,debian_chroot}
+    rm -f "$FILESYSTEM_DIR/etc/"{hostname,hosts,debian_chroot}
     rm -rf "$FILESYSTEM_DIR/tmp/"* "$FILESYSTEM_DIR/tmp/".??* 
 }
 
