@@ -205,7 +205,7 @@ __chroot__() {
 
     INFO_MESSAGE "Cleaning up"
     chroot "$WORK_DIR/FileSystem" ${CHROOT_OPTS} apt-get clean
-    rm -f "$WORK_DIR/FileSystem/etc/"{debian_chroot,hosts,resolv.conf,mtab}
+    rm -f "$WORK_DIR/FileSystem/etc/"{debian_chroot,hosts,mtab}
     rm -f "$WORK_DIR/FileSystem/boot/"*.bak
     rm -f "$WORK_DIR/FileSystem/var/lib/dpkg/"*-old
     rm -f "$WORK_DIR/FileSystem/var/lib/aptitude/"*.old
