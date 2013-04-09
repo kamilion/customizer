@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Customizer - Advanced LiveCD Remastering Tool
-# Copyright (C) 2010-2012  Ivailo Monev
+# Copyright (C) 2010-2013  Ivailo Monev
 # 
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
