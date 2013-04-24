@@ -84,7 +84,7 @@ LIVEUSERNAME=$(grep "export USERNAME=" "${FILESYSTEM_DIR}/etc/casper.conf" | sed
 ISO_NAME="${DIST}-${ARCH}-${VERSION}"
 
 to_clean="/home/${ISO_NAME}.iso ${ISO_DIR}/casper/filesystem.squashfs \
-${ISO_DIR}/casper/initrd.lz ${ISO_DIR}/casper/vmlinuz \
+${ISO_DIR}/casper/initrd.lz ${ISO_DIR}/casper/vmlinuz ${ISO_DIR}/casper/vmlinuz.efi \
 ${ISO_DIR}/casper/filesystem.manifest ${ISO_DIR}/casper/filesystem.manifest-desktop \
 ${ISO_DIR}/casper/filesystem.size ${ISO_DIR}/casper/README.diskdefines \
 ${ISO_DIR}/md5sum.txt"
@@ -125,8 +125,14 @@ CHROOT_CLEAN
 
 EXTRA_INFO "Copying initrd" "${INITRD_SOURCE#${FILESYSTEM_DIR}/boot/}"
 cp -f "$INITRD_SOURCE" "${ISO_DIR}/casper/initrd.lz" || ERROR "Unable to copy initrd.img"
-EXTRA_INFO "Copying vmlinuz" "${VMLINUZ_SOURCE#${FILESYSTEM_DIR}/boot/}"
-cp -f "$VMLINUZ_SOURCE" "${ISO_DIR}/casper/vmlinuz" || ERROR "Unable to copy vmlinuz"
+
+if [[ $(grep -Rs "vmlinuz.efi" "$WORK_DIR/ISO") ]];then
+	EXTRA_INFO "Copying vmlinuz.efi" "${VMLINUZ_SOURCE#${FILESYSTEM_DIR}/boot/}"
+	cp -f "$VMLINUZ_SOURCE" "${ISO_DIR}/casper/vmlinuz.efi" || ERROR "Unable to copy vmlinuz.efi"
+else
+	EXTRA_INFO "Copying vmlinuz" "${VMLINUZ_SOURCE#${FILESYSTEM_DIR}/boot/}"
+	cp -f "$VMLINUZ_SOURCE" "${ISO_DIR}/casper/vmlinuz" || ERROR "Unable to copy vmlinuz"
+fi
 
 if [ "$BOOT_FILES" = "1" ]; then
 	INFO "Deleteing boot files"
