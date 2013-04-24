@@ -85,9 +85,9 @@ CODENAME=`grep DISTRIB_CODENAME= "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's
 LIVEUSERNAME=`grep "export USERNAME=" "$WORK_DIR/FileSystem/etc/casper.conf" | sed 's/export USERNAME=//;s/\"//g'` || ERROR_MESSAGE "Unable get the username"
 
 to_clean="$WORK_DIR/$DIST-$ARCH-$VERSION.iso $WORK_DIR/ISO/casper/filesystem.squashfs \
-$WORK_DIR/ISO/casper/initrd.lz $WORK_DIR/ISO/casper/vmlinuz $WORK_DIR/ISO/casper/filesystem.manifest \
-$WORK_DIR/ISO/casper/filesystem.manifest-desktop $WORK_DIR/ISO/casper/filesystem.size \
-$WORK_DIR/ISO/casper/README.diskdefines $WORK_DIR/ISO/md5sum.txt"
+$WORK_DIR/ISO/casper/initrd.lz $WORK_DIR/ISO/casper/vmlinuz $WORK_DIR/ISO/casper/vmlinuz.efi \
+$WORK_DIR/ISO/casper/filesystem.manifest $WORK_DIR/ISO/casper/filesystem.manifest-desktop \
+$WORK_DIR/ISO/casper/filesystem.size $WORK_DIR/ISO/casper/README.diskdefines $WORK_DIR/ISO/md5sum.txt"
 for i in $to_clean;do
 	if [ -e "$i" ];then
 		EXTRA_INFO_MESSAGE "Purging" "$i"
@@ -118,8 +118,13 @@ fi
 
 EXTRA_INFO_MESSAGE "Copying initrd" "${INITRD_SOURCE#$WORK_DIR/FileSystem/boot/}"
 cp -f "$INITRD_SOURCE" "$WORK_DIR/ISO/casper/initrd.lz" || ERROR_MESSAGE "Unable to copy initrd.img"
-EXTRA_INFO_MESSAGE "Copying vmlinuz" "${VMLINUZ_SOURCE#$WORK_DIR/FileSystem/boot/}"
-cp -f "$VMLINUZ_SOURCE" "$WORK_DIR/ISO/casper/vmlinuz" || ERROR_MESSAGE "Unable to copy vmlinuz"
+if [[ $(grep -Rs "vmlinuz.efi" "$WORK_DIR/ISO") ]];then
+	EXTRA_INFO_MESSAGE "Copying vmlinuz.efi" "${VMLINUZ_SOURCE#$WORK_DIR/FileSystem/boot/}"
+	cp -f "$VMLINUZ_SOURCE" "$WORK_DIR/ISO/casper/vmlinuz.efi" || ERROR_MESSAGE "Unable to copy vmlinuz.efi"
+else
+	EXTRA_INFO_MESSAGE "Copying vmlinuz" "${VMLINUZ_SOURCE#$WORK_DIR/FileSystem/boot/}"
+	cp -f "$VMLINUZ_SOURCE" "$WORK_DIR/ISO/casper/vmlinuz" || ERROR_MESSAGE "Unable to copy vmlinuz"
+fi
 
 if [ "$BOOT_FILES" = "1" ]; then
 	INFO_MESSAGE "Deleteing boot files"
