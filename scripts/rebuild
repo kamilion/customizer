@@ -126,7 +126,7 @@ CHROOT_CLEAN
 EXTRA_INFO "Copying initrd" "${INITRD_SOURCE#${FILESYSTEM_DIR}/boot/}"
 cp -f "$INITRD_SOURCE" "${ISO_DIR}/casper/initrd.lz" || ERROR "Unable to copy initrd.img"
 
-if [[ $(grep -Rs "vmlinuz.efi" "$WORK_DIR/ISO") ]];then
+if [[ $(grep -Rs "vmlinuz.efi" "${ISO_DIR}") ]];then
 	EXTRA_INFO "Copying vmlinuz.efi" "${VMLINUZ_SOURCE#${FILESYSTEM_DIR}/boot/}"
 	cp -f "$VMLINUZ_SOURCE" "${ISO_DIR}/casper/vmlinuz.efi" || ERROR "Unable to copy vmlinuz.efi"
 else
