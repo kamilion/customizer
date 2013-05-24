@@ -5,13 +5,13 @@ Customizer (formerly known as U-Customizer)
 	
 ### SYNOPSIS
 
-    /opt/Customizer/CLI.sh [OPTION] [ARGUMENT]
+    customizer [-h] [-e] [-c] [-x] [-p] [-d] [-k] [-g] [-r] [-q] [-t] [-D] [-T] [-v]
 
 
 ### DESCRIPTION
 
-Customizer is an advanced LiveCD customization and remastering tool. With it, you can build own Ubuntu-based remix
-using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image with a few mouse clicks.
+Customizer is an advanced LiveCD customization and remastering tool. With it, you can build own
+Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image with a few mouse clicks.
 
 
 ### OPTIONS
@@ -32,53 +32,18 @@ using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image with a few mouse cl
 
 ### ENVIRONMENT
 
-    /opt/Customizer                -  Customizer's location
-    /opt/Customizer/settings.conf  -  configuration file
+    /etc/customizer.conf  -  configuration file
 
 
 ### REQUIREMENTS
 
-Core dependencies are:
-
-    coreutils
-    sed
-    grep
-    rsync
     squashfs-tools (>=4.2)
     genisoimage
 
-GUI dependencies are:
-
-    dbus
-    xephyr
-    qemu
-    imagemagick
-    gambas2-gb-gui | gambas3-gb-gui
-    gambas2-gb-form | gambas3-gb-form
-    gambas2-gb-settings | gambas3-gb-settings
-    gambas2-runtime | gambas3-runtime
-    gambas3-gb-image
-
-For 12.04 or older, install gambas2-* packages.
-
-For 12.10 or newer, install gambas3-* packages.
-
-
 ### INSTALL AND RUN
 
-This is how you can download and install using script from Terminal.
-
-    wget https://github.com/downloads/fluxer/Customizer/install.sh
-    chmod +x install.sh
-    sudo ./install.sh -i
-
-This is how you can run Customizer from program launcher or Terminal
-
-    gksu /opt/Customizer/GUI.gambas
-
-For alternative methods or more details, refer to the official user guides at https://github.com/fluxer/Customizer/wiki
-
-    
+    make && sudo make install
+   
 ### AUTHORS
 
 Ivailo Monev 'SmiL3y' (code developer) `xakepa10@gmail.com`
@@ -111,7 +76,7 @@ To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Change
 
 ### COPYRIGHT
     
-Copyright (C) 2010-2012  Ivailo Monev
+Copyright (C) 2010-2013  Ivailo Monev
 
 License: GPLv2
 
