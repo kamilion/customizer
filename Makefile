@@ -1,6 +1,6 @@
 VERSION = 4.0.0
 DESTDIR =
-BINDIR = /bin
+BINDIR = /sbin
 ETCDIR = /etc
 SHAREDIR = /usr/share
 
@@ -11,7 +11,7 @@ static: clean
 	cd build && python2 ../pyinstaller/pyinstaller.py --onefile --name=customizer --noconfirm ../src/main.py
 	
 install:
-	install -vdm755 $(DESTDIR)/$(ETCDIR)/spm $(DESTDIR)/$(BINDIR)
+	install -vdm755 $(DESTDIR)/$(ETCDIR)/spm $(DESTDIR)/$(BINDIR) $(DESTDIR)/$(SHAREDIR)/customizer/
 	install -vm755 build/dist/customizer $(DESTDIR)/$(BINDIR)/customizer
 	install -vm644 data/customizer.conf $(DESTDIR)/$(ETCDIR)/
 	install -vm644 data/exclude.list $(DESTDIR)/$(SHAREDIR)/customizer/
@@ -31,4 +31,4 @@ dist: clean
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
 
-.PHONY: all bump static man html install install-misc install-man install-shared uninstall dist clean-build clean-doc clean-dist clean
+.PHONY: all bump static install uninstall dist clean
