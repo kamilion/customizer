@@ -180,7 +180,7 @@ echo "$DIST $VERSION "$CODENAME" - Release $ARCH (`date "+%Y%m%d"`)" > "$WORK_DI
 ################# Creating md5sum and ISO  #################
 cd "$WORK_DIR/ISO"
 INFO_MESSAGE "Creating MD5Sums"
-(find . -type f -print0 | xargs -0 md5sum | grep -v "\./md5sum.txt") > md5sum.txt || ERROR_MESSAGE "Unable to create the md5sum"
+find . -type f \! -name 'md5sum.txt' -exec md5sum '{}' + > md5sum.txt || ERROR_MESSAGE "Unable to create the md5sum"
 
 INFO_MESSAGE "Creating ISO"
 (genisoimage -r -V "$DIST-$ARCH-$VERSION" -b isolinux/isolinux.bin -c isolinux/boot.cat \
