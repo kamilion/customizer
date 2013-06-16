@@ -133,10 +133,16 @@ if [ "$BOOT_FILES" = "1" ]; then
 	rm -f "$WORK_DIR/FileSystem/boot/config"*
 fi
 
-#################### creating ISO image #####################
+#################### Compress filesystem #####################
 
 INFO_MESSAGE "Creating squashed FileSystem"
-mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list -comp ${COMPRESSION} || ERROR_MESSAGE "Unable to squash the filesystem"
+# ugly, but it works. also checking for a future version
+if [ "$(mksquashfs -version | head -n1 | grep -e '4.2' -e '4.3')" ];then
+	mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list -comp ${COMPRESSION} || ERROR_MESSAGE "Unable to squash the filesystem"
+else
+	WARNING_MESSAGE "Old mksquashfs version detected, compresses option ommited"
+	mksquashfs "$WORK_DIR/FileSystem" "$WORK_DIR/ISO/casper/filesystem.squashfs" -wildcards -ef /opt/Customizer/exclude.list || ERROR_MESSAGE "Unable to squash the filesystem"
+fi
 
 INFO_MESSAGE "Checking filesystem size"
 FS_SIZE="`du -sx  --block-size=1 "$WORK_DIR/ISO/casper/filesystem.squashfs" | cut -f1`"
