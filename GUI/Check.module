@@ -16,10 +16,9 @@ END
 
 
 PUBLIC SUB X_session()
-  DIM Xsessions AS Variant
+  DIM Xsessions AS Integer = 0
   
   Func.Event_Msg("Checking for X-sessions links")
-  Xsessions = 0
   TRY Xsessions = Dir(WorkDir & "/FileSystem/usr/share/xsessions").Count
 
   IF Xsessions >= 1 THEN
