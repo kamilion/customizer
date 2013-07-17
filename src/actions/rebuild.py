@@ -33,20 +33,23 @@ def detect_boot():
 
 
 def main():
+	message.sub_info('Checking')
+	check()
+
 	message.sub_info('Doing sanity checks')
 	lsb_file = misc.join_paths(configparser.FILESYSTEM_DIR, 'etc/lsb-release')
 	if not os.path.isfile(lsb_file):
-		message.sub_critical(lsb_file + 'does not exists')
+		message.sub_critical(lsb_file + ' does not exists')
 		sys.exit(2)
 		
 	casper_file = misc.join_paths(configparser.FILESYSTEM_DIR, 'etc/casper.conf')
 	if not os.path.isfile(casper_file):
-		message.sub_critical(casper_file + 'does not exists')
+		message.sub_critical(casper_file + ' does not exists')
 		sys.exit(2)
 	
 	isolinux_dir = misc.join_paths(configparser.ISO_DIR, 'isolinux')
 	if not os.path.isdir(isolinux_dir):
-		message.sub_critical(isolinux_dir + 'does not exist')
+		message.sub_critical(isolinux_dir + ' does not exist')
 		sys.exit(2)
 	
 	disk_dir = misc.join_paths(configparser.ISO_DIR, '.disk')
