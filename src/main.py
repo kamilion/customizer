@@ -9,6 +9,7 @@ import lib.misc as misc
 
 import actions.extract as extract
 import actions.chroot as chroot
+import actions.clean as clean
 
 try:
 	if not misc.check_uid():
@@ -22,6 +23,10 @@ try:
 	if argparser.ARGS.chroot == True:
 		message.info('Chrooting...')
 		chroot.main()
+		
+	if argparser.ARGS.clean == True:
+		message.info('Cleaning up...')
+		clean.main()
 
 			
 except ConfigParser.Error as detail:
