@@ -13,7 +13,7 @@ LOCALES = "C"
 CHROOT_HELPER = True
 RESOLUTION = "800x600"
 COMPRESSION = "xz"
-BOOT_FILES = "False"
+BOOT_FILES = False
 VRAM = "256"
 ISO = ""
 DEB = ""
@@ -32,7 +32,7 @@ LOCALES = conf.get('preferences', 'LOCALES')
 CHROOT_HELPER = conf.getboolean('preferences', 'CHROOT_HELPER')
 RESOLUTION = conf.get('preferences', 'RESOLUTION')
 COMPRESSION = conf.get('preferences', 'COMPRESSION')
-BOOT_FILES = conf.get('preferences', 'BOOT_FILES')
+BOOT_FILES = conf.getboolean('preferences', 'BOOT_FILES')
 VRAM = conf.get('preferences', 'VRAM')
 
 ISO = conf.get('saved', 'ISO')
