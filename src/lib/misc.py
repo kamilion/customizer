@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import os, sys, re, shutil, urllib2, tarfile, gzip, subprocess, traceback
+import os, re, shutil, urllib2, tarfile, gzip, subprocess, traceback
 
 import lib.message as message
 import lib.configparser as configparser
@@ -18,11 +18,24 @@ def whereis(program):
             return os.path.join(path, program)
     return None
 
+def check_connectivity():
+    try:
+        urllib2.urlopen('http://www.google.com', timeout=1)
+        return True
+    except urllib2.URLError:
+        return False
+
+def unique(string):
+	new = []
+	for s in string:
+		if not search_string(s, new, exact=True):
+			new.append(s)
+	return new
+
 ''' Variables operations '''
 def strip_list(string):
     message.sub_traceback(traceback.extract_stack(limit=2)[0])
-    chars = ['[', ']', "'", ',']
-    for char in chars:
+    for char in ['[', ']', "'", ',']:
         string = str(string).replace(char, '')
     return string
 
@@ -56,17 +69,17 @@ def copy_dir(src, dst, symlinks=True, ignore=None):
         s = os.path.join(src, item)
         d = os.path.join(dst, item)
         if os.path.isdir(s):
-            copytree(s, d, symlinks, ignore)
+            shutil.copytree(s, d, symlinks, ignore)
         else:
             if not os.path.exists(d) or os.stat(src).st_mtime - os.stat(dst).st_mtime > 1:
                 shutil.copy2(s, d)
 
 def move_dir(src, dst):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
-    for src_dir, dirs, files in os.walk(src, topdown=True, onerror=None, followlinks=False):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	for src_dir, dirs, files in os.walk(src, topdown=True, onerror=None, followlinks=False):
 		dst_dir = src_dir.replace(src, dst)
 		if not os.path.exists(dst_dir):
-			os.mkdir(dst_dir)
+			os.makedirs(dst_dir)
 		for file_ in files:
 			src_file = os.path.join(src_dir, file_)
 			dst_file = os.path.join(dst_dir, file_)
@@ -84,11 +97,108 @@ def size_dir(src):
 		total_size += os.path.getsize(sfile)
 	return total_size
 
+def fetch_check(url, destination):
+	# not all requests can get content-lenght , this means that there is no way
+	# to tell if the archive is corrupted (checking if size == 0 is not enough)
+	# so the source is re-feteched   
+
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	remote_file = urllib2.urlopen(url)
+
+	if os.path.isfile(destination):
+		local_size = os.path.getsize(destination)
+		remote_size = remote_file.headers.get("content-length")
+				
+		if not remote_size:
+			return False
+		elif int(local_size) == int(remote_size):
+			return True
+	else:
+		return False
+
+def fetch(url, destination):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	remote_file = urllib2.urlopen(url)
+	dest_dir = os.path.dirname(destination)
+	
+	if not os.path.isdir(dest_dir):
+		os.makedirs(dest_dir)
+	
+	output = open(destination,'wb')
+	output.write(remote_file.read())
+	output.close()
+
+''' Archive operations '''
+def size_archive(star, sfile):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	size = None
+	tar = tarfile.open(star, 'r')
+	for i in tar.getmembers():
+		if i.name == sfile:
+			size = i.size
+	tar.close()
+	return size
+
+def compress_dir(src, dst, method='bz2'):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	dirname = os.path.dirname(dst)
+	if not os.path.isdir(dirname):
+		os.makedirs(dirname)
+		
+	os.chdir(src)
+	tar = tarfile.open(dst, 'w:' + method)
+	tar.add(src, '/')
+	tar.close()
+
+def compress_file(sfile, dst, method='gz', enc='UTF-8'):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	dirname = os.path.dirname(dst)
+	if not os.path.isdir(dirname):
+		os.makedirs(dirname)
+		
+	tar = tarfile.open(dst, 'w:' + method, encoding=enc)
+	tar.add(sfile, '/')
+	tar.close()
+
+def gzip_file(sfile, dst):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	dirname = os.path.dirname(dst)
+	if not os.path.isdir(dirname):
+		os.makedirs(dirname)
+		
+	f_in = open(sfile, 'rb')
+	f_out = gzip.open(sfile + '.gz', 'wb')
+	f_out.writelines(f_in)
+	f_out.close()
+	f_in.close()
+
+def decompress_archive(src, dst):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	if not os.path.isdir(dst):
+		os.makedirs(dst)
+
+	# FIXME: this is a workaround for xz archives
+	if src.endswith('.xz'):
+		subprocess.check_call([whereis('tar'), '-xaf', src, '-C', dst])
+	else:
+		tar = tarfile.open(src, 'r')
+		os.chdir(dst)
+		tar.extractall()
+		tar.close()
+
+def list_archive(src):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	tar = tarfile.open(src)
+	content = tar.getnames()
+	tar.close()
+	return content
+
+
 ''' File operations '''
 def mime_file(sfile):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
 	# return mimetypes.guess_type(file)
-	return get_output(['file', '--brief', '--mime-type', sfile])
+	return get_output([whereis('file'), '--brief', '--mime-type', sfile])
 
 def read_file(sfile):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
@@ -123,11 +233,12 @@ def get_output(command):
 ''' Misc '''
 def search_string(string, string2, exact=False, escape=True):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
-	if exact == True and escape == True:
-		return re.search(re.escape(string) + '\\Z|' + re.escape(string) + '\\s', strip_list(string2))
-	elif exact == True:
-		return re.search(string + '\\Z|' + string + '\\s', strip_list(string2))
-	elif escape == True:
+
+	if exact and escape:
+		return re.search('(\\s|^)' + re.escape(string) + '(\\s|$)', strip_list(string2))
+	elif exact:
+		return re.search('(\\s|^)' + string + '(\\s|$)', strip_list(string2))
+	elif escape:
 		return re.search(re.escape(string), strip_list(string2))
 	else:
 		return re.search(string, str(string2))
@@ -161,7 +272,7 @@ def chroot_exec(command):
 			if not os.path.ismount(sdir):
 				if not os.path.isdir(sdir):
 					os.makedirs(sdir)
-				subprocess.check_call(['mount', '--rbind', s, sdir])
+				subprocess.check_call([whereis('mount'), '--rbind', s, sdir])
 		os.chroot(configparser.FILESYSTEM_DIR)
 		subprocess.check_call(command)
 	finally:
@@ -171,4 +282,4 @@ def chroot_exec(command):
 		for s in ['/proc', '/dev', '/sys']:
 			sdir = configparser.FILESYSTEM_DIR + s
 			if os.path.ismount(sdir):
-				subprocess.check_call(['umount', '--force', '--lazy', sdir])
+				subprocess.check_call([whereis('umount'), '--force', '--lazy', sdir])
