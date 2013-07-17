@@ -265,8 +265,11 @@ def list_dirs(directory):
 
 def chroot_exec(command, output=False):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	real_root = os.open('/', os.O_RDONLY)
 	try:
-		real_root = os.open("/", os.O_RDONLY)
+		if os.path.isfile('/etc/resolv.conf'):
+			shutil.copyfile('/etc/resolv.conf', configparser.FILESYSTEM_DIR + '/etc/resolv.conf')
+		
 		for s in ['/proc', '/dev', '/sys']:
 			sdir = configparser.FILESYSTEM_DIR + s
 			if not os.path.ismount(sdir):

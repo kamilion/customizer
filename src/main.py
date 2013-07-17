@@ -9,6 +9,7 @@ import lib.misc as misc
 
 import actions.extract as extract
 import actions.chroot as chroot
+import actions.pkgm as pkgm
 import actions.clean as clean
 
 try:
@@ -27,7 +28,10 @@ try:
 	if argparser.ARGS.clean == True:
 		message.info('Cleaning up...')
 		clean.main()
-
+	
+	if argparser.ARGS.pkgm == True:
+		message.info('Running package manager...')
+		pkgm.main()
 			
 except ConfigParser.Error as detail:
 	message.critical('CONFIGPARSER' + str(detail))
