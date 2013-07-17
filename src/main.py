@@ -11,6 +11,10 @@ import actions.extract as extract
 import actions.chroot as chroot
 
 try:
+	if not misc.check_uid():
+		message.critical('You are not root')
+		sys.exit(2)
+
 	if argparser.ARGS.extract == True:
 		message.info('Extracting...')
 		extract.main()
@@ -41,6 +45,8 @@ except re.error as detail:
 except KeyboardInterrupt:
 	message.critical('Interupt signal received')
 	sys.exit(11)
+except SystemExit:
+	sys.exit(2)
 except:
 	message.mark_critical('Unexpected error', sys.exc_info()[0])
 	raise

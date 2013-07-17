@@ -62,7 +62,6 @@ def main():
 
 	message.sub_info('Copying ISO files')
 	for sfile in misc.list_files(mount_dir):
-		print sfile
 		if sfile.startswith(mount_dir + '/casper'):
 			continue
 		elif sfile == mount_dir + '/md5sum.txt' or sfile == mount_dir + '/README.diskdefines':
