@@ -224,6 +224,22 @@ def write_file(sfile, content):
 	content = wfile.write(content)
 	wfile.close()
 
+def append_file(sfile, content):
+	message.sub_traceback(traceback.extract_stack(limit=2)[0])
+	dirname = os.path.dirname(sfile)
+	if not os.path.isdir(dirname):
+		os.makedirs(dirname)
+
+	afile = open(sfile, 'a')
+	content = afile.write(content)
+	afile.close()
+
+def copy_file(source, destination):
+	base = os.path.dirname(destination)
+	if not os.path.isdir(base):
+		os.makedirs(base)
+	shutil.copyfile(source, destination)
+
 ''' System operations '''
 def get_output(command):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
@@ -268,7 +284,7 @@ def chroot_exec(command, output=False):
 	real_root = os.open('/', os.O_RDONLY)
 	try:
 		if os.path.isfile('/etc/resolv.conf'):
-			shutil.copyfile('/etc/resolv.conf', configparser.FILESYSTEM_DIR + '/etc/resolv.conf')
+			copy_file('/etc/resolv.conf', configparser.FILESYSTEM_DIR + '/etc/resolv.conf')
 		
 		for s in ['/proc', '/dev', '/sys']:
 			sdir = configparser.FILESYSTEM_DIR + s

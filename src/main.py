@@ -10,6 +10,7 @@ import lib.misc as misc
 import actions.extract as extract
 import actions.chroot as chroot
 import actions.pkgm as pkgm
+import actions.rebuild as rebuild
 import actions.clean as clean
 
 try:
@@ -24,14 +25,18 @@ try:
 	if argparser.ARGS.chroot == True:
 		message.info('Chrooting...')
 		chroot.main()
-		
-	if argparser.ARGS.clean == True:
-		message.info('Cleaning up...')
-		clean.main()
 	
 	if argparser.ARGS.pkgm == True:
 		message.info('Running package manager...')
 		pkgm.main()
+		
+	if argparser.ARGS.rebuild == True:
+		message.info('Rebuilding ISO...')
+		rebuild.main()
+		
+	if argparser.ARGS.clean == True:
+		message.info('Cleaning up...')
+		clean.main()
 			
 except ConfigParser.Error as detail:
 	message.critical('CONFIGPARSER' + str(detail))

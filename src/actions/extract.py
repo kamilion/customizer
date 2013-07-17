@@ -67,13 +67,7 @@ def main():
 		elif sfile == mount_dir + '/md5sum.txt' or sfile == mount_dir + '/README.diskdefines':
 			continue
 		else:
-			new_file = sfile.replace(mount_dir, configparser.ISO_DIR)
-			new_dir = os.path.dirname(new_file)
-			
-			if not os.path.isdir(new_dir):
-				os.makedirs(new_dir)
-				
-			shutil.copyfile(sfile, new_file)
+			misc.copy_file(sfile, sfile.replace(mount_dir, configparser.ISO_DIR))
 
 	message.mark_sub_info('Unmounting', mount_dir)
 	subprocess.check_call([misc.whereis('umount'), mount_dir])
