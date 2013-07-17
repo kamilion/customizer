@@ -263,7 +263,7 @@ def list_dirs(directory):
 				slist.append(os.path.join(root, sdir))
 	return slist
 
-def chroot_exec(command):
+def chroot_exec(command, output=False):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
 	try:
 		real_root = os.open("/", os.O_RDONLY)
@@ -274,7 +274,11 @@ def chroot_exec(command):
 					os.makedirs(sdir)
 				subprocess.check_call([whereis('mount'), '--rbind', s, sdir])
 		os.chroot(configparser.FILESYSTEM_DIR)
-		subprocess.check_call(command)
+		os.chdir('/')
+		if output == True:
+			get_output(command)
+		else:
+			subprocess.check_call(command)
 	finally:
 		os.fchdir(real_root)
 		os.chroot(".")

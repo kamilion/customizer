@@ -1,22 +1,23 @@
 #!/usr/bin/python2
 
-import sys
+import sys, ConfigParser, subprocess, shutil, os, re
     
 import lib.configparser as configparser
 import lib.argparser as argparser
 import lib.message as message
 import lib.misc as misc
 
-import ConfigParser, subprocess, shutil, os, re
+import actions.extract as extract
+import actions.chroot as chroot
 
 try:
 	if argparser.ARGS.extract == True:
-		# message.info("Runtime information")
-		# message.mark_sub_info("CACHE_DIR", configparser.CACHE_DIR)
-		print 'extracting..' 
+		message.info('Extracting...')
+		extract.main()
     
 	if argparser.ARGS.chroot == True:
-		print 'chrooting..'
+		message.info('Chrooting...')
+		chroot.main()
 
 			
 except ConfigParser.Error as detail:
