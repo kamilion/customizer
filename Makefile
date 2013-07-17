@@ -1,6 +1,6 @@
 VERSION = 4.0.0
 DESTDIR =
-BINDIR = /sbin
+BINDIR = /usr/sbin
 ETCDIR = /etc
 SHAREDIR = /usr/share
 
@@ -8,7 +8,7 @@ all: static
 
 static: clean
 	mkdir -p build
-	cd build && python2 ../pyinstaller/pyinstaller.py --onefile --name=customizer --noconfirm ../src/main.py
+	cd build && python2 ../pyinstaller/pyinstaller.py --strip --onefile --name=customizer --noconfirm ../src/main.py
 	
 install:
 	install -vdm755 $(DESTDIR)/$(ETCDIR)/spm $(DESTDIR)/$(BINDIR) $(DESTDIR)/$(SHAREDIR)/customizer/
@@ -26,7 +26,7 @@ bump:
 	git log > ChangeLog
 
 dist: clean
-	git archive HEAD --prefix=customizer_$(VERSION)/ | xz > customizer_$(VERSION).tar.xz
+	git archive HEAD --prefix=customizer-$(VERSION)/ | xz > customizer-$(VERSION).tar.xz
 
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
