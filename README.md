@@ -16,20 +16,20 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
 ### OPTIONS
 
-  -h, --help       show this help message and exit
-  -e, --extract    Exctract ISO image
-  -c, --chroot     Chroot into the filesystem
-  -x, --xnest      Execute nested X-session
-  -p, --pkgm       Execute package manager
-  -d, --deb        Install Debian package
-  -k, --hook       Execute hook
-  -g, --gui        Install GUI (DE/WM)
-  -r, --rebuild    Rebuild the ISO image
-  -q, --qemu       Test the builded image with QEMU
-  -t, --clean      Clean all temporary files and folders
-  -D, --debug      Enable debug messages
-  -T, --traceback  Enable traceback messages
-  -v, --version    Show Customizer version and exits
+    -h, --help       show this help message and exit
+    -e, --extract    Exctract ISO image
+    -c, --chroot     Chroot into the filesystem
+    -x, --xnest      Execute nested X-session
+    -p, --pkgm       Execute package manager
+    -d, --deb        Install Debian package
+    -k, --hook       Execute hook
+    -g, --gui        Install GUI (DE/WM)
+    -r, --rebuild    Rebuild the ISO image
+    -q, --qemu       Test the builded image with QEMU
+    -t, --clean      Clean all temporary files and folders
+    -D, --debug      Enable debug messages
+    -T, --traceback  Enable traceback messages
+    -v, --version    Show Customizer version and exits
 
 ### ENVIRONMENT
 
