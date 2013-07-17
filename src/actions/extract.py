@@ -6,6 +6,15 @@ import lib.misc as misc
 import lib.configparser as configparser
 import lib.message as message
 
+def check():
+	if not os.path.isfile(configparser.ISO):
+		message.mark_sub_critical('ISO does not exists', configparser.ISO)
+		sys.exit(2)
+	elif not configparser.ISO.endswith('.iso'):
+		message.mark_sub_critical('File is not ISO', configparser.ISO)
+		sys.exit(2)
+	
+
 def create_work_dirs():
 	if not os.path.isdir(configparser.FILESYSTEM_DIR):
 		message.mark_sub_info('Creating', configparser.FILESYSTEM_DIR)
@@ -26,9 +35,8 @@ def clean_work_dirs():
 		shutil.rmtree(configparser.ISO_DIR)
 		
 def main():
-	if not os.path.isfile(configparser.ISO):
-		message.mark_sub_critical('ISO does not exists', configparser.ISO)
-		sys.exit(2)
+	message.sub_info('Checking')
+	check()
 	
 	clean_work_dirs()
 	create_work_dirs()
@@ -54,9 +62,9 @@ def main():
 	subprocess.check_call([misc.whereis('unsquashfs'), '-f', '-d', configparser.FILESYSTEM_DIR, mount_dir + '/casper/filesystem.squashfs'])
 	
 	message.sub_info('Checking architecture')
-	architecture = misc.chroot_exec(['dpkg', '--print-architecture'], output=True)
+	architecture = misc.chroot_exec(['dpkg', '--print-architecture'], prepare=False, mount=False, output=True)
 	if architecture == 'amd64' and not os.uname()[4] == 'x86_64':
-		message.sub_critical('The ISOs architecture is amd64 and yours is not')
+		message.sub_critical('The ISO architecture is amd64 and yours is not')
 		clean_work_dirs
 		sys.exit(2)
 

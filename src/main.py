@@ -10,6 +10,7 @@ import lib.misc as misc
 import actions.extract as extract
 import actions.chroot as chroot
 import actions.pkgm as pkgm
+import actions.deb as deb
 import actions.rebuild as rebuild
 import actions.clean as clean
 
@@ -18,23 +19,27 @@ try:
 		message.critical('You are not root')
 		sys.exit(2)
 
-	if argparser.ARGS.extract == True:
+	if argparser.ARGS.extract:
 		message.info('Extracting...')
 		extract.main()
     
-	if argparser.ARGS.chroot == True:
+	if argparser.ARGS.chroot:
 		message.info('Chrooting...')
 		chroot.main()
 	
-	if argparser.ARGS.pkgm == True:
+	if argparser.ARGS.pkgm:
 		message.info('Running package manager...')
 		pkgm.main()
+	
+	if argparser.ARGS.deb:
+		message.info('Installing Debian package...')
+		deb.main()
 		
-	if argparser.ARGS.rebuild == True:
+	if argparser.ARGS.rebuild:
 		message.info('Rebuilding ISO...')
 		rebuild.main()
 		
-	if argparser.ARGS.clean == True:
+	if argparser.ARGS.clean:
 		message.info('Cleaning up...')
 		clean.main()
 			

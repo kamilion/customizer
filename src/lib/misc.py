@@ -11,11 +11,15 @@ def check_uid():
 		return True
 	return False
 
-def whereis(program):
+def whereis(program, chroot=False):
     message.sub_traceback(traceback.extract_stack(limit=2)[0])
     for path in os.environ.get('PATH', '').split(':'):
-        if os.path.isfile(os.path.join(path, program)):
-            return os.path.join(path, program)
+        if chroot:
+		bin = join_paths(configparser.FILESYSTEM_DIR, path, program)
+	else:
+		bin = join_paths(path, program)
+	if os.path.isfile(bin):
+            return bin
     return None
 
 def check_connectivity():
@@ -243,7 +247,7 @@ def copy_file(source, destination):
 ''' System operations '''
 def get_output(command):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
-	pipe = subprocess.Popen(command, stdout=subprocess.PIPE)
+	pipe = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	return pipe.communicate()[0].strip()
 
 ''' Misc '''
@@ -279,19 +283,23 @@ def list_dirs(directory):
 				slist.append(os.path.join(root, sdir))
 	return slist
 
-def chroot_exec(command, output=False):
+def chroot_exec(command, prepare=True, mount=True, output=False):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
 	real_root = os.open('/', os.O_RDONLY)
 	try:
-		if os.path.isfile('/etc/resolv.conf'):
-			copy_file('/etc/resolv.conf', configparser.FILESYSTEM_DIR + '/etc/resolv.conf')
+		# FIXME: /proc/mtab
+		if prepare:
+			if os.path.isfile('/etc/resolv.conf'):
+				copy_file('/etc/resolv.conf', configparser.FILESYSTEM_DIR + '/etc/resolv.conf')
 		
-		for s in ['/proc', '/dev', '/sys']:
-			sdir = configparser.FILESYSTEM_DIR + s
-			if not os.path.ismount(sdir):
-				if not os.path.isdir(sdir):
-					os.makedirs(sdir)
-				subprocess.check_call([whereis('mount'), '--rbind', s, sdir])
+		if mount:
+			for s in ['/proc', '/dev', '/sys']:
+				sdir = configparser.FILESYSTEM_DIR + s
+				if not os.path.ismount(sdir):
+					if not os.path.isdir(sdir):
+						os.makedirs(sdir)
+					subprocess.check_call([whereis('mount'), '--rbind', s, sdir])
+					
 		os.chroot(configparser.FILESYSTEM_DIR)
 		os.chdir('/')
 		if output == True:
@@ -302,7 +310,9 @@ def chroot_exec(command, output=False):
 		os.fchdir(real_root)
 		os.chroot(".")
 		os.close(real_root)
-		for s in ['/proc', '/dev', '/sys']:
-			sdir = configparser.FILESYSTEM_DIR + s
-			if os.path.ismount(sdir):
-				subprocess.check_call([whereis('umount'), '--force', '--lazy', sdir])
+		
+		if mount:
+			for s in ['/proc', '/dev', '/sys']:
+				sdir = configparser.FILESYSTEM_DIR + s
+				if os.path.ismount(sdir):
+					subprocess.check_call([whereis('umount'), '--force', '--lazy', sdir])

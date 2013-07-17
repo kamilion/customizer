@@ -62,31 +62,29 @@ def main():
 		misc.write_file(cd_file, 'full_cd/single')
 
 	base_file = misc.join_paths(disk_dir, 'base_installable')
-	print base_file
 	if os.path.isfile(misc.join_paths(configparser.FILESYSTEM_DIR, 'usr/bin/ubiquity')):
 		if not os.path.isfile(base_file):
 			misc.write_file(base_file, '')
 	elif os.path.isfile(base_file):
 		os.unlink(base_file)
 
-	print 'check2'
 	uuid_file = misc.join_paths(disk_dir, 'casper-uuid-generic')
 	if not os.path.isfile(uuid_file):
 		misc.write_file(uuid_file, 'f01d0b93-4f0e-4e95-93ae-e3d0e114d4f7')
 	
-	print 'check'
 	url_file = misc.join_paths(disk_dir, 'release_notes_url')
 	if not os.path.isfile(url_file):
 		misc.write_file(url_file, 'http://www.ubuntu.com/getubuntu/releasenotes')
 
 	message.sub_info('Loading configs')
-	ARCH = misc.chroot_exec(['dpkg', '--print-architecture'], output=True)
+	ARCH = misc.chroot_exec(['dpkg', '--print-architecture'], prepare=False, mount=False, output=True)
 	RELEASE_NOTES_URL = misc.read_file(misc.join_paths(disk_dir, 'release_notes_url'))
 	DIST = misc.strip_list(misc.search_file('^DISTRIB_ID=', configparser.FILESYSTEM_DIR + '/etc/lsb-release', escape=False)).replace('DISTRIB_ID=', '')
 	VERSION = misc.strip_list(misc.search_file('^DISTRIB_RELEASE=', configparser.FILESYSTEM_DIR + '/etc/lsb-release', escape=False)).replace('DISTRIB_RELEASE=', '')
 	CODENAME = misc.strip_list(misc.search_file('^DISTRIB_CODENAME=', configparser.FILESYSTEM_DIR + '/etc/lsb-release', escape=False)).replace('DISTRIB_CODENAME=', '')
 	LIVEUSERNAME = misc.strip_list(misc.search_file('^export USERNAME=', configparser.FILESYSTEM_DIR + '/etc/casper.conf', escape=False)).replace('export USERNAME=', '')
 
+	message.sub_info('Cleaning up')
 	for sfile in ['casper/filesystem.squashfs', 'casper/initrd.lz', 'casper/vmlinuz',
 		'casper/vmlinuz.efi', 'casper/filesystem.manifest', 'casper/filesystem.manifest-desktop'
 		'casper/filesystem.size', 'casper/README.diskdefines' 'md5sum.txt']:
@@ -129,19 +127,9 @@ def main():
 
 	# maybe use squashfs.remove() ?
 	message.sub_info('Creating squashed FileSystem')
-	squashfs = ['mksquashfs', configparser.FILESYSTEM_DIR,
-		misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.squashfs'),
-		'-wildcards', '-ef', '/opt/Customizer/exclude.list', '-comp', configparser.COMPRESSION]
-	# 1. ugly, but it works. also checking for a future version
-	# 2. the output can be split and only first line parsed but the output may be None
-	for line in misc.get_output(['mksquashfs', '-version']):
-		if line.startswith('mksquashfs version 4.2'):
-			squashfs = ['mksquashfs', configparser.FILESYSTEM_DIR,
+	subprocess.check_call(['mksquashfs', configparser.FILESYSTEM_DIR,
 				misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.squashfs'),
-				'-wildcards', '-ef', '/opt/Customizer/exclude.list', '-comp', configparser.COMPRESSION]
-			break
-
-	subprocess.check_call(squashfs)
+				'-wildcards', '-ef', '/opt/Customizer/exclude.list', '-comp', configparser.COMPRESSION])
 	
 	message.sub_info('Checking filesystem size')
 	fs_size = os.path.getsize(misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.squashfs'))
@@ -150,12 +138,12 @@ def main():
 		sys.exit(2)
 
 	message.sub_info('Creating filesystem.size')
-	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.size'), fs_size)
+	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.size'), str(fs_size))
 
 	message.sub_info('Creating filesystem.manifest')
-	packages_list = misc.chroot_exec(['dpkg-query', '-W', '--showformat="${Package} ${Version}\n"'], output=True)
-	# packages_list = misc.chroot_exec(['dpkg-query', '-W', '--showformat='], output=True)
-	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/casper/filesystem.manifest'), packages_list)
+	packages_list = misc.chroot_exec(["dpkg-query", "-W", "--showformat='${Package} ${Version}\\n'"], prepare=False, mount=False, output=True)
+	print packages_list
+	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/casper/filesystem.manifest'), str(packages_list))
 
 	message.sub_info('Creating filesystem.manifest-desktop')
 	for pkg in ['ubiquity', 'casper', 'live-initramfs', 'user-setup', 'discover1', 'xresprobe', 'libdebian-installer4']:
