@@ -47,6 +47,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 ### INSTALL AND RUN
 
     make && sudo make install
+    sudo customizer -h
    
 ### AUTHORS
 
