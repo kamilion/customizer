@@ -34,7 +34,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 ### ENVIRONMENT
 
     /etc/customizer.conf  -  configuration file
-
+    /usr/share/customizer/exclude.list - files/dirs to exclude when compressing filesystem
 
 ### REQUIREMENTS
 
