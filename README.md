@@ -73,8 +73,8 @@ Example of issue submission details:
     Error 119: No kernel found when compiling image.
 
 The developers will look into submitted issues from time to time, usually a day or two.
-Only issues found in latest versions of Customizer are concerned. Issues in older versions will
-be ignored.
+Only issues found in latest versions of Customizer are concerned. Issues in older versions
+will be ignored.
 
 To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Changes-log
 
@@ -93,7 +93,8 @@ documentation is contributed. As December 2011, Customizer development has moved
 GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). One year later, 
 as December 2012, Customizer stable release has hit 3.2.3.
 
-Presently maintained for compatibility fixes and documentation.
+Presently re-written from scratch with the goal to support Ubuntu releases newer than 11.10
+and extending its usefulness with features such as Web Interface.
 
 
 ### SEE ALSO
