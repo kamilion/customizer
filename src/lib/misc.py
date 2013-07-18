@@ -15,11 +15,11 @@ def whereis(program, chroot=False):
     message.sub_traceback(traceback.extract_stack(limit=2)[0])
     for path in os.environ.get('PATH', '').split(':'):
         if chroot:
-		program = join_paths(configparser.FILESYSTEM_DIR, path, program)
+		exe = join_paths(configparser.FILESYSTEM_DIR, path, program)
 	else:
-		program = join_paths(path, program)
-	if os.path.isfile(program):
-            return program
+		exe = join_paths(path, program)
+	if os.path.isfile(exe):
+            return exe
     return None
 
 def check_connectivity():
