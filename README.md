@@ -39,7 +39,10 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 ### REQUIREMENTS
 
     squashfs-tools (>=4.2)
-    genisoimage
+    xorriso
+    python2.7
+    squashfs-tools
+    make
 
 ### INSTALL AND RUN
 
