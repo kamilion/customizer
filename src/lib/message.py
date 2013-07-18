@@ -1,13 +1,16 @@
 #!/usr/bin/python2
 
-import sys
+import sys, os
 
-COLORS = True
+COLORS = False
 DEBUG = False
 TRACEBACK = False
 
-if COLORS == True:
-	color_marker = '\033[1;37m'
+for handle in [sys.stdout, sys.stderr]:
+	if (hasattr(handle, "isatty") and handle.isatty()) or ('TERM' in os.environ and os.environ['TERM']=='ANSI'):
+		COLORS = True
+
+if COLORS:
 	color_info = '\033[1;32m'
 	color_warning = '\033[1;33m'
 	color_critical = '\033[1;31m'
@@ -15,7 +18,6 @@ if COLORS == True:
 	color_traceback= '\033[1;34m'
 	color_normal = '\033[0m'
 else:
-	color_marker = ''
 	color_info = ''
 	color_warning = ''
 	color_critical = ''
@@ -39,13 +41,13 @@ def critical(msg):
     print(color_critical + "* " + color_normal + msg)
     
 def debug(msg):
-	if DEBUG == True:
+	if DEBUG:
 		''' Prints out a message with an DEBUG status '''
 		msg = str(msg)
 		print(color_debug + "* " + color_normal + msg)
 
 def traceback(msg):
-	if TRACEBACK == True:
+	if TRACEBACK:
 		''' Prints out a message with an TRACEBACK status '''
 		msg = str(msg)
 		print(color_traceback + "* " + color_normal + msg)
@@ -70,14 +72,14 @@ def mark_critical(msg, marker):
     print(color_critical + "* " + color_normal + msg + ": " + color_critical + marker + color_normal)
     
 def mark_debug(msg, marker):
-	if DEBUG == True:
+	if DEBUG:
 		''' Prints out a message with an DEBUG status and extra marker '''
 		msg = str(msg)
 		marker = str(marker)
 		print(color_debug + "* " + color_normal + msg + ": " + color_debug + marker + color_normal)
 	
 def mark_traceback(msg, marker):
-	if TRACEBACK == True:
+	if TRACEBACK:
 		''' Prints out a message with an TRACEBACK status and extra marker '''
 		msg = str(msg)
 		marker = str(marker)
@@ -100,13 +102,13 @@ def sub_critical(msg):
     print(color_critical + "  => " + color_normal + msg)
     
 def sub_debug(msg):
-	if DEBUG == True:
+	if DEBUG:
 		''' Prints out a sub-message with an DEBUG status '''
 		msg = str(msg)
 		print(color_debug + "  => " + color_normal + msg)
    
 def sub_traceback(msg):
-	if TRACEBACK == True:
+	if TRACEBACK:
 		''' Prints out a sub-message with an TRACEBACK status '''
 		msg = str(msg)
 		print(color_traceback + "  => " + color_normal + msg)
@@ -131,14 +133,14 @@ def mark_sub_critical(msg, marker):
     print(color_critical + "  => " + color_normal + msg + ": " + color_critical + marker + color_normal)
 
 def mark_sub_debug(msg, marker):
-	if DEBUG == True:
+	if DEBUG:
 		''' Prints out a sub-message with an DEBUG status and extra marker'''
 		msg = str(msg)
 		marker = str(marker)
 		print(color_debug + "  => " + color_normal + msg + ": " + color_debug + marker + color_normal)
 		
 def mark_sub_traceback(msg, marker):
-	if TRACEBACK == True:
+	if TRACEBACK:
 		''' Prints out a sub-message with an TRACEBACK status and extra marker'''
 		msg = str(msg)
 		marker = str(marker)

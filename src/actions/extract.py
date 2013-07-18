@@ -53,9 +53,9 @@ def main():
 		if not os.path.exists(sfile):
 			invalid_iso = True
 			
-	if invalid_iso == True:
+	if invalid_iso:
 		message.mark_sub_critical('Invalid ISO', configparser.ISO)
-		clean_work_dirs
+		clean_work_dirs()
 		sys.exit(2)
 
 	message.sub_info('Unsquashing filesystem')
@@ -65,7 +65,7 @@ def main():
 	architecture = misc.chroot_exec(['dpkg', '--print-architecture'], prepare=False, mount=False, output=True)
 	if architecture == 'amd64' and not os.uname()[4] == 'x86_64':
 		message.sub_critical('The ISO architecture is amd64 and yours is not')
-		clean_work_dirs
+		clean_work_dirs()
 		sys.exit(2)
 
 	message.sub_info('Copying ISO files')

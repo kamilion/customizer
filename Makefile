@@ -1,11 +1,13 @@
 VERSION = 4.0.0
 DESTDIR = 
+PYINSTALLER = python2 ../pyinstaller/pyinstaller.py
+PYCHECKER = python2 ../pychecker/pychecker/checker.py
 
 all: static
 
 static: clean
 	mkdir -p build
-	cd build && python2 ../pyinstaller/pyinstaller.py --strip --onefile \
+	cd build && $(PYINSTALLER) --strip --onefile \
 		--name=customizer --noconfirm ../src/main.py
 	
 install:
@@ -25,7 +27,10 @@ uninstall:
 	
 bump:
 	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/lib/argparser.py
-	git log > ChangeLog
+
+check:
+	cd src && $(PYCHECKER) --limit=1000 lib/configparser.py \
+		lib/message.py lib/misc.py actions/*.py
 
 dist: clean
 	git archive HEAD --prefix=customizer-$(VERSION)/ | xz > customizer-$(VERSION).tar.xz

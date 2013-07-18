@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, shutil, subprocess, hashlib, time
+import sys, os, subprocess, hashlib, time
 
 import lib.misc as misc
 import lib.configparser as configparser

@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, shutil, stat, subprocess
+import sys, os, stat
 
 import lib.misc as misc
 import lib.configparser as configparser
@@ -17,8 +17,8 @@ def main():
 	
 	message.sub_info('Copying HOOK file')
 	hook_file = misc.join_paths(configparser.FILESYSTEM_DIR, 'hook')
-	if os.path.isfile(deb_file):
-		os.unlink(deb_file)
+	if os.path.isfile(hook_file):
+		os.unlink(hook_file)
 	misc.copy_file(configparser.HOOK, hook_file)
 	
 	message.sub_info('Making HOOK executable')
