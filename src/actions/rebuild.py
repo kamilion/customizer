@@ -32,7 +32,7 @@ def check():
 def detect_boot():
 	global initrd
 	global vmlinuz
-	
+
 	initrd = None
 	vmlinuz = None
 	for sfile in misc.list_files(misc.join_paths(configparser.FILESYSTEM_DIR, 'boot')):

@@ -225,7 +225,7 @@ def write_file(sfile, content):
 		os.makedirs(dirname)
 
 	wfile = open(sfile, 'w')
-	content = wfile.write(content)
+	wfile.write(content)
 	wfile.close()
 
 def append_file(sfile, content):
@@ -235,7 +235,7 @@ def append_file(sfile, content):
 		os.makedirs(dirname)
 
 	afile = open(sfile, 'a')
-	content = afile.write(content)
+	afile.write(content)
 	afile.close()
 
 def copy_file(source, destination):
