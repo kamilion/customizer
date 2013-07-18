@@ -1,13 +1,17 @@
 ## Customizer v3.2.3
 
+     * Updated license/copyright year
      * Tweaked config file restore function to restore variables according to the current defaults
      * Compression variable is now used to choose SquashFS image compression
      * Expanded exclude.list to exclude more junk
      * Fixed QEMU start on Ubuntu 12.04 (issue #11)
      * Fixed regression in deb script (issue #9)
      * Fixed regression in xnest script (issue #7)
-     * Fixed gui and hook scripts
-     * Look only for files in /usr/share/xsession to enable 'Desktop' button
+     * Fixed detection of newer version of XFCE4 Terminal Emulator
+     * Fixed vmlinuz.efi not being copied on 12.4.2 or newer (issue #24)
+     * Fixed DISTRIB_ID and DISTRIB_RELEASE customization (issue #25)
+     * Using workaround for the squashfs-tools compression method issue
+     * Preventing possible string to integer comparison
      - Snapshots feature is no more
 
 -- SmiL3y <xakepa10@gmail.com>  Thu, 19 Jul 2012 03:26:23 UTC
