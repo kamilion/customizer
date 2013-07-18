@@ -1,0 +1,10 @@
+## Deploying
+
+sudo apt-get install xorriso python2.7 squashfs-tools make
+git clone --depth=1 -b devel https://github.com/fluxer/Customizer.git
+make && sudo make install
+
+## Usage
+
+sudo vim /etc/customizer.conf
+sudo customizer -ecr
