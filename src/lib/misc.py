@@ -255,13 +255,13 @@ def search_string(string, string2, exact=False, escape=True):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
 
 	if exact and escape:
-		return re.search('(\\s|^)' + re.escape(string) + '(\\s|$)', strip_list(string2))
+		return re.findall('(\\s|^)' + re.escape(string) + '(\\s|$)', strip_list(string2))
 	elif exact:
-		return re.search('(\\s|^)' + string + '(\\s|$)', strip_list(string2))
+		return re.findall('(\\s|^)' + string + '(\\s|$)', strip_list(string2))
 	elif escape:
-		return re.search(re.escape(string), strip_list(string2))
+		return re.findall(re.escape(string), strip_list(string2))
 	else:
-		return re.search(string, str(string2))
+		return re.findall(string, str(string2))
 
 def search_file(string, sfile, exact=False, escape=True):
 	message.sub_traceback(traceback.extract_stack(limit=2)[0])
@@ -302,8 +302,12 @@ def chroot_exec(command, prepare=True, mount=True, output=False):
 					
 		os.chroot(configparser.FILESYSTEM_DIR)
 		os.chdir('/')
-		if output == True:
-			get_output(command)
+		if prepare:
+			if not os.path.isfile('/etc/mtab'):
+				os.symlink('/proc/mounts', '/etc/mtab')
+		
+		if output:
+			output = get_output(command)
 		else:
 			subprocess.check_call(command)
 	finally:
@@ -316,3 +320,4 @@ def chroot_exec(command, prepare=True, mount=True, output=False):
 				sdir = configparser.FILESYSTEM_DIR + s
 				if os.path.ismount(sdir):
 					subprocess.check_call([whereis('umount'), '--force', '--lazy', sdir])
+		return output

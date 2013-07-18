@@ -14,7 +14,7 @@ def check():
 		message.mark_sub_critical('File is not ISO', configparser.ISO)
 		sys.exit(2)
 	
-
+# FIXME: make these common
 def create_work_dirs():
 	if not os.path.isdir(configparser.FILESYSTEM_DIR):
 		message.mark_sub_info('Creating', configparser.FILESYSTEM_DIR)

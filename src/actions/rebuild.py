@@ -1,10 +1,20 @@
 #!/usr/bin/python2
 
-import sys, os, shutil, subprocess, hashlib
+import sys, os, shutil, subprocess, hashlib, time
 
 import lib.misc as misc
 import lib.configparser as configparser
 import lib.message as message
+
+# FIXME: make this common
+def search(sfile, string):
+	for line in misc.read_file(sfile).split('\n'):
+		if line.startswith(string):
+			line = line.replace(string, '')
+			line = line.replace("'", "")
+			line = line.replace('"', '')
+			return line
+
 
 def check():
 	corrupted = False
@@ -80,12 +90,11 @@ def main():
 		misc.write_file(url_file, 'http://www.ubuntu.com/getubuntu/releasenotes')
 
 	message.sub_info('Loading configs')
-	ARCH = misc.chroot_exec(['dpkg', '--print-architecture'], prepare=False, mount=False, output=True)
-	RELEASE_NOTES_URL = misc.read_file(misc.join_paths(disk_dir, 'release_notes_url'))
-	DIST = misc.strip_list(misc.search_file('^DISTRIB_ID=', configparser.FILESYSTEM_DIR + '/etc/lsb-release', escape=False)).replace('DISTRIB_ID=', '')
-	VERSION = misc.strip_list(misc.search_file('^DISTRIB_RELEASE=', configparser.FILESYSTEM_DIR + '/etc/lsb-release', escape=False)).replace('DISTRIB_RELEASE=', '')
-	CODENAME = misc.strip_list(misc.search_file('^DISTRIB_CODENAME=', configparser.FILESYSTEM_DIR + '/etc/lsb-release', escape=False)).replace('DISTRIB_CODENAME=', '')
-	LIVEUSERNAME = misc.strip_list(misc.search_file('^export USERNAME=', configparser.FILESYSTEM_DIR + '/etc/casper.conf', escape=False)).replace('export USERNAME=', '')
+	arch = misc.chroot_exec(['dpkg', '--print-architecture'], prepare=False, mount=False, output=True)
+	distrib = search(configparser.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_ID=')
+	release = search(configparser.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_RELEASE=')
+	codename = search(configparser.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_CODENAME=')
+	username = search(configparser.FILESYSTEM_DIR + '/etc/casper.conf', 'export USERNAME=')
 
 	message.sub_info('Cleaning up')
 	for sfile in ['casper/filesystem.squashfs', 'casper/initrd.lz', 'casper/vmlinuz',
@@ -95,8 +104,10 @@ def main():
 		full_file = misc.join_paths(configparser.ISO_DIR, sfile)
 		if os.path.exists(full_file):
 			os.unlink(full_file)
-	if os.path.exists('/home/$DIST-$ARCH-$VERSION.iso'):
-			os.unlink('/home/$DIST-$ARCH-$VERSION.iso')
+	
+	iso_file = '/home/%s-%s-%s.iso' % (distrib, arch, release)
+	if os.path.exists(iso_file):
+			os.unlink(iso_file)
 
 	detect_boot()
 	if not initrd or not vmlinuz:
@@ -127,8 +138,7 @@ def main():
 				os.unlink(sfile)
 			elif sfile.startswith(misc.join_paths(configparser.FILESYSTEM_DIR, 'boot/config')):
 				os.unlink(sfile)
-
-	# maybe use squashfs.remove() ?
+	
 	message.sub_info('Creating squashed FileSystem')
 	subprocess.check_call(['mksquashfs', configparser.FILESYSTEM_DIR,
 				misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.squashfs'),
@@ -144,18 +154,17 @@ def main():
 	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.size'), str(fs_size))
 
 	message.sub_info('Creating filesystem.manifest')
-	packages_list = misc.chroot_exec(["dpkg-query", "-W", "--showformat='${Package} ${Version}\\n'"], prepare=False, mount=False, output=True)
-	print packages_list
-	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/casper/filesystem.manifest'), str(packages_list))
+	packages_list = misc.chroot_exec(["dpkg-query", "-W", "--showformat=${Package} ${Version}\\n"], prepare=False, mount=False, output=True)
+	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.manifest'), packages_list)
 
 	message.sub_info('Creating filesystem.manifest-desktop')
 	for pkg in ['ubiquity', 'casper', 'live-initramfs', 'user-setup', 'discover1', 'xresprobe', 'libdebian-installer4']:
 		packages_list.replace(pkg, '')
-	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/casper/filesystem.manifest-desktop'), packages_list)
+	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'casper/filesystem.manifest-desktop'), packages_list)
 	
 	message.sub_info('Creating README.diskdefines')
 	misc.write_file(misc.join_paths(configparser.ISO_DIR, 'README.diskdefines'),
-'''#define DISKNAME  $DIST $VERSION "$CODENAME" - Release $ARCH
+'''#define DISKNAME  %s %s "%s" - Release %s
 #define TYPE  binary
 #define TYPEbinary  1
 #define ARCH  $ARCH
@@ -163,29 +172,29 @@ def main():
 #define DISKNUM  1
 #define DISKNUM1  1
 #define TOTALNUM  0
-#define TOTALNUM0  1''')
+#define TOTALNUM0  1''' % (distrib, release, codename, arch))
 
 	message.sub_info('Creating disk info')
-	misc.write_file(misc.join_paths(configparser.ISO_DIR, '.disk/info'), '$DIST $VERSION "$CODENAME" - Release $ARCH (`date "+%Y%m%d"`)')
+	misc.write_file(misc.join_paths(configparser.ISO_DIR, '.disk/info'), '%s %s "%s" - Release %s (%s)' % (distrib, release, codename, arch, time.strftime('%Y%m%d', time.localtime())))
 
 
 	message.sub_info('Creating MD5Sums')
-	checksum_file = misc.join_path(configparser.ISO_DIR, 'md5sum.txt')
+	checksum_file = misc.join_paths(configparser.ISO_DIR, 'md5sum.txt')
 	misc.write_file(checksum_file, '')
 	for sfile in misc.list_files(configparser.ISO_DIR):
 		if sfile.endswith('md5sum.txt'):
 			continue
 		
 		# FIXME: read in chunks
-		checksum = hashlib.md5(misc.read_file(sfile).digest())
-		misc.append_file(sfile.replace(configparser.ISO_DIR, '') + ' ' + checksum, checksum_file)
+		checksum = hashlib.md5(misc.read_file(sfile)).hexdigest()
+		misc.append_file(checksum_file, checksum + '  .' + sfile.replace(configparser.ISO_DIR, '') +'\n')
 
 	message.sub_info('Creating ISO')
 	os.chdir(configparser.ISO_DIR)
-	subprocess.check_call(['genisoimage', '-r', '-V', "$DIST-$ARCH-$VERSION",
+	subprocess.check_call(['xorriso', '-as', 'mkisofs', '-r', '-V', distrib + '-' + arch + '-' + release,
 	'-b', 'isolinux/isolinux.bin', '-c', 'isolinux/boot.cat', '-cache-inodes',
 	'-J', '-l', '-no-emul-boot', '-boot-load-size', '4', '-boot-info-table',
-	'-o', 'home/$DIST-$ARCH-$VERSION.iso', '-input-charset', 'utf-8', '.'])
+	'-o', iso_file, '-input-charset', 'utf-8', '.'])
 	# chmod 555 "/home/$DIST-$ARCH-$VERSION.iso"
 
-	message.mark_sub_info('Successfuly created ISO image', '/home/$DIST-$ARCH-$VERSION.iso')
+	message.mark_sub_info('Successfuly created ISO image', iso_file)
