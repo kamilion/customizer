@@ -1,0 +1,6 @@
+"?package(customizer): needs="x11" \
+hints="Ubuntu LiveCD Remastering Tool" \
+section="Applications/System/Administration" \
+title="Customizer" \
+command="/usr/sbin/customizer" \
+icon="/usr/share/cstuomizer/logo.png"

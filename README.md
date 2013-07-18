@@ -40,8 +40,11 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
     squashfs-tools (>=4.2)
     xorriso
-    python2.7
     squashfs-tools
+    xhost
+    xephyr
+    qemu
+    python2.7
     make
 
 ### INSTALL AND RUN

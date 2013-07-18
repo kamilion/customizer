@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Customizer
+Version=4.0.0
+Exec=/usr/sbin/customizer
+Comment=Ubuntu based LiveCD ISO images remastering tool
+Icon=/usr/share/customizer/logo.png
+Type=Application
+Terminal=false
+StartupNotify=true
+Categories=System;

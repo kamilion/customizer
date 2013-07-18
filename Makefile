@@ -1,8 +1,5 @@
 VERSION = 4.0.0
-DESTDIR =
-BINDIR = /usr/sbin
-ETCDIR = /etc
-SHAREDIR = /usr/share
+DESTDIR = 
 
 all: static
 
@@ -11,15 +8,15 @@ static: clean
 	cd build && python2 ../pyinstaller/pyinstaller.py --strip --onefile --name=customizer --noconfirm ../src/main.py
 	
 install:
-	install -vdm755 $(DESTDIR)/$(ETCDIR)/spm $(DESTDIR)/$(BINDIR) $(DESTDIR)/$(SHAREDIR)/customizer/
-	install -vm755 build/dist/customizer $(DESTDIR)/$(BINDIR)/customizer
-	install -vm644 data/customizer.conf $(DESTDIR)/$(ETCDIR)/
-	install -vm644 data/exclude.list $(DESTDIR)/$(SHAREDIR)/customizer/
+	install -vdm755 $(DESTDIR)/etc/ $(DESTDIR)/usr/sbin $(DESTDIR)/usr/share/customizer/
+	install -vm755 build/dist/customizer $(DESTDIR)/usr/sbin/customizer
+	install -vm644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
+	install -vm644 data/exclude.list $(DESTDIR)/usr/share/customizer/exclude.list
 
 uninstall:
-	$(RM) $(DESTDIR)/$(BINDIR)/customizer
-	$(RM) $(DESTDIR)/$(ETCDIR)/customizer.conf
-	$(RM) $(DESTDIR)/$(SHAREDIR)/customizer/
+	$(RM) $(DESTDIR)/usr/sbin/customizer
+	$(RM) $(DESTDIR)/etc/customizer.conf
+	$(RM) $(DESTDIR)/usr/share/customizer/
 
 bump:
 	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/lib/argparser.py
