@@ -28,7 +28,7 @@ __check_fs_dir__
 __check_lock__
 __check_sources_list__
 
-WARNING_MESSAGE "ONLY THE BARE MINIMUM SET OF PACKAGES WILL BE ISNTALLED!"
+WARNING_MESSAGE "ONLY THE BARE MINIMUM SET OF PACKAGES WILL BE INSTALLED!"
 while true;do
 	echo "
 	1. Gnome2
