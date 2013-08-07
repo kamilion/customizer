@@ -3,9 +3,7 @@ DESTDIR =
 PYINSTALLER = python2 ../pyinstaller/pyinstaller.py
 PYCHECKER = python2 ../pychecker/pychecker/checker.py
 
-all: static
-
-static: clean
+all: clean
 	mkdir -p build
 	cd build && $(PYINSTALLER) --strip --onefile \
 		--name=customizer --noconfirm ../src/main.py
