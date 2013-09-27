@@ -4,7 +4,21 @@ Customizer is an advanced Live CD customization and remastering tool. With it, y
 
 ## Getting Started
 
-Visit our GitHub Wiki at  https://github.com/clearkimura/Customizer/wiki  for FAQ, documentation and installation script download.
+Download installation script and execute:
+
+    wget https://dl.dropboxusercontent.com/u/54183088/install.sh
+    chmod +x install.sh
+    sudo ./install.sh -i
+
+Then, run Customizer in CLI:
+
+    sudo /opt/Customizer/CLI.sh -h
+
+Or, run Customizer in GUI:
+
+    gksu /opt/Customizer/GUI.gambas
+
+Visit our GitHub Wiki at  https://github.com/clearkimura/Customizer/wiki  for details.
 
 ## Credits
 
