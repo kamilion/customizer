@@ -1,17 +1,16 @@
 VERSION = 4.0.0
 DESTDIR = 
-PYINSTALLER = python2 ../pyinstaller/pyinstaller.py
+NUITKA = python2 ../nuitka/bin/nuitka
 PYCHECKER = python2 ../pychecker/pychecker/checker.py
 
 all: clean
 	mkdir -p build
-	cd build && $(PYINSTALLER) --strip --onefile \
-		--name=customizer --noconfirm ../src/main.py
+	cd build && $(NUITKA) --exe --recurse-all --verbose ../src/main.py
 	
 install:
 	install -vdm755 $(DESTDIR)/etc/ $(DESTDIR)/usr/sbin $(DESTDIR)/usr/share/customizer/ \
 		$(DESTDIR)/usr/share/menu $(DESTDIR)/usr/share/applications
-	install -vm755 build/dist/customizer $(DESTDIR)/usr/sbin/customizer
+	install -vm755 build/main.exe $(DESTDIR)/usr/sbin/customizer
 	install -vm644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
 	# install -vm644 data/customizer.desktop $(DESTDIR)/usr/share/applications/customizer.desktop
 	# install -vm644 data/customizer.menu $(DESTDIR)/usr/share/menu/customizer
@@ -25,6 +24,10 @@ uninstall:
 	
 bump:
 	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/lib/argparser.py
+
+lint:
+	cd src && pylint lib/configparser.py lib/message.py lib/misc.py actions/*.py \
+		| grep -v -e 'Line too long'
 
 check:
 	cd src && $(PYCHECKER) --limit=1000 lib/configparser.py \

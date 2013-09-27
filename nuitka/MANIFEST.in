@@ -1,0 +1,29 @@
+include LICENSE.txt
+include MANIFEST.in
+include README.txt README.pdf
+include Changelog.rst Changelog.pdf
+include Developer_Manual.rst Developer_Manual.pdf
+include doc/*.1
+
+include bin/compare_with_cpython
+include bin/compare_with_xml
+
+include misc/*.sh
+include misc/*.bat
+include misc/check-with-pylint
+include misc/check-release
+
+# Logo wit source
+include misc/Logo/Nuitka-Logo-Symbol.svg
+include images/Nuitka-Logo-Symbol.png
+
+recursive-include lib *.py
+
+# Core tests are included along with Nuitka itself.
+recursive-include tests/basics *.py
+recursive-include tests/syntax *.py
+recursive-include tests/programs *.py
+recursive-include tests/reflected *.py
+
+# Bnechmarks are included too, but will be removed for Debian.
+recursive-include tests/benchmarks *.py LICENSE README
