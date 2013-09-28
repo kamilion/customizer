@@ -13,13 +13,13 @@ def check_uid():
 
 def whereis(program, chroot=False):
     message.sub_traceback(traceback.extract_stack(limit=2)[0])
-    for path in os.environ.get('PATH', '').split(':'):
+    for path in os.environ.get('PATH', '/bin:/usr/bin').split(':'):
         if chroot:
             exe = join_paths(configparser.FILESYSTEM_DIR, path, program)
-    else:
-        exe = join_paths(path, program)
-    if os.path.isfile(exe):
-        return exe
+        else:
+            exe = join_paths(path, program)
+        if os.path.isfile(exe):
+            return exe
     return None
 
 def check_connectivity():
