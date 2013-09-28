@@ -6,10 +6,6 @@ import lib.misc as misc
 import lib.configparser as configparser
 import lib.message as message
 
-global initrd
-global vmlinuz
-
-
 # FIXME: make this common
 def search(sfile, string):
     for line in misc.read_file(sfile).split('\n'):
@@ -34,6 +30,9 @@ def check():
         sys.exit(2)
 
 def detect_boot():
+    global initrd
+    global vmlinuz
+
     initrd = None
     vmlinuz = None
     for sfile in misc.list_files(misc.join_paths(configparser.FILESYSTEM_DIR, 'boot')):
