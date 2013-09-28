@@ -9,23 +9,23 @@ global ARGS
 
 class OverrideColors(argparse.Action):
      def __call__(self, parser, args, values, option_string=None):
-		message.COLORS = False
-		setattr(args, self.dest, values)
+        message.COLORS = False
+        setattr(args, self.dest, values)
 
 class OverrideDebug(argparse.Action):
      def __call__(self, parser, args, values, option_string=None):
-		message.DEBUG = True
-		setattr(args, self.dest, values)
+        message.DEBUG = True
+        setattr(args, self.dest, values)
 
 class OverrideTraceback(argparse.Action):
      def __call__(self, parser, args, values, option_string=None):
-		message.TRACEBACK = True
-		setattr(args, self.dest, values)
+        message.TRACEBACK = True
+        setattr(args, self.dest, values)
 
 parser = argparse.ArgumentParser(prog='Customizer', description='Ubuntu based LiveCD ISO images remastering tool')
 
 parser.add_argument('-e', '--extract', action='store_true', help='Exctract ISO image')
-parser.add_argument('-c', '--chroot', action='store_true', help='Chroot into the filesystem') 
+parser.add_argument('-c', '--chroot', action='store_true', help='Chroot into the filesystem')
 parser.add_argument('-x', '--xnest', action='store_true', help='Execute nested X-session')
 parser.add_argument('-p', '--pkgm', action='store_true', help='Execute package manager')
 parser.add_argument('-d', '--deb', action='store_true', help='Install Debian package')
