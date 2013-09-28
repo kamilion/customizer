@@ -3,7 +3,6 @@
 import sys, ConfigParser, subprocess, shutil, os, re, argparse
 
 import lib.configparser as configparser
-import lib.argparser as argparser
 import lib.message as message
 import lib.misc as misc
 
