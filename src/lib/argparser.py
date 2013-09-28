@@ -36,6 +36,5 @@ parser.add_argument('-q', '--qemu', action='store_true', help='Test the builded 
 parser.add_argument('-t', '--clean', action='store_true', help='Clean all temporary files and folders')
 
 parser.add_argument('-D', '--debug',nargs=0, action=OverrideDebug, help='Enable debug messages')
-parser.add_argument('-T', '--traceback',nargs=0, action=OverrideTraceback, help='Enable traceback messages')
 parser.add_argument('-v', '--version', action='version', version='Customizer v' + app_version, help='Show Customizer version and exits')
 ARGS = parser.parse_args()

@@ -1,18 +1,16 @@
 #!/usr/bin/python2
 
-import os, re, shutil, urllib2, tarfile, gzip, subprocess, traceback
+import os, re, shutil, urllib2, tarfile, gzip, subprocess
 
 import lib.message as message
 import lib.configparser as configparser
 
 def check_uid():
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     if os.geteuid() == 0:
         return True
     return False
 
 def whereis(program, chroot=False):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     for path in os.environ.get('PATH', '/bin:/usr/bin').split(':'):
         if chroot:
             exe = join_paths(configparser.FILESYSTEM_DIR, path, program)
@@ -38,13 +36,11 @@ def unique(string):
 
 ''' Variables operations '''
 def strip_list(string):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     for char in ['[', ']', "'", ',']:
         string = str(string).replace(char, '')
     return string
 
 def join_paths(*paths):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     result = '/'
     for p in paths:
         result = os.path.join(result, p.lstrip('/'))
@@ -53,7 +49,6 @@ def join_paths(*paths):
 
 ''' Directory operations '''
 def remove_dir(sdir):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     for root, dirs, files in os.walk(sdir):
         for f in files:
             os.unlink(root + '/'  + f)
@@ -66,7 +61,6 @@ def remove_dir(sdir):
     os.rmdir(sdir)
 
 def copy_dir(src, dst, symlinks=True, ignore=None):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     if not os.path.exists(dst):
         os.makedirs(dst)
     for item in os.listdir(src):
@@ -79,7 +73,6 @@ def copy_dir(src, dst, symlinks=True, ignore=None):
                 shutil.copy2(s, d)
 
 def move_dir(src, dst):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     for src_dir, dirs, files in os.walk(src, topdown=True, onerror=None, followlinks=False):
         dst_dir = src_dir.replace(src, dst)
         if not os.path.exists(dst_dir):
@@ -92,7 +85,6 @@ def move_dir(src, dst):
             shutil.move(src_file, dst_dir)
 
 def size_dir(src):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     total_size = 0
     for sfile in list_files(src):
         if os.path.islink(sfile):
@@ -106,7 +98,6 @@ def fetch_check(url, destination):
     # to tell if the archive is corrupted (checking if size == 0 is not enough)
     # so the source is re-feteched
 
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     remote_file = urllib2.urlopen(url)
 
     if os.path.isfile(destination):
@@ -121,7 +112,6 @@ def fetch_check(url, destination):
         return False
 
 def fetch(url, destination):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     remote_file = urllib2.urlopen(url)
     dest_dir = os.path.dirname(destination)
 
@@ -134,7 +124,6 @@ def fetch(url, destination):
 
 ''' Archive operations '''
 def size_archive(star, sfile):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     size = None
     tar = tarfile.open(star, 'r')
     for i in tar.getmembers():
@@ -144,7 +133,6 @@ def size_archive(star, sfile):
     return size
 
 def compress_dir(src, dst, method='bz2'):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     dirname = os.path.dirname(dst)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -155,7 +143,6 @@ def compress_dir(src, dst, method='bz2'):
     tar.close()
 
 def compress_file(sfile, dst, method='gz', enc='UTF-8'):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     dirname = os.path.dirname(dst)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -165,7 +152,6 @@ def compress_file(sfile, dst, method='gz', enc='UTF-8'):
     tar.close()
 
 def gzip_file(sfile, dst):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     dirname = os.path.dirname(dst)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -177,7 +163,6 @@ def gzip_file(sfile, dst):
     f_in.close()
 
 def decompress_archive(src, dst):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     if not os.path.isdir(dst):
         os.makedirs(dst)
 
@@ -191,7 +176,6 @@ def decompress_archive(src, dst):
         tar.close()
 
 def list_archive(src):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     tar = tarfile.open(src)
     content = tar.getnames()
     tar.close()
@@ -200,26 +184,22 @@ def list_archive(src):
 
 ''' File operations '''
 def mime_file(sfile):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     # return mimetypes.guess_type(file)
     return get_output([whereis('file'), '--brief', '--mime-type', sfile])
 
 def read_file(sfile):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     rfile = open(sfile, 'r')
     content = rfile.read()
     rfile.close()
     return content
 
 def readlines_file(sfile):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     rfile = open(sfile, 'r')
     content = rfile.readlines()
     rfile.close()
     return content
 
 def write_file(sfile, content):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     dirname = os.path.dirname(sfile)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -229,7 +209,6 @@ def write_file(sfile, content):
     wfile.close()
 
 def append_file(sfile, content):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     dirname = os.path.dirname(sfile)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -246,13 +225,11 @@ def copy_file(source, destination):
 
 ''' System operations '''
 def get_output(command):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     pipe = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     return pipe.communicate()[0].strip()
 
 ''' Misc '''
 def search_string(string, string2, exact=False, escape=True):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
 
     if exact and escape:
         return re.findall('(\\s|^)' + re.escape(string) + '(\\s|$)', strip_list(string2))
@@ -264,11 +241,9 @@ def search_string(string, string2, exact=False, escape=True):
         return re.findall(string, str(string2))
 
 def search_file(string, sfile, exact=False, escape=True):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     return search_string(string, read_file(sfile), exact=exact, escape=escape)
 
 def list_files(directory):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     slist = []
     for root, subdirs, files in os.walk(directory):
         for sfile in files:
@@ -276,7 +251,6 @@ def list_files(directory):
     return slist
 
 def list_dirs(directory):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     slist = []
     for root, subdirs, files in os.walk(directory):
         for sdir in subdirs:
@@ -284,7 +258,6 @@ def list_dirs(directory):
     return slist
 
 def chroot_exec(command, prepare=True, mount=True, output=False):
-    message.sub_traceback(traceback.extract_stack(limit=2)[0])
     real_root = os.open('/', os.O_RDONLY)
     try:
         # FIXME: /proc/mtab

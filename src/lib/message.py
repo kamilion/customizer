@@ -4,7 +4,6 @@ import sys, os
 
 COLORS = False
 DEBUG = False
-TRACEBACK = False
 
 for handle in [sys.stdout, sys.stderr]:
     if (hasattr(handle, "isatty") and handle.isatty()) or ('TERM' in os.environ and os.environ['TERM']=='ANSI'):
@@ -15,14 +14,12 @@ if COLORS:
     color_warning = '\033[1;33m'
     color_critical = '\033[1;31m'
     color_debug = '\033[1;36m'
-    color_traceback = '\033[1;34m'
     color_normal = '\033[0m'
 else:
     color_info = ''
     color_warning = ''
     color_critical = ''
     color_debug = ''
-    color_traceback = ''
     color_normal = ''
 
 def info(msg):
@@ -45,13 +42,6 @@ def debug(msg):
         ''' Prints out a message with an DEBUG status '''
         msg = str(msg)
         print(color_debug + "* " + color_normal + msg)
-
-def traceback(msg):
-    if TRACEBACK:
-        ''' Prints out a message with an TRACEBACK status '''
-        msg = str(msg)
-        print(color_traceback + "* " + color_normal + msg)
-
 
 def mark_info(msg, marker):
     ''' Prints out a message with an INFO status and extra marker '''
@@ -77,14 +67,7 @@ def mark_debug(msg, marker):
         msg = str(msg)
         marker = str(marker)
         print(color_debug + "* " + color_normal + msg + ": " + color_debug + marker + color_normal)
-
-def mark_traceback(msg, marker):
-    if TRACEBACK:
-        ''' Prints out a message with an TRACEBACK status and extra marker '''
-        msg = str(msg)
-        marker = str(marker)
-        print(color_traceback + "* " + color_normal + msg + ": " + color_traceback + marker + color_normal)
-
+        
 
 def sub_info(msg):
     ''' Prints out a sub-message with an INFO status '''
@@ -106,13 +89,6 @@ def sub_debug(msg):
         ''' Prints out a sub-message with an DEBUG status '''
         msg = str(msg)
         print(color_debug + "  => " + color_normal + msg)
-
-def sub_traceback(msg):
-    if TRACEBACK:
-        ''' Prints out a sub-message with an TRACEBACK status '''
-        msg = str(msg)
-        print(color_traceback + "  => " + color_normal + msg)
-
 
 def mark_sub_info(msg, marker):
     ''' Prints out a sub-message with an INFO status and extra marker '''
@@ -138,10 +114,3 @@ def mark_sub_debug(msg, marker):
         msg = str(msg)
         marker = str(marker)
         print(color_debug + "  => " + color_normal + msg + ": " + color_debug + marker + color_normal)
-
-def mark_sub_traceback(msg, marker):
-    if TRACEBACK:
-        ''' Prints out a sub-message with an TRACEBACK status and extra marker'''
-        msg = str(msg)
-        marker = str(marker)
-        print(color_traceback + "  => " + color_normal + msg + ": " + color_traceback + marker + color_normal)
