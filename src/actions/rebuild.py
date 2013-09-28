@@ -94,7 +94,6 @@ def main():
     distrib = search(configparser.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_ID=')
     release = search(configparser.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_RELEASE=')
     codename = search(configparser.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_CODENAME=')
-    username = search(configparser.FILESYSTEM_DIR + '/etc/casper.conf', 'export USERNAME=')
 
     message.sub_info('Cleaning up')
     for sfile in ['casper/filesystem.squashfs', 'casper/initrd.lz', 'casper/vmlinuz',
