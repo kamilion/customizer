@@ -24,15 +24,13 @@ uninstall:
 	# $(RM) $(DESTDIR)/usr/share/menu/customizer
 	
 bump:
-	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/lib/argparser.py
+	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py
 
 lint:
-	cd src && pylint lib/configparser.py lib/message.py lib/misc.py actions/*.py \
-		| grep -v -e 'Line too long'
+	cd src && pylint lib/* actions/*.py | grep -v -e 'Line too long'
 
-check:
-	cd src && $(PYCHECKER) --limit=1000 lib/configparser.py \
-		lib/message.py lib/misc.py actions/*.py
+check: clean
+	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py
 
 dist: clean
 	git archive HEAD --prefix=customizer-$(VERSION)/ | xz > customizer-$(VERSION).tar.xz

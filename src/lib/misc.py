@@ -2,7 +2,6 @@
 
 import os, re, shutil, urllib2, tarfile, gzip, subprocess
 
-import lib.message as message
 import lib.configparser as configparser
 
 def check_uid():

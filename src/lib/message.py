@@ -1,15 +1,17 @@
 #!/usr/bin/python2
 
-import sys, os
+import sys, curses
 
-COLORS = False
+tty_colors = 0
 DEBUG = False
 
-for handle in [sys.stdout, sys.stderr]:
-    if (hasattr(handle, "isatty") and handle.isatty()) or ('TERM' in os.environ and os.environ['TERM']=='ANSI'):
-        COLORS = True
+try:
+    curses.setupterm()
+    tty_colors = curses.tigetnum('colors')
+except:
+    pass
 
-if COLORS:
+if tty_colors >= 8 and sys.stdout.isatty():
     color_info = '\033[1;32m'
     color_warning = '\033[1;33m'
     color_critical = '\033[1;31m'

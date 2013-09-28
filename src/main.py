@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, ConfigParser, subprocess, shutil, os, re
+import sys, ConfigParser, subprocess, shutil, os, re, argparse
 
 import lib.configparser as configparser
 import lib.argparser as argparser
@@ -14,32 +14,57 @@ import actions.deb as deb
 import actions.rebuild as rebuild
 import actions.clean as clean
 
+app_version = "4.0.0"
+
 try:
     if not misc.check_uid():
         message.critical('You are not root')
         sys.exit(2)
 
-    if argparser.ARGS.extract:
+    class OverrideDebug(argparse.Action):
+        def __call__(self, parser, args, values, option_string=None):
+            message.DEBUG = True
+            setattr(args, self.dest, values)
+
+    parser = argparse.ArgumentParser(prog='Customizer', description='Ubuntu based LiveCD ISO images remastering tool')
+
+    parser.add_argument('-e', '--extract', action='store_true', help='Exctract ISO image')
+    parser.add_argument('-c', '--chroot', action='store_true', help='Chroot into the filesystem')
+    parser.add_argument('-x', '--xnest', action='store_true', help='Execute nested X-session')
+    parser.add_argument('-p', '--pkgm', action='store_true', help='Execute package manager')
+    parser.add_argument('-d', '--deb', action='store_true', help='Install Debian package')
+    parser.add_argument('-k', '--hook', action='store_true', help='Execute hook')
+    parser.add_argument('-g', '--gui', action='store_true', help='Install GUI (DE/WM)')
+    parser.add_argument('-r', '--rebuild', action='store_true', help='Rebuild the ISO image')
+    parser.add_argument('-q', '--qemu', action='store_true', help='Test the builded image with QEMU')
+    parser.add_argument('-t', '--clean', action='store_true', help='Clean all temporary files and folders')
+
+    parser.add_argument('-D', '--debug',nargs=0, action=OverrideDebug, help='Enable debug messages')
+    parser.add_argument('-v', '--version', action='version', version='Customizer v' + app_version, help='Show Customizer version and exits')
+    ARGS = parser.parse_args()
+
+
+    if ARGS.extract:
         message.info('Extracting...')
         extract.main()
 
-    if argparser.ARGS.chroot:
+    if ARGS.chroot:
         message.info('Chrooting...')
         chroot.main()
 
-    if argparser.ARGS.pkgm:
+    if ARGS.pkgm:
         message.info('Running package manager...')
         pkgm.main()
 
-    if argparser.ARGS.deb:
+    if ARGS.deb:
         message.info('Installing Debian package...')
         deb.main()
 
-    if argparser.ARGS.rebuild:
+    if ARGS.rebuild:
         message.info('Rebuilding ISO...')
         rebuild.main()
 
-    if argparser.ARGS.clean:
+    if ARGS.clean:
         message.info('Cleaning up...')
         clean.main()
 
