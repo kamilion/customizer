@@ -2,6 +2,8 @@
 
 Customizer is an advanced Live CD customization and remastering tool. With it, you can build own Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image with a few mouse clicks.
 
+This branch relies on Gambas 2 packages, optimized for 12.04 and older releases.
+
 ## Getting Started
 
 Download installation script and execute:
