@@ -8,30 +8,30 @@ import lib.message as message
 
 def check():
     if not os.path.isfile(configparser.ISO):
-        message.mark_sub_critical('ISO does not exists', configparser.ISO)
+        message.sub_critical('ISO does not exists', configparser.ISO)
         sys.exit(2)
     elif not configparser.ISO.endswith('.iso'):
-        message.mark_sub_critical('File is not ISO', configparser.ISO)
+        message.sub_critical('File is not ISO', configparser.ISO)
         sys.exit(2)
 
 # FIXME: make these common
 def create_work_dirs():
     if not os.path.isdir(configparser.FILESYSTEM_DIR):
-        message.mark_sub_info('Creating', configparser.FILESYSTEM_DIR)
+        message.sub_info('Creating', configparser.FILESYSTEM_DIR)
         os.makedirs(configparser.FILESYSTEM_DIR)
 
     if not os.path.isdir(configparser.ISO_DIR):
-        message.mark_sub_info('Creating', configparser.ISO_DIR)
+        message.sub_info('Creating', configparser.ISO_DIR)
         os.makedirs(configparser.ISO_DIR)
 
 def clean_work_dirs():
     # subprocess.check_call([misc.whereis('umount'), configparser.MOUNT_DIR])
     if os.path.isdir(configparser.FILESYSTEM_DIR):
-        message.mark_sub_info('Removing', configparser.FILESYSTEM_DIR)
+        message.sub_info('Removing', configparser.FILESYSTEM_DIR)
         shutil.rmtree(configparser.FILESYSTEM_DIR)
 
     if os.path.isdir(configparser.ISO_DIR):
-        message.mark_sub_info('Removing', configparser.ISO_DIR)
+        message.sub_info('Removing', configparser.ISO_DIR)
         shutil.rmtree(configparser.ISO_DIR)
 
 def main():
@@ -44,7 +44,7 @@ def main():
     message.sub_info('Creating mount dir')
     mount_dir = tempfile.mkdtemp(prefix=configparser.MOUNT_DIR + '/')
 
-    message.mark_sub_info('Mounting ISO', configparser.ISO)
+    message.sub_info('Mounting ISO', configparser.ISO)
     subprocess.check_call([misc.whereis('mount'), '-t', 'iso9660', '-o', 'ro,loop', configparser.ISO, mount_dir])
 
     message.sub_info('Checking ISO')
@@ -54,7 +54,7 @@ def main():
             invalid_iso = True
 
     if invalid_iso:
-        message.mark_sub_critical('Invalid ISO', configparser.ISO)
+        message.sub_critical('Invalid ISO', configparser.ISO)
         clean_work_dirs()
         sys.exit(2)
 
@@ -77,8 +77,8 @@ def main():
         else:
             misc.copy_file(sfile, sfile.replace(mount_dir, configparser.ISO_DIR))
 
-    message.mark_sub_info('Unmounting', mount_dir)
+    message.sub_info('Unmounting', mount_dir)
     subprocess.check_call([misc.whereis('umount'), mount_dir])
 
-    message.mark_sub_info('Removing', mount_dir)
+    message.sub_info('Removing', mount_dir)
     os.rmdir(mount_dir)

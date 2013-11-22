@@ -8,10 +8,10 @@ import lib.message as message
 
 def check():
     if not os.path.isfile(configparser.DEB):
-        message.mark_sub_critical('DEB does not exists', configparser.DEB)
+        message.sub_critical('DEB does not exists', configparser.DEB)
         sys.exit(2)
     elif not configparser.DEB.endswith('.iso'):
-        message.mark_sub_critical('File is not DEB', configparser.DEB)
+        message.sub_critical('File is not DEB', configparser.DEB)
         sys.exit(2)
 
 def main():

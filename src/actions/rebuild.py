@@ -196,4 +196,4 @@ def main():
     '-o', iso_file, '-input-charset', 'utf-8', '.'])
     # chmod 555 "/home/$DIST-$ARCH-$VERSION.iso"
 
-    message.mark_sub_info('Successfuly created ISO image', iso_file)
+    message.sub_info('Successfuly created ISO image', iso_file)

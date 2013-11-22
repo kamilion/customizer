@@ -91,6 +91,6 @@ except KeyboardInterrupt:
 except SystemExit:
     sys.exit(2)
 except:
-    message.mark_critical('Unexpected error', sys.exc_info()[0])
+    message.critical('Unexpected error', sys.exc_info()[0])
     raise
     sys.exit(1)

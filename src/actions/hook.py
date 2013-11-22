@@ -8,7 +8,7 @@ import lib.message as message
 
 def check():
     if not os.path.isfile(configparser.HOOK):
-        message.mark_sub_critical('HOOK does not exists', configparser.HOOK)
+        message.sub_critical('HOOK does not exists', configparser.HOOK)
         sys.exit(2)
 
 def main():

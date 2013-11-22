@@ -22,7 +22,7 @@ HOOK = ""
 conf = ConfigParser.SafeConfigParser()
 
 if not os.path.isfile('/etc/customizer.conf'):
-    message.mark_warning('Configuration file does not exists', '/etc/customizer.comf')
+    message.warning('Configuration file does not exists', '/etc/customizer.comf')
 else:
     conf.read('/etc/customizer.conf')
     FILESYSTEM_DIR = conf.get('main', 'FILESYSTEM_DIR')
