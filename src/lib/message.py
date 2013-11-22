@@ -1,6 +1,7 @@
 #!/usr/bin/python2
 
-import sys, curses
+import sys
+import curses
 
 tty_colors = 0
 DEBUG = False
@@ -12,107 +13,106 @@ except:
     pass
 
 if tty_colors >= 8 and sys.stdout.isatty():
-    color_info = '\033[1;32m'
-    color_warning = '\033[1;33m'
-    color_critical = '\033[1;31m'
-    color_debug = '\033[1;36m'
-    color_normal = '\033[0m'
+    cmarker = '\033[1;34m'
+    cinfo = '\033[1;32m'
+    cwarning = '\033[1;33m'
+    ccritical = '\033[1;31m'
+    cdebug = '\033[1;36m'
+    cnormal = '\033[0m'
 else:
-    color_info = ''
-    color_warning = ''
-    color_critical = ''
-    color_debug = ''
-    color_normal = ''
+    cmarker = ''
+    cinfo = ''
+    cwarning = ''
+    ccritical = ''
+    cdebug = ''
+    cnormal = ''
 
-def info(msg):
-    ''' Prints out a message with an INFO status '''
-    msg = str(msg)
-    print(color_info + "* " + color_normal + msg)
+    # http://stackoverflow.com/questions/107705/python-output-buffering
+    class Unbuffered(object):
+        ''' Override print behaviour '''
+        def __init__(self, stream):
+            self.stream = stream
 
-def warning(msg):
-    ''' Prints out a message with an WARNING status '''
-    msg = str(msg)
-    print(color_warning + "* " + color_normal + msg)
+        def write(self, data):
+            ''' Write to stdout without buffering '''
+            self.stream.write(data)
+            self.stream.flush()
 
-def critical(msg):
-    ''' Prints out a message with an CRITICAL status '''
-    msg = str(msg)
-    print(color_critical + "* " + color_normal + msg)
+        def __getattr__(self, attr):
+            return getattr(self.stream, attr)
 
-def debug(msg):
+    sys.stdout = Unbuffered(sys.stdout)
+
+
+def info(msg, marker=None):
+    ''' Print message with INFO status '''
+    if not marker is None:
+        print('%s* %s%s: %s%s%s' %
+            (cmarker, cnormal, msg, cinfo, marker, cnormal))
+    else:
+        print('%s* %s%s' % (cmarker, cnormal, msg))
+
+
+def warning(msg, marker=None):
+    ''' Print message with WARNING status '''
+    if not marker is None:
+        sys.stderr.write('%s* %s%s: %s%s%s\n' %
+            (cwarning, cnormal, msg, cwarning, marker, cnormal))
+    else:
+        sys.stderr.write('%s* %s%s\n' % (cwarning, cnormal, msg))
+
+
+def critical(msg, marker=None):
+    ''' Print message with CRITICAL status '''
+    if not marker is None:
+        sys.stderr.write('%s* %s%s: %s%s%s\n' %
+            (ccritical, cnormal, msg, ccritical, marker, cnormal))
+    else:
+        sys.stderr.write('%s* %s%s\n' % (ccritical, cnormal, msg))
+
+
+def debug(msg, marker=None):
+    ''' Print message with DEBUG status '''
     if DEBUG:
-        ''' Prints out a message with an DEBUG status '''
-        msg = str(msg)
-        print(color_debug + "* " + color_normal + msg)
+        if not marker is None:
+            print('%s* %s%s: %s%s%s' %
+                (cdebug, cnormal, msg, cdebug, marker, cnormal))
+        else:
+            print('%s* %s%s' % (cdebug, cnormal, msg))
 
-def mark_info(msg, marker):
-    ''' Prints out a message with an INFO status and extra marker '''
-    msg = str(msg)
-    marker = str(marker)
-    print(color_info + "* " + color_normal + msg + ": " + color_info + marker + color_normal)
 
-def mark_warning(msg, marker):
-    ''' Prints out a message with an WARNING status and extra marker '''
-    msg = str(msg)
-    marker = str(marker)
-    print(color_warning + "* " + color_normal + msg + ": " + color_warning + marker + color_normal)
+def sub_info(msg, marker=None):
+    ''' Print sub-message with INFO status '''
+    if not marker is None:
+        print('%s  => %s%s: %s%s%s' %
+            (cmarker, cnormal, msg, cinfo, marker, cnormal))
+    else:
+        print('%s  => %s%s' % (cmarker, cnormal, msg))
 
-def mark_critical(msg, marker):
-    ''' Prints out a message with an CRITICAL status and extra marker '''
-    msg = str(msg)
-    marker = str(marker)
-    print(color_critical + "* " + color_normal + msg + ": " + color_critical + marker + color_normal)
 
-def mark_debug(msg, marker):
+def sub_warning(msg, marker=None):
+    ''' Print sub-message with WARNING status '''
+    if not marker is None:
+        sys.stderr.write('%s  => %s%s: %s%s%s\n' %
+            (cwarning, cnormal, msg, cwarning, marker, cnormal))
+    else:
+        sys.stderr.write('%s  => %s%s\n' % (cwarning, cnormal, msg))
+
+
+def sub_critical(msg, marker=None):
+    ''' Print sub-message with CRITICAL status '''
+    if not marker is None:
+        sys.stderr.write('%s  => %s%s: %s%s%s\n' %
+            (ccritical, cnormal, msg, ccritical, marker, cnormal))
+    else:
+        sys.stderr.write('%s  => %s%s\n' % (ccritical, cnormal, msg))
+
+
+def sub_debug(msg, marker=None):
+    ''' Print sub-message with DEBUG status '''
     if DEBUG:
-        ''' Prints out a message with an DEBUG status and extra marker '''
-        msg = str(msg)
-        marker = str(marker)
-        print(color_debug + "* " + color_normal + msg + ": " + color_debug + marker + color_normal)
-        
-
-def sub_info(msg):
-    ''' Prints out a sub-message with an INFO status '''
-    msg = str(msg)
-    print(color_info + "  => " + color_normal + msg)
-
-def sub_warning(msg):
-    ''' Prints out a sub-message with an WARNING status '''
-    msg = str(msg)
-    print(color_warning + "  => " + color_normal + msg)
-
-def sub_critical(msg):
-    ''' Prints out a sub-message with an CRITICAL status '''
-    msg = str(msg)
-    print(color_critical + "  => " + color_normal + msg)
-
-def sub_debug(msg):
-    if DEBUG:
-        ''' Prints out a sub-message with an DEBUG status '''
-        msg = str(msg)
-        print(color_debug + "  => " + color_normal + msg)
-
-def mark_sub_info(msg, marker):
-    ''' Prints out a sub-message with an INFO status and extra marker '''
-    msg = str(msg)
-    marker = str(marker)
-    print(color_info + "  => " + color_normal + msg + ": " + color_info + marker + color_normal)
-
-def mark_sub_warning(msg, marker):
-    ''' Prints out a sub-message with an WARNING status and extra marker '''
-    msg = str(msg)
-    marker = str(marker)
-    print(color_warning + "  => " + color_normal + msg + ": " + color_warning + marker + color_normal)
-
-def mark_sub_critical(msg, marker):
-    ''' Prints out a sub-message with an CRITICAL status and extra marker'''
-    msg = str(msg)
-    marker = str(marker)
-    print(color_critical + "  => " + color_normal + msg + ": " + color_critical + marker + color_normal)
-
-def mark_sub_debug(msg, marker):
-    if DEBUG:
-        ''' Prints out a sub-message with an DEBUG status and extra marker'''
-        msg = str(msg)
-        marker = str(marker)
-        print(color_debug + "  => " + color_normal + msg + ": " + color_debug + marker + color_normal)
+        if not marker is None:
+            print('%s  => %s%s: %s%s%s' %
+                (cdebug, cnormal, msg, cdebug, marker, cnormal))
+        else:
+            print('%s  => %s%s' % (cdebug, cnormal, msg))
