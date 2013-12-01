@@ -20,7 +20,7 @@ Or, run Customizer in GUI:
 
     gksu /opt/Customizer/GUI.gambas
 
-**IMPORTANT** If you are using KDE desktop environment, replace `gksu` with `kdesu` or `kdesudo`.
+**IMPORTANT** If you are using KDE, replace `gksu` with `kdesu` or `kdesudo`.
 
 Visit our GitHub Wiki at  https://github.com/clearkimura/Customizer/wiki  for details.
 
