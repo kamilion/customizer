@@ -137,13 +137,8 @@ __check_fs_dir__ () {
 }
 
 __check_sources_list__ () {
-    INFO_MESSAGE "Checking sources.list"
-    if [ "`grep deb "$WORK_DIR/FileSystem/etc/apt/sources.list"`" = "" ];then
-        WARNING_MESSAGE "The sources.list has been corrupted or deleted, attempting to fix"
-        id=`grep 'DISTRIB_CODENAME=' "$WORK_DIR/FileSystem/etc/lsb-release" | sed 's/DISTRIB_CODENAME=//'`  
-        echo "deb http://archive.ubuntu.com/ubuntu/ $id main" > "$WORK_DIR/FileSystem/etc/apt/sources.list" 
-        echo "deb-src http://archive.ubuntu.com/ubuntu/ $id main" >> "$WORK_DIR/FileSystem/etc/apt/sources.list"
-    fi
+    # FIXME: strip it from all scripts, this funcion was bogus
+    true
 }
 
 __check_for_X__ () {
