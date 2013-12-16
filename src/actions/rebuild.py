@@ -79,6 +79,7 @@ def main():
         message.sub_info('Re-installing kernel')
         misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
         misc.chroot_exec(('apt-get', 'install', '--yes', 'linux-image-generic', '-q'))
+        misc.chroot_exec(('apt-get', 'clean'))
         detect_boot()
     else:
         message.sub_info('Updating/creating kernel')
@@ -116,7 +117,7 @@ def main():
         packages_list.replace(pkg, '')
     misc.write_file(misc.join_paths(config.ISO_DIR, 'casper/filesystem.manifest-desktop'), packages_list)
 
-    message.sub_info('Creating MD5Sums')
+    message.sub_info('Creating md5sum.txt')
     checksum_file = misc.join_paths(config.ISO_DIR, 'md5sum.txt')
     misc.write_file(checksum_file, '')
     for sfile in misc.list_files(config.ISO_DIR):
