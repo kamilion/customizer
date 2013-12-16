@@ -1,30 +1,30 @@
 #!/usr/bin/python2
 
-import os
-import ConfigParser
+import os, ConfigParser
+
 import lib.message as message
-
-FILESYSTEM_DIR = "/home/FileSystem"
-ISO_DIR = "/home/ISO"
-MOUNT_DIR = "/media"
-MESSAGES_COLORS = True
-FORCE_CHROOT = True
-LOCALES = "C"
-CHROOT_HELPER = True
-RESOLUTION = "800x600"
-COMPRESSION = "xz"
-BOOT_FILES = False
-VRAM = "256"
-ISO = ""
-DEB = ""
-HOOK = ""
-
-conf = ConfigParser.SafeConfigParser()
 
 if not os.path.isfile('/etc/customizer.conf'):
     message.warning('Configuration file does not exists', '/etc/customizer.comf')
+
+    FILESYSTEM_DIR = "/home/FileSystem"
+    ISO_DIR = "/home/ISO"
+    MOUNT_DIR = "/media"
+    MESSAGES_COLORS = True
+    FORCE_CHROOT = True
+    LOCALES = "C"
+    CHROOT_HELPER = True
+    RESOLUTION = "800x600"
+    COMPRESSION = "xz"
+    BOOT_FILES = False
+    VRAM = "256"
+    ISO = ""
+    DEB = ""
+    HOOK = ""
 else:
+    conf = ConfigParser.SafeConfigParser()
     conf.read('/etc/customizer.conf')
+
     FILESYSTEM_DIR = conf.get('main', 'FILESYSTEM_DIR')
     ISO_DIR = conf.get('main', 'ISO_DIR')
     MOUNT_DIR = conf.get('main', 'MOUNT_DIR')

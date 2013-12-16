@@ -35,6 +35,12 @@ def read_file(sfile):
     rfile.close()
     return content
 
+def readlines_file(sfile):
+    rfile = open(sfile, 'r')
+    content = rfile.readlines()
+    rfile.close()
+    return content
+
 def write_file(sfile, content):
     dirname = os.path.dirname(sfile)
     if not os.path.isdir(dirname):
@@ -43,6 +49,15 @@ def write_file(sfile, content):
     wfile = open(sfile, 'w')
     wfile.write(content)
     wfile.close()
+
+def append_file(sfile, content):
+    dirname = os.path.dirname(sfile)
+    if not os.path.isdir(dirname):
+        os.makedirs(dirname)
+
+    afile = open(sfile, 'a')
+    afile.write(content)
+    afile.close()
 
 def copy_file(source, destination):
     base = os.path.dirname(destination)
@@ -106,7 +121,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
             os.putenv('DISPLAY', ':9')
 
         if output:
-            output = get_output(command)
+            out = get_output(command)
         else:
             subprocess.check_call(command)
     finally:
@@ -119,4 +134,5 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
                 sdir = config.FILESYSTEM_DIR + s
                 if os.path.ismount(sdir):
                     subprocess.check_call((whereis('umount'), '--force', '--lazy', sdir))
-        return output
+        if output:
+            return out

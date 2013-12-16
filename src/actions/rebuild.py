@@ -16,13 +16,6 @@ def search(sfile, string):
             line = line.replace('"', '')
             return line
 
-
-def detect_boot():
-    global initrd
-    global vmlinuz
-
-
-
 def main():
     common.check_filesystem()
 
