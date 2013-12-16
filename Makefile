@@ -5,7 +5,7 @@ PYCHECKER = python2 ../pychecker/pychecker/checker.py
 
 all: clean
 	mkdir -p build
-	cd build && $(NUITKA) --exe --recurse-all --verbose ../src/main.py
+	cd build && $(NUITKA) --exe --recurse-all --show-progress ../src/main.py
 	
 install:
 	install -vdm755 $(DESTDIR)/etc/ $(DESTDIR)/usr/sbin $(DESTDIR)/usr/share/customizer/ \

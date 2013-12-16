@@ -94,14 +94,19 @@ def list_files(directory):
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
     pseudofs = ['/proc', '/dev', '/sys']
     if xnest:
-        pseudofs.extend(('/var/lib/dbus', '/var/run/dbus'))
+        if os.path.islink(config.FILESYSTEM_DIR + '/var/run'):
+            pseudofs.append('/run/dbus')
+        else:
+            pseudofs.append('/var/run/dbus')
+        pseudofs.append('/var/lib/dbus')
 
     real_root = os.open('/', os.O_RDONLY)
     try:
-        # FIXME: /proc/mtab
         if prepare:
             if os.path.isfile('/etc/resolv.conf'):
                 copy_file('/etc/resolv.conf', config.FILESYSTEM_DIR + '/etc/resolv.conf')
+            if os.path.isfile('/etc/hosts'):
+                copy_file('/etc/hosts', config.FILESYSTEM_DIR + '/etc/hosts')
 
         if mount:
             for s in pseudofs:
@@ -117,7 +122,16 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
             if not os.path.isfile('/etc/mtab'):
                 os.symlink('/proc/mounts', '/etc/mtab')
 
+        os.putenv('HOME', '/root')
+        os.putenv('LC_ALL', config.LOCALES)
+        os.putenv('LANGUAGE', config.LOCALES)
+        os.putenv('LANG', config.LOCALES)
+
         if xnest:
+            os.putenv('HOME', '/etc/skel')
+            os.putenv('XDG_CACHE_HOME', '/etc/skel/.cache')
+            os.putenv('XDG_DATA_HOME', '/etc/skel')
+            os.putenv('XDG_CONFIG_HOME', '/etc/skel/.config')
             os.putenv('DISPLAY', ':9')
 
         if output:
