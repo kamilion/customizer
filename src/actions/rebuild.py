@@ -16,6 +16,21 @@ def search(sfile, string):
             line = line.replace('"', '')
             return line
 
+def detect_boot():
+    global initrd
+    global vmlinuz
+    initrd = None
+    vmlinuz = None
+
+    for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, 'boot')):
+        if 'initrd.img' in sfile:
+            initrd = sfile
+            message.sub_debug('initrd', sfile)
+        elif 'vmlinuz' in sfile:
+            vmlinuz = sfile
+            message.sub_debug('vmlinuz', sfile)
+
+
 def main():
     common.check_filesystem()
 
@@ -59,18 +74,15 @@ def main():
     if os.path.exists(iso_file):
         os.unlink(iso_file)
 
-    message.sub_info('Updating/creating Kernel images')
-    misc.chroot_exec(('update-initramfs', '-k', 'all', '-t', '-u'))
-
-    initrd = None
-    vmlinuz = None
-    for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, 'boot')):
-        if 'initrd.img' in sfile:
-            initrd = sfile
-            message.sub_debug('initrd', sfile)
-        elif 'vmlinuz' in sfile:
-            vmlinuz = sfile
-            message.sub_debug('vmlinuz', sfile)
+    detect_boot()
+    if not initrd or not vmlinuz:
+        message.sub_info('Re-installing kernel')
+        misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
+        misc.chroot_exec(('apt-get', 'install', '--yes', 'linux-image-generic', '-q'))
+        detect_boot()
+    else:
+        message.sub_info('Updating/creating kernel')
+        misc.chroot_exec(('update-initramfs', '-k', 'all', '-t', '-u'))
 
     if not initrd or not vmlinuz:
         message.sub_critical('Missing boot file (initrd or vmlinuz)')
