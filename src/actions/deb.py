@@ -3,26 +3,25 @@
 import sys, os
 
 import lib.misc as misc
-import lib.configparser as configparser
+import lib.config as config
 import lib.message as message
-
-def check():
-    if not os.path.isfile(configparser.DEB):
-        message.sub_critical('DEB does not exists', configparser.DEB)
-        sys.exit(2)
-    elif not configparser.DEB.endswith('.iso'):
-        message.sub_critical('File is not DEB', configparser.DEB)
-        sys.exit(2)
+import actions.common as common
 
 def main():
-    message.sub_info('Checking')
-    check()
+    common.check_filesystem()
+
+    if not os.path.isfile(config.DEB):
+        message.sub_critical('DEB does not exists', config.DEB)
+        sys.exit(2)
+    elif not config.DEB.endswith('.iso'):
+        message.sub_critical('File is not DEB', config.DEB)
+        sys.exit(2)
 
     message.sub_info('Copying DEB file')
-    deb_file = misc.join_paths(configparser.FILESYSTEM_DIR, 'temp.deb')
+    deb_file = misc.join_paths(config.FILESYSTEM_DIR, 'temp.deb')
     if os.path.isfile(deb_file):
         os.unlink(deb_file)
-    misc.copy_file(configparser.DEB, deb_file)
+    misc.copy_file(config.DEB, deb_file)
 
     message.sub_info('Installing DEB')
     misc.chroot_exec(['dpkg', '-i', '/temp.deb'])

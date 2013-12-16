@@ -1,8 +1,8 @@
 #!/usr/bin/python2
 
-import os, re, shutil, urllib2, tarfile, gzip, subprocess
+import os, re, shutil, subprocess
 
-import lib.configparser as configparser
+import lib.config as config
 
 def check_uid():
     if os.geteuid() == 0:
@@ -12,26 +12,12 @@ def check_uid():
 def whereis(program, chroot=False):
     for path in os.environ.get('PATH', '/bin:/usr/bin').split(':'):
         if chroot:
-            exe = join_paths(configparser.FILESYSTEM_DIR, path, program)
+            exe = join_paths(config.FILESYSTEM_DIR, path, program)
         else:
             exe = join_paths(path, program)
         if os.path.isfile(exe):
             return exe
     return None
-
-def check_connectivity():
-    try:
-        urllib2.urlopen('http://www.google.com', timeout=1)
-        return True
-    except urllib2.URLError:
-        return False
-
-def unique(string):
-    new = []
-    for s in string:
-        if not search_string(s, new, exact=True):
-            new.append(s)
-    return new
 
 ''' Variables operations '''
 def strip_list(string):
@@ -92,100 +78,8 @@ def size_dir(src):
         total_size += os.path.getsize(sfile)
     return total_size
 
-def fetch_check(url, destination):
-    # not all requests can get content-lenght , this means that there is no way
-    # to tell if the archive is corrupted (checking if size == 0 is not enough)
-    # so the source is re-feteched
-
-    remote_file = urllib2.urlopen(url)
-
-    if os.path.isfile(destination):
-        local_size = os.path.getsize(destination)
-        remote_size = remote_file.headers.get("content-length")
-
-        if not remote_size:
-            return False
-        elif int(local_size) == int(remote_size):
-            return True
-    else:
-        return False
-
-def fetch(url, destination):
-    remote_file = urllib2.urlopen(url)
-    dest_dir = os.path.dirname(destination)
-
-    if not os.path.isdir(dest_dir):
-        os.makedirs(dest_dir)
-
-    output = open(destination,'wb')
-    output.write(remote_file.read())
-    output.close()
-
-''' Archive operations '''
-def size_archive(star, sfile):
-    size = None
-    tar = tarfile.open(star, 'r')
-    for i in tar.getmembers():
-        if i.name == sfile:
-            size = i.size
-    tar.close()
-    return size
-
-def compress_dir(src, dst, method='bz2'):
-    dirname = os.path.dirname(dst)
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
-
-    os.chdir(src)
-    tar = tarfile.open(dst, 'w:' + method)
-    tar.add(src, '/')
-    tar.close()
-
-def compress_file(sfile, dst, method='gz', enc='UTF-8'):
-    dirname = os.path.dirname(dst)
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
-
-    tar = tarfile.open(dst, 'w:' + method, encoding=enc)
-    tar.add(sfile, '/')
-    tar.close()
-
-def gzip_file(sfile, dst):
-    dirname = os.path.dirname(dst)
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
-
-    f_in = open(sfile, 'rb')
-    f_out = gzip.open(sfile + '.gz', 'wb')
-    f_out.writelines(f_in)
-    f_out.close()
-    f_in.close()
-
-def decompress_archive(src, dst):
-    if not os.path.isdir(dst):
-        os.makedirs(dst)
-
-    # FIXME: this is a workaround for xz archives
-    if src.endswith('.xz'):
-        subprocess.check_call([whereis('tar'), '-xaf', src, '-C', dst])
-    else:
-        tar = tarfile.open(src, 'r')
-        os.chdir(dst)
-        tar.extractall()
-        tar.close()
-
-def list_archive(src):
-    tar = tarfile.open(src)
-    content = tar.getnames()
-    tar.close()
-    return content
-
 
 ''' File operations '''
-def mime_file(sfile):
-    # return mimetypes.guess_type(file)
-    return get_output([whereis('file'), '--brief', '--mime-type', sfile])
-
 def read_file(sfile):
     rfile = open(sfile, 'r')
     content = rfile.read()
@@ -229,7 +123,6 @@ def get_output(command):
 
 ''' Misc '''
 def search_string(string, string2, exact=False, escape=True):
-
     if exact and escape:
         return re.findall('(\\s|^)' + re.escape(string) + '(\\s|$)', strip_list(string2))
     elif exact:
@@ -256,27 +149,34 @@ def list_dirs(directory):
             slist.append(os.path.join(root, sdir))
     return slist
 
-def chroot_exec(command, prepare=True, mount=True, output=False):
+def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
+    pseudofs = ['/proc', '/dev', '/sys']
+    if xnest:
+        pseudofs.extend(('/var/lib/dbus', '/var/run/dbus'))
+
     real_root = os.open('/', os.O_RDONLY)
     try:
         # FIXME: /proc/mtab
         if prepare:
             if os.path.isfile('/etc/resolv.conf'):
-                copy_file('/etc/resolv.conf', configparser.FILESYSTEM_DIR + '/etc/resolv.conf')
+                copy_file('/etc/resolv.conf', config.FILESYSTEM_DIR + '/etc/resolv.conf')
 
         if mount:
-            for s in ['/proc', '/dev', '/sys']:
-                sdir = configparser.FILESYSTEM_DIR + s
+            for s in pseudofs:
+                sdir = config.FILESYSTEM_DIR + s
                 if not os.path.ismount(sdir):
                     if not os.path.isdir(sdir):
                         os.makedirs(sdir)
                     subprocess.check_call([whereis('mount'), '--rbind', s, sdir])
 
-        os.chroot(configparser.FILESYSTEM_DIR)
+        os.chroot(config.FILESYSTEM_DIR)
         os.chdir('/')
         if prepare:
             if not os.path.isfile('/etc/mtab'):
                 os.symlink('/proc/mounts', '/etc/mtab')
+
+        if xnest:
+            os.putenv('DISPLAY', ':9')
 
         if output:
             output = get_output(command)
@@ -288,8 +188,8 @@ def chroot_exec(command, prepare=True, mount=True, output=False):
         os.close(real_root)
 
         if mount:
-            for s in ['/proc', '/dev', '/sys']:
-                sdir = configparser.FILESYSTEM_DIR + s
+            for s in reversed(pseudofs):
+                sdir = config.FILESYSTEM_DIR + s
                 if os.path.ismount(sdir):
-                    subprocess.check_call([whereis('umount'), '--force', '--lazy', sdir])
+                    subprocess.check_call((whereis('umount'), '--force', '--lazy', sdir))
         return output

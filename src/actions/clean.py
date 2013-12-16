@@ -1,8 +1,6 @@
 #!/usr/bin/python2
 
-import lib.message as message
-import actions.extract as extract
+import actions.common as common
 
 def main():
-    message.sub_info('Cleaning')
-    extract.clean_work_dirs()
+    common.clean_work_dirs()
