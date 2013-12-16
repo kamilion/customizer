@@ -9,7 +9,7 @@ all: clean
 	
 install:
 	install -vdm755 $(DESTDIR)/etc/ $(DESTDIR)/usr/sbin $(DESTDIR)/usr/share/customizer/ \
-		$(DESTDIR)/usr/share/menu $(DESTDIR)/usr/share/applications $(DESTDIR)/usr/share/customizer
+		$(DESTDIR)/usr/share/menu $(DESTDIR)/usr/share/applications
 	install -vm755 build/main.exe $(DESTDIR)/usr/sbin/customizer
 	install -vm644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
 	install -vm644 data/exclude.list $(DESTDIR)/usr/share/customizer/exclude.list
@@ -20,14 +20,14 @@ uninstall:
 	$(RM) $(DESTDIR)/usr/sbin/customizer
 	$(RM) $(DESTDIR)/etc/customizer.conf
 	$(RM) -r $(DESTDIR)/usr/share/customizer/
-	# $(RM) $(DESTDIR)/usr/share/applications/customizer.desktop
-	# $(RM) $(DESTDIR)/usr/share/menu/customizer
+	$(RM) $(DESTDIR)/usr/share/applications/customizer.desktop
+	$(RM) $(DESTDIR)/usr/share/menu/customizer
 	
 bump:
 	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py
 
 lint:
-	cd src && pylint lib/* actions/*.py | grep -v -e 'Line too long'
+	pylint src/lib/* src/actions/*.py src/main.py | grep -v -e 'Line too long'
 
 check: clean
 	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py

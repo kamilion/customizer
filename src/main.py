@@ -2,9 +2,7 @@
 
 import sys, ConfigParser, subprocess, shutil, os, re, argparse
 
-import lib.config as config
 import lib.message as message
-import lib.misc as misc
 
 import actions.extract as extract
 import actions.chroot as chroot
@@ -38,7 +36,7 @@ try:
     parser.add_argument('-q', '--qemu', action='store_true', help='Test the builded image with QEMU')
     parser.add_argument('-t', '--clean', action='store_true', help='Clean all temporary files and folders')
 
-    parser.add_argument('-D', '--debug',nargs=0, action=OverrideDebug, help='Enable debug messages')
+    parser.add_argument('-D', '--debug', nargs=0, action=OverrideDebug, help='Enable debug messages')
     parser.add_argument('-v', '--version', action='version', version='Customizer v' + app_version, help='Show Customizer version and exits')
     ARGS = parser.parse_args()
 
@@ -52,7 +50,7 @@ try:
         chroot.main()
 
     if ARGS.xnest:
-        message.info('Running nested X session...)
+        message.info('Running nested X session...')
         xnest.main()
 
     if ARGS.pkgm:
@@ -96,5 +94,4 @@ except SystemExit:
     sys.exit(2)
 except:
     message.critical('Unexpected error', sys.exc_info()[0])
-    raise
     sys.exit(1)
