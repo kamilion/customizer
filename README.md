@@ -5,7 +5,7 @@ Customizer (formerly known as U-Customizer)
 	
 ### SYNOPSIS
 
-    customizer [-h] [-e] [-c] [-x] [-p] [-d] [-k] [-g] [-r] [-q] [-t] [-D] [-T] [-v]
+    customizer [-h] [-e] [-c] [-x] [-p] [-d] [-k] [-r] [-q] [-t] [-D] [-v]
 
 
 ### DESCRIPTION
@@ -23,7 +23,6 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     -p, --pkgm       Execute package manager
     -d, --deb        Install Debian package
     -k, --hook       Execute hook
-    -g, --gui        Install GUI (DE/WM)
     -r, --rebuild    Rebuild the ISO image
     -q, --qemu       Test the builded image with QEMU
     -t, --clean      Clean all temporary files and folders

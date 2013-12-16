@@ -8,6 +8,7 @@ import lib.misc as misc
 
 import actions.extract as extract
 import actions.chroot as chroot
+import actions.xnest as xnest
 import actions.pkgm as pkgm
 import actions.deb as deb
 import actions.rebuild as rebuild
@@ -33,7 +34,6 @@ try:
     parser.add_argument('-p', '--pkgm', action='store_true', help='Execute package manager')
     parser.add_argument('-d', '--deb', action='store_true', help='Install Debian package')
     parser.add_argument('-k', '--hook', action='store_true', help='Execute hook')
-    parser.add_argument('-g', '--gui', action='store_true', help='Install GUI (DE/WM)')
     parser.add_argument('-r', '--rebuild', action='store_true', help='Rebuild the ISO image')
     parser.add_argument('-q', '--qemu', action='store_true', help='Test the builded image with QEMU')
     parser.add_argument('-t', '--clean', action='store_true', help='Clean all temporary files and folders')
@@ -50,6 +50,10 @@ try:
     if ARGS.chroot:
         message.info('Chrooting...')
         chroot.main()
+
+    if ARGS.xnest:
+        message.info('Running nested X session...)
+        xnest.main()
 
     if ARGS.pkgm:
         message.info('Running package manager...')
