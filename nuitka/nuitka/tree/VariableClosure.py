@@ -34,8 +34,8 @@ from .Operations import VisitorNoopMixin, visitTree
 from nuitka.nodes.ReturnNodes import StatementGeneratorReturn
 
 # Note: We do the variable scope assignment, as an extra step from tree
-# building, because it will build the tree without any consideration of
-# evaluation order. And only the way these visitors are entered, will ensure
+# building, because tree building creates the tree without any consideration of
+# evaluation order. And the ordered way these visitors are entered, will ensure
 # this order.
 
 # The main complexity is that there are two ways of visiting. One where variable
@@ -84,9 +84,11 @@ class VariableClosureLookupVisitorPhase1( VisitorNoopMixin ):
                         )
                     )
         elif node.isExpressionTempVariableRef():
-            if node.getVariable().getOwner().getParentVariableProvider() != node.getParentVariableProvider():
+            if node.getVariable().getOwner() != node.getParentVariableProvider():
                 node.setVariable(
-                    node.getParentVariableProvider().addClosureVariable( node.getVariable() )
+                    node.getParentVariableProvider().addClosureVariable(
+                        node.getVariable()
+                    )
                 )
 
                 assert node.getVariable().isClosureReference(), node.getVariable()
@@ -253,7 +255,8 @@ class VariableClosureLookupVisitorPhase2( VisitorNoopMixin ):
                     exec_line_number = parent_provider.getExecSourceRef().getLineNumber()
 
                     raise SyntaxError(
-                        """unqualified exec is not allowed in function '%s' it \
+                        """\
+unqualified exec is not allowed in function '%s' it \
 contains a nested function with free variables""" % parent_provider.getName(),
                         (
                             node.source_ref.getFilename(),
@@ -261,17 +264,28 @@ contains a nested function with free variables""" % parent_provider.getName(),
                             None,
                             lines[ exec_line_number - 1 ]
                         )
-
                     )
 
-    # For Python3, every function is supposed to take "__class__" as a
-    # reference, so make sure that happens.
+    # For Python3, every function in a class is supposed to take "__class__" as
+    # a reference, so make sure that happens.
     if python_version >= 300:
         def onLeaveNode( self, node ):
             if node.isExpressionFunctionBody() and node.isClassClosureTaker():
-                node.getVariableForReference(
-                    variable_name = "__class__"
-                )
+                if python_version < 340:
+                    node.getVariableForReference(
+                        variable_name = "__class__"
+                    )
+                else:
+                    parent_provider = node.getParentVariableProvider()
+
+                    variable = parent_provider.getTempVariable(
+                        temp_scope = None,
+                        name       = "__class__"
+                    )
+
+                    variable = variable.makeReference( parent_provider )
+
+                    node.addClosureVariable( variable )
 
 
 class VariableClosureLookupVisitorPhase3( VisitorNoopMixin ):
@@ -283,20 +297,24 @@ class VariableClosureLookupVisitorPhase3( VisitorNoopMixin ):
         that. Currently this phase is Python2 only, but that may change.
     """
 
-
     def onEnterNode( self, node ):
-        if python_version < 300:
-            if node.isStatementDelVariable() and \
-                 node.getTargetVariableRef().getVariable().isShared():
-                raise SyntaxError(
-                        "can not delete variable '%s' referenced in nested scope" % node.getTargetVariableRef().getVariableName(), # pylint: disable=C0301
-                        (
-                            None, # TODO: Could easily provide the line number and file
-                            None,
-                            None,
-                            None
-                        )
-                    )
+        assert python_version < 300
+
+        if node.isStatementDelVariable():
+            variable = node.getTargetVariableRef().getVariable()
+
+            if variable.isShared():
+                SyntaxErrors.raiseSyntaxError(
+                    reason       = """\
+can not delete variable '%s' referenced in nested scope""" % (
+                       variable.getName()
+                    ),
+                    source_ref   = (
+                        None if isFullCompat() else node.getSourceReference()
+                    ),
+                    display_file = not isFullCompat(),
+                    display_line = not isFullCompat()
+                )
 
 
 def completeVariableClosures( tree ):

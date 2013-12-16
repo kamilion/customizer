@@ -17,22 +17,12 @@
 #
 """ Identifiers hold code references.
 
-These are generally the means to effectively hide the reference count. The best part
-is where getCheapRefCount tries to not allocate references not needed.
+These are generally the means to effectively hide the reference count. The best
+part is where getCheapRefCount allows to not allocate references not needed.
 """
 
-# The method signatures do not always require usage of self, sometimes can be decided
-# based on class. pylint: disable=R0201
-
-from nuitka import Utils
-
-def encodeNonAscii( var_name ):
-    if Utils.python_version < 300:
-        return var_name
-    else:
-        var_name = var_name.encode( "ascii", "xmlcharrefreplace" )
-
-        return var_name.decode( "ascii" ).replace( "&#", "$$" ).replace( ";", "" )
+# The method signatures do not always require usage of self, sometimes can be
+# decided based on class. pylint: disable=R0201
 
 class Identifier:
     def __init__( self, code, ref_count ):
@@ -59,7 +49,7 @@ class Identifier:
 
     def getCodeTemporaryRef( self ):
         if self.getRefCount():
-            return "PyObjectTemporary( %s ).asObject()" % self.getCodeObject()
+            return "PyObjectTemporary( %s ).asObject0()" % self.getCodeObject()
         else:
             return self.getCodeObject()
 
@@ -74,6 +64,37 @@ class Identifier:
 
     def isConstantIdentifier( self ):
         return False
+
+
+class NameIdentifier( Identifier ):
+    def __init__( self, name, hint, code, ref_count ):
+        self.name = name
+        self.hint = hint
+
+        Identifier.__init__(
+            self,
+            code      = code,
+            ref_count = ref_count
+        )
+
+    def __repr__( self ):
+        return "<NameIdentifier %s '%s' %s>" % (
+            self.hint,
+            self.name,
+            self.code
+        )
+
+    def getCodeObject( self ):
+        return "%s.asObject0()" % self.getCode()
+
+    def getCodeTemporaryRef( self ):
+        return "%s.asObject0()" % self.getCode()
+
+    def getCodeExportRef( self ):
+        return "%s.asObject1()" % self.getCode()
+
+    def getCodeDropRef( self ):
+        return self.getCodeTemporaryRef()
 
 
 class ConstantIdentifier( Identifier ):
@@ -124,9 +145,10 @@ class EmptyDictIdentifier( Identifier ):
 
 
 class ModuleVariableIdentifier:
-    def __init__( self, var_name, module_code_name ):
+    def __init__( self, var_name, var_code_name ):
         self.var_name = var_name
-        self.module_code_name = module_code_name
+
+        self.var_code_name = var_code_name
 
     def isConstantIdentifier( self ):
         return False
@@ -138,100 +160,55 @@ class ModuleVariableIdentifier:
         return 0
 
     def getCheapRefCount( self ):
-        # The asObject0 is the fastest way, stealing a reference directly from the module
-        # dictionary if possible.
+        # The asObject0 is the fastest way, stealing a reference directly from
+        # the module dictionary if possible.
         return 0
 
     def getCodeTemporaryRef( self ):
-        return "_mvar_%s_%s.asObject0()" % ( self.module_code_name, self.var_name )
+        return "GET_MODULE_VALUE0( %s )" % (
+            self.var_code_name
+        )
 
     def getCodeExportRef( self ):
-        return "_mvar_%s_%s.asObject()" % ( self.module_code_name, self.var_name )
+        return "GET_MODULE_VALUE1( %s )" % (
+            self.var_code_name
+        )
 
     def getCodeDropRef( self ):
         return self.getCodeTemporaryRef()
 
-    def getCode( self ):
-        return "_mvar_%s_%s" % ( self.module_code_name, encodeNonAscii( self.var_name ) )
 
 
-class MaybeModuleVariableIdentifier( Identifier ):
-    def __init__( self, var_name, module_code_name ):
-        Identifier.__init__(
+class MaybeModuleVariableIdentifier( ModuleVariableIdentifier ):
+    def __init__( self, var_name, var_code_name ):
+        ModuleVariableIdentifier.__init__(
             self,
-            "_mvar_%s_%s.asObject0( locals_dict.asObject() )" % (
-                module_code_name,
-                var_name
-            ),
-            0
+            var_name         = var_name,
+            var_code_name    = var_code_name
+        )
+
+    def __repr__( self ):
+        return "<MaybeModuleVariableIdentifier %s>" % self.var_name
+
+    def getCodeTemporaryRef( self ):
+        return "GET_LOCALS_OR_MODULE_VALUE0( locals_dict.asObject0(), %s )" % (
+            self.var_code_name
+        )
+
+    def getCodeExportRef( self ):
+        return "GET_LOCALS_OR_MODULE_VALUE1( locals_dict.asObject0(), %s )" % (
+            self.var_code_name
         )
 
 
-class LocalVariableIdentifier:
-    def __init__( self, var_name, from_context = False ):
-        assert type( var_name ) == str
-
-        self.from_context = from_context
+class TempObjectIdentifier( Identifier ):
+    def __init__( self, var_name, code ):
         self.var_name = var_name
 
-    def isConstantIdentifier( self ):
-        return False
+        Identifier.__init__( self, code, 0 )
 
     def __repr__( self ):
-        return "<LocalVariableIdentifier %s>" % self.var_name
-
-    def getCode( self ):
-        if not self.from_context:
-            return "_python_var_" + encodeNonAscii( self.var_name )
-        else:
-            return "_python_context->python_var_" + encodeNonAscii( self.var_name )
-
-    def getRefCount( self ):
-        return 0
-
-    def getCheapRefCount( self ):
-        return 0
-
-    def getCodeObject( self ):
-        return "%s.asObject()" % self.getCode()
-
-    def getCodeTemporaryRef( self ):
-        return "%s.asObject()" % self.getCode()
-
-    def getCodeExportRef( self ):
-        return "%s.asObject1()" % self.getCode()
-
-    def getCodeDropRef( self ):
-        return self.getCodeTemporaryRef()
-
-
-class TempVariableIdentifier( Identifier ):
-    def __init__( self, var_name ):
-        self.tempvar_name = var_name
-
-        Identifier.__init__( self, "_python_tmp_" + var_name, 0 )
-
-    def __repr__( self ):
-        return "<TempVariableIdentifier %s >" % self.tempvar_name
-
-    def getCheapRefCount( self ):
-        return 0
-
-    def getCodeObject( self ):
-        return "%s.asObject()" % self.getCode()
-
-    def getClass( self ):
-        return "PyObjectTemporary"
-
-
-class TempObjectIdentifier( Identifier ):
-    def __init__( self, var_name ):
-        self.tempvar_name = var_name
-
-        Identifier.__init__( self, "_python_tmp_" + var_name, 0 )
-
-    def getCodeTemporaryRef( self ):
-        return self.code
+        return "<TempObjectIdentifier %s>" % self.var_name
 
 
 
@@ -241,30 +218,6 @@ class KeeperAccessIdentifier( Identifier ):
 
     def getCheapRefCount( self ):
         return 0
-
-
-class ClosureVariableIdentifier( Identifier ):
-    def __init__( self, var_name, from_context ):
-        assert type( from_context ) is str
-
-        self.var_name = var_name
-        self.from_context = from_context
-
-        if self.from_context:
-            Identifier.__init__( self, self.from_context + "python_closure_" + encodeNonAscii( self.var_name ), 0 )
-        else:
-            # TODO: Use a variable object to decide naming policy
-
-            Identifier.__init__( self, "python_closure_" + encodeNonAscii( self.var_name ), 0 )
-
-    def __repr__( self ):
-        return "<ClosureVariableIdentifier %s >" % self.var_name
-
-    def getCheapRefCount( self ):
-        return 0
-
-    def getCodeObject( self ):
-        return self.getCode() + ".asObject()"
 
 
 class NullIdentifier( Identifier ):
@@ -335,3 +288,15 @@ def getCodeExportRefs( identifiers ):
     """
 
     return [ identifier.getCodeExportRef() for identifier in identifiers ]
+
+def defaultToNullIdentifier( identifier ):
+    if identifier is not None:
+        return identifier
+    else:
+        return NullIdentifier()
+
+def defaultToNoneIdentifier( identifier ):
+    if identifier is not None:
+        return identifier
+    else:
+        return SpecialConstantIdentifier( constant_value = None )

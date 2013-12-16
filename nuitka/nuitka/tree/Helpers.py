@@ -36,7 +36,7 @@ from nuitka.nodes.ContainerMakingNodes import (
     ExpressionMakeSet
 )
 
-from nuitka import Tracing
+from nuitka import Tracing, Constants
 
 from logging import warning
 
@@ -60,6 +60,9 @@ build_nodes_args2 = None
 build_nodes_args1 = None
 
 def setBuildDispatchers( path_args3, path_args2, path_args1 ):
+    # Using global here, as this is really a singleton, in the form of a module,
+    # and this is to break the cyclic dependency it has, pylint: disable=W0603
+
     global build_nodes_args3, build_nodes_args2, build_nodes_args1
 
     build_nodes_args3 = path_args3
@@ -129,6 +132,27 @@ def buildNodeList( provider, nodes, source_ref, allow_none = False ):
     else:
         return []
 
+def makeModuleFrame( module, statements, source_ref ):
+    assert module.isPythonModule()
+
+    if module.isMainModule():
+        code_name = "<module>"
+    else:
+        code_name = module.getName()
+
+    return StatementsFrame(
+        statements    = statements,
+        guard_mode    = "once",
+        var_names     = (),
+        arg_count     = 0,
+        kw_only_count = 0,
+        code_name     = code_name,
+        has_starlist  = False,
+        has_stardict  = False,
+        source_ref    = source_ref
+    )
+
+
 def buildStatementsNode( provider, nodes, source_ref, frame = False ):
     # We are not creating empty statement sequences.
     if nodes is None:
@@ -155,28 +179,24 @@ def buildStatementsNode( provider, nodes, source_ref, frame = False ):
             guard_mode    = "generator" if provider.isGenerator() else "full"
             has_starlist  = parameters.getStarListArgumentName() is not None
             has_stardict  = parameters.getStarDictArgumentName() is not None
+
+            return StatementsFrame(
+                statements    = statements,
+                guard_mode    = guard_mode,
+                var_names     = arg_names,
+                arg_count     = len( arg_names ),
+                kw_only_count = kw_only_count,
+                code_name     = code_name,
+                has_starlist  = has_starlist,
+                has_stardict  = has_stardict,
+                source_ref    = source_ref
+            )
         else:
-            assert provider.isPythonModule()
-
-            arg_names     = ()
-            kw_only_count = 0
-            code_name     = "<module>" if provider.isMainModule() else provider.getName()
-            guard_mode    = "once"
-            has_starlist  = False
-            has_stardict  = False
-
-
-        return StatementsFrame(
-            statements    = statements,
-            guard_mode    = guard_mode,
-            var_names     = arg_names,
-            arg_count     = len( arg_names ),
-            kw_only_count = kw_only_count,
-            code_name     = code_name,
-            has_starlist  = has_starlist,
-            has_stardict  = has_stardict,
-            source_ref    = source_ref
-        )
+            return makeModuleFrame(
+                module     = provider,
+                statements = statements,
+                source_ref = source_ref
+            )
     else:
         return StatementsSequence(
             statements = statements,
@@ -222,7 +242,7 @@ def makeSequenceCreationOrConstant( sequence_kind, elements, source_ref ):
     # elements. Would be caught by optimization, but would be useless churn. For
     # mutable constants we cannot do it though.
     for element in elements:
-        if not element.isExpressionConstantRef() or element.isMutable():
+        if not element.isExpressionConstantRef():
             constant = False
             break
     else:
@@ -271,15 +291,17 @@ def makeSequenceCreationOrConstant( sequence_kind, elements, source_ref ):
             assert False, sequence_kind
 
 
-def makeDictCreationOrConstant( keys, values, source_ref ):
+def makeDictCreationOrConstant( keys, values, lazy_order, source_ref ):
     # Create dictionary node. Tries to avoid it for constant values that are not
     # mutable.
 
     assert len( keys ) == len( values )
     for key, value in zip( keys, values ):
-        if not key.isExpressionConstantRef() or \
-           not value.isExpressionConstantRef() or \
-           not value.isMutable():
+        if not key.isExpressionConstantRef():
+            constant = False
+            break
+
+        if not value.isExpressionConstantRef():
             constant = False
             break
     else:
@@ -288,18 +310,15 @@ def makeDictCreationOrConstant( keys, values, source_ref ):
     # Note: This would happen in optimization instead, but lets just do it
     # immediately to save some time.
     if constant:
-        # Create the dictionary in its full size, so that no growing occurs and
-        # the constant becomes as similar as possible before being marshalled.
-        constant_value = dict.fromkeys(
-            [ key.getConstant() for key in keys ],
-            None
-        )
-
-        for key, value in zip( keys, values ):
-            constant_value[ key.getConstant() ] = value.getConstant()
-
+        # Unless tolder otherwise, create the dictionary in its full size, so
+        # that no growing occurs and the constant becomes as similar as possible
+        # before being marshalled.
         return ExpressionConstantRef(
-            constant      = constant_value,
+            constant      = Constants.createConstantDict(
+                lazy_order = not lazy_order,
+                keys       = [ key.getConstant() for key in keys ],
+                values     = [ value.getConstant() for value in values ]
+            ),
             source_ref    = source_ref,
             user_provided = True
         )
@@ -310,5 +329,6 @@ def makeDictCreationOrConstant( keys, values, source_ref ):
                 for key, value in
                 zip( keys, values )
             ],
+            lazy_order = lazy_order,
             source_ref = source_ref
         )
