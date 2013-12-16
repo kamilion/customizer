@@ -9,6 +9,7 @@ import actions.chroot as chroot
 import actions.xnest as xnest
 import actions.pkgm as pkgm
 import actions.deb as deb
+import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.clean as clean
 
@@ -60,6 +61,11 @@ try:
     if ARGS.deb:
         message.info('Installing Debian package...')
         deb.main()
+
+    if ARGS.hook:
+        message.info('Running chroot hook...')
+        hook.main()
+
 
     if ARGS.rebuild:
         message.info('Rebuilding ISO...')
