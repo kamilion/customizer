@@ -16,7 +16,7 @@ import actions.clean as clean
 app_version = "4.0.0"
 
 try:
-    if not misc.check_uid():
+    if not os.geteuid() == 0:
         message.critical('You are not root')
         sys.exit(2)
 

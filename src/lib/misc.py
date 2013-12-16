@@ -4,11 +4,6 @@ import os, re, shutil, subprocess
 
 import lib.config as config
 
-def check_uid():
-    if os.geteuid() == 0:
-        return True
-    return False
-
 def whereis(program, chroot=False):
     for path in os.environ.get('PATH', '/bin:/usr/bin').split(':'):
         if chroot:
@@ -18,6 +13,7 @@ def whereis(program, chroot=False):
         if os.path.isfile(exe):
             return exe
     return None
+
 
 ''' Variables operations '''
 def strip_list(string):
@@ -32,63 +28,10 @@ def join_paths(*paths):
     return os.path.normpath(result)
 
 
-''' Directory operations '''
-def remove_dir(sdir):
-    for root, dirs, files in os.walk(sdir):
-        for f in files:
-            os.unlink(root + '/'  + f)
-        for d in dirs:
-            if os.path.islink(root + '/'  + d):
-                os.unlink(root + '/'  + d)
-    for root, dirs, files in os.walk(sdir, topdown=False):
-        for d in dirs:
-            os.rmdir(root + '/'  + d)
-    os.rmdir(sdir)
-
-def copy_dir(src, dst, symlinks=True, ignore=None):
-    if not os.path.exists(dst):
-        os.makedirs(dst)
-    for item in os.listdir(src):
-        s = os.path.join(src, item)
-        d = os.path.join(dst, item)
-        if os.path.isdir(s):
-            shutil.copytree(s, d, symlinks, ignore)
-        else:
-            if not os.path.exists(d) or os.stat(src).st_mtime - os.stat(dst).st_mtime > 1:
-                shutil.copy2(s, d)
-
-def move_dir(src, dst):
-    for src_dir, dirs, files in os.walk(src, topdown=True, onerror=None, followlinks=False):
-        dst_dir = src_dir.replace(src, dst)
-        if not os.path.exists(dst_dir):
-            os.makedirs(dst_dir)
-        for file_ in files:
-            src_file = os.path.join(src_dir, file_)
-            dst_file = os.path.join(dst_dir, file_)
-            if os.path.exists(dst_file):
-                os.remove(dst_file)
-            shutil.move(src_file, dst_dir)
-
-def size_dir(src):
-    total_size = 0
-    for sfile in list_files(src):
-        if os.path.islink(sfile):
-            continue
-
-        total_size += os.path.getsize(sfile)
-    return total_size
-
-
 ''' File operations '''
 def read_file(sfile):
     rfile = open(sfile, 'r')
     content = rfile.read()
-    rfile.close()
-    return content
-
-def readlines_file(sfile):
-    rfile = open(sfile, 'r')
-    content = rfile.readlines()
     rfile.close()
     return content
 
@@ -100,15 +43,6 @@ def write_file(sfile, content):
     wfile = open(sfile, 'w')
     wfile.write(content)
     wfile.close()
-
-def append_file(sfile, content):
-    dirname = os.path.dirname(sfile)
-    if not os.path.isdir(dirname):
-        os.makedirs(dirname)
-
-    afile = open(sfile, 'a')
-    afile.write(content)
-    afile.close()
 
 def copy_file(source, destination):
     base = os.path.dirname(destination)
@@ -140,13 +74,6 @@ def list_files(directory):
     for root, subdirs, files in os.walk(directory):
         for sfile in files:
             slist.append(os.path.join(root, sfile))
-    return slist
-
-def list_dirs(directory):
-    slist = []
-    for root, subdirs, files in os.walk(directory):
-        for sdir in subdirs:
-            slist.append(os.path.join(root, sdir))
     return slist
 
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
