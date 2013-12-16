@@ -13,10 +13,8 @@ if not os.path.isfile('/etc/customizer.conf'):
     MESSAGES_COLORS = True
     FORCE_CHROOT = True
     LOCALES = "C"
-    CHROOT_HELPER = True
     RESOLUTION = "800x600"
     COMPRESSION = "xz"
-    BOOT_FILES = False
     VRAM = "256"
     ISO = ""
     DEB = ""
@@ -32,10 +30,8 @@ else:
     MESSAGES_COLORS = conf.getboolean('preferences', 'MESSAGES_COLORS')
     FORCE_CHROOT = conf.getboolean('preferences', 'FORCE_CHROOT')
     LOCALES = conf.get('preferences', 'LOCALES')
-    CHROOT_HELPER = conf.getboolean('preferences', 'CHROOT_HELPER')
     RESOLUTION = conf.get('preferences', 'RESOLUTION')
     COMPRESSION = conf.get('preferences', 'COMPRESSION')
-    BOOT_FILES = conf.getboolean('preferences', 'BOOT_FILES')
     VRAM = conf.get('preferences', 'VRAM')
 
     ISO = conf.get('saved', 'ISO')

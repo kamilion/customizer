@@ -67,8 +67,10 @@ def main():
     for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, 'boot')):
         if 'initrd.img' in sfile:
             initrd = sfile
+            message.sub_debug('initrd', sfile)
         elif 'vmlinuz' in sfile:
             vmlinuz = sfile
+            message.sub_debug('vmlinuz', sfile)
 
     if not initrd or not vmlinuz:
         message.sub_critical('Missing boot file (initrd or vmlinuz)')
@@ -78,12 +80,6 @@ def main():
         misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz'))
         if os.path.isdir(misc.join_paths(config.ISO_DIR, 'efi/boot')):
             misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz.efi'))
-
-    if config.BOOT_FILES:
-        message.sub_info('Deleteing boot files')
-        for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, 'boot')):
-            os.unlink(initrd)
-            os.unlink(vmlinuz)
 
     message.sub_info('Creating squashed FileSystem')
     subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR,
