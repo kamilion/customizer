@@ -114,7 +114,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
                 if not os.path.ismount(sdir):
                     if not os.path.isdir(sdir):
                         os.makedirs(sdir)
-                    subprocess.check_call([whereis('mount'), '--rbind', s, sdir])
+                    subprocess.check_call([whereis('mount'), '--bind', s, sdir])
 
         os.chroot(config.FILESYSTEM_DIR)
         os.chdir('/')
