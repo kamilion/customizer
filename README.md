@@ -12,7 +12,7 @@ If you have have newer version than 12.04 follow these steps:
 
 Open your software-source(s) manager and add the repository:
 
-    deb http://cz.archive.ubuntu.com/ubuntu precise main universe
+    deb http://archive.ubuntu.com/ubuntu precise main universe
 
 And update you software-source(s):
   
