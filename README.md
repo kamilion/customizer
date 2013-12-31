@@ -38,6 +38,8 @@ Mubiin Kimura 'clearkimura' (documentation) `clearkimura@gmail.com`
 
 Andrie Vorster 'andries-petrus-vorster' (README.md)
 
+Ayman 'aymanim' (typo, spellcheck)
+
 ## Legal
 
 The GNU General Public License version 2 (GPLv2)
