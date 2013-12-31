@@ -4,7 +4,7 @@ Customizer is an advanced Live CD customization and remastering tool. With it, y
 
 This branch relies on Gambas 2 packages, optimized for 12.04 and older releases.
 
-**NOTE** If you want to install this branch on 12.04, it is possible. You need to open the Software Sources and add the following repository `deb http://archive.ubuntu.com/ubuntu precise main universe` to the list. Then, update the repository (or open Terminal and run `sudo apt-get update`) and follow the instructions below.
+**IMPORTANT** You need to enable some repositories to install the dependencies and `gambas2` packages. Ensure that you have enabled the **universe** repository in the Software Sources. Then, update the repository (or open Terminal and run `sudo apt-get update`) and follow the instructions below.
 
 ## Getting Started
 
