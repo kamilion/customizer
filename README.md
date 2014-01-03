@@ -34,8 +34,6 @@ Michal Glowienka 'eloaders' (PPA maintainer) `eloaders@yahoo.com`
 
 Mubiin Kimura 'clearkimura' (documentation) `clearkimura@gmail.com`
 
-### Volunteers
-
 Andrie Vorster 'andries-petrus-vorster' (README.md)
 
 Ayman 'aymanim' (typo, spellcheck)
