@@ -13,7 +13,7 @@ def main():
     if not os.path.isfile(config.DEB):
         message.sub_critical('DEB does not exists', config.DEB)
         sys.exit(2)
-    elif not config.DEB.endswith('.iso'):
+    elif not config.DEB.endswith('.deb'):
         message.sub_critical('File is not DEB', config.DEB)
         sys.exit(2)
 
