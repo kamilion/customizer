@@ -44,4 +44,4 @@ The GNU General Public License version 2 (GPLv2)
 
 Copyright (C) 2010-2013 Ivailo Monev
 
-Copyright (C) 2013 Mubiin Kimura
+Copyright (C) 2013-2014 Mubiin Kimura
