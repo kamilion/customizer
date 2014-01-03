@@ -24,4 +24,4 @@ def main():
     os.chmod(hook_file, stat.S_IEXEC)
 
     message.sub_info('Running HOOK')
-    misc.chroot_exec(['exec', '/hook'])
+    misc.chroot_exec(('exec', '/hook'))
