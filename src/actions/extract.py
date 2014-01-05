@@ -28,12 +28,9 @@ def main():
     invalid_iso = False
     for sfile in (mount_dir + '/casper/filesystem.squashfs', mount_dir + '/.disk', mount_dir + '/isolinux'):
         if not os.path.exists(sfile):
-            invalid_iso = True
-
-    if invalid_iso:
-        message.sub_critical('Invalid ISO', config.ISO)
-        common.clean_work_dirs()
-        sys.exit(2)
+            message.sub_critical('Invalid ISO', config.ISO)
+            common.clean_work_dirs()
+            sys.exit(2)
 
     message.sub_info('Unsquashing filesystem')
     subprocess.check_call((misc.whereis('unsquashfs'), '-f', '-d', config.FILESYSTEM_DIR, mount_dir + '/casper/filesystem.squashfs'))
