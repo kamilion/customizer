@@ -38,6 +38,8 @@ Andrie Vorster 'andries-petrus-vorster' (README.md)
 
 Ayman 'aymanim' (typo, spellcheck)
 
+Yes 'eByrd' (typo, spellcheck)
+
 ## Legal
 
 The GNU General Public License version 2 (GPLv2)
