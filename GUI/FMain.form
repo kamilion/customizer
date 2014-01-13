@@ -164,7 +164,7 @@
       MoveScaled(1,3,16,3)
       Enabled = False
       ToolTip = ("Edit the sources.list via text-editor")
-      Text = ("Edit Souces")
+      Text = ("Edit Sources")
       Picture = Picture["icon:/16/edit"]
     }
     { Install_DEB Button
@@ -202,12 +202,12 @@
     { LiveCD_User TextBox
       MoveScaled(1,12,16,3)
       Enabled = False
-      ToolTip = ("Set LiveCD User name for your distro")
+      ToolTip = ("Set LiveCD Username for your distro")
       Text = ("live")
     }
     { Label4 Label
       MoveScaled(1,9,16,3)
-      Text = ("LiveCD User name")
+      Text = ("LiveCD Username")
       Alignment = Align.Center
     }
     { DistName TextBox
