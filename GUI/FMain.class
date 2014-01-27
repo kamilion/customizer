@@ -146,7 +146,7 @@ PUBLIC SUB HostName_Change()
 
   HostName.Text = Trim(LCase(HostName.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export HOST=", HostName.Text)
-  # on Ubuntu 12.04 FLAVOUR needs to be exported for the changes to take effect
+  ' on Ubuntu 12.04 FLAVOUR needs to be exported for the changes to take effect
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export FLAVOUR=", "custom\n")
 END
 
@@ -155,7 +155,7 @@ PUBLIC SUB LiveCD_User_Change()
   
   LiveCD_User.Text = Trim(LCase(LiveCD_User.Text))
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export USERNAME=", LiveCD_User.Text)
-  # on Ubuntu 12.04 FLAVOUR needs to be exported for the changes to take effect
+  ' on Ubuntu 12.04 FLAVOUR needs to be exported for the changes to take effect
   Func.Replace_Str(WorkDir & "/FileSystem/etc/casper.conf", "export FLAVOUR=", "custom\n")
 END
 
