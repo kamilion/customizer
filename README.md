@@ -42,8 +42,10 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     xhost
     xephyr
     qemu
-    python2.7
+    python (2.7.x)
     make
+    binutils
+    pyqt4 (python-qt4)
 
 ### INSTALL AND RUN
 
