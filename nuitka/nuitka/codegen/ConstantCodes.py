@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -36,18 +36,18 @@ from .Identifiers import (
 from ..__past__ import unicode, long, iterItems
 # pylint: enable=W0622
 
-from ..Constants import HashableConstant, constant_builtin_types, isMutable
+from ..Constants import constant_builtin_types, isMutable, compareConstants
 
 import re, struct
 
-stream_data = StreamData()
+stream_data = StreamData("constant_bin")
 
-def getConstantHandle( context, constant ):
+def getConstantHandle(context, constant):
     return context.getConstantHandle(
         constant = constant
     )
 
-def getConstantCode( context, constant ):
+def getConstantCode(context, constant):
     constant_identifier = context.getConstantHandle(
         constant = constant
     )
@@ -58,10 +58,10 @@ def getConstantCode( context, constant ):
 # helper not during code generation.
 _match_attribute_names = re.compile( r"[a-zA-Z_][a-zA-Z0-9_]*$" )
 
-def getConstantCodeName( context, constant ):
+def getConstantCodeName(context, constant):
     return context.getConstantHandle( constant, real_use = False ).getCode()
 
-def _isAttributeName( value ):
+def _isAttributeName(value):
     return _match_attribute_names.match( value )
 
 # Indicator to standalone mode code, if we need pickling module early on.
@@ -70,7 +70,7 @@ _needs_pickle = False
 def needsPickleInit():
     return _needs_pickle
 
-def _getUnstreamCode( constant_value, constant_identifier ):
+def _getUnstreamCode(constant_value, constant_identifier):
     saved = getStreamedConstant(
         constant_value = constant_value
     )
@@ -86,7 +86,7 @@ def _getUnstreamCode( constant_value, constant_identifier ):
         stream_data.getStreamDataCode( saved )
     )
 
-def _packFloat( value ):
+def _packFloat(value):
     return struct.pack( "<d", value )
 
 import ctypes
@@ -98,8 +98,8 @@ max_unsigned_long = 2**(sizeof_long*8)-1
 # seems to not work (without warning) as literal, so avoid it.
 min_signed_long = -(2**(sizeof_long*8-1)-1)
 
-def _addConstantInitCode( context, emit, constant_type, constant_value,
-                          constant_identifier ):
+def _addConstantInitCode(context, emit, constant_type, constant_value,
+                         constant_identifier):
     # This has many cases, that all return, and do a lot.
     #  pylint: disable=R0911,R0912,R0915
 
@@ -169,15 +169,15 @@ def _addConstantInitCode( context, emit, constant_type, constant_value,
                 emit(
                     "%s = UNSTREAM_UNICODE( %s );" % (
                         constant_identifier,
-                        stream_data.getStreamDataCode( encoded )
+                        stream_data.getStreamDataCode(encoded)
                     )
                 )
             else:
                 emit(
                     "%s = UNSTREAM_STRING( %s, %d );" % (
                         constant_identifier,
-                        stream_data.getStreamDataCode( encoded ),
-                        1 if _isAttributeName( constant_value ) else 0
+                        stream_data.getStreamDataCode(encoded),
+                        1 if _isAttributeName(constant_value) else 0
                     )
                 )
 
@@ -190,11 +190,32 @@ def _addConstantInitCode( context, emit, constant_type, constant_value,
         # directly. When they cannot be expressed as UTF-8, that is rare not we
         # can indeed use pickling.
         assert str is not unicode
+
+        if len(constant_value) == 1:
+            emit(
+                "%s = UNSTREAM_CHAR( %d, %d );" % (
+                    constant_identifier,
+                    ord(constant_value[0]),
+                    1 if _isAttributeName(constant_value) else 0
+                )
+            )
+        else:
+            emit(
+                "%s = UNSTREAM_STRING( %s, %d );" % (
+                    constant_identifier,
+                    stream_data.getStreamDataCode(constant_value),
+                    1 if _isAttributeName(constant_value) else 0
+                )
+            )
+
+        return
+    elif constant_type is bytes:
+        assert str is unicode
+
         emit(
-            "%s = UNSTREAM_STRING( %s, %d );" % (
+            "%s = UNSTREAM_BYTES( %s );" % (
                 constant_identifier,
-                stream_data.getStreamDataCode( constant_value ),
-                1 if _isAttributeName( constant_value ) else 0
+                stream_data.getStreamDataCode( constant_value )
             )
         )
 
@@ -377,8 +398,7 @@ def _addConstantInitCode( context, emit, constant_type, constant_value,
 
         return
 
-    if constant_type in ( set, frozenset, complex, unicode, int, long, bytes,
-                          range ):
+    if constant_type in (frozenset, complex, unicode, long, range):
         emit( _getUnstreamCode( constant_value, constant_identifier ) )
 
         return
@@ -388,31 +408,34 @@ def _addConstantInitCode( context, emit, constant_type, constant_value,
 
     assert False, ( type(constant_value), constant_value, constant_identifier )
 
-def _lengthKey( value ):
-    return len( value[1] ), value[1]
+def _lengthKey(value):
+    return (
+        len(value[1]),
+        value[1]
+    )
 
 the_contained_constants = {}
 
-def getConstantsInitCode( context ):
+def getConstantsInitCode(context):
     # There are many cases for constants to be created in the most efficient
     # way, pylint: disable=R0912
 
     statements = []
 
     all_constants = the_contained_constants
-    all_constants.update( context.getConstants() )
+    all_constants.update(context.getConstants())
 
-    def receiveStatement( statement ):
+    def receiveStatement(statement):
         assert statement is not None
 
         if statement not in statements:
-            statements.append( statement )
+            statements.append(statement)
 
-    for ( constant_type, constant_value ), constant_identifier in \
-          sorted( all_constants.items(), key = _lengthKey ):
+    for constant_value, constant_identifier in \
+          sorted(all_constants.items(), key = _lengthKey):
         _addConstantInitCode(
             emit                = receiveStatement,
-            constant_type       = constant_type,
+            constant_type       = type(constant_value.getConstant()),
             constant_value      = constant_value.getConstant(),
             constant_identifier = constant_identifier,
             context             = context
@@ -420,16 +443,44 @@ def getConstantsInitCode( context ):
 
     return statements
 
-def getConstantsDeclCode( context, for_header ):
+
+class HashableConstant:
+    __slots__ = ["constant"]
+
+    def __init__(self, constant):
+        self.constant = constant
+
+    def getConstant(self):
+        return self.constant
+
+    def __hash__(self):
+        try:
+            # For Python3: range objects with same ranges give different hash
+            # values. It's not even funny, is it.
+            if type(self.constant) is range:
+                raise TypeError
+
+            return hash(self.constant)
+        except TypeError:
+            return 7
+
+    def __eq__(self, other):
+        assert isinstance(other, self.__class__)
+
+        return compareConstants(self.constant, other.constant)
+
+
+def getConstantsDeclCode(context, for_header):
     # There are many cases for constants of different types.
     # pylint: disable=R0912
     statements = []
+    statements2 = []
 
     constants = context.getConstants()
 
     contained_constants = {}
 
-    def considerForDeferral( constant_value ):
+    def considerForDeferral(constant_value):
         if constant_value is None:
             return
 
@@ -442,29 +493,31 @@ def getConstantsDeclCode( context, for_header ):
         if constant_value is Ellipsis:
             return
 
-        constant_type = type( constant_value )
+        constant_type = type(constant_value)
 
         if constant_type is type:
             return
 
-        key = constant_type, HashableConstant( constant_value )
+        key = HashableConstant(constant_value)
 
         if key not in contained_constants:
-            constant_identifier = getConstantCodeName( context, constant_value )
+            constant_identifier = getConstantCodeName(context, constant_value)
 
-            contained_constants[ key ] = constant_identifier
+            contained_constants[key] = constant_identifier
 
-            if constant_type in ( tuple, list, set, frozenset ):
+            if constant_type in (tuple, list, set, frozenset):
                 for element in constant_value:
-                    considerForDeferral( element )
+                    considerForDeferral(element)
+            elif constant_type is dict:
+                for key, value in iterItems(constant_value):
+                    considerForDeferral(key)
+                    considerForDeferral(value)
 
-            if constant_type is dict:
-                for key, value in iterItems( constant_value ):
-                    considerForDeferral( key )
-                    considerForDeferral( value )
 
+    for constant_value, constant_identifier in \
+            sorted(constants.items(), key = _lengthKey):
+        constant_type = type(constant_value.getConstant())
 
-    for ( constant_type, constant_value ), constant_identifier in sorted( constants.items(), key = _lengthKey ):
         # Need not declare built-in types.
         if constant_type is type:
             continue
@@ -474,16 +527,16 @@ def getConstantsDeclCode( context, for_header ):
         if for_header:
             declaration = "extern " + declaration
         else:
-            if constant_type in ( tuple, dict, list, set, frozenset ):
+            if constant_type in (tuple, dict, list, set, frozenset):
                 considerForDeferral( constant_value.getConstant() )
 
-        statements.append( declaration )
+        statements.append(declaration)
 
-    for key, value in sorted( contained_constants.items(), key = _lengthKey ):
+    for key, value in sorted(contained_constants.items(), key = _lengthKey):
         if key not in constants:
-            declaration = "static PyObject *%s;" % value
+            declaration = "PyObject *%s;" % value
 
-            statements.append( declaration )
+            statements2.append(declaration)
 
     if not for_header:
         # Using global here, as this is really a singleton, in the form of a
@@ -491,18 +544,18 @@ def getConstantsDeclCode( context, for_header ):
         global the_contained_constants
         the_contained_constants = contained_constants
 
-    return statements
+    return statements, statements2
 
-def getConstantAccess( context, constant ):
+def getConstantAccess(context, constant):
     # Many cases, because for each type, we may copy or optimize by creating
     # empty.  pylint: disable=R0911,R0912
 
-    if type( constant ) is dict:
+    if type(constant) is dict:
         if constant:
-            for key, value in iterItems( constant ):
+            for key, value in iterItems(constant):
                 # key cannot be mutable.
-                assert not isMutable( key )
-                if isMutable( value ):
+                assert not isMutable(key)
+                if isMutable(value):
                     needs_deep = True
                     break
             else:
@@ -527,7 +580,7 @@ def getConstantAccess( context, constant ):
 
         else:
             return EmptyDictIdentifier()
-    elif type( constant ) is set:
+    elif type(constant) is set:
         if constant:
             return Identifier(
                 "PySet_New( %s )" % getConstantCode(
@@ -541,10 +594,10 @@ def getConstantAccess( context, constant ):
                 "PySet_New( NULL )",
                 1
             )
-    elif type( constant ) is list:
+    elif type(constant) is list:
         if constant:
             for value in constant:
-                if isMutable( value ):
+                if isMutable(value):
                     needs_deep = True
                     break
             else:
@@ -571,9 +624,9 @@ def getConstantAccess( context, constant ):
                 "PyList_New( 0 )",
                 1
             )
-    elif type( constant ) is tuple:
+    elif type(constant) is tuple:
         for value in constant:
-            if isMutable( value ):
+            if isMutable(value):
                 needs_deep = True
                 break
         else:

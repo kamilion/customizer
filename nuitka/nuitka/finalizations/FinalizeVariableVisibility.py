@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -25,7 +25,7 @@ declaration.
 
 from .FinalizeBase import FinalizationVisitorBase
 
-def selectStatement( one, two, mode ):
+def selectStatement(one, two, mode):
     merge = []
 
     for c1, c2 in zip( one, two ):
@@ -54,8 +54,8 @@ def selectStatement( one, two, mode ):
 
     return merge
 
-class FinalizeVariableVisibility( FinalizationVisitorBase ):
-    def onEnterNode( self, node ):
+class FinalizeVariableVisibility(FinalizationVisitorBase):
+    def onEnterNode(self, node):
         collection = node.collection
 
         assert collection is not None, node
@@ -77,7 +77,7 @@ class FinalizeVariableVisibility( FinalizationVisitorBase ):
                     continue
 
                 for use in variable_trace.getPotentialUsages():
-                    if use.__class__.__name__.startswith( "VariableMerge" ):
+                    if use.__class__.__name__.startswith("VariableMerge"):
                         continue
 
                     uses.add( use )

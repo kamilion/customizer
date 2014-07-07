@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -30,11 +30,11 @@ from .Identifiers import NullIdentifier
 
 from . import CodeTemplates
 
-from nuitka import Options
+from nuitka import Options, Utils
 
 import sys
 
-def getMainCode( codes, context ):
+def getMainCode(codes, context):
     python_flags = Options.getPythonFlags()
 
     if context.isEmptyModule():
@@ -57,9 +57,8 @@ def getMainCode( codes, context ):
     main_code        = CodeTemplates.main_program % {
         "sys_executable"       : getConstantCode(
             constant = "python.exe"
-                         if Options.isWindowsTarget() and
-                         Options.isStandaloneMode()
-                         else
+                         if Utils.getOS() == "Windows" and \
+                            Options.isStandaloneMode() else
                        sys.executable,
             context  = context
         ),
@@ -83,7 +82,7 @@ def getMainCode( codes, context ):
             if hasattr( sys.flags, "unicode" ) else 0 ),
         "python_sysflag_bytes_warning" : sys.flags.bytes_warning,
         "python_sysflag_hash_randomization" : ( sys.flags.hash_randomization
-            if hasattr( sys.flags, "hash_randomization" ) else 0 ),
+            if hasattr( sys.flags, "hash_randomization" )  and "no_randomization" not in python_flags else 0 ),
         "code_identifier"      : code_identifier.getCodeTemporaryRef()
     }
 

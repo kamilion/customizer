@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -24,25 +24,25 @@ loop.
 
 from .Operations import VisitorNoopMixin, visitTree
 
-class VariableWriteExtractor( VisitorNoopMixin ):
+class VariableWriteExtractor(VisitorNoopMixin):
     """ Extract variables written to.
 
     """
-    def __init__( self ):
+    def __init__(self):
         self.written_to = set()
 
-    def onEnterNode( self, node ):
+    def onEnterNode(self, node):
         if node.isExpressionTargetVariableRef() or \
            node.isExpressionAssignmentTempKeeper():
             key = node.getVariable(), node.getVariableVersion()
 
             self.written_to.add( key )
 
-    def getResult( self ):
+    def getResult(self):
         return self.written_to
 
 
-def getVariablesWritten( node ):
+def getVariablesWritten(node):
     visitor = VariableWriteExtractor()
     visitTree( node, visitor )
 

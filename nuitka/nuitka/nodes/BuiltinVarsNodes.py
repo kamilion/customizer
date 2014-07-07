@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -24,12 +24,12 @@ and hopefully can be predicted, because at run time, it is hard to support.
 
 from .NodeBases import ExpressionChildrenHavingBase
 
-class ExpressionBuiltinVars( ExpressionChildrenHavingBase ):
+class ExpressionBuiltinVars(ExpressionChildrenHavingBase):
     kind = "EXPRESSION_BUILTIN_VARS"
 
     named_children = ( "source", )
 
-    def __init__( self, source, source_ref ):
+    def __init__(self, source, source_ref):
         ExpressionChildrenHavingBase.__init__(
             self,
             values     = {
@@ -40,6 +40,6 @@ class ExpressionBuiltinVars( ExpressionChildrenHavingBase ):
 
     getSource = ExpressionChildrenHavingBase.childGetter( "source" )
 
-    def computeExpression( self, constraint_collection ):
+    def computeExpression(self, constraint_collection):
         # TODO: Should be possible. pylint: disable=W0613
         return self, None, None

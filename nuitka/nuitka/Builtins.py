@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -27,7 +27,7 @@ import sys
 
 
 def _getBuiltinExceptionNames():
-    def isExceptionName( builtin_name ):
+    def isExceptionName(builtin_name):
         if builtin_name.endswith( "Error" ) or \
            builtin_name.endswith( "Exception" ):
             return True
@@ -148,13 +148,13 @@ def _getAnonBuiltins():
 
     if Utils.python_version < 300:
         class Temp:
-            def __init__( self ):
+            def __init__(self):
                 pass
 
-            def method( self ):
+            def method(self):
                 pass
 
-        anon_names[ "classobj" ] = type( Temp )
+        anon_names[ "classobj" ] = type(Temp)
         anon_codes[ "classobj" ] = "&PyClass_Type"
 
         anon_names[ "instance" ] = type( Temp() )

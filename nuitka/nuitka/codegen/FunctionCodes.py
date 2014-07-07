@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -59,7 +59,7 @@ from . import CodeTemplates
 
 from nuitka import Utils
 
-def getClosureVariableProvisionCode( context, closure_variables ):
+def getClosureVariableProvisionCode(context, closure_variables):
     result = []
 
     for variable in closure_variables:
@@ -102,14 +102,14 @@ def _getFunctionCreationArgs( defaults_identifier, kw_defaults_identifier,
 
     return result
 
-def _getFuncDefaultValue( defaults_identifier ):
+def _getFuncDefaultValue(defaults_identifier):
     if defaults_identifier.isConstantIdentifier():
         return defaults_identifier
     else:
         return Identifier( "defaults", 1 )
 
 
-def _getFuncKwDefaultValue( kw_defaults_identifier ):
+def _getFuncKwDefaultValue(kw_defaults_identifier):
     if kw_defaults_identifier.isConstantIdentifier():
         if kw_defaults_identifier.getConstant():
             return kw_defaults_identifier
@@ -118,7 +118,7 @@ def _getFuncKwDefaultValue( kw_defaults_identifier ):
     else:
         return Identifier( "kwdefaults", 1 )
 
-def _getFuncAnnotationsValue( annotations_identifier ):
+def _getFuncAnnotationsValue(annotations_identifier):
     if annotations_identifier is None:
         return NullIdentifier()
     elif annotations_identifier.isConstantIdentifier():
@@ -319,7 +319,7 @@ def getDirectionFunctionCallCode( function_identifier, arguments,
         ref_count       = 1,
         tmp_scope       = "call_tmp",
         prefix_args     = [
-            defaultToNullIdentifier( extra_argument ).getCodeTemporaryRef()
+            defaultToNullIdentifier(extra_argument).getCodeTemporaryRef()
             for extra_argument in
             extra_arguments
         ],

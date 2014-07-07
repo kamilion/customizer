@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -36,7 +36,7 @@ from nuitka.nodes.ImportNodes import (
     ExpressionImportModule
 )
 
-def createNamespacePackage( package_name, module_relpath ):
+def createNamespacePackage(package_name, module_relpath):
     parts = package_name.split(".")
 
     source_ref = SourceCodeReference.fromFilenameAndLine(

@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -58,7 +58,7 @@ from .Helpers import (
     buildNode
 )
 
-def _buildWithNode( provider, context_expr, assign_target, body, source_ref ):
+def _buildWithNode(provider, context_expr, assign_target, body, source_ref):
     with_source = buildNode( provider, context_expr, source_ref )
 
     temp_scope = provider.allocateTempScope( "with" )
@@ -274,7 +274,7 @@ def _buildWithNode( provider, context_expr, assign_target, body, source_ref ):
         source_ref = source_ref
     )
 
-def buildWithNode( provider, node, source_ref ):
+def buildWithNode(provider, node, source_ref):
     # "with" statements are re-formulated as described in the developer
     # manual. Catches exceptions, and provides them to "__exit__", while making
     # the "__enter__" value available under a given name.

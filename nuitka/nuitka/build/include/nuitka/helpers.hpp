@@ -1,4 +1,4 @@
-//     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+//     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 //
 //     Part of "Nuitka", an optimizing Python compiler that is compatible and
 //     integrates with CPython, but also works on its own.
@@ -494,7 +494,12 @@ NUITKA_MAY_BE_UNUSED static PyObject *MAKE_ITERATOR( PyObject *iterated )
     }
     else
     {
-        PyErr_Format( PyExc_TypeError, "'%s' object is not iterable", Py_TYPE( iterated )->tp_name );
+        PyErr_Format(
+            PyExc_TypeError,
+            "'%s' object is not iterable",
+            Py_TYPE( iterated )->tp_name
+        );
+
         throw PythonException();
     }
 }
@@ -505,9 +510,25 @@ NUITKA_MAY_BE_UNUSED static PyObject *MAKE_ITERATOR( PyObject *iterated )
 NUITKA_MAY_BE_UNUSED static PyObject *ITERATOR_NEXT( PyObject *iterator )
 {
     assertObject( iterator );
-    assert( Py_TYPE( iterator )->tp_iternext );
 
-    PyObject *result = (*Py_TYPE( iterator )->tp_iternext)( iterator );
+    iternextfunc iternext = Py_TYPE( iterator )->tp_iternext;
+
+    if (unlikely( iternext == NULL ))
+    {
+        PyErr_Format(
+            PyExc_TypeError,
+#if PYTHON_VERSION < 330
+            "%s object is not an iterator",
+#else
+            "'%s' object is not an iterator",
+#endif
+            Py_TYPE( iterator )->tp_name
+        );
+
+        throw PythonException();
+    }
+
+    PyObject *result = (*iternext)( iterator );
 
     if (unlikely( result == NULL ))
     {
@@ -524,13 +545,30 @@ NUITKA_MAY_BE_UNUSED static PyObject *ITERATOR_NEXT( PyObject *iterator )
 NUITKA_MAY_BE_UNUSED static PyObject *BUILTIN_NEXT1( PyObject *iterator )
 {
     assertObject( iterator );
-    assert( Py_TYPE( iterator )->tp_iternext );
 
-    PyObject *result = (*Py_TYPE( iterator )->tp_iternext)( iterator );
+    iternextfunc iternext = Py_TYPE( iterator )->tp_iternext;
+
+    if (unlikely( iternext == NULL ))
+    {
+        PyErr_Format(
+            PyExc_TypeError,
+#if PYTHON_VERSION < 330
+            "%s object is not an iterator",
+#else
+            "'%s' object is not an iterator",
+#endif
+            Py_TYPE( iterator )->tp_name
+        );
+
+        throw PythonException();
+    }
+
+    PyObject *result = (*iternext)( iterator );
 
     if (unlikely( result == NULL ))
     {
-        // The iteration can return NULL with no error, which means StopIteration.
+        // The iteration can return NULL with no error, which means
+        // StopIteration.
         if ( !ERROR_OCCURED() )
         {
             throw PythonException( PyExc_StopIteration );
@@ -894,6 +932,8 @@ extern PyObject *BUILTIN_RANGE3( PyObject *low, PyObject *high, PyObject *step )
 extern PyObject *BUILTIN_RANGE2( PyObject *low, PyObject *high );
 extern PyObject *BUILTIN_RANGE( PyObject *boundary );
 
+extern PyObject *BUILTIN_XRANGE( PyObject *low, PyObject *high, PyObject *step );
+
 // For quicker builtin len() functionality.
 extern PyObject *BUILTIN_LEN( PyObject *boundary );
 
@@ -964,8 +1004,11 @@ NUITKA_MAY_BE_UNUSED static PyObject *EVAL_CODE( PyObject *code, PyObject *globa
 extern void UNSTREAM_INIT( void );
 extern PyObject *UNSTREAM_CONSTANT( unsigned char const *buffer, Py_ssize_t size );
 extern PyObject *UNSTREAM_STRING( unsigned char const *buffer, Py_ssize_t size, bool intern );
+extern PyObject *UNSTREAM_CHAR( unsigned char value, bool intern );
 #if PYTHON_VERSION < 300
 extern PyObject *UNSTREAM_UNICODE( unsigned char const *buffer, Py_ssize_t size );
+#else
+extern PyObject *UNSTREAM_BYTES( unsigned char const *buffer, Py_ssize_t size );
 #endif
 extern PyObject *UNSTREAM_FLOAT( unsigned char const *buffer );
 
@@ -1095,6 +1138,10 @@ NUITKA_MAY_BE_UNUSED static PyObject *MODULE_NAME( PyObject *module )
 #if defined(_NUITKA_STANDALONE) || _NUITKA_FROZEN > 0
 extern void prepareStandaloneEnvironment();
 extern char *getBinaryDirectory();
+#endif
+
+#if _NUITKA_STANDALONE
+extern void setEarlyFrozenModulesFileAttribute( void );
 #endif
 
 #include <nuitka/threading.hpp>

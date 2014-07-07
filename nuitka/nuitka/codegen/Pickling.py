@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -45,7 +45,7 @@ else:
     pickle_protocol = 2
 
 
-def getStreamedConstant( constant_value ):
+def getStreamedConstant(constant_value):
     # Note: The marshal module cannot persist all unicode strings and
     # therefore cannot be used. Instead we use pickle.
     try:

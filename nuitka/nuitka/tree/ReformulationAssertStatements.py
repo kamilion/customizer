@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -34,7 +34,7 @@ from nuitka.nodes.ConditionalNodes import StatementConditional
 
 from .Helpers import buildNode
 
-def buildAssertNode( provider, node, source_ref ):
+def buildAssertNode(provider, node, source_ref):
     # Build assert statements. These are re-formulated as described in the
     # developer manual too. They end up as conditional statement with raises of
     # AssertionError exceptions.

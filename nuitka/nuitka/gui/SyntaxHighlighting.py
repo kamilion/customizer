@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -23,7 +23,7 @@ Inspired/copied from by http://diotavelli.net/PyQtWiki/Python%20syntax%20highlig
 from PyQt4.QtCore import QRegExp
 from PyQt4.QtGui import QColor, QTextCharFormat, QFont, QSyntaxHighlighter
 
-def createTextFormat( color, style='' ):
+def createTextFormat(color, style=''):
     """Return a QTextCharFormat with the given attributes.
     """
     _color = QColor()
@@ -53,7 +53,7 @@ STYLES = {
 }
 
 
-class PythonHighlighter( QSyntaxHighlighter ):
+class PythonHighlighter(QSyntaxHighlighter):
     """ Syntax highlighter for the Python language.
     """
     # Python keywords
@@ -83,7 +83,7 @@ class PythonHighlighter( QSyntaxHighlighter ):
     braces = [
         '\{', '\}', '\(', '\)', '\[', '\]',
     ]
-    def __init__( self, document ):
+    def __init__(self, document):
         QSyntaxHighlighter.__init__( self, document )
 
         # Multi-line strings (expression, flag, style)
@@ -193,5 +193,5 @@ class PythonHighlighter( QSyntaxHighlighter ):
         else:
             return False
 
-def addPythonHighlighter( document ):
+def addPythonHighlighter(document):
     PythonHighlighter( document )

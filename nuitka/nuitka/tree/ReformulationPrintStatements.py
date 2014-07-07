@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -25,12 +25,12 @@ from .Helpers import (
     buildNode
 )
 
-def buildPrintNode( provider, node, source_ref ):
+def buildPrintNode(provider, node, source_ref):
     # "print" statements, should only occur with Python2.
 
     values = buildNodeList( provider, node.values, source_ref )
 
-    def wrapValue( value ):
+    def wrapValue(value):
         if value.isExpressionConstantRef():
             return value.getStrValue()
         else:

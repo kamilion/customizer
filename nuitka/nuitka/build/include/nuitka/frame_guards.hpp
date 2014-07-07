@@ -1,4 +1,4 @@
-//     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+//     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 //
 //     Part of "Nuitka", an optimizing Python compiler that is compatible and
 //     integrates with CPython, but also works on its own.
@@ -440,6 +440,11 @@ public:
         return *this->frame_ptr;
     }
 
+    inline int getLineNumber() const
+    {
+        return (*this->frame_ptr)->f_lineno;
+    }
+
     // Use this to set the current line of the frame
     void setLineNumber( int lineno ) const
     {
@@ -527,7 +532,14 @@ class FrameGuardVeryLight
 public:
     explicit FrameGuardVeryLight() {}
 
-    void setLineNumber( int lineno ) const
+    inline int getLineNumber() const
+    {
+        PyFrameObject *frame_object = PyThreadState_GET()->frame;
+
+        return frame_object->f_lineno;
+    }
+
+    inline void setLineNumber( int lineno ) const
     {
         PyFrameObject *frame_object = PyThreadState_GET()->frame;
 

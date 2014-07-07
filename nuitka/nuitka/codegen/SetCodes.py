@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -26,12 +26,12 @@ from . import CodeTemplates
 # Take note of the MAKE_SET element count variants actually used.
 make_sets_used = set()
 
-def addMakeSetUse( value ):
+def addMakeSetUse(value):
     assert type( value ) is int
 
     make_sets_used.add( value )
 
-def getSetCreationCode( context, order_relevance, element_identifiers ):
+def getSetCreationCode(context, order_relevance, element_identifiers):
     if len( element_identifiers ) == 0:
         return ConstantIdentifier( "_python_set_empty", set() )
 

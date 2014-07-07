@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -24,12 +24,12 @@ to track it, so we can include files into the executable, or write more efficien
 from .NodeBases import ExpressionChildrenHavingBase
 
 
-class ExpressionBuiltinOpen( ExpressionChildrenHavingBase ):
+class ExpressionBuiltinOpen(ExpressionChildrenHavingBase):
     kind = "EXPRESSION_BUILTIN_OPEN"
 
     named_children = ( "filename", "mode", "buffering" )
 
-    def __init__( self, filename, mode, buffering, source_ref ):
+    def __init__(self, filename, mode, buffering, source_ref):
         ExpressionChildrenHavingBase.__init__(
             self,
             values     = {
@@ -44,7 +44,7 @@ class ExpressionBuiltinOpen( ExpressionChildrenHavingBase ):
     getMode = ExpressionChildrenHavingBase.childGetter( "mode" )
     getBuffering = ExpressionChildrenHavingBase.childGetter( "buffering" )
 
-    def computeExpression( self, constraint_collection ):
+    def computeExpression(self, constraint_collection):
         # Note: Quite impossible to predict without further assumptions, but we could look
         # at the arguments at least, pylint: disable=W0613
         return self, None, None

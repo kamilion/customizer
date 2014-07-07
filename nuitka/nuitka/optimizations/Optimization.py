@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -25,7 +25,7 @@ make others possible.
 
 from logging import debug
 
-from nuitka import ModuleRegistry, Options
+from nuitka import ModuleRegistry, Options, Utils
 from nuitka.Tracing import printLine
 
 from .ConstraintCollections import ConstraintCollectionModule
@@ -34,25 +34,43 @@ from .Tags import TagSet
 
 _progress = Options.isShowProgress()
 
+def _attemptRecursion(module):
+    new_modules = module.attemptRecursion()
 
-def _optimizeModulePass(module, tag_set):
-    def signalChange(tags, source_ref, message):
-        """ Indicate a change to the optimization framework.
-
-        """
+    for new_module in new_modules:
         debug(
             "{source_ref} : {tags} : {message}".format(
-                source_ref = source_ref.getAsString(),
-                tags       = tags,
-                message    = message
+                source_ref = new_module.getSourceReference().getAsString(),
+                tags       = "new_code",
+                message    = "Recursed to module package."
             )
         )
-        tag_set.onSignal(tags)
 
+
+tag_set = None
+
+def signalChange(tags, source_ref, message):
+    """ Indicate a change to the optimization framework.
+
+    """
+    debug(
+        "{source_ref} : {tags} : {message}".format(
+            source_ref = source_ref.getAsString(),
+            tags       = tags,
+            message    = message
+        )
+    )
+    tag_set.onSignal(tags)
+
+
+def _optimizeModulePass(module, tag_set):
     module.collection = ConstraintCollectionModule(
         signal_change = signalChange,
         module        = module
     )
+
+    # Pick up parent package if any.
+    _attemptRecursion(module)
 
     written_variables = module.collection.getWrittenVariables()
 
@@ -74,8 +92,7 @@ def _optimizeModulePass(module, tag_set):
 
             variable.setReadOnlyIndicator(new_value)
 
-
-def optimizeModule(module):
+def optimizePythonModule(module):
     if _progress:
         printLine(
             "Doing module local optimizations for '{module_name}'.".format(
@@ -83,20 +100,48 @@ def optimizeModule(module):
             )
         )
 
+    global tag_set
     tag_set = TagSet()
+
     touched = False
+
+    if _progress:
+        memory_watch = Utils.MemoryWatch()
 
     while True:
         tag_set.clear()
 
-        _optimizeModulePass(module=module, tag_set=tag_set)
+        _optimizeModulePass(
+            module  = module,
+            tag_set = tag_set
+        )
 
         if not tag_set:
             break
 
         touched = True
 
+    if _progress:
+        memory_watch.finish()
+
+        printLine(
+            "Memory usage changed during optimization of '%s': %s" % (
+                module.getFullName(),
+                memory_watch.asStr()
+            )
+        )
+
     return touched
+
+
+def optimizeShlibModule(module):
+    # Pick up parent package if any.
+    _attemptRecursion(module)
+
+    global tag_set
+    tag_set = TagSet()
+
+    module.considerImplicitImports(signal_change = signalChange)
 
 
 def optimize():
@@ -110,23 +155,24 @@ def optimize():
             if current_module is None:
                 break
 
-            if current_module.isPythonShlibModule():
-                continue
-
             if _progress:
                 printLine(
                     """\
 Optimizing module '{module_name}', {remaining:d} more modules to go \
-after that.""".format(
+after that. Memory usage {memory}:""".format(
                         module_name = current_module.getFullName(),
-                        remaining   = ModuleRegistry.remainingCount()
+                        remaining   = ModuleRegistry.remainingCount(),
+                        memory      = Utils.getHumanReadableProcessMemoryUsage()
                     )
                 )
 
-            changed = optimizeModule(current_module)
+            if current_module.isPythonShlibModule():
+                optimizeShlibModule(current_module)
+            else:
+                changed = optimizePythonModule(current_module)
 
-            if changed:
-                finished = False
+                if changed:
+                    finished = False
 
         if finished:
             break

@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -18,7 +18,7 @@
 """ Utility module.
 
 Here the small things for file/dir names, Python version, CPU counting,
-etc. that fit nowhere else and don't deserve their own names.
+memory usage, etc. that fit nowhere else and don't deserve their own names.
 
 """
 
@@ -31,8 +31,17 @@ def _getPythonVersion():
 
 python_version = _getPythonVersion()
 
-def getArchitecture():
+
+def getOS():
     if os.name == "nt":
+        return "Windows"
+    elif os.name == "posix":
+        return os.uname()[0]
+    else:
+        assert False, os.name
+
+def getArchitecture():
+    if getOS() == "Windows":
         if "AMD64" in sys.version:
             return "x86_64"
         else:
@@ -40,40 +49,40 @@ def getArchitecture():
     else:
         return os.uname()[4]
 
-def relpath( path ):
+def relpath(path):
     return os.path.relpath( path )
 
-def abspath( path ):
+def abspath(path):
     return os.path.abspath( path )
 
-def joinpath( *parts ):
+def joinpath(*parts):
     return os.path.join( *parts )
 
-def splitpath( path ):
+def splitpath(path):
     return tuple( element for element in os.path.split( path ) if element )
 
-def basename( path ):
+def basename(path):
     return os.path.basename( path )
 
-def dirname( path ):
+def dirname(path):
     return os.path.dirname( path )
 
-def normpath( path ):
+def normpath(path):
     return os.path.normpath( path )
 
-def normcase( path ):
+def normcase(path):
     return os.path.normcase( path )
 
-def getExtension( path ):
+def getExtension(path):
     return os.path.splitext( path )[1]
 
-def isFile( path ):
+def isFile(path):
     return os.path.isfile( path )
 
-def isDir( path ):
+def isDir(path):
     return os.path.isdir( path )
 
-def listDir( path ):
+def listDir(path):
     """ Give a sorted path, basename pairs of a directory."""
 
     return sorted(
@@ -84,11 +93,11 @@ def listDir( path ):
         ]
     )
 
-def deleteFile( path, must_exist ):
+def deleteFile(path, must_exist):
     if must_exist or isFile( path ):
         os.unlink( path )
 
-def makePath( path ):
+def makePath(path):
     os.makedirs( path )
 
 def getCoreCount():
@@ -111,7 +120,7 @@ def getCoreCount():
 
     return cpu_count
 
-def callExec( args ):
+def callExec(args):
     """ Do exec in a portable way preserving exit code.
 
         On Windows, unfortunately there is no real exec, so we have to spawn
@@ -119,7 +128,7 @@ def callExec( args ):
     """
 
     # On Windows os.execl does not work properly
-    if os.name != "nt":
+    if getOS() != "Windows":
         # The star arguments is the API of execl, pylint: disable=W0142
         os.execl( *args )
     else:
@@ -127,7 +136,7 @@ def callExec( args ):
         del args[1]
         sys.exit( subprocess.call( args ) )
 
-def encodeNonAscii( var_name ):
+def encodeNonAscii(var_name):
     """ Encode variable name that is potentially not ASCII to ASCII only.
 
         For Python3, unicode identifiers can be used, but these are not
@@ -142,3 +151,93 @@ def encodeNonAscii( var_name ):
         # TODO: Is this truly safe of collisions, I think it is not. It might be
         # necessary to use something that is not allowed otherwise.
         return var_name.replace( "&#", "$$" ).replace( ";", "" )
+
+if python_version >= 300:
+    get_input = input
+    from urllib.request import urlretrieve
+else:
+    get_input = raw_input
+    from urllib import urlretrieve
+
+def getOwnProcessMemoryUsage():
+    """ Memory usage of own process in bytes.
+
+    """
+
+    if os.name == "nt":
+
+        # adapted from http://code.activestate.com/recipes/578513
+        import ctypes
+        from ctypes import wintypes
+
+        class PROCESS_MEMORY_COUNTERS_EX(ctypes.Structure):
+            _fields_ = [
+                ('cb', wintypes.DWORD),
+                ('PageFaultCount', wintypes.DWORD),
+                ('PeakWorkingSetSize', ctypes.c_size_t),
+                ('WorkingSetSize', ctypes.c_size_t),
+                ('QuotaPeakPagedPoolUsage', ctypes.c_size_t),
+                ('QuotaPagedPoolUsage', ctypes.c_size_t),
+                ('QuotaPeakNonPagedPoolUsage', ctypes.c_size_t),
+                ('QuotaNonPagedPoolUsage', ctypes.c_size_t),
+                ('PagefileUsage', ctypes.c_size_t),
+                ('PeakPagefileUsage', ctypes.c_size_t),
+                ('PrivateUsage', ctypes.c_size_t),
+            ]
+
+        GetProcessMemoryInfo = ctypes.windll.psapi.GetProcessMemoryInfo
+        GetProcessMemoryInfo.argtypes = [
+            wintypes.HANDLE,
+            ctypes.POINTER(PROCESS_MEMORY_COUNTERS_EX),
+            wintypes.DWORD,
+        ]
+        GetProcessMemoryInfo.restype = wintypes.BOOL
+
+        counters = PROCESS_MEMORY_COUNTERS_EX()
+        rv = GetProcessMemoryInfo(
+            ctypes.windll.kernel32.GetCurrentProcess(),
+            ctypes.byref(counters),
+            ctypes.sizeof(counters)
+        )
+
+        if not rv:
+            raise ctypes.WinError()
+
+        return counters.PrivateUsage
+    else:
+        import resource
+
+        return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024
+
+def getHumanReadableProcessMemoryUsage(value = None):
+    if value is None:
+        value = getOwnProcessMemoryUsage()
+
+    if abs(value) < 1024*1014:
+        return "%.2f KB (%d bytes)" % (
+            value / 1024.0,
+            value
+        )
+    elif abs(value) < 1024*1014*1024:
+        return "%.2f MB (%d bytes)" % (
+            value / (1024*1024.0),
+            value
+        )
+    elif abs(value) < 1024*1014*1024*1024:
+        return "%.2f GB (%d bytes)" % (
+            value / (1024*1024*1024.0),
+            value
+        )
+    else:
+        return "%d bytes" % value
+
+class MemoryWatch:
+    def __init__(self):
+        self.start = getOwnProcessMemoryUsage()
+        self.stop = None
+
+    def finish(self):
+        self.stop = getOwnProcessMemoryUsage()
+
+    def asStr(self):
+        return getHumanReadableProcessMemoryUsage(self.stop - self.start)

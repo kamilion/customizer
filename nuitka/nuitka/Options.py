@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -18,24 +18,24 @@
 """ Options module """
 
 version_string = """\
-Nuitka V0.4.7.2
-Copyright (C) 2013 Kay Hayen."""
+Nuitka V0.5.1.6
+Copyright (C) 2014 Kay Hayen."""
 
 from . import Utils
 
-from optparse import OptionParser, OptionGroup
+from optparse import OptionParser, OptionGroup, SUPPRESS_HELP
 
-import os, sys, logging
+import sys, logging
 
-# Indicator if we were called as "nuitka-python" in which case we assume some
+# Indicator if we were called as "nuitka-run" in which case we assume some
 # other defaults and work a bit different with parameters.
-is_nuitka_python = Utils.basename( sys.argv[0] ).lower().startswith( "nuitka-python" )
+is_nuitka_run = Utils.basename(sys.argv[0]).lower().startswith("nuitka-run")
 
 def getVersion():
     return version_string.split()[1][1:]
 
-if not is_nuitka_python:
-    usage = "usage: %prog [--exe] [--execute] [options] main_module.py"
+if not is_nuitka_run:
+    usage = "usage: %prog [--module] [--execute] [options] main_module.py"
 else:
     usage = "usage: %prog [options] main_module.py"
 
@@ -44,20 +44,49 @@ parser = OptionParser(
     version = getVersion()
 )
 
+# This option is obsolete, and module should be used.
 parser.add_option(
     "--exe",
     action  = "store_true",
-    dest    = "executable",
-    default = is_nuitka_python,
-    help    = """\
-Create a standalone executable instead of a compiled extension module. Default
-is %s.""" %
-       ( "on" if is_nuitka_python else "off" )
+    dest    = "obsolete_executable",
+    default = False,
+    help    = SUPPRESS_HELP
 )
+
+parser.add_option(
+    "--module",
+    action  = "store_false",
+    dest    = "executable",
+    default = True,
+    help    = """\
+Create an extension module executable instead of a program. Defaults to off."""
+)
+
+parser.add_option(
+    "--standalone", "--portable",
+    action  = "store_true",
+    dest    = "is_standalone",
+    default = False,
+    help    = """\
+Enable standalone mode in build. This allows you to transfer the created binary
+to other machines without it relying on an existing Python installation. It
+implies these options: "--recurse-all --recurse-stdlib". Defaults to off.""",
+)
+
+parser.add_option(
+    "--nofreeze-stdlib",
+    action  = "store_false",
+    dest    = "freeze_stdlib",
+    default = True,
+    help    = """\
+In standalone mode by default all modules of standard library will be frozen
+as bytecode. As a result compilation time will increase very much.
+""",
+    )
 
 recurse_group = OptionGroup(
     parser,
-    "Control the recursion into imported modules with '--exe' mode"
+    "Control the recursion into imported modules"
 )
 
 
@@ -133,14 +162,14 @@ execute_group = OptionGroup(
 )
 
 execute_group.add_option(
-    "--execute",
+    "--run", "--execute",
     action  = "store_true",
     dest    = "immediate_execution",
-    default = is_nuitka_python,
+    default = is_nuitka_run,
     help    = """\
 Execute immediately the created binary (or import the compiled module).
 Defaults to %s.""" %
-       ( "on" if is_nuitka_python else "off" )
+       ("on" if is_nuitka_run else "off")
 )
 
 execute_group.add_option(
@@ -216,7 +245,8 @@ parser.add_option(
     help    = """\
 Python flags to use. Default uses what you are using to run Nuitka, this
 enforces a specific mode. These are options that also exist to standard
-Python executable. Currently supported "-S" (alias nosite). Default empty."""
+Python executable. Currently supported "-S" (alias nosite) ,
+"static_hashes" (not use Randomization). Default empty."""
 )
 
 codegen_group = OptionGroup(
@@ -250,8 +280,8 @@ codegen_group.add_option(
     action  = "store_true",
     dest    = "no_optimize",
     default = False,
-    help    = """\
-Disable all unnecessary optimizations on Python level. Defaults to off."""
+    help    = SUPPRESS_HELP
+# """Disable all unnecessary optimizations on Python level. Defaults to off."""
 )
 
 parser.add_option_group( codegen_group )
@@ -284,15 +314,6 @@ Defaults to off."""
 )
 
 parser.add_option_group( outputdir_group )
-
-parser.add_option(
-    "--windows-target",
-    action  = "store_true",
-    dest    = "windows_target",
-    default = os.name == "nt",
-    help    = """\
-Force compilation for windows, useful for cross-compilation. Defaults %default."""
-)
 
 parser.add_option(
     "--windows-disable-console",
@@ -417,6 +438,15 @@ Defaults to off."""
 )
 
 tracing_group.add_option(
+    "--show-modules",
+    action  = "store_true",
+    dest    = "show_inclusion",
+    default = False,
+    help    = """Provide a final summary on included modules.
+Defaults to off."""
+)
+
+tracing_group.add_option(
     "--verbose",
     action  = "store_true",
     dest    = "verbose",
@@ -452,18 +482,6 @@ Given warnings for implicit exceptions detected at compile time.""",
 
 
 parser.add_option(
-    "--standalone", "--portable",
-    action  = "store_true",
-    dest    = "is_standalone",
-    default = False,
-    help    = """\
-Enable standalone mode in build. This allows you to transfer the created binary
-to other machines without it relying on an existing Python installation. It
-implies these options: "--exe --python-flag=-S --recurse-all --recurse-stdlib".
-Defaults to off.""",
-)
-
-parser.add_option(
     "--icon",
     action  = "store",
     dest    = "icon_path",
@@ -472,7 +490,9 @@ parser.add_option(
     help    = """Add executable icon (windows only).""",
 )
 
-if is_nuitka_python:
+# First, isolate the first non-option arguments. TODO: Should repect "--"
+# as a terminator to options.
+if is_nuitka_run:
     count = 0
 
     for count, arg in enumerate( sys.argv ):
@@ -488,7 +508,6 @@ if is_nuitka_python:
 else:
     extra_args = []
 
-
 options, positional_args = parser.parse_args()
 
 if not positional_args:
@@ -499,13 +518,14 @@ Error, need positional argument with python module or main program.""" )
 
 if options.verbose:
     logging.getLogger().setLevel( logging.DEBUG )
+else:
+    logging.getLogger().setLevel( logging.INFO )
 
 # Standalone mode implies an executable, not importing "site" module, which is
 # only for this machine, recursing to all modules, and even including the
 # standard library.
 if options.is_standalone:
     options.executable = True
-    options.python_flags.append( "nosite" )
     options.recurse_all = True
     options.recurse_stdlib = True
 
@@ -524,7 +544,7 @@ def shallDumpBuiltTreeXML():
 def shallDisplayBuiltTree():
     return options.display_tree
 
-def shallOnlyExecGcc():
+def shallOnlyExecCppCall():
     return options.cpp_only
 
 def shallHaveStatementLines():
@@ -599,7 +619,7 @@ def isOptimize():
 def isUnstriped():
     return options.unstriped
 
-def getOutputPath( path ):
+def getOutputPath(path):
     if options.output_dir:
         return Utils.normpath( Utils.joinpath( options.output_dir, path ) )
     else:
@@ -635,9 +655,6 @@ def isClang():
 def isMingw():
     return options.mingw
 
-def isWindowsTarget():
-    return options.windows_target
-
 def shallDisableConsoleWindow():
     return options.win_disable_console
 
@@ -646,6 +663,9 @@ def isFullCompat():
 
 def isShowProgress():
     return options.show_progress
+
+def isShowInclusion():
+    return options.show_inclusion
 
 def isRemoveBuildDir():
     return options.remove_build
@@ -668,9 +688,14 @@ def getPythonFlags():
     for part in options.python_flags:
         if part in ( "-S", "nosite", "no_site" ):
             result.append( "no_site" )
+        elif part in ( "static_hashes", "norandomization", "no_randomization" ):
+            result.append( "no_randomization" )
         elif part in ( "-v", "trace_imports", "trace_import" ):
             result.append( "trace_imports" )
         else:
             logging.warning( "Unsupported flag '%s'.", part )
 
     return result
+
+def freezeAllStdlib():
+    return options.freeze_stdlib

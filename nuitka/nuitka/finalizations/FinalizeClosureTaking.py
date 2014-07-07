@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -26,8 +26,8 @@ having it spoiled with these transitive only references.
 
 from .FinalizeBase import FinalizationVisitorBase
 
-class FinalizeClosureTaking( FinalizationVisitorBase ):
-    def onEnterNode( self, node ):
+class FinalizeClosureTaking(FinalizationVisitorBase):
+    def onEnterNode(self, node):
         assert node.isExpressionFunctionBody(), node
 
         # print node, node.provider

@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -33,25 +33,34 @@ from . import CodeTemplates
 
 from nuitka import Options
 
-def getModuleAccessCode( context ):
+import re
+
+def getModuleAccessCode(context):
     return "module_%s" % context.getModuleCodeName()
 
-def getModuleIdentifier( module_name ):
-    return module_name.replace( ".", "__" ).replace( "-", "_" )
+def getModuleIdentifier(module_name):
+    # TODO: This is duplication with ModuleNode.getCodeName, remove it.
+    def r(match):
+        c = match.group()
+        if c == '.':
+            return "$"
+        else:
+            return "$$%d$" % ord(c)
 
+    return "".join(re.sub("[^a-zA-Z0-9_]", r ,c) for c in module_name)
 
-def getModuleDeclarationCode( module_name, extra_declarations ):
+def getModuleDeclarationCode(module_name, extra_declarations):
     module_header_code = CodeTemplates.module_header_template % {
         "module_identifier"  : getModuleIdentifier( module_name ),
         "extra_declarations" : extra_declarations
     }
 
     return CodeTemplates.template_header_guard % {
-        "header_guard_name" : "__%s_H__" % getModuleIdentifier( module_name ),
+        "header_guard_name" : "__%s_H__" % getModuleIdentifier(module_name),
         "header_body"       : module_header_code
     }
 
-def getModuleMetapathLoaderEntryCode( module_name, is_shlib ):
+def getModuleMetapathLoaderEntryCode(module_name, is_shlib):
     if is_shlib:
         return CodeTemplates.template_metapath_loader_shlib_module_entry % {
             "module_name" : module_name

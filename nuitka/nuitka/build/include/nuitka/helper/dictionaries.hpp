@@ -1,4 +1,4 @@
-//     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+//     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 //
 //     Part of "Nuitka", an optimizing Python compiler that is compatible and
 //     integrates with CPython, but also works on its own.
@@ -43,7 +43,7 @@ static PyDictEntry *GET_STRING_DICT_ENTRY( PyDictObject *dict, Nuitka_StringObje
 #if PYTHON_VERSION < 300
     long hash = key->ob_shash;
 #else
-    long hash = key->hash;
+    Py_hash_t hash = key->hash;
 #endif
 
     // Only improvement would be to identify how to ensure that the hash is
@@ -252,11 +252,13 @@ NUITKA_MAY_BE_UNUSED static void UPDATE_STRING_DICT0( PyDictObject *dict, Nuitka
 
     PyObject *old = GET_DICT_ENTRY_VALUE( entry );
 
-    // Values are more likely (more often) set than not set, in that case speculatively
-    // try the quickest access method.
+    // Values are more likely (more often) set than not set, in that case
+    // speculatively try the quickest access method.
     if (likely( old != NULL ))
     {
         SET_DICT_ENTRY_VALUE( entry, INCREASE_REFCOUNT( value ) );
+
+        assertObject( old );
 
         Py_DECREF( old );
     }
@@ -272,8 +274,8 @@ NUITKA_MAY_BE_UNUSED static void UPDATE_STRING_DICT1( PyDictObject *dict, Nuitka
 
     PyObject *old = GET_DICT_ENTRY_VALUE( entry );
 
-    // Values are more likely (more often) set than not set, in that case speculatively
-    // try the quickest access method.
+    // Values are more likely (more often) set than not set, in that case
+    // speculatively try the quickest access method.
     if (likely( old != NULL ))
     {
         SET_DICT_ENTRY_VALUE( entry, value );

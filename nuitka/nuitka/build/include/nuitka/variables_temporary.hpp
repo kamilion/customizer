@@ -1,4 +1,4 @@
-//     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+//     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 //
 //     Part of "Nuitka", an optimizing Python compiler that is compatible and
 //     integrates with CPython, but also works on its own.
@@ -142,7 +142,7 @@ public:
     // it's only used to emulate block scopes.
     void del( bool tolerant )
     {
-        assertObject( this->object );
+        if ( this->object ) assertObject( this->object );
 
         Py_XDECREF( this->object );
         this->object = NULL;

@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -28,7 +28,7 @@ from .Helpers import (
     getKind
 )
 
-def buildComparisonNode( provider, node, source_ref ):
+def buildComparisonNode(provider, node, source_ref):
     from nuitka.nodes.NodeMakingHelpers import makeComparisonNode
 
     assert len( node.comparators ) == len( node.ops )

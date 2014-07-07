@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -22,5 +22,5 @@ Provides a class that all finalization visitors should inherit from.
 
 from nuitka.tree import Operations
 
-class FinalizationVisitorBase( Operations.VisitorNoopMixin ):
+class FinalizationVisitorBase(Operations.VisitorNoopMixin):
     pass

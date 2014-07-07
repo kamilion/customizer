@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -31,14 +31,19 @@ are in another context.
 
 """
 
-from nuitka import Options, Utils
+from nuitka import Options, Utils, Importing
 
 from .FinalizeBase import FinalizationVisitorBase
 
 from logging import warning
 
-class FinalizeMarkups( FinalizationVisitorBase ):
-    def onEnterNode( self, node ):
+def isWhileListedImport(node):
+    module = node.getParentModule()
+
+    return Importing.isStandardLibraryPath(module.getFilename())
+
+class FinalizeMarkups(FinalizationVisitorBase):
+    def onEnterNode(self, node):
         # This has many different things it deals with, so there need to be a
         # lot of branches and statements, pylint: disable=R0912,R0915
         if node.isExpressionFunctionBody():
@@ -174,7 +179,8 @@ class FinalizeMarkups( FinalizationVisitorBase ):
             provider.markAsRaiseContaining()
 
         if node.isExpressionBuiltinImport() and \
-           not Options.getShallFollowExtra():
+           not Options.getShallFollowExtra() and \
+           not isWhileListedImport(node):
             warning( """Unresolved '__import__' call at '%s' may require use \
 of '--recurse-directory'.""" % (
                     node.getSourceReference().getAsString()

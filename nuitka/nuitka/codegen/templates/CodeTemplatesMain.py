@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -26,7 +26,7 @@ global_copyright = """\
 // Generated code for Python source for module '%(name)s'
 // created by Nuitka version %(version)s
 
-// This code is in part copyright 2013 Kay Hayen.
+// This code is in part copyright 2014 Kay Hayen.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -159,6 +159,10 @@ int main( int argc, char *argv[] )
         assert ( _Py_Ticker >= 20 );
     }
 
+#ifdef _NUITKA_STANDALONE
+    setEarlyFrozenModulesFileAttribute();
+#endif
+
     // Execute the "__main__" module init function.
     MOD_INIT_NAME( __main__ )();
 
@@ -229,7 +233,7 @@ NUITKA_MAY_BE_UNUSED static PyObject *GET_MODULE_VALUE0( PyObject *var_name )
         return result;
     }
 
-    PyErr_Format( PyExc_NameError, "global name '%%s' is not defined", Nuitka_String_AsString( var_name ) );
+    PyErr_Format( PyExc_NameError, "global name '%%s' is not defined", Nuitka_String_AsString(var_name ));
     throw PythonException();
 }
 
@@ -326,7 +330,7 @@ static struct Nuitka_MetaPathBasedLoaderEntry meta_path_loader_entries[] =
 MOD_INIT_DECL( %(module_identifier)s )
 {
 
-#if defined( _NUITKA_EXE ) || PYTHON_VERSION >= 300
+#if defined(_NUITKA_EXE) || PYTHON_VERSION >= 300
     static bool _init_done = false;
 
     // Packages can be imported recursively in deep executables.
@@ -470,20 +474,24 @@ template_frozen_modules = """\
 #include <Python.h>
 
 // Blob from which modules are unstreamed.
-static const unsigned char stream_data[] =
-{
-%(stream_data)s
-};
+#if defined(_WIN32) && defined(_NUITKA_EXE)
+extern const unsigned char* constant_bin;
+#else
+extern "C" const unsigned char constant_bin[];
+#endif
 
 // These modules should be loaded as bytecode. They must e.g. be loadable
 // during "Py_Initialize" already, or for irrelevance, they are only included
 // in this un-optimized form. These are not compiled by Nuitka, and therefore
 // are not accelerated at all, merely bundled with the binary or module, so
 // that Python library can start out.
-struct _frozen Embedded_FrozenModules[] =
-{
-%(frozen_modules)s
-    { NULL, NULL, 0 }
-};
 
+void copyFrozenModulesTo(void* destination)
+{
+    _frozen frozen_modules[] = {
+        %(frozen_modules)s
+        { NULL, NULL, 0 }
+    };
+    memcpy(destination, frozen_modules, ( _NUITKA_FROZEN + 1 ) * sizeof( struct _frozen ));
+}
 """

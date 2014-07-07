@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -24,7 +24,7 @@ from nuitka import Utils, SyntaxErrors
 
 from .Helpers import buildNode
 
-def _markAsGenerator( provider, node, source_ref ):
+def _markAsGenerator(provider, node, source_ref):
     if provider.isPythonModule():
         SyntaxErrors.raiseSyntaxError(
             "'yield' outside function",
@@ -35,7 +35,7 @@ def _markAsGenerator( provider, node, source_ref ):
     provider.markAsGenerator()
 
 
-def buildYieldNode( provider, node, source_ref ):
+def buildYieldNode(provider, node, source_ref):
     _markAsGenerator( provider, node, source_ref )
 
     if node.value is not None:
@@ -53,7 +53,7 @@ def buildYieldNode( provider, node, source_ref ):
             source_ref = source_ref
         )
 
-def buildYieldFromNode( provider, node, source_ref ):
+def buildYieldFromNode(provider, node, source_ref):
     assert Utils.python_version >= 330
 
     _markAsGenerator( provider, node, source_ref )

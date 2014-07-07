@@ -1,4 +1,4 @@
-//     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+//     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 //
 //     Part of "Nuitka", an optimizing Python compiler that is compatible and
 //     integrates with CPython, but also works on its own.
@@ -82,6 +82,25 @@ public:
         return CALL_FUNCTION_WITH_ARGS1(
             this->asObject0(),
             arg
+        );
+    }
+
+    PyObject *call2( PyObject *arg1, PyObject *arg2 )
+    {
+        return CALL_FUNCTION_WITH_ARGS2(
+            this->asObject0(),
+            arg1,
+            arg2
+        );
+    }
+
+    PyObject *call3( PyObject *arg1, PyObject *arg2, PyObject *arg3 )
+    {
+        return CALL_FUNCTION_WITH_ARGS3(
+            this->asObject0(),
+            arg1,
+            arg2,
+            arg3
         );
     }
 

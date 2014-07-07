@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -24,12 +24,12 @@ from . import CodeTemplates
 
 make_dicts_used = set( range( 0, 3 ) )
 
-def addMakeDictUse( args_length ):
+def addMakeDictUse(args_length):
     assert type( args_length ) is int
 
     make_dicts_used.add( args_length )
 
-def getDictionaryCreationCode( context, order_relevance, args_identifiers ):
+def getDictionaryCreationCode(context, order_relevance, args_identifiers):
     from .OrderedEvaluation import getOrderRelevanceEnforcedArgsCode
 
     assert len( args_identifiers ) % 2 == 0

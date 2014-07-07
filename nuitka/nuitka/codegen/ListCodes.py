@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -24,12 +24,12 @@ from . import CodeTemplates
 
 make_lists_used = set( range( 0, 1 ) )
 
-def addMakeListUse( value ):
+def addMakeListUse(value):
     assert type( value ) is int
 
     make_lists_used.add( value )
 
-def getListCreationCode( context, order_relevance, element_identifiers ):
+def getListCreationCode(context, order_relevance, element_identifiers):
     from .OrderedEvaluation import getOrderRelevanceEnforcedArgsCode
 
     args_length = len( element_identifiers )

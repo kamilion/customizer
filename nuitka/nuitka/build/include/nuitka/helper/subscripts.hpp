@@ -1,4 +1,4 @@
-//     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+//     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 //
 //     Part of "Nuitka", an optimizing Python compiler that is compatible and
 //     integrates with CPython, but also works on its own.
@@ -114,6 +114,8 @@ NUITKA_MAY_BE_UNUSED static PyObject *LOOKUP_SUBSCRIPT_CONST( PyObject *source, 
             PyExc_TypeError,
 #if PYTHON_VERSION < 270
             "'%s' object is unsubscriptable",
+#elif PYTHON_VERSION >= 300
+            "'%s' object is not subscriptable",
 #else
             "'%s' object has no attribute '__getitem__'",
 #endif
@@ -161,6 +163,8 @@ NUITKA_MAY_BE_UNUSED static PyObject *LOOKUP_SUBSCRIPT( PyObject *source, PyObje
                 PyExc_TypeError,
 #if PYTHON_VERSION < 270
                 "'%s' object is unsubscriptable",
+#elif PYTHON_VERSION >= 300
+                "'%s' object is not subscriptable",
 #else
                 "'%s' object has no attribute '__getitem__'",
 #endif
@@ -175,6 +179,8 @@ NUITKA_MAY_BE_UNUSED static PyObject *LOOKUP_SUBSCRIPT( PyObject *source, PyObje
             PyExc_TypeError,
 #if PYTHON_VERSION < 270
             "'%s' object is unsubscriptable",
+#elif PYTHON_VERSION >= 300
+            "'%s' object is not subscriptable",
 #else
             "'%s' object has no attribute '__getitem__'",
 #endif

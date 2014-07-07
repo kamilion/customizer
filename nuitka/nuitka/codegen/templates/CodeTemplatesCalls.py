@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -24,10 +24,10 @@ NUITKA_MAY_BE_UNUSED static PyObject *_fast_function_args( PyObject *func, PyObj
 {
     PyCodeObject *co = (PyCodeObject *)PyFunction_GET_CODE( func );
     PyObject *globals = PyFunction_GET_GLOBALS( func );
-    PyObject *argdefs = PyFunction_GET_DEFAULTS( func );
+    PyObject *argdefs = PyFunction_GET_DEFAULTS(func);
 
 #if PYTHON_VERSION >= 300
-    PyObject *kwdefs = PyFunction_GET_KW_DEFAULTS( func );
+    PyObject *kwdefs = PyFunction_GET_KW_DEFAULTS(func);
 
     if ( kwdefs == NULL && argdefs == NULL && co->co_argcount == count &&
         co->co_flags == ( CO_OPTIMIZED | CO_NEWLOCALS | CO_NOFREE ))
@@ -72,7 +72,7 @@ NUITKA_MAY_BE_UNUSED static PyObject *_fast_function_args( PyObject *func, PyObj
 
     if ( argdefs != NULL )
     {
-        defaults = &PyTuple_GET_ITEM( argdefs, 0 );
+        defaults = &PyTuple_GET_ITEM(argdefs, 0);
         nd = int( Py_SIZE( argdefs ) );
     }
 

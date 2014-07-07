@@ -1,4 +1,4 @@
-//     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+//     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 //
 //     Part of "Nuitka", an optimizing Python compiler that is compatible and
 //     integrates with CPython, but also works on its own.
@@ -113,21 +113,17 @@ PyObject *OPEN_FILE( PyObject *file_name, PyObject *mode, PyObject *buffering )
     }
     else if ( buffering == NULL )
     {
-        return _python_builtin_open.call_args(
-            MAKE_TUPLE2(
-               file_name,
-               mode
-            )
+        return _python_builtin_open.call2(
+            file_name,
+            mode
         );
     }
     else
     {
-        return _python_builtin_open.call_args(
-            MAKE_TUPLE3(
-                file_name,
-                mode,
-                buffering
-            )
+        return _python_builtin_open.call3(
+            file_name,
+            mode,
+            buffering
         );
     }
 }
@@ -633,6 +629,28 @@ PyObject *BUILTIN_RANGE3( PyObject *low, PyObject *high, PyObject *step )
 #endif
 }
 
+#if PYTHON_VERSION < 300
+extern PyObject *const_str_plain_xrange;
+
+static PythonBuiltin _python_builtin_xrange( &const_str_plain_xrange );
+
+PyObject *BUILTIN_XRANGE( PyObject *low, PyObject *high, PyObject *step )
+{
+    if ( step != NULL )
+    {
+        return _python_builtin_xrange.call3( low, high, step );
+    }
+    else if ( high != NULL )
+    {
+        return _python_builtin_xrange.call2( low, high );
+    }
+    else
+    {
+        return _python_builtin_xrange.call1( low );
+    }
+}
+#endif
+
 PyObject *BUILTIN_LEN( PyObject *value )
 {
     assertObject( value );
@@ -769,8 +787,8 @@ void PRINT_ITEM_TO( PyObject *file, PyObject *object )
     assertObject( file );
     assertObject( object );
 
-    // need to hold a reference to the file or else __getattr__ may release "file" in the
-    // mean time.
+    // need to hold a reference to the file or else __getattr__ may release
+    // "file" in the mean time.
     Py_INCREF( file );
 
     bool softspace;
@@ -853,8 +871,8 @@ void PRINT_NEW_LINE_TO( PyObject *file )
         file = GET_STDOUT();
     }
 
-    // need to hold a reference to the file or else __getattr__ may release "file" in the
-    // mean time.
+    // need to hold a reference to the file or else __getattr__ may release
+    // "file" in the mean time.
     Py_INCREF( file );
 
     if (unlikely( PyFile_WriteString( "\n", file ) == -1))
@@ -1048,6 +1066,41 @@ PyObject *UNSTREAM_STRING( unsigned char const *buffer, Py_ssize_t size, bool in
     return result;
 }
 
+PyObject *UNSTREAM_CHAR( unsigned char value, bool intern )
+{
+#if PYTHON_VERSION < 300
+    PyObject *result = PyString_FromStringAndSize( (char const  *)&value, 1 );
+#else
+    PyObject *result = PyUnicode_FromStringAndSize( (char const  *)&value, 1 );
+#endif
+
+    assert( !ERROR_OCCURED() );
+    assertObject( result );
+    assert( Nuitka_String_Check( result ) );
+
+#if PYTHON_VERSION < 300
+    assert( PyString_Size( result ) == 1 );
+#else
+    assert( PyUnicode_GET_SIZE( result ) == 1 );
+#endif
+
+    if ( intern )
+    {
+        Nuitka_StringIntern( &result );
+
+        assertObject( result );
+        assert( Nuitka_String_Check( result ) );
+
+#if PYTHON_VERSION < 300
+        assert( PyString_Size( result ) == 1 );
+#else
+        assert( PyUnicode_GET_SIZE( result ) == 1 );
+#endif
+    }
+
+    return result;
+}
+
 PyObject *UNSTREAM_FLOAT( unsigned char const *buffer )
 {
     double x = _PyFloat_Unpack8( buffer, 1 );
@@ -1058,6 +1111,19 @@ PyObject *UNSTREAM_FLOAT( unsigned char const *buffer )
 
     return result;
 }
+
+#if PYTHON_VERSION >= 300
+PyObject *UNSTREAM_BYTES( unsigned char const *buffer, Py_ssize_t size )
+{
+    PyObject *result = PyBytes_FromStringAndSize( (char const  *)buffer, size );
+    assert( !ERROR_OCCURED() );
+    assertObject( result );
+
+    assert( PyBytes_GET_SIZE( result ) == size );
+    return result;
+}
+#endif
+
 
 #if PYTHON_VERSION < 300
 
@@ -1659,6 +1725,16 @@ void _initBuiltinModule()
     dict_builtin = (PyDictObject *)module_builtin->md_dict;
     assert( PyDict_Check( dict_builtin ) );
 
+#ifdef _NUITKA_STANDALONE
+    int res = PyDict_SetItemString(
+        (PyObject *)dict_builtin,
+        "__nuitka_binary_dir",
+        PyUnicode_FromString(getBinaryDirectory())
+    );
+
+    assert(res == 0);
+#endif
+
     // init Nuitka_BuiltinModule_Type, PyType_Ready wont copy all member from
     // base type, so we need copy all members from PyModule_Type manual for
     // safety.  PyType_Ready will change tp_flags, we need define it again. Set
@@ -1866,7 +1942,8 @@ PyObject *CALL_FUNCTION_NO_ARGS( PyObject *called )
 #if defined(_NUITKA_STANDALONE) || _NUITKA_FROZEN > 0
 
 #include <osdefs.h>
-#if defined( _WIN32 )
+
+#if defined(_WIN32)
 #include <Shlwapi.h>
 #elif defined(__APPLE__)
 #include <mach-o/dyld.h>
@@ -1874,8 +1951,12 @@ PyObject *CALL_FUNCTION_NO_ARGS( PyObject *called )
 #include <libgen.h>
 #endif
 
-#if defined( _WIN32 )
+#if defined(_WIN32) && !defined(PATH_MAX)
 #define PATH_MAX MAXPATHLEN
+#endif
+
+#if defined( __FreeBSD__ )
+#include <sys/sysctl.h>
 #endif
 
 char *getBinaryDirectory()
@@ -1899,6 +1980,14 @@ char *getBinaryDirectory()
     {
         abort();
     }
+#elif defined( __FreeBSD__ )
+    int mib[4];
+    mib[0] = CTL_KERN;
+    mib[1] = KERN_PROC;
+    mib[2] = KERN_PROC_PATHNAME;
+    mib[3] = -1;
+    size_t cb = sizeof(binary_directory);
+    sysctl(mib, 4, binary_directory, &cb, NULL, 0);
 #else
     // Readlink does not terminate result.
     memset( binary_directory, 0, PATH_MAX + 1 );
@@ -1916,7 +2005,42 @@ char *getBinaryDirectory()
 }
 
 #if _NUITKA_FROZEN > 0
-extern struct _frozen Embedded_FrozenModules[];
+extern void copyFrozenModulesTo(void* destination);
+#endif
+
+#ifdef _NUITKA_STANDALONE
+extern PyObject *const_str_plain___file__;
+
+void setEarlyFrozenModulesFileAttribute( void )
+{
+    Py_ssize_t ppos = 0;
+    PyObject *key, *value;
+
+    char buffer[4096];
+    strcpy(buffer,getBinaryDirectory());
+    char *w = buffer + strlen(buffer);
+    *w++ = SEP;
+    strcpy(w,"not_present.py");
+
+#if PYTHON_VERSION >= 300
+    PyObject *file_value = PyUnicode_FromString(buffer);
+#else
+    PyObject *file_value = PyString_FromString(buffer);
+#endif
+
+    while( PyDict_Next( PyImport_GetModuleDict(), &ppos, &key, &value ) )
+    {
+        if ( key != NULL && value != NULL && PyModule_Check( value ) )
+        {
+            if ( !PyObject_HasAttr( value, const_str_plain___file__ ) )
+            {
+                PyObject_SetAttr( value, const_str_plain___file__, file_value );
+            }
+        }
+    }
+
+    assert(!ERROR_OCCURED());
+}
 #endif
 
 void prepareStandaloneEnvironment()
@@ -1943,12 +2067,7 @@ void prepareStandaloneEnvironment()
         PyImport_FrozenModules,
         pre_existing_count * sizeof( struct _frozen )
     );
-    memcpy(
-        merged + pre_existing_count,
-        Embedded_FrozenModules,
-        ( _NUITKA_FROZEN + 1 ) * sizeof( struct _frozen )
-    );
-
+    copyFrozenModulesTo(merged + pre_existing_count);
     PyImport_FrozenModules = merged;
 #endif
 
@@ -1956,6 +2075,10 @@ void prepareStandaloneEnvironment()
     // Setup environment variables to tell CPython that we would like it to use
     // the provided binary directory as the place to look for DLLs.
     char *binary_directory = getBinaryDirectory();
+
+#if defined( _WIN32 ) && defined( _MSC_VER )
+    SetDllDirectory( getBinaryDirectory() );
+#endif
 
     // get orignal value
     char *orignal_home = getenv( "PYTHONHOME" );
@@ -1975,10 +2098,6 @@ void prepareStandaloneEnvironment()
 
     memset( insert_path, 0, insert_size );
     snprintf( insert_path, insert_size, env_string, binary_directory );
-
-#if defined( _NUITKA_STANDALONE ) && _WIN32
-    SetDllDirectory( binary_directory );
-#endif
 
     // set environment
     size_t python_home_size = orignal_home_size + insert_size;

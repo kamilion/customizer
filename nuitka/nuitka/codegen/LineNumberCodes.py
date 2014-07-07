@@ -1,4 +1,4 @@
-#     Copyright 2013, Kay Hayen, mailto:kay.hayen@gmail.com
+#     Copyright 2014, Kay Hayen, mailto:kay.hayen@gmail.com
 #
 #     Part of "Nuitka", an optimizing Python compiler that is compatible and
 #     integrates with CPython, but also works on its own.
@@ -35,10 +35,10 @@ def popLineNumberBranch():
 def mergeLineNumberBranches():
     source_ref_stack[-1] = None
 
-def _getLineNumberCode( line_number ):
+def _getLineNumberCode(line_number):
     return "frame_guard.setLineNumber( %d )" % line_number
 
-def getLineNumberCode( source_ref ):
+def getLineNumberCode(source_ref):
     if source_ref.shallSetCurrentLine():
         line_number = source_ref.getLineNumber()
 
