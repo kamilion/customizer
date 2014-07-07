@@ -97,7 +97,7 @@ def main():
     message.sub_info('Creating squashed FileSystem')
     subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR,
                 misc.join_paths(config.ISO_DIR, 'casper/filesystem.squashfs'),
-                '-wildcards', '-ef', '/usr/share/customizer/exclude.list', '-comp', config.COMPRESSION))
+                '-wildcards', '-ef', sys.prefix + '/share/customizer/exclude.list', '-comp', config.COMPRESSION))
 
     message.sub_info('Checking filesystem size')
     fs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, 'casper/filesystem.squashfs'))
