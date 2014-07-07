@@ -8,14 +8,18 @@ import lib.message as message
 import actions.common as common
 
 # TODO: this is not the best way to do it, exception can be raised at any time
+mount_dir = None
 def unmount_iso():
+    if not mount_dir:
+        return
     message.sub_info('Unmounting', mount_dir)
-    subprocess.check_call((misc.whereis('umount'), mount_dir))
+    subprocess.check_call((misc.whereis('umount'), '-f', mount_dir))
 
     message.sub_info('Removing', mount_dir)
     os.rmdir(mount_dir)
 
 def main():
+    global mount_dir
     if not os.path.isfile(config.ISO):
         message.sub_critical('ISO does not exists', config.ISO)
         sys.exit(2)
