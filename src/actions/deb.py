@@ -24,6 +24,6 @@ def main():
     misc.copy_file(config.DEB, deb_file)
 
     message.sub_info('Installing DEB')
-    misc.chroot_exec(['dpkg', '-i', '/temp.deb'])
+    misc.chroot_exec(('dpkg', '-i', '/temp.deb'))
     message.sub_info('Installing dependencies')
-    misc.chroot_exec(['apt-get', 'install', '-f', '-y'])
+    misc.chroot_exec(('apt-get', 'install', '-f', '-y'))
