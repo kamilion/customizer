@@ -11,6 +11,7 @@ PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 
 all: clean
 	mkdir -p build
+	$(PYUIC) src/gui.ui -o src/gui_ui.py
 	cd build && $(NUITKA) --recurse-all ../src/main.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 	cd build && $(NUITKA) --recurse-all ../src/gui.py
