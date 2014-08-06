@@ -223,8 +223,8 @@ else
 
         Nuitka_GC_Track( split_copy );
 
-        int size = mp->ma_keys->dk_size;
-        for ( int i = 0; i < size; i++ )
+        Py_ssize_t size = mp->ma_keys->dk_size;
+        for ( Py_ssize_t i = 0; i < size; i++ )
         {
             PyDictKeyEntry *entry = &split_copy->ma_keys->dk_entries[ i ];
 
@@ -245,8 +245,8 @@ else
 
         PyDictObject *mp = (PyDictObject *)kw;
 
-        int size = mp->ma_keys->dk_size;
-        for ( int i = 0; i < size; i++ )
+        Py_ssize_t size = mp->ma_keys->dk_size;
+        for ( Py_ssize_t i = 0; i < size; i++ )
         {
             PyDictKeyEntry *entry = &mp->ma_keys->dk_entries[i];
 
@@ -391,7 +391,7 @@ if ( found == false && %(parameter_name_object)s == key )
 """
 
 argparse_template_assign_from_dict_parameter_slow_path = """\
-if ( found == false && RICH_COMPARE_BOOL_EQ_PARAMETERS( %(parameter_name_object)s, key ) )
+if ( found == false && RICH_COMPARE_BOOL_EQ( %(parameter_name_object)s, key ) == 1 )
 {
 %(parameter_assign_from_kw)s
     found = true;
@@ -400,7 +400,7 @@ if ( found == false && RICH_COMPARE_BOOL_EQ_PARAMETERS( %(parameter_name_object)
 """
 
 argparse_template_assign_from_dict_parameter_slow_path_kw_only = """\
-if ( found == false && RICH_COMPARE_BOOL_EQ_PARAMETERS( %(parameter_name_object)s, key ) )
+if ( found == false && RICH_COMPARE_BOOL_EQ( %(parameter_name_object)s, key ) == 1 )
 {
 %(parameter_assign_from_kw)s
     found = true;

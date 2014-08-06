@@ -11,9 +11,9 @@ PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 
 all: clean
 	mkdir -p build
-	cd build && $(NUITKA) --exe --recurse-all --show-progress ../src/main.py
+	cd build && $(NUITKA) --recurse-all ../src/main.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
-	cd build && $(NUITKA) --exe --recurse-all --show-progress ../src/gui.py
+	cd build && $(NUITKA) --recurse-all ../src/gui.py
 	$(STRIP) build/main.exe build/gui.exe
 	
 install:

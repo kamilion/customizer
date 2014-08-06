@@ -30,14 +30,15 @@ from __future__ import print_function
 
 import sys
 
+
 def printIndented(level, *what):
-    print( "    " * level, *what )
+    print("    " * level, *what)
 
 def printSeparator(level = 0):
-    print( "    " * level, "*" * 10 )
+    print("    " * level, "*" * 10)
 
 def printLine(*what):
-    print( *what )
+    print(*what)
 
 def printError(message):
-    print( message, file=sys.stderr )
+    print(message, file=sys.stderr)

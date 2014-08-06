@@ -15,24 +15,18 @@
 #     See the License for the specific language governing permissions and
 #     limitations under the License.
 #
-""" Code Templates for printing. """
 
-template_print_statement = """\
-{
-    PyObject *target_file = %(target_file)s;
 
-    if ( target_file == Py_None )
-    {
-        target_file = GET_STDOUT();
-        Py_INCREF( target_file );
-    }
+def getGotoCode(label, emit):
+    assert label is not None
 
-    PyObjectTemporary file_reference( target_file );
+    emit(
+        "goto %s;" % label
+    )
 
-%(print_elements_code)s}"""
+def getLabelCode(label, emit):
+    assert label is not None
 
-template_print_value = """\
-PRINT_ITEM_TO( %(target_file)s, %(print_value)s );"""
-
-template_print_newline = """\
-PRINT_NEW_LINE_TO( %(target_file)s );"""
+    emit(
+        "%s:;" % label
+    )

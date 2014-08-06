@@ -19,34 +19,48 @@
 
 """
 
-# Stack of source code references, to push and pop from, for loops and branches
-# to not rely on their last line number.
-source_ref_stack = [ None ]
+def getLineNumberUpdateCode(context):
+    frame_handle = context.getFrameHandle()
 
-def resetLineNumber():
-    source_ref_stack[-1] = None
+    if frame_handle is None:
+        return ""
+    else:
+        return "%s->f_lineno = %s;" % (
+            frame_handle,
+            context.getCurrentSourceCodeReference().getLineNumber()
+        )
 
-def pushLineNumberBranch():
-    source_ref_stack.append( source_ref_stack[-1] )
+def emitLineNumberUpdateCode(context, emit):
+    code = getLineNumberUpdateCode(context)
 
-def popLineNumberBranch():
-    del source_ref_stack[-1]
+    if code:
+        emit(code)
 
-def mergeLineNumberBranches():
-    source_ref_stack[-1] = None
+def getSetLineNumberCodeRaw(to_name, emit, context):
+    assert context.getFrameHandle() is not None
 
-def _getLineNumberCode(line_number):
-    return "frame_guard.setLineNumber( %d )" % line_number
+    emit(
+        "%s->f_lineno = %s;" % (
+            context.getFrameHandle(),
+            to_name
+        )
+    )
 
-def getLineNumberCode(source_ref):
+
+# TODO: The below should probably become unused.
+def getSetLineNumberCode(source_ref, emit, context):
     if source_ref.shallSetCurrentLine():
         line_number = source_ref.getLineNumber()
 
-        if line_number != source_ref_stack[-1]:
-            source_ref_stack[-1] = line_number
+        getSetLineNumberCodeRaw(line_number, emit, context)
 
-            return _getLineNumberCode( line_number )
-        else:
-            return ""
-    else:
-        return ""
+
+def getLineNumberCode(to_name, emit, context):
+    assert context.getFrameHandle() is not None
+
+    emit(
+        "%s = %s->f_lineno;"  % (
+            to_name,
+            context.getFrameHandle()
+        )
+    )

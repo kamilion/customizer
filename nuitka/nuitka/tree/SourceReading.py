@@ -21,9 +21,10 @@ This is tremendously more complex than one might think, due to encoding issues
 and version differences of Python.
 """
 
-from nuitka import Utils, SyntaxErrors, SourceCodeReferences
-
 import re
+
+from nuitka import SourceCodeReferences, SyntaxErrors, Utils
+
 
 def _readSourceCodeFromFilename3(source_filename):
     with open(source_filename, "rb") as source_file:
@@ -48,8 +49,17 @@ def _readSourceCodeFromFilename3(source_filename):
                 import codecs
                 codecs.lookup(encoding)
             except LookupError:
+                if Utils.python_version >= 341 or \
+                   (Utils.python_version >= 335 and \
+                    Utils.python_version < 340) or \
+                   (Utils.python_version >= 323 and \
+                    Utils.python_version < 330):
+                    reason = "encoding problem: %s" % encoding
+                else:
+                    reason = "unknown encoding: %s" % encoding
+
                 SyntaxErrors.raiseSyntaxError(
-                    reason       = "unknown encoding: %s" % encoding,
+                    reason       = reason,
                     source_ref   = SourceCodeReferences.fromFilename(
                         source_filename,
                         None
@@ -77,7 +87,7 @@ def _detectEncoding2(source_filename):
     # Detect the encoding.
     encoding = "ascii"
 
-    with open( source_filename, "rb" ) as source_file:
+    with open(source_filename, "rb") as source_file:
         line1 = source_file.readline()
 
         if line1.startswith(b'\xef\xbb\xbf'):
@@ -107,7 +117,7 @@ def _readSourceCodeFromFilename2(source_filename):
         # Try and detect SyntaxError from missing or wrong encodings.
         if type(source_code) is not unicode and encoding == "ascii":
             try:
-                source_code = source_code.decode(encoding)
+                _source_code = source_code.decode(encoding)
             except UnicodeDecodeError as e:
                 lines = source_code.split("\n")
                 so_far = 0

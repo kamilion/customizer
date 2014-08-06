@@ -19,24 +19,21 @@
 
 """
 
-from .NodeBases import NodeBase, CompileTimeConstantExpressionMixin
+from logging import warning
 
+from nuitka.__past__ import iterItems, unicode  # pylint: disable=W0622
 from nuitka.Constants import (
     getConstantIterationLength,
-    isIterableConstant,
-    isIndexConstant,
-    isNumberConstant,
     isConstant,
-    isMutable
+    isIndexConstant,
+    isIterableConstant,
+    isMutable,
+    isNumberConstant
 )
-
 from nuitka.Options import isDebug
 
-# pylint: disable=W0622
-from nuitka.__past__ import iterItems, unicode
-# pylint: enable=W0622
+from .NodeBases import CompileTimeConstantExpressionMixin, NodeBase
 
-from logging import warning
 
 class ExpressionConstantRef(CompileTimeConstantExpressionMixin, NodeBase):
     kind = "EXPRESSION_CONSTANT_REF"
@@ -73,16 +70,24 @@ class ExpressionConstantRef(CompileTimeConstantExpressionMixin, NodeBase):
         # assert type( constant ) is not str or len( constant ) < 30000
 
     def __repr__(self):
-        return "<Node %s value %s at %s %s>" % ( self.kind, self.constant, self.source_ref, self.user_provided )
+        return "<Node %s value %s at %s %s>" % (
+            self.kind,
+            self.constant,
+            self.source_ref.getAsString(),
+            self.user_provided
+        )
 
     def makeCloneAt(self, source_ref):
         return self.__class__(self.constant, source_ref)
 
     def getDetails(self):
-        return { "value" : repr( self.constant ), "user_provided" : self.user_provided }
+        return {
+            "value"         : repr(self.constant),
+            "user_provided" : self.user_provided
+        }
 
     def getDetail(self):
-        return repr( self.constant )
+        return repr(self.constant)
 
     def computeExpression(self, constraint_collection):
         # No need to check anything, pylint: disable=W0613

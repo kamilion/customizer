@@ -23,12 +23,13 @@ module variable references.
 
 """
 
-from nuitka import Utils
+from . import Utils
+
 
 class Variable:
     def __init__(self, owner, variable_name):
-        assert type( variable_name ) is str, variable_name
-        assert type( owner ) not in ( tuple, list ), owner
+        assert type(variable_name) is str, variable_name
+        assert type(owner ) not in (tuple, list), owner
 
         self.variable_name = variable_name
         self.owner = owner
@@ -46,15 +47,8 @@ class Variable:
     def getOwner(self):
         return self.owner
 
-    # TODO: Seems obsolete now
-    def getRealOwner(self):
-        return self.owner
-
     def addReference(self, reference):
         self.references.append( reference )
-
-    def getReferences(self):
-        return self.references
 
     def getReferenced(self):
         # Abstract method, pylint: disable=R0201,W0613
@@ -116,9 +110,6 @@ class Variable:
     def isTempVariable(self):
         return False
 
-    def isTempKeeperVariable(self):
-        return False
-
     # pylint: enable=R0201
 
     def _checkShared(self, variable, technical):
@@ -139,14 +130,6 @@ class Variable:
                   not owner.isGenerator() and not owner.needsCreation():
                 owner = owner.getParentVariableProvider()
 
-            # List contractions in Python2 do not really own their variables.
-            # TODO: They ought to not be variable providers/takers at all.
-            # TODO: This code seems unnecessary now due to "needsCreation" not
-            # being true.
-            if Utils.python_version < 300:
-                while owner != top_owner and owner.code_prefix == "listcontr":
-                    owner = owner.getParentVariableProvider()
-
             # This defines being shared. Owned by one, and references that are
             # owned by another node.
             if owner != top_owner:
@@ -155,13 +138,23 @@ class Variable:
             return False
 
 
-    def isShared(self, technical = False):
+    def isSharedLogically(self):
         variable = self
 
         while variable.isClosureReference():
             variable = variable.getReferenced()
 
-        return self._checkShared( variable, technical )
+        return self._checkShared(variable, False)
+
+
+    def isSharedTechnically(self):
+        variable = self
+
+        while variable.isClosureReference():
+            variable = variable.getReferenced()
+
+        return self._checkShared(variable, True)
+
 
     reference_class = None
 
@@ -214,7 +207,7 @@ class VariableReferenceBase(Variable):
         if self.reference_class is None:
             self.reference_class = variable.reference_class
 
-        variable.addReference( self )
+        variable.addReference(self)
         self.variable = variable
 
         del self.read_only_indicator
@@ -281,7 +274,7 @@ class ClosureVariableReference(VariableReferenceBase):
                 assert False, self
 
     def getDeclarationTypeCode(self, in_context):
-        if self.getReferenced().isShared( True ):
+        if self.getReferenced().isSharedTechnically():
             if in_context:
                 return "PyObjectClosureVariable"
             else:
@@ -369,7 +362,7 @@ class LocalVariable(Variable):
         return "var_" + Utils.encodeNonAscii( self.getName() )
 
     def getDeclarationTypeCode(self, in_context):
-        if self.isShared( True ):
+        if self.isSharedTechnically():
             return "PyObjectSharedLocalVariable"
         else:
             return "PyObjectLocalVariable"
@@ -451,7 +444,7 @@ class ParameterVariable(LocalVariable):
         return "par_" + Utils.encodeNonAscii( self.getName() )
 
     def getDeclarationTypeCode(self, in_context):
-        if self.isShared( True ):
+        if self.isSharedTechnically():
             return "PyObjectSharedLocalVariable"
         elif self.getHasDelIndicator():
             return "PyObjectLocalParameterVariableWithDel"
@@ -515,9 +508,6 @@ class ModuleVariable(Variable):
     def getModuleName(self):
         return self.module.getFullName()
 
-    def _checkShared(self, variable, technical):
-        assert False, variable
-
 
 class TempVariableClosureReference(VariableReferenceBase):
     reference_class = None
@@ -546,6 +536,9 @@ class TempVariableClosureReference(VariableReferenceBase):
 
 class TempVariableReference(VariableReferenceBase):
     reference_class = TempVariableClosureReference
+
+    def getCodeName(self):
+        return "tmp_%s" % self.getName()
 
     def isTempVariableReference(self):
         # Virtual method, pylint: disable=R0201
@@ -579,14 +572,6 @@ class TempVariable(Variable):
             variable_name = variable_name
         )
 
-        # For code generation.
-        self.late_declaration = False
-        self.late_declared = False
-
-        self.needs_free = None
-
-        self.delete_statement = None
-
     def __repr__(self):
         return "<TempVariable '%s' of '%s'>" % (
             self.getName(),
@@ -597,27 +582,11 @@ class TempVariable(Variable):
         # Virtual method, pylint: disable=R0201
         return True
 
-    def getNeedsFree(self):
-        return self.needs_free
-
-    def setNeedsFree(self, needs_free):
-        self.needs_free = needs_free
-
     def getDeclarationTypeCode(self, in_context):
-        assert self.needs_free is not None, self
-
-        if self.isShared( True ):
+        if self.isSharedTechnically():
             return "PyObjectSharedTempVariable"
-        elif self.needs_free:
-            if self.late_declaration:
-                if self.getHasDelIndicator():
-                    return "PyObjectTemporaryWithDel"
-                else:
-                    return "PyObjectTemporary"
-            else:
-                return "PyObjectTempVariable"
         else:
-            return "PyObject *"
+            return "PyObjectTempVariable"
 
     def getCodeName(self):
         return "tmp_%s" % self.getName()
@@ -626,50 +595,28 @@ class TempVariable(Variable):
         # Virtual method, pylint: disable=R0201
         return "NULL"
 
-    def markAsNeedsLateDeclaration(self):
-        self.late_declaration = True
 
-    def needsLateDeclaration(self):
-        return self.late_declaration
-
-    def markAsDeclared(self):
-        self.late_declared = True
-
-    def markAsDeleteScope(self, delete_statement):
-        self.delete_statement = delete_statement
-
-    def getDeleteScope(self):
-        return self.delete_statement
-
-    def isDeclared(self):
-        return self.late_declared
-
-
-class TempKeeperVariable(TempVariable):
-    def __init__(self, owner, variable_name):
-        TempVariable.__init__(
-            self,
-            owner         = owner,
-            variable_name = variable_name
-        )
-
-        self.write_only = False
-
-    def __repr__(self):
-        return "<TempKeeperVariable '%s' of '%s'>" % (
-            self.getName(),
-            self.getOwner()
-        )
-
-    def isTempKeeperVariable(self):
-        return True
-
-    def isWriteOnly(self):
-        return self.write_only
-
-    def setWriteOnly(self):
-        self.write_only = True
+    def makeReference(self, owner):
+        # Search for existing references to be re-used before making a new one.
+        for reference in self.references:
+            if reference.getOwner() is owner:
+                return reference
+        else:
+            if owner is self.owner:
+                return TempVariableReference(
+                    owner    = owner,
+                    variable = self
+                )
+            else:
+                return TempVariableClosureReference(
+                    owner    = owner,
+                    variable = self
+                )
 
 
 def getNames(variables):
-    return [ variable.getName() for variable in variables ]
+    return [
+        variable.getName()
+        for variable in
+        variables
+    ]
