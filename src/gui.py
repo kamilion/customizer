@@ -35,6 +35,9 @@ def select_iso():
         # FIXME: set status failed
         pass
 
+ui.WorkDirEdit.setText(config.FILESYSTEM_DIR)
+ui.ISODirEdit.setText(config.ISO_DIR)
+
 ui.selectButton.clicked.connect(select_iso)
 
 MainWindow.show()
