@@ -28,6 +28,10 @@ def create_work_dirs():
         message.sub_info('Creating', config.ISO_DIR)
         os.makedirs(config.ISO_DIR)
 
+    if not os.path.isdir(config.MOUNT_DIR):
+        message.sub_info('Creating', config.MOUNT_DIR)
+        os.makedirs(config.MOUNT_DIR)
+
 def clean_work_dirs():
     if os.path.isdir(config.FILESYSTEM_DIR):
         message.sub_info('Removing', config.FILESYSTEM_DIR)
@@ -36,3 +40,4 @@ def clean_work_dirs():
     if os.path.isdir(config.ISO_DIR):
         message.sub_info('Removing', config.ISO_DIR)
         shutil.rmtree(config.ISO_DIR)
+
