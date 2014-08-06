@@ -48,8 +48,9 @@ def main():
     message.sub_info('Unsquashing filesystem')
     try:
         subprocess.check_call((misc.whereis('unsquashfs'), '-f', '-d', config.FILESYSTEM_DIR, mount_dir + '/casper/filesystem.squashfs'))
-    finally:
+    except:
         unmount_iso()
+        raise
 
     message.sub_info('Checking architecture')
     architecture = misc.chroot_exec(('dpkg', '--print-architecture'), prepare=False, mount=False, output=True)
