@@ -3,13 +3,13 @@ Section: x11
 Priority: optional
 Maintainer: Ivailo Monev <xakepa10@gmail.com>
 Homepage: https://github.com/clearkimura/Customizer
-Vcs-Git: git://github.com/2ndQuadrant/pg_stat_plans.git
-Vcs-browser: https://github.com/2ndQuadrant/pg_stat_plans.git
+Vcs-Git: git://github.com/clearkimura/Customizer
+Vcs-browser: https://github.com/clearkimura/Customizer
 Standards-Version: 4.1.0
 X-Python-Version: >= 2.7
 Build-Depends: debhelper (>= 9~), python-dev (>= 2.7~), python-qt4, pyqt4-dev-tools
 
 Package: customizer
 Architecture: i386 amd64
-Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}, python (>= 2.7~)
+Depends: ${python:Depends}, ${shlibs:Depends}, ${misc:Depends}, python (>= 2.7~), python-qt4
 Description: advanced Ubuntu LiveCD customization and remastering tool
