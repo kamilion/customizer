@@ -28,9 +28,9 @@ install:
 	install -vm644 data/exclude.list \
 		$(DESTDIR)$(PREFIX)/share/customizer/exclude.list
 	# install -vm644 data/customizer.desktop \
-		$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
+	#	$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
 	# install -vm644 data/customizer.menu \
-		$(DESTDIR)$(PREFIX)/share/menu/customizer
+	#	$(DESTDIR)$(PREFIX)/share/menu/customizer
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/sbin/customizer
