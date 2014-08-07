@@ -9,7 +9,7 @@ STRIP = strip
 RM = rm -vf
 PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 
-all: clean
+all: clean bump
 	mkdir -p build
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 	cd build && $(NUITKA) --recurse-all ../src/main.py
@@ -38,7 +38,7 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/share/menu/customizer
 	
 bump:
-	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py
+	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py src/gui.py
 
 lint:
 	pylint src/lib/* src/actions/*.py src/main.py | grep -v -e 'Line too long'

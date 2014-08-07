@@ -13,7 +13,7 @@ import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.clean as clean
 
-app_version = "4.0.0"
+app_version = "4.1.0"
 
 try:
     if not os.geteuid() == 0:
