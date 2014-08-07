@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Customizer
-Version=4.0.0
-Exec=/usr/sbin/customizer
+Version=4.1.0
+Exec=customizer-gui
 Comment=Ubuntu based LiveCD ISO images remastering tool
 Icon=/usr/share/customizer/logo.png
 Type=Application

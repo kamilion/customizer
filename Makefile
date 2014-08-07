@@ -9,28 +9,43 @@ STRIP = strip
 RM = rm -vf
 PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 
-all: clean bump
+all: clean core gui
+
+core:
 	mkdir -p build
-	$(PYUIC) src/gui.ui -o src/gui_ui.py
+	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py
 	cd build && $(NUITKA) --recurse-all ../src/main.py
+	$(STRIP) build/main.exe
+
+gui:
+	mkdir -p build
+	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 	cd build && $(NUITKA) --recurse-all ../src/gui.py
-	$(STRIP) build/main.exe build/gui.exe
+	$(STRIP) build/gui.exe
 	
-install:
+install: install-core install-gui
+
+install-core:
 	install -vdm755 $(DESTDIR)/etc/ $(DESTDIR)$(PREFIX)/sbin \
-		$(DESTDIR)$(PREFIX)/share/customizer/ \
-		$(DESTDIR)$(PREFIX)/share/menu \
-		$(DESTDIR)$(PREFIX)/share/applications
+		$(DESTDIR)$(PREFIX)/share/customizer/
 	install -vm755 build/main.exe $(DESTDIR)$(PREFIX)/sbin/customizer
-	install -vm755 build/gui.exe $(DESTDIR)$(PREFIX)/sbin/customizer-gui
 	install -vm644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
 	install -vm644 data/exclude.list \
 		$(DESTDIR)$(PREFIX)/share/customizer/exclude.list
-	# install -vm644 data/customizer.desktop \
-	#	$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
-	# install -vm644 data/customizer.menu \
-	#	$(DESTDIR)$(PREFIX)/share/menu/customizer
+
+install-gui:
+	install -vdm755 $(DESTDIR)$(PREFIX)/sbin \
+		$(DESTDIR)$(PREFIX)/share/applications \
+		$(DESTDIR)$(PREFIX)/share/customizer \
+		$(DESTDIR)$(PREFIX)/share/menu
+	install -vm755 build/gui.exe $(DESTDIR)$(PREFIX)/sbin/customizer-gui
+	install -vm644 data/customizer.desktop \
+		$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
+	install -vm644 data/logo.png \
+		$(DESTDIR)$(PREFIX)/share/customizer/logo.png
+	install -vm644 data/customizer.menu \
+		$(DESTDIR)$(PREFIX)/share/menu/customizer
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/sbin/customizer
@@ -39,10 +54,6 @@ uninstall:
 	$(RM) -r $(DESTDIR)$(PREFIX)/share/customizer/
 	$(RM) $(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
 	$(RM) $(DESTDIR)$(PREFIX)/share/menu/customizer
-	
-bump:
-	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py \
-		src/gui.py
 
 lint:
 	pylint src/lib/* src/actions/*.py src/main.py | grep -v -e \
