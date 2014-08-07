@@ -69,4 +69,7 @@ dist: clean
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
 
+deb:
+	DEB_BUILD_OPTIONS=nocheck debuild
+
 .PHONY: all bump static install uninstall dist clean
