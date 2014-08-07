@@ -24,7 +24,7 @@ def main():
         sys.exit(2)
 
     message.sub_info('Starting Xephyr')
-    x = subprocess.Popen(('Xephyr', '-ac', '-screen', config.RESOLUTION, '-br', ':9'))
+    x = subprocess.Popen(('Xephyr', '-ac', '-screen', config.RESOLUTION, '-br', ':13'))
     x.poll()
     if x.returncode > 0:
         message.sub_critical('Failed to start Xephyr', x.returncode)
