@@ -37,7 +37,6 @@ def main():
     subprocess.check_call((misc.whereis('mount'), '-t', 'iso9660', '-o', 'ro,loop', config.ISO, mount_dir))
 
     message.sub_info('Checking ISO')
-    invalid_iso = False
     for sfile in (mount_dir + '/casper/filesystem.squashfs', mount_dir + '/.disk', mount_dir + '/isolinux'):
         if not os.path.exists(sfile):
             message.sub_critical('Invalid ISO', config.ISO)
