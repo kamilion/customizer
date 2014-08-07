@@ -36,16 +36,15 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
 ### REQUIREMENTS
 
+    make
+    binutils
+    python (2.7.x)
+    pyqt4 (python-qt4)
     squashfs-tools (>=4.2)
     xorriso
-    squashfs-tools
     xhost
     xephyr
     qemu
-    python (2.7.x)
-    make
-    binutils
-    pyqt4 (python-qt4)
 
 ### INSTALL AND RUN
 
