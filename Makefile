@@ -25,9 +25,12 @@ install:
 	install -vm755 build/main.exe $(DESTDIR)$(PREFIX)/sbin/customizer
 	install -vm755 build/gui.exe $(DESTDIR)$(PREFIX)/sbin/customizer-gui
 	install -vm644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
-	install -vm644 data/exclude.list $(DESTDIR)$(PREFIX)/share/customizer/exclude.list
-	# install -vm644 data/customizer.desktop $(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
-	# install -vm644 data/customizer.menu $(DESTDIR)$(PREFIX)/share/menu/customizer
+	install -vm644 data/exclude.list \
+		$(DESTDIR)$(PREFIX)/share/customizer/exclude.list
+	# install -vm644 data/customizer.desktop \
+		$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
+	# install -vm644 data/customizer.menu \
+		$(DESTDIR)$(PREFIX)/share/menu/customizer
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/sbin/customizer
@@ -38,16 +41,19 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/share/menu/customizer
 	
 bump:
-	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py src/gui.py
+	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py \
+		src/gui.py
 
 lint:
-	pylint src/lib/* src/actions/*.py src/main.py | grep -v -e 'Line too long'
+	pylint src/lib/* src/actions/*.py src/main.py | grep -v -e \
+		'Line too long'
 
 check: clean
 	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py
 
 dist: clean
-	git archive HEAD --prefix=customizer-$(VERSION)/ | xz > customizer-$(VERSION).tar.xz
+	git archive HEAD --prefix=customizer-$(VERSION)/ | xz > \
+		customizer-$(VERSION).tar.xz
 
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
