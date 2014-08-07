@@ -31,7 +31,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -123,7 +123,7 @@
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QGroupBox" name="groupBox_2">
+         <widget class="QGroupBox" name="customizationBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -153,7 +153,7 @@
             </widget>
            </item>
            <item row="3" column="0">
-            <widget class="QPushButton" name="pushButton_6">
+            <widget class="QPushButton" name="chrootButton">
              <property name="text">
               <string>Terminal</string>
              </property>
@@ -179,7 +179,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_9">
+           <widget class="QPushButton" name="rebuildButton">
             <property name="enabled">
              <bool>false</bool>
             </property>
@@ -199,7 +199,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pushButton_11">
+           <widget class="QPushButton" name="cleanButton">
             <property name="enabled">
              <bool>false</bool>
             </property>

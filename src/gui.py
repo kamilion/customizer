@@ -2,7 +2,7 @@
 
 import gui_ui
 from PyQt4 import QtCore, QtGui
-import sys
+import sys, os
 
 import lib.message as message
 import lib.config as config
@@ -35,10 +35,30 @@ def select_iso():
         # FIXME: set status failed
         pass
 
+def rebuild_iso():
+    try:
+        rebuild.main()
+    except:
+        # FIXME: set status failed
+        pass
+
+def cleanup():
+    try:
+        clean.main()
+    except:
+        # FIXME: set status failed
+        pass
+
 ui.WorkDirEdit.setText(config.FILESYSTEM_DIR)
 ui.ISODirEdit.setText(config.ISO_DIR)
+if os.path.isdir(config.FILESYSTEM_DIR):
+    #ui.customizationBox.setEnabled(True)
+    ui.rebuildButton.setEnabled(True)
+    ui.cleanButton.setEnabled(True)
 
 ui.selectButton.clicked.connect(select_iso)
+ui.rebuildButton.clicked.connect(rebuild_iso)
+ui.cleanButton.clicked.connect(cleanup)
 
 MainWindow.show()
 sys.exit(app.exec_())
