@@ -70,6 +70,6 @@ clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
 
 deb:
-	DEB_BUILD_OPTIONS=nocheck debuild
+	DEB_BUILD_OPTIONS=nocheck debuild -i -us -uc -b
 
 .PHONY: all bump static install uninstall dist clean
