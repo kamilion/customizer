@@ -92,7 +92,7 @@ def list_files(directory):
     return slist
 
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
-    pseudofs = ['/proc', '/dev', '/sys']
+    pseudofs = ['/proc', '/dev', '/sys', '/tmp']
     if xnest:
         if os.path.islink(config.FILESYSTEM_DIR + '/var/run'):
             pseudofs.append('/run/dbus')
