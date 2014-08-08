@@ -112,9 +112,10 @@ def main():
         'casper/filesystem.manifest'), packages_list)
 
     message.sub_info('Creating filesystem.manifest-remove')
+    packages_list = ''
     for pkg in ('ubiquity', 'casper', 'live-initramfs', 'user-setup', \
         'discover1', 'xresprobe', 'libdebian-installer4'):
-        packages_list.replace(pkg, '')
+        packages_list += pkg + '\n'
     misc.write_file(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.manifest-remove'), packages_list)
 
