@@ -34,8 +34,8 @@ gui:
 install: install-core install-gui
 
 install-core:
-	$(INSTALL) -dm755 $(DESTDIR)/etc/ $(DESTDIR)$(PREFIX)/sbin \
-		$(DESTDIR)$(PREFIX)/share/customizer/
+	$(INSTALL) -dm755 $(DESTDIR)/etc $(DESTDIR)$(PREFIX)/sbin \
+		$(DESTDIR)$(PREFIX)/share/customizer
 	$(INSTALL) -m755 build/main.exe $(DESTDIR)$(PREFIX)/sbin/customizer
 	$(INSTALL) -m644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
 	$(INSTALL) -m644 data/exclude.list \
@@ -64,6 +64,7 @@ uninstall:
 	$(RM) -r $(DESTDIR)$(PREFIX)/share/customizer/
 	$(RM) $(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
 	$(RM) $(DESTDIR)$(PREFIX)/share/menu/customizer
+	$(RM) $(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
 
 lint:
 	cd src && $(PYLINT) lib/* actions/*.py main.py | grep -v \
