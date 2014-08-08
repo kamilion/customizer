@@ -57,8 +57,7 @@ def main():
     message.sub_info('Cleaning up')
     for sfile in ('casper/filesystem.squashfs', 'casper/initrd.lz', \
         'casper/vmlinuz', 'casper/vmlinuz.efi', 'casper/filesystem.manifest', \
-        'casper/filesystem.manifest-remove', 'casper/filesystem.size', \
-        'md5sum.txt'):
+        'casper/filesystem.manifest-remove', 'casper/filesystem.size'):
 
         full_file = misc.join_paths(config.ISO_DIR, sfile)
         if os.path.exists(full_file):
@@ -105,8 +104,8 @@ def main():
     misc.write_file(misc.join_paths(config.ISO_DIR, 'casper/filesystem.size'), str(fs_size))
 
     message.sub_info('Creating filesystem.manifest')
-    packages_list = misc.chroot_exec(("dpkg-query", "-W", \
-        "--showformat=${Package} ${Version}\\n"), prepare=False, mount=False, \
+    packages_list = misc.chroot_exec(('dpkg-query', '-W', \
+        '--showformat=${Package} ${Version}\\n'), prepare=False, mount=False, \
         output=True)
     misc.write_file(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.manifest'), packages_list)
@@ -119,17 +118,31 @@ def main():
     misc.write_file(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.manifest-remove'), packages_list)
 
-    message.sub_info('Creating md5sum.txt')
-    checksum_file = misc.join_paths(config.ISO_DIR, 'md5sum.txt')
-    misc.write_file(checksum_file, '')
-    for sfile in misc.list_files(config.ISO_DIR):
-        if sfile.endswith('md5sum.txt'):
-            continue
+    md5sums_file = misc.join_paths(config.ISO_DIR, 'md5sum.txt')
+    if os.path.isfile(md5sums_file):
+        message.sub_info('Creating md5sum.txt')
+        misc.write_file(md5sums_file, '')
+        for sfile in misc.list_files(config.ISO_DIR):
+            if sfile.endswith('md5sum.txt'):
+                continue
 
-        # FIXME: read in chunks
-        checksum = hashlib.md5(misc.read_file(sfile)).hexdigest()
-        misc.append_file(checksum_file, checksum + '  .' + \
-            sfile.replace(config.ISO_DIR, '') +'\n')
+            # FIXME: read in chunks
+            checksum = hashlib.md5(misc.read_file(sfile)).hexdigest()
+            misc.append_file(md5sums_file, checksum + '  .' + \
+                sfile.replace(config.ISO_DIR, '') +'\n')
+
+    sha256sums_file = misc.join_paths(config.ISO_DIR, 'SHA256SUMS')
+    if os.path.isfile(sha256sums_file):
+        message.sub_info('Creating SHA256SUMS')
+        misc.write_file(sha256sums_file, '')
+        for sfile in misc.list_files(config.ISO_DIR):
+            if sfile.endswith('SHA256SUMS'):
+                continue
+
+            # FIXME: read in chunks
+            checksum = hashlib.sha256(misc.read_file(sfile)).hexdigest()
+            misc.append_file(sha256sums_file, checksum + '  .' + \
+                sfile.replace(config.ISO_DIR, '') +'\n')
 
     message.sub_info('Creating ISO')
     os.chdir(config.ISO_DIR)

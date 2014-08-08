@@ -69,8 +69,6 @@ def main():
     for sfile in misc.list_files(mount_dir):
         if sfile.startswith(mount_dir + '/casper'):
             continue
-        elif sfile == mount_dir + '/md5sum.txt':
-            continue
         else:
             misc.copy_file(sfile, sfile.replace(mount_dir, config.ISO_DIR))
 
