@@ -7,6 +7,10 @@ NUITKA = $(PYTHON) ../nuitka/bin/nuitka --python-version=$(PYTHON_VERSION)
 PYUIC = pyuic4
 STRIP = strip
 RM = rm -vf
+MKDIR = mkdir -vp
+SED = sed
+INSTALL = install -v
+GIT = git
 PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 PYLINT = pylint
 DEBUILD = debuild
@@ -14,14 +18,14 @@ DEBUILD = debuild
 all: clean core gui
 
 core:
-	mkdir -p build
-	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py
+	$(MKDIR) build
+	$(SED) 's|^app_version.*|app_version = "$(VERSION)"|' -i src/main.py
 	cd build && $(NUITKA) --recurse-all ../src/main.py
 	$(STRIP) build/main.exe
 
 gui:
-	mkdir -p build
-	sed 's|^app_version.*|app_version = "$(VERSION)"|' -i src/gui.py
+	$(MKDIR) build
+	$(SED) 's|^app_version.*|app_version = "$(VERSION)"|' -i src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 	cd build && $(NUITKA) --recurse-all ../src/gui.py
 	$(STRIP) build/gui.exe
@@ -29,27 +33,27 @@ gui:
 install: install-core install-gui
 
 install-core:
-	install -vdm755 $(DESTDIR)/etc/ $(DESTDIR)$(PREFIX)/sbin \
+	$(INSTALL) -dm755 $(DESTDIR)/etc/ $(DESTDIR)$(PREFIX)/sbin \
 		$(DESTDIR)$(PREFIX)/share/customizer/
-	install -vm755 build/main.exe $(DESTDIR)$(PREFIX)/sbin/customizer
-	install -vm644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
-	install -vm644 data/exclude.list \
+	$(INSTALL) -m755 build/main.exe $(DESTDIR)$(PREFIX)/sbin/customizer
+	$(INSTALL) -m644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
+	$(INSTALL) -m644 data/exclude.list \
 		$(DESTDIR)$(PREFIX)/share/customizer/exclude.list
 
 install-gui:
-	install -vdm755 $(DESTDIR)$(PREFIX)/sbin \
+	$(INSTALL) -dm755 $(DESTDIR)$(PREFIX)/sbin \
 		$(DESTDIR)$(PREFIX)/share/applications \
 		$(DESTDIR)$(PREFIX)/share/customizer \
 		$(DESTDIR)$(PREFIX)/share/menu \
 		$(DESTDIR)$(PREFIX)/share/polkit-1/actions
-	install -vm755 build/gui.exe $(DESTDIR)$(PREFIX)/sbin/customizer-gui
-	install -vm644 data/customizer.desktop \
+	$(INSTALL) -m755 build/gui.exe $(DESTDIR)$(PREFIX)/sbin/customizer-gui
+	$(INSTALL) -m644 data/customizer.desktop \
 		$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
-	install -vm644 data/logo.png \
+	$(INSTALL) -m644 data/logo.png \
 		$(DESTDIR)$(PREFIX)/share/customizer/logo.png
-	install -vm644 data/customizer.menu \
+	$(INSTALL) -m644 data/customizer.menu \
 		$(DESTDIR)$(PREFIX)/share/menu/customizer
-	install -vm644 data/customizer.policy \
+	$(INSTALL) -m644 data/customizer.policy \
 		$(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
 
 uninstall:
@@ -68,7 +72,7 @@ check: clean
 	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py
 
 dist: clean
-	git archive HEAD --prefix=customizer-$(VERSION)/ | xz > \
+	$(GIT) archive HEAD --prefix=customizer-$(VERSION)/ | xz > \
 		customizer-$(VERSION).tar.xz
 
 clean:
