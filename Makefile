@@ -40,7 +40,8 @@ install-gui:
 	install -vdm755 $(DESTDIR)$(PREFIX)/sbin \
 		$(DESTDIR)$(PREFIX)/share/applications \
 		$(DESTDIR)$(PREFIX)/share/customizer \
-		$(DESTDIR)$(PREFIX)/share/menu
+		$(DESTDIR)$(PREFIX)/share/menu \
+		$(DESTDIR)$(PREFIX)/share/polkit-1/actions
 	install -vm755 build/gui.exe $(DESTDIR)$(PREFIX)/sbin/customizer-gui
 	install -vm644 data/customizer.desktop \
 		$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
@@ -48,6 +49,8 @@ install-gui:
 		$(DESTDIR)$(PREFIX)/share/customizer/logo.png
 	install -vm644 data/customizer.menu \
 		$(DESTDIR)$(PREFIX)/share/menu/customizer
+	install -vm644 data/customizer.policy \
+		$(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/sbin/customizer
