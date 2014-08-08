@@ -41,7 +41,6 @@ def clean_work_dirs():
         message.sub_info('Removing', config.ISO_DIR)
         shutil.rmtree(config.ISO_DIR)
 
-
 def get_value(sfile, string):
     for line in misc.read_file(sfile).split('\n'):
         if line.startswith(string):

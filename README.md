@@ -84,6 +84,7 @@ To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Change
 ### COPYRIGHT
     
 Copyright (C) 2010-2013 Ivailo Monev
+
 Copyright (C) 2013-2014 Mubiin Kimura
 
 License: GPLv2
