@@ -7,15 +7,6 @@ import lib.config as config
 import lib.message as message
 import actions.common as common
 
-# FIXME: make this common
-def search(sfile, string):
-    for line in misc.read_file(sfile).split('\n'):
-        if line.startswith(string):
-            line = line.replace(string, '')
-            line = line.replace("'", "")
-            line = line.replace('"', '')
-            return line
-
 def detect_boot():
     global initrd, vmlinuz
     initrd = None
@@ -58,8 +49,10 @@ def main():
     message.sub_info('Gathering information')
     arch = misc.chroot_exec(('dpkg', '--print-architecture'), prepare=False, \
         mount=False, output=True)
-    distrib = search(config.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_ID=')
-    release = search(config.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_RELEASE=')
+    distrib = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
+        'DISTRIB_ID=')
+    release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
+        'DISTRIB_RELEASE=')
 
     message.sub_info('Cleaning up')
     for sfile in ('casper/filesystem.squashfs', 'casper/initrd.lz', \
