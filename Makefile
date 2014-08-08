@@ -73,6 +73,8 @@ dist: clean
 
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
+	$(RM) -r debian/*.log debian/customizer.substvars \
+		debian/customizer debian/files
 
 deb:
 	DEB_BUILD_OPTIONS=nocheck $(DEBUILD) -i -us -uc -b
