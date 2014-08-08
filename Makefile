@@ -8,6 +8,8 @@ PYUIC = pyuic4
 STRIP = strip
 RM = rm -vf
 PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
+PYLINT = pylint
+DEBUILD = debuild
 
 all: clean core gui
 
@@ -56,8 +58,8 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/share/menu/customizer
 
 lint:
-	pylint src/lib/* src/actions/*.py src/main.py | grep -v -e \
-		'Line too long'
+	cd src && $(PYLINT) lib/* actions/*.py main.py | grep -v \
+		-e 'Line too long'
 
 check: clean
 	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py
@@ -70,6 +72,6 @@ clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
 
 deb:
-	DEB_BUILD_OPTIONS=nocheck debuild -i -us -uc -b
+	DEB_BUILD_OPTIONS=nocheck $(DEBUILD) -i -us -uc -b
 
 .PHONY: all bump static install uninstall dist clean
