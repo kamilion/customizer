@@ -11,6 +11,7 @@ MKDIR = mkdir -vp
 SED = sed
 INSTALL = install -v
 GIT = git
+XZ = xz -v
 PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 PYLINT = pylint
 DEBUILD = debuild
@@ -72,7 +73,7 @@ check: clean
 	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py
 
 dist: clean
-	$(GIT) archive HEAD --prefix=customizer-$(VERSION)/ | xz > \
+	$(GIT) archive HEAD --prefix=customizer-$(VERSION)/ | $(XZ) > \
 		customizer-$(VERSION).tar.xz
 
 clean:
