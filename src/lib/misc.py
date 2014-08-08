@@ -152,5 +152,5 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
                 sdir = config.FILESYSTEM_DIR + s
                 if os.path.ismount(sdir):
                     subprocess.check_call((whereis('umount'), '-f', '-l', sdir))
-        if output:
-            return out
+    if output:
+        return out

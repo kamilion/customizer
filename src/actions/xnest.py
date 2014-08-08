@@ -12,7 +12,8 @@ def main():
 
     message.sub_info('Detecting available sessions')
     xsession = None
-    for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, 'usr/share/xsessions')):
+    for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, \
+        'usr/share/xsessions')):
         if sfile.endswith('.desktop'):
             for sline in misc.readlines_file(sfile):
                 if sline.startswith('Exec='):
@@ -24,7 +25,8 @@ def main():
         sys.exit(2)
 
     message.sub_info('Starting Xephyr')
-    x = subprocess.Popen(('Xephyr', '-ac', '-screen', config.RESOLUTION, '-br', ':13'))
+    x = subprocess.Popen(('Xephyr', '-ac', '-screen', config.RESOLUTION, \
+        '-br', ':13'))
     x.poll()
     if x.returncode > 0:
         message.sub_critical('Failed to start Xephyr', x.returncode)

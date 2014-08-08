@@ -9,7 +9,7 @@ DEBUG = False
 try:
     curses.setupterm()
     tty_colors = curses.tigetnum('colors')
-except:
+except curses.error:
     pass
 
 if tty_colors >= 8 and sys.stdout.isatty():
@@ -47,7 +47,7 @@ else:
 def info(msg, marker=None):
     ''' Print message with INFO status '''
     if not marker is None:
-        print('%s* %s%s: %s%s%s' %
+        print('%s* %s%s: %s%s%s' % \
             (cmarker, cnormal, msg, cinfo, marker, cnormal))
     else:
         print('%s* %s%s' % (cmarker, cnormal, msg))
@@ -56,7 +56,7 @@ def info(msg, marker=None):
 def warning(msg, marker=None):
     ''' Print message with WARNING status '''
     if not marker is None:
-        sys.stderr.write('%s* %s%s: %s%s%s\n' %
+        sys.stderr.write('%s* %s%s: %s%s%s\n' % \
             (cwarning, cnormal, msg, cwarning, marker, cnormal))
     else:
         sys.stderr.write('%s* %s%s\n' % (cwarning, cnormal, msg))
@@ -65,7 +65,7 @@ def warning(msg, marker=None):
 def critical(msg, marker=None):
     ''' Print message with CRITICAL status '''
     if not marker is None:
-        sys.stderr.write('%s* %s%s: %s%s%s\n' %
+        sys.stderr.write('%s* %s%s: %s%s%s\n' % \
             (ccritical, cnormal, msg, ccritical, marker, cnormal))
     else:
         sys.stderr.write('%s* %s%s\n' % (ccritical, cnormal, msg))
@@ -75,7 +75,7 @@ def debug(msg, marker=None):
     ''' Print message with DEBUG status '''
     if DEBUG:
         if not marker is None:
-            print('%s* %s%s: %s%s%s' %
+            print('%s* %s%s: %s%s%s' % \
                 (cdebug, cnormal, msg, cdebug, marker, cnormal))
         else:
             print('%s* %s%s' % (cdebug, cnormal, msg))
@@ -84,7 +84,7 @@ def debug(msg, marker=None):
 def sub_info(msg, marker=None):
     ''' Print sub-message with INFO status '''
     if not marker is None:
-        print('%s  => %s%s: %s%s%s' %
+        print('%s  => %s%s: %s%s%s' % \
             (cmarker, cnormal, msg, cinfo, marker, cnormal))
     else:
         print('%s  => %s%s' % (cmarker, cnormal, msg))
@@ -93,7 +93,7 @@ def sub_info(msg, marker=None):
 def sub_warning(msg, marker=None):
     ''' Print sub-message with WARNING status '''
     if not marker is None:
-        sys.stderr.write('%s  => %s%s: %s%s%s\n' %
+        sys.stderr.write('%s  => %s%s: %s%s%s\n' % \
             (cwarning, cnormal, msg, cwarning, marker, cnormal))
     else:
         sys.stderr.write('%s  => %s%s\n' % (cwarning, cnormal, msg))
@@ -102,7 +102,7 @@ def sub_warning(msg, marker=None):
 def sub_critical(msg, marker=None):
     ''' Print sub-message with CRITICAL status '''
     if not marker is None:
-        sys.stderr.write('%s  => %s%s: %s%s%s\n' %
+        sys.stderr.write('%s  => %s%s: %s%s%s\n' % \
             (ccritical, cnormal, msg, ccritical, marker, cnormal))
     else:
         sys.stderr.write('%s  => %s%s\n' % (ccritical, cnormal, msg))
@@ -112,7 +112,7 @@ def sub_debug(msg, marker=None):
     ''' Print sub-message with DEBUG status '''
     if DEBUG:
         if not marker is None:
-            print('%s  => %s%s: %s%s%s' %
+            print('%s  => %s%s: %s%s%s' % \
                 (cdebug, cnormal, msg, cdebug, marker, cnormal))
         else:
             print('%s  => %s%s' % (cdebug, cnormal, msg))

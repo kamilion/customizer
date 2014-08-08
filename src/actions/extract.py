@@ -34,10 +34,14 @@ def main():
     mount_dir = tempfile.mkdtemp(prefix=config.MOUNT_DIR + '/')
 
     message.sub_info('Mounting ISO', config.ISO)
-    subprocess.check_call((misc.whereis('mount'), '-t', 'iso9660', '-o', 'ro,loop', config.ISO, mount_dir))
+    subprocess.check_call((misc.whereis('mount'), '-t', 'iso9660', '-o', \
+        'ro,loop', config.ISO, mount_dir))
 
     message.sub_info('Checking ISO')
-    for sfile in (mount_dir + '/casper/filesystem.squashfs', mount_dir + '/.disk', mount_dir + '/isolinux'):
+    for sfile in (mount_dir + '/casper/filesystem.squashfs', \
+        mount_dir + '/casper/filesystem.manifest',
+        mount_dir + '/casper/filesystem.manifest-remove',
+        mount_dir + '/.disk', mount_dir + '/isolinux', ):
         if not os.path.exists(sfile):
             message.sub_critical('Invalid ISO', config.ISO)
             common.clean_work_dirs()
@@ -46,13 +50,15 @@ def main():
 
     message.sub_info('Unsquashing filesystem')
     try:
-        subprocess.check_call((misc.whereis('unsquashfs'), '-f', '-d', config.FILESYSTEM_DIR, mount_dir + '/casper/filesystem.squashfs'))
+        subprocess.check_call((misc.whereis('unsquashfs'), '-f', '-d', \
+            config.FILESYSTEM_DIR, mount_dir + '/casper/filesystem.squashfs'))
     except:
         unmount_iso()
         raise
 
     message.sub_info('Checking architecture')
-    architecture = misc.chroot_exec(('dpkg', '--print-architecture'), prepare=False, mount=False, output=True)
+    architecture = misc.chroot_exec(('dpkg', '--print-architecture'), \
+        prepare=False, mount=False, output=True)
     if architecture == 'amd64' and not os.uname()[4] == 'x86_64':
         message.sub_critical('The ISO architecture is amd64 and yours is not')
         common.clean_work_dirs()

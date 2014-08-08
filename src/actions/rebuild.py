@@ -17,8 +17,7 @@ def search(sfile, string):
             return line
 
 def detect_boot():
-    global initrd
-    global vmlinuz
+    global initrd, vmlinuz
     initrd = None
     vmlinuz = None
 
@@ -57,14 +56,16 @@ def main():
         os.unlink(base_file)
 
     message.sub_info('Gathering information')
-    arch = misc.chroot_exec(('dpkg', '--print-architecture'), prepare=False, mount=False, output=True)
+    arch = misc.chroot_exec(('dpkg', '--print-architecture'), prepare=False, \
+        mount=False, output=True)
     distrib = search(config.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_ID=')
     release = search(config.FILESYSTEM_DIR + '/etc/lsb-release', 'DISTRIB_RELEASE=')
 
     message.sub_info('Cleaning up')
-    for sfile in ('casper/filesystem.squashfs', 'casper/initrd.lz', 'casper/vmlinuz',
-        'casper/vmlinuz.efi', 'casper/filesystem.manifest', 'casper/filesystem.manifest-desktop'
-        'casper/filesystem.size', 'md5sum.txt'):
+    for sfile in ('casper/filesystem.squashfs', 'casper/initrd.lz', \
+        'casper/vmlinuz', 'casper/vmlinuz.efi', 'casper/filesystem.manifest', \
+        'casper/filesystem.manifest-remove', 'casper/filesystem.size', \
+        'md5sum.txt'):
 
         full_file = misc.join_paths(config.ISO_DIR, sfile)
         if os.path.exists(full_file):
@@ -95,12 +96,14 @@ def main():
             misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz.efi'))
 
     message.sub_info('Creating squashed FileSystem')
-    subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR,
-                misc.join_paths(config.ISO_DIR, 'casper/filesystem.squashfs'),
-                '-wildcards', '-ef', sys.prefix + '/share/customizer/exclude.list', '-comp', config.COMPRESSION))
+    subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR, \
+        misc.join_paths(config.ISO_DIR, 'casper/filesystem.squashfs'), \
+        '-wildcards', '-ef', sys.prefix + '/share/customizer/exclude.list', \
+        '-comp', config.COMPRESSION))
 
     message.sub_info('Checking filesystem size')
-    fs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, 'casper/filesystem.squashfs'))
+    fs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, \
+        'casper/filesystem.squashfs'))
     if fs_size > 4000000000:
         message.sub_critical('The squashed filesystem size is greater than 4GB')
         sys.exit(2)
@@ -109,13 +112,18 @@ def main():
     misc.write_file(misc.join_paths(config.ISO_DIR, 'casper/filesystem.size'), str(fs_size))
 
     message.sub_info('Creating filesystem.manifest')
-    packages_list = misc.chroot_exec(("dpkg-query", "-W", "--showformat=${Package} ${Version}\\n"), prepare=False, mount=False, output=True)
-    misc.write_file(misc.join_paths(config.ISO_DIR, 'casper/filesystem.manifest'), packages_list)
+    packages_list = misc.chroot_exec(("dpkg-query", "-W", \
+        "--showformat=${Package} ${Version}\\n"), prepare=False, mount=False, \
+        output=True)
+    misc.write_file(misc.join_paths(config.ISO_DIR, \
+        'casper/filesystem.manifest'), packages_list)
 
-    message.sub_info('Creating filesystem.manifest-desktop')
-    for pkg in ('ubiquity', 'casper', 'live-initramfs', 'user-setup', 'discover1', 'xresprobe', 'libdebian-installer4'):
+    message.sub_info('Creating filesystem.manifest-remove')
+    for pkg in ('ubiquity', 'casper', 'live-initramfs', 'user-setup', \
+        'discover1', 'xresprobe', 'libdebian-installer4'):
         packages_list.replace(pkg, '')
-    misc.write_file(misc.join_paths(config.ISO_DIR, 'casper/filesystem.manifest-desktop'), packages_list)
+    misc.write_file(misc.join_paths(config.ISO_DIR, \
+        'casper/filesystem.manifest-remove'), packages_list)
 
     message.sub_info('Creating md5sum.txt')
     checksum_file = misc.join_paths(config.ISO_DIR, 'md5sum.txt')
@@ -126,14 +134,15 @@ def main():
 
         # FIXME: read in chunks
         checksum = hashlib.md5(misc.read_file(sfile)).hexdigest()
-        misc.append_file(checksum_file, checksum + '  .' + sfile.replace(config.ISO_DIR, '') +'\n')
+        misc.append_file(checksum_file, checksum + '  .' + \
+            sfile.replace(config.ISO_DIR, '') +'\n')
 
     message.sub_info('Creating ISO')
     os.chdir(config.ISO_DIR)
-    subprocess.check_call(('xorriso', '-as', 'mkisofs', '-r', '-V', distrib + '-' + arch + '-' + release,
-    '-b', 'isolinux/isolinux.bin', '-c', 'isolinux/boot.cat', '-cache-inodes',
-    '-J', '-l', '-no-emul-boot', '-boot-load-size', '4', '-boot-info-table',
-    '-o', iso_file, '-input-charset', 'utf-8', '.'))
-    # chmod 555 "/home/$DIST-$ARCH-$VERSION.iso"
+    subprocess.check_call(('xorriso', '-as', 'mkisofs', '-r', '-V', \
+        distrib + '-' + arch + '-' + release, '-b', 'isolinux/isolinux.bin', \
+        '-c', 'isolinux/boot.cat', '-cache-inodes', '-J', '-l', \
+        '-no-emul-boot', '-boot-load-size', '4', '-boot-info-table', \
+        '-o', iso_file, '-input-charset', 'utf-8', '.'))
 
     message.sub_info('Successfuly created ISO image', iso_file)
