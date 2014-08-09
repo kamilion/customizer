@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, subprocess, hashlib
+import sys, os, glob, subprocess, hashlib
 
 import lib.misc as misc
 import lib.config as config
@@ -55,10 +55,11 @@ def main():
         'DISTRIB_RELEASE=')
 
     message.sub_info('Cleaning up')
-    for sfile in ('casper/filesystem.squashfs', 'casper/initrd.lz', \
+    cleanup_files = ['casper/filesystem.squashfs', 'casper/initrd.lz', \
         'casper/vmlinuz', 'casper/vmlinuz.efi', 'casper/filesystem.manifest', \
-        'casper/filesystem.size'):
-
+        'casper/filesystem.size']
+    cleanup_files.extend(glob.glob('.disk/casper-uuid-*'))
+    for sfile in cleanup_files:
         full_file = misc.join_paths(config.ISO_DIR, sfile)
         if os.path.exists(full_file):
             os.unlink(full_file)
@@ -88,6 +89,8 @@ def main():
         if os.path.isdir(misc.join_paths(config.ISO_DIR, 'efi/boot')):
             misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, \
                 'casper/vmlinuz.efi'))
+
+    # FIXME: check for casper uuid.conf file in the initrd and place it in .disk
 
     message.sub_info('Creating squashed FileSystem')
     subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR, \
