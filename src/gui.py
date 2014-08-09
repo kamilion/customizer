@@ -1,4 +1,4 @@
-#!/bin/python2
+#!/usr/bin/python2
 
 import gui_ui
 from PyQt4 import QtCore, QtGui
@@ -21,6 +21,19 @@ MainWindow = QtGui.QMainWindow()
 ui = gui_ui.Ui_MainWindow()
 ui.setupUi(MainWindow)
 
+
+def setup_gui():
+    ui.WorkDirEdit.setText(config.FILESYSTEM_DIR)
+    ui.ISODirEdit.setText(config.ISO_DIR)
+    if os.path.isdir(config.FILESYSTEM_DIR):
+        #ui.customizationBox.setEnabled(True)
+        ui.rebuildButton.setEnabled(True)
+        ui.cleanButton.setEnabled(True)
+    else:
+        #ui.customizationBox.setEnabled(False)
+        ui.rebuildButton.setEnabled(False)
+        ui.cleanButton.setEnabled(False)
+
 def select_iso():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
         QtCore.QDir.currentPath(), 'ISO Files (*.iso);;All Files (*)')
@@ -34,6 +47,8 @@ def select_iso():
     except SystemExit:
         # FIXME: set status failed
         pass
+    finally:
+        setup_gui()
 
 def rebuild_iso():
     try:
@@ -41,6 +56,8 @@ def rebuild_iso():
     except:
         # FIXME: set status failed
         pass
+    finally:
+        setup_gui()
 
 def cleanup():
     try:
@@ -48,17 +65,14 @@ def cleanup():
     except:
         # FIXME: set status failed
         pass
+    finally:
+        setup_gui()
 
-ui.WorkDirEdit.setText(config.FILESYSTEM_DIR)
-ui.ISODirEdit.setText(config.ISO_DIR)
-if os.path.isdir(config.FILESYSTEM_DIR):
-    #ui.customizationBox.setEnabled(True)
-    ui.rebuildButton.setEnabled(True)
-    ui.cleanButton.setEnabled(True)
 
 ui.selectButton.clicked.connect(select_iso)
 ui.rebuildButton.clicked.connect(rebuild_iso)
 ui.cleanButton.clicked.connect(cleanup)
+setup_gui()
 
 MainWindow.show()
 sys.exit(app.exec_())
