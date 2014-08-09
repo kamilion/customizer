@@ -57,7 +57,7 @@ def main():
     message.sub_info('Cleaning up')
     for sfile in ('casper/filesystem.squashfs', 'casper/initrd.lz', \
         'casper/vmlinuz', 'casper/vmlinuz.efi', 'casper/filesystem.manifest', \
-        'casper/filesystem.manifest-remove', 'casper/filesystem.size'):
+        'casper/filesystem.size'):
 
         full_file = misc.join_paths(config.ISO_DIR, sfile)
         if os.path.exists(full_file):
@@ -71,7 +71,8 @@ def main():
     if not initrd or not vmlinuz:
         message.sub_info('Re-installing kernel')
         misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
-        misc.chroot_exec(('apt-get', 'install', '--yes', 'linux-image-generic', '-q'))
+        misc.chroot_exec(('apt-get', 'install', '--yes', \
+            'linux-image-generic', '-q'))
         misc.chroot_exec(('apt-get', 'clean'))
         detect_boot()
     else:
@@ -85,7 +86,8 @@ def main():
         misc.copy_file(initrd, misc.join_paths(config.ISO_DIR, 'casper/initrd.lz'))
         misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz'))
         if os.path.isdir(misc.join_paths(config.ISO_DIR, 'efi/boot')):
-            misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz.efi'))
+            misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, \
+                'casper/vmlinuz.efi'))
 
     message.sub_info('Creating squashed FileSystem')
     subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR, \
@@ -101,7 +103,8 @@ def main():
         sys.exit(2)
 
     message.sub_info('Creating filesystem.size')
-    misc.write_file(misc.join_paths(config.ISO_DIR, 'casper/filesystem.size'), str(fs_size))
+    misc.write_file(misc.join_paths(config.ISO_DIR, \
+        'casper/filesystem.size'), str(fs_size))
 
     message.sub_info('Creating filesystem.manifest')
     packages_list = misc.chroot_exec(('dpkg-query', '-W', \
@@ -110,13 +113,8 @@ def main():
     misc.write_file(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.manifest'), packages_list)
 
-    message.sub_info('Creating filesystem.manifest-remove')
-    packages_list = ''
-    for pkg in ('ubiquity', 'casper', 'live-initramfs', 'user-setup', \
-        'discover1', 'xresprobe', 'libdebian-installer4'):
-        packages_list += pkg + '\n'
-    misc.write_file(misc.join_paths(config.ISO_DIR, \
-        'casper/filesystem.manifest-remove'), packages_list)
+    # FIXME: do some kung-fu to check if packages are installed
+    # and remove them from filesystem.manifest-remove if they are not
 
     md5sums_file = misc.join_paths(config.ISO_DIR, 'md5sum.txt')
     if os.path.isfile(md5sums_file):
@@ -129,19 +127,6 @@ def main():
             # FIXME: read in chunks
             checksum = hashlib.md5(misc.read_file(sfile)).hexdigest()
             misc.append_file(md5sums_file, checksum + '  .' + \
-                sfile.replace(config.ISO_DIR, '') +'\n')
-
-    sha256sums_file = misc.join_paths(config.ISO_DIR, 'SHA256SUMS')
-    if os.path.isfile(sha256sums_file):
-        message.sub_info('Creating SHA256SUMS')
-        misc.write_file(sha256sums_file, '')
-        for sfile in misc.list_files(config.ISO_DIR):
-            if sfile.endswith('SHA256SUMS'):
-                continue
-
-            # FIXME: read in chunks
-            checksum = hashlib.sha256(misc.read_file(sfile)).hexdigest()
-            misc.append_file(sha256sums_file, checksum + '  .' + \
                 sfile.replace(config.ISO_DIR, '') +'\n')
 
     message.sub_info('Creating ISO')
