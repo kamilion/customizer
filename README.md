@@ -38,12 +38,14 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
     make
     binutils
-    python (2.7.x)
+    python (python2.7)
+    Python.h (python2.7-dev)
     pyqt4 (python-qt4)
+    pyuic4 (pyqt4-dev-tools)
     squashfs-tools (>=4.2)
     xorriso
-    xhost
-    xephyr
+    xhost (x11-xserver-utils)
+    xephyr (xserver-xephyr)
     qemu
 
 ### INSTALL AND RUN
