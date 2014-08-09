@@ -67,7 +67,7 @@ def main():
 
     message.sub_info('Copying ISO files')
     for sfile in misc.list_files(mount_dir):
-        if sfile.startswith(mount_dir + '/casper'):
+        if sfile.endswith('casper/filesystem.squashfs'):
             continue
         else:
             misc.copy_file(sfile, sfile.replace(mount_dir, config.ISO_DIR))
