@@ -68,16 +68,16 @@ def main():
         os.unlink(iso_file)
 
     detect_boot()
-    if not initrd or not vmlinuz:
+    if not vmlinuz:
         message.sub_info('Re-installing kernel')
         misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
         misc.chroot_exec(('apt-get', 'install', '--yes', \
             'linux-image-generic', '-q'))
         misc.chroot_exec(('apt-get', 'clean'))
-        detect_boot()
     else:
-        message.sub_info('Updating/creating kernel')
-        misc.chroot_exec(('update-initramfs', '-k', 'all', '-t', '-u'))
+        message.sub_info('Updating initramfs')
+        misc.chroot_exec(('update-initramfs', '-k', 'all', '-u'))
+    detect_boot()
 
     if not initrd or not vmlinuz:
         message.sub_critical('Missing boot file (initrd or vmlinuz)')
