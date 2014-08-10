@@ -1,8 +1,11 @@
-VERSION = 4.1.0
+VERSION = 4.1.0 ($(GIT_VERSION))
+GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo stable)
+
 DESTDIR = 
+PREFIX = $(shell $(PYTHON) -c "import sys; print(sys.prefix)")
+
 PYTHON = python2
 PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
-PREFIX = $(shell $(PYTHON) -c "import sys; print(sys.prefix)")
 NUITKA = $(PYTHON) ../nuitka/bin/nuitka --python-version=$(PYTHON_VERSION)
 PYUIC = pyuic4
 STRIP = strip
