@@ -15,25 +15,23 @@ def main():
     for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, \
         'usr/share/xsessions')):
         if sfile.endswith('.desktop'):
-            for sline in misc.readlines_file(sfile):
-                if sline.startswith('Exec='):
-                    xsession = sline.replace('Exec=', '').strip()
-                    message.sub_debug('xsession', xsession)
+            xsession = common.get_value('Exec=')
+            message.sub_debug('Session detected', xsession)
 
     if not xsession:
         message.sub_critical('No session avaialable')
         sys.exit(2)
 
     message.sub_info('Starting Xephyr')
-    x = subprocess.Popen(('Xephyr', '-ac', '-screen', config.RESOLUTION, \
-        '-br', ':13'))
+    x = subprocess.Popen((misc.whereis('Xephyr'), '-ac', '-screen', \
+        config.RESOLUTION, '-br', ':13'))
     x.poll()
     if x.returncode > 0:
         message.sub_critical('Failed to start Xephyr', x.returncode)
         sys.exit(2)
 
     message.sub_info('Allwoing local access to X-server')
-    subprocess.check_call(('xhost', '+local:'))
+    subprocess.check_call((misc.whereis('xhost'), '+local:'))
 
     message.sub_info('Starting nested X session')
     misc.chroot_exec((xsession), xnest=True)

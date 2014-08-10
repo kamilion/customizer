@@ -86,6 +86,8 @@ def search_file(string, sfile, exact=False, escape=True):
 
 def list_files(directory):
     slist = []
+    if not os.path.exists(directory):
+        return slist
     for root, subdirs, files in os.walk(directory):
         for sfile in files:
             slist.append(os.path.join(root, sfile))
@@ -144,7 +146,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
             subprocess.check_call(command)
     finally:
         os.fchdir(real_root)
-        os.chroot(".")
+        os.chroot('.')
         os.close(real_root)
 
         if mount:
