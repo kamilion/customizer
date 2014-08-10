@@ -11,6 +11,7 @@ import sys, os, subprocess
 import lib.message as message
 import lib.config as config
 import lib.misc as misc
+import actions.common as common
 import actions.extract as extract
 import actions.chroot as chroot
 import actions.xnest as xnest
@@ -34,10 +35,16 @@ def setup_gui():
     ui.WorkDirEdit.setText(config.FILESYSTEM_DIR)
     ui.ISODirEdit.setText(config.ISO_DIR)
     if os.path.isdir(config.FILESYSTEM_DIR):
+        ui.configurationBox.setEnabled(True)
         ui.customizationBox.setEnabled(True)
         ui.rebuildButton.setEnabled(True)
         ui.cleanButton.setEnabled(True)
+        ui.userEdit.setText(common.get_value( \
+            misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export USERNAME='))
+        ui.hostnameEdit.setText(common.get_value( \
+            misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export HOST='))
     else:
+        ui.configurationBox.setEnabled(False)
         ui.customizationBox.setEnabled(False)
         ui.rebuildButton.setEnabled(False)
         ui.cleanButton.setEnabled(False)

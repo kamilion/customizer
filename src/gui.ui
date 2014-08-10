@@ -46,7 +46,7 @@
          </widget>
         </item>
         <item row="0" column="0" colspan="2">
-         <widget class="QGroupBox" name="groupBox">
+         <widget class="QGroupBox" name="configurationBox">
           <property name="enabled">
            <bool>false</bool>
           </property>
@@ -65,10 +65,10 @@
             </widget>
            </item>
            <item row="2" column="0">
-            <widget class="QLineEdit" name="lineEdit_5"/>
+            <widget class="QLineEdit" name="userEdit"/>
            </item>
            <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEdit_6"/>
+            <widget class="QLineEdit" name="hostnameEdit"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_10">
