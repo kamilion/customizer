@@ -13,8 +13,8 @@ Package: customizer
 Architecture: i386 amd64
 Depends: ${shlibs:Depends}, ${misc:Depends}, libpython2.7 , python-qt4,
  squashfs-tools (>= 4.2~), xorriso, x11-xserver-utils, xserver-xephyr,
- policykit-1
-Recommends: qemu, policykit-1-gnome | polkit-kde-1
+ qemu, policykit-1
+Recommends: policykit-1-gnome | polkit-kde-1
 Description: advanced Ubuntu LiveCD customization and remastering tool
  Customizer is an advanced LiveCD customization and remastering tool.
  With it, you can build own Ubuntu-based remix using Ubuntu Mini Remix,
