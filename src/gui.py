@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (993d2a3)"
+app_version = "4.1.0 (9ca1b94)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -163,6 +163,22 @@ def run_deb():
 def run_pkgm():
     run_core('-p')
 
+def run_hook():
+    sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
+        QtCore.QDir.currentPath(), 'Shell Scripts (*.sh);;All Files (*)')
+    if not sfile:
+        return
+    sfile = str(sfile)
+    # FIXME: make the change permanent
+    hook.config.HOOK = sfile
+    try:
+        hook.main()
+    except Exception as detail:
+        # FIXME: set status failed
+        msg_critical(str(detail))
+    finally:
+        setup_gui()
+
 def run_chroot():
     run_core('-c')
 
@@ -185,6 +201,7 @@ ui.cleanButton.clicked.connect(run_clean)
 ui.sourcesButton.clicked.connect(edit_sources)
 ui.debButton.clicked.connect(run_deb)
 ui.pkgmButton.clicked.connect(run_pkgm)
+ui.hookButton.clicked.connect(run_hook)
 ui.chrootButton.clicked.connect(run_chroot)
 ui.xnestButton.clicked.connect(run_xnest)
 ui.userEdit.textChanged.connect(change_user)
