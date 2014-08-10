@@ -5,6 +5,7 @@ import os, re, shutil, subprocess
 import lib.config as config
 
 def whereis(program, chroot=False):
+    program = os.path.basename(program)
     for path in os.environ.get('PATH', '/bin:/usr/bin').split(':'):
         if chroot:
             exe = join_paths(config.FILESYSTEM_DIR, path, program)
@@ -143,7 +144,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
         if output:
             out = get_output(command)
         else:
-            subprocess.check_call(command)
+            subprocess.check_call(command.split())
     finally:
         os.fchdir(real_root)
         os.chroot('.')

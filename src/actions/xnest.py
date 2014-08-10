@@ -15,7 +15,7 @@ def main():
     for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, \
         'usr/share/xsessions')):
         if sfile.endswith('.desktop'):
-            xsession = common.get_value('Exec=')
+            xsession = common.get_value(sfile, 'Exec=')
             message.sub_debug('Session detected', xsession)
 
     if not xsession:
@@ -30,14 +30,15 @@ def main():
         message.sub_critical('Failed to start Xephyr', x.returncode)
         sys.exit(2)
 
-    message.sub_info('Allwoing local access to X-server')
-    subprocess.check_call((misc.whereis('xhost'), '+local:'))
+    try:
+        message.sub_info('Allwoing local access to X-server')
+        subprocess.check_call((misc.whereis('xhost'), '+local:'))
 
-    message.sub_info('Starting nested X session')
-    misc.chroot_exec((xsession), xnest=True)
+        message.sub_info('Starting nested X session', xsession)
+        misc.chroot_exec((xsession), xnest=True)
 
-    message.sub_info('Blocking local access to X-server')
-    subprocess.check_call(('xhost', '-local:'))
-
-    message.sub_info('Terminating Xephyr')
-    x.terminate()
+        message.sub_info('Blocking local access to X-server')
+        subprocess.check_call((misc.whereis('xhost'), '-local:'))
+    finally:
+        message.sub_info('Terminating Xephyr')
+        x.terminate()
