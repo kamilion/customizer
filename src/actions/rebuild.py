@@ -37,13 +37,16 @@ def main():
 
     casper_dir = misc.join_paths(config.ISO_DIR, 'casper')
     if not os.path.isdir(casper_dir):
+        message.sub_debug('Creating', casper_dir)
         os.makedirs(casper_dir)
 
     base_file = misc.join_paths(config.ISO_DIR, '.disk/base_installable')
     if os.path.isfile(misc.join_paths(config.FILESYSTEM_DIR, 'usr/bin/ubiquity')):
         if not os.path.isfile(base_file):
+            message.sub_debug('Creating', base_file)
             misc.write_file(base_file, '')
     elif os.path.isfile(base_file):
+        message.sub_debug('Removing', base_file)
         os.unlink(base_file)
 
     message.sub_info('Gathering information')
@@ -53,6 +56,9 @@ def main():
         'DISTRIB_ID=')
     release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
         'DISTRIB_RELEASE=')
+    message.sub_debug('Architecture', arch)
+    message.sub_debug('Distribution (DISTRIB_ID)', distrib)
+    message.sub_debug('Release (DISTRIB_RELEASE)', release)
 
     message.sub_info('Cleaning up')
     cleanup_files = ['casper/filesystem.squashfs', 'casper/initrd.lz', \
@@ -62,10 +68,12 @@ def main():
     for sfile in cleanup_files:
         full_file = misc.join_paths(config.ISO_DIR, sfile)
         if os.path.exists(full_file):
+            message.sub_debug('Removing', full_file)
             os.unlink(full_file)
 
     iso_file = '/home/%s-%s-%s.iso' % (distrib, arch, release)
     if os.path.exists(iso_file):
+        message.sub_debug('Removing', iso_file)
         os.unlink(iso_file)
 
     detect_boot()
@@ -104,6 +112,7 @@ def main():
     message.sub_info('Checking filesystem size')
     fs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.squashfs'))
+    message.sub_debug('Filesystem size', fs_size)
     if fs_size > 4000000000:
         message.sub_critical('The squashed filesystem size is greater than 4GB')
         sys.exit(2)
@@ -116,6 +125,7 @@ def main():
     packages_list = misc.chroot_exec(('dpkg-query', '-W', \
         '--showformat=${Package} ${Version}\\n'), prepare=False, mount=False, \
         output=True)
+    message.sub_debug('Packages', packages_list)
     misc.write_file(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.manifest'), packages_list)
 
@@ -131,6 +141,7 @@ def main():
                 continue
 
             # FIXME: read in chunks
+            message.sub_debug('Checksuming', sfile)
             checksum = hashlib.md5(misc.read_file(sfile)).hexdigest()
             misc.append_file(md5sums_file, checksum + '  .' + \
                 sfile.replace(config.ISO_DIR, '') +'\n')
@@ -139,8 +150,8 @@ def main():
     os.chdir(config.ISO_DIR)
     subprocess.check_call(('xorriso', '-as', 'mkisofs', '-r', '-V', \
         distrib + '-' + arch + '-' + release, '-b', 'isolinux/isolinux.bin', \
-        '-c', 'isolinux/boot.cat', '-cache-inodes', '-J', '-l', \
-        '-no-emul-boot', '-boot-load-size', '4', '-boot-info-table', \
-        '-o', iso_file, '-input-charset', 'utf-8', '.'))
+        '-c', 'isolinux/boot.cat', '-J', '-l', '-no-emul-boot', \
+        '-boot-load-size', '4', '-boot-info-table', '-o', iso_file, \
+        '-input-charset', 'utf-8', '.'))
 
     message.sub_info('Successfuly created ISO image', iso_file)
