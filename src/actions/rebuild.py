@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, glob, subprocess, shutil, hashlib
+import sys, os, glob, subprocess, shutil, re, hashlib
 
 import lib.misc as misc
 import lib.config as config
@@ -81,7 +81,7 @@ def main():
         message.sub_info('Re-installing kernel')
         misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
         misc.chroot_exec(('apt-get', 'install', '--yes', \
-            'linux-image-generic', '-q'))
+            'linux-generic', '-q'))
         misc.chroot_exec(('apt-get', 'clean'))
     else:
         message.sub_info('Updating initramfs')
@@ -108,9 +108,10 @@ def main():
     try:
         os.system(misc.whereis('zcat') + ' ' + initrd + ' | ' + \
             misc.whereis('cpio') + ' --quiet -id conf/uuid.conf')
-        # FIXME: copy as casper-uuid-<kernel_name>
+        kernel = re.search('initrd.img-*.*.*-*-(.*)', initrd).group(1)
+        message.sub_debug('Kernel', kernel)
         misc.copy_file('conf/uuid.conf', misc.join_paths(config.ISO_DIR, \
-            '.disk/casper-uuid-generic'))
+            '.disk/casper-uuid-' + kernel))
     finally:
         shutil.rmtree('conf')
 
