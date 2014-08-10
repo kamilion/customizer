@@ -20,6 +20,7 @@ def main():
     message.sub_info('Copying DEB file')
     deb_file = misc.join_paths(config.FILESYSTEM_DIR, 'temp.deb')
     if os.path.isfile(deb_file):
+        message.sub_debug('Removing', deb_file)
         os.unlink(deb_file)
     misc.copy_file(config.DEB, deb_file)
 

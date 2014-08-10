@@ -30,19 +30,21 @@ def main():
     common.clean_work_dirs()
     common.create_work_dirs()
 
-    message.sub_info('Creating mount dir')
+    message.sub_info('Creating mount directory')
     mount_dir = tempfile.mkdtemp(prefix=config.MOUNT_DIR + '/')
+    message.sub_debug('Mount directory is', mount_dir)
 
     message.sub_info('Mounting ISO', config.ISO)
     subprocess.check_call((misc.whereis('mount'), '-t', 'iso9660', '-o', \
         'ro,loop', config.ISO, mount_dir))
 
     message.sub_info('Checking ISO')
-    for sfile in (mount_dir + '/casper/filesystem.squashfs', \
+    for spath in (mount_dir + '/casper/filesystem.squashfs', \
         mount_dir + '/casper/filesystem.manifest',
         mount_dir + '/casper/filesystem.manifest-remove',
         mount_dir + '/.disk', mount_dir + '/isolinux', ):
-        if not os.path.exists(sfile):
+        if not os.path.exists(spath):
+            message.sub_debug('Non-existing path', spath)
             message.sub_critical('Invalid ISO', config.ISO)
             common.clean_work_dirs()
             unmount_iso()
@@ -57,9 +59,12 @@ def main():
         raise
 
     message.sub_info('Checking architecture')
-    architecture = misc.chroot_exec(('dpkg', '--print-architecture'), \
+    fs_arch = misc.chroot_exec(('dpkg', '--print-architecture'), \
         prepare=False, mount=False, output=True)
-    if architecture == 'amd64' and not os.uname()[4] == 'x86_64':
+    host_arch = os.uname()[4]
+    message.sub_debug('Filesystem architecture', fs_arch)
+    message.sub_debug('Host architecture', host_arch)
+    if fs_arch == 'amd64' and not host_arch == 'x86_64':
         message.sub_critical('The ISO architecture is amd64 and yours is not')
         common.clean_work_dirs()
         unmount_iso()
@@ -70,6 +75,7 @@ def main():
         if sfile.endswith('casper/filesystem.squashfs'):
             continue
         else:
+            message.sub_debug('Copying', sfile)
             misc.copy_file(sfile, sfile.replace(mount_dir, config.ISO_DIR))
 
     unmount_iso()

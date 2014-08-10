@@ -17,6 +17,7 @@ def main():
             full_file = misc.join_paths(config.FILESYSTEM_DIR, sdir, sfile)
             if os.path.exists(full_file) and os.access(full_file, os.X_OK):
                 pkgmngr = misc.join_paths(sdir, sfile)
+                message.sub_debug('Package manager detected', sfile)
 
     if not pkgmngr:
         message.sub_critical('No package manager available')

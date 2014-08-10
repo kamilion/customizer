@@ -17,6 +17,9 @@ def main():
         'DISTRIB_ID=')
     release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
         'DISTRIB_RELEASE=')
+    message.sub_debug('Architecture', arch)
+    message.sub_debug('Distribution (DISTRIB_ID)', distrib)
+    message.sub_debug('Release (DISTRIB_RELEASE)', release)
 
     iso_file = '/home/%s-%s-%s.iso' % (distrib, arch, release)
     if not os.path.exists(iso_file):
@@ -24,7 +27,9 @@ def main():
         sys.exit(2)
 
     message.sub_info('Running QEMU with ISO image', iso_file)
-    if os.uname()[4] == 'x86_64':
+    host_arch = os.uname()[4]
+    message.sub_debug('Host architecture', host_arch)
+    if host_arch == 'x86_64':
         subprocess.check_call((misc.whereis('qemu-system-x86_64'), '-m', config.VRAM, '-cdrom', iso_file))
     else:
         subprocess.check_call((misc.whereis('qemu-system-i386'), '-m', config.VRAM, '-cdrom', iso_file))

@@ -17,6 +17,7 @@ def main():
     message.sub_info('Copying HOOK file')
     hook_file = misc.join_paths(config.FILESYSTEM_DIR, 'hook')
     if os.path.isfile(hook_file):
+        message.sub_debug('Removing', hook_file)
         os.unlink(hook_file)
     misc.copy_file(config.HOOK, hook_file)
 

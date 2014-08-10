@@ -12,6 +12,7 @@ def check_filesystem():
     for sdir in ('bin', 'sbin', 'usr/bin', 'usr/sbin', 'etc', 'lib', 'usr/lib'):
         full_dir = misc.join_paths(config.FILESYSTEM_DIR, sdir)
         if not os.path.isdir(full_dir):
+            message.sub_debug('Non-existing path', full_dir)
             corrupted = True
             break
 
