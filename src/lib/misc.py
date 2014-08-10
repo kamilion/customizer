@@ -144,7 +144,9 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
         if output:
             out = get_output(command)
         else:
-            subprocess.check_call(command.split())
+            if isinstance(command, str):
+                command = command.split()
+            subprocess.check_call(command)
     finally:
         os.fchdir(real_root)
         os.chroot('.')
