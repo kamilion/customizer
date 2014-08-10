@@ -15,6 +15,8 @@ import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.clean as clean
 
+app_version = "4.1.0 (22b58e5)"
+
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
 MainWindow = QtGui.QMainWindow()
@@ -68,7 +70,7 @@ def cleanup():
     finally:
         setup_gui()
 
-
+ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
 ui.selectButton.clicked.connect(select_iso)
 ui.rebuildButton.clicked.connect(rebuild_iso)
 ui.cleanButton.clicked.connect(cleanup)
