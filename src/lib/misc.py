@@ -133,6 +133,11 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
         os.putenv('LC_ALL', config.LOCALES)
         os.putenv('LANGUAGE', config.LOCALES)
         os.putenv('LANG', config.LOCALES)
+        os.putenv('DEBIAN_FRONTEND', 'noninteractive')
+        # FIXME: os.putenv('DEBIAN_PRIORITY', '')
+        os.putenv('DEBCONF_NONINTERACTIVE_SEEN', 'true')
+        os.putenv('DEBCONF_NOWARNINGS', 'true')
+        os.putenv('CASPER_GENERATE_UUID', '1')
 
         if xnest:
             os.putenv('HOME', '/etc/skel')

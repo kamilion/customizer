@@ -14,7 +14,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (993d2a3)"
+app_version = "4.1.0 (8a60df3)"
 
 try:
     class OverrideDebug(argparse.Action):
