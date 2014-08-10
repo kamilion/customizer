@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, shutil
+import sys, os, re, shutil
 
 import lib.misc as misc
 import lib.config as config
@@ -43,9 +43,15 @@ def clean_work_dirs():
         shutil.rmtree(config.ISO_DIR)
 
 def get_value(sfile, string):
-    for line in misc.read_file(sfile).split('\n'):
+    for line in misc.readlines_file(sfile):
         if line.startswith(string):
             line = line.replace(string, '')
             line = line.replace("'", "")
             line = line.replace('"', '')
-            return line
+            return line.strip()
+    return ''
+
+def set_value(sfile, string, value):
+    content = misc.read_file(sfile)
+    new_content = re.sub('(\\s)' + string + '.*(\\s)', '\n' + string + '"' + value + '"\n', content)
+    misc.write_file(sfile, new_content)

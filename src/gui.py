@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (03eabeb)"
+app_version = "4.1.0 (1c16e0c)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -39,15 +39,33 @@ def setup_gui():
         ui.customizationBox.setEnabled(True)
         ui.rebuildButton.setEnabled(True)
         ui.cleanButton.setEnabled(True)
+
         ui.userEdit.setText(common.get_value( \
             misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export USERNAME='))
         ui.hostnameEdit.setText(common.get_value( \
             misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export HOST='))
+
+        ui.pkgmButton.setEnabled(False)
+        # FIXME: 'synaptic'
+        for sfile in ('aptitude', 'aptitude-curses'):
+            for sdir in ('bin', 'sbin', 'usr/bin', 'usr/sbin'):
+                full_file = misc.join_paths(config.FILESYSTEM_DIR, sdir, sfile)
+                if os.path.exists(full_file) and os.access(full_file, os.X_OK):
+                    ui.pkgmButton.setEnabled(True)
+
+        ui.xnestButton.setEnabled(False)
+        for sfile in misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, \
+            'usr/share/xsessions')):
+            if sfile.endswith('.desktop'):
+                ui.xnestButton.setEnabled(True)
     else:
         ui.configurationBox.setEnabled(False)
         ui.customizationBox.setEnabled(False)
         ui.rebuildButton.setEnabled(False)
         ui.cleanButton.setEnabled(False)
+
+def msg_critical(msg):
+    QtGui.QMessageBox.critical(MainWindow, 'Critical', msg)
 
 def run_extract():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
@@ -61,7 +79,7 @@ def run_extract():
         extract.main()
     except Exception as detail:
         # FIXME: set status failed
-        print(detail)
+        msg_critical(str(detail))
     finally:
         setup_gui()
 
@@ -70,7 +88,7 @@ def run_rebuild():
         rebuild.main()
     except Exception as detail:
         # FIXME: set status failed
-        print(detail)
+        msg_critical(str(detail))
     finally:
         setup_gui()
 
@@ -79,7 +97,7 @@ def run_clean():
         clean.main()
     except Exception as detail:
         # FIXME: set status failed
-        print(detail)
+        msg_critical(str(detail))
     finally:
         setup_gui()
 
@@ -91,8 +109,7 @@ def edit_sources():
             editor = spath
 
     if not editor:
-        QtGui.QMessageBox.critical(MainWindow, 'Critical', \
-            'No supported text editor detected')
+        msg_critical('No supported text editor detected')
         return
 
     try:
@@ -100,7 +117,7 @@ def edit_sources():
             'etc/apt/sources.list')))
     except Exception as detail:
         # FIXME: set status failed
-        print(detail)
+        msg_critical(str(detail))
     finally:
         setup_gui()
 
@@ -116,7 +133,26 @@ def run_deb():
         deb.main()
     except Exception as detail:
         # FIXME: set status failed
-        print(detail)
+        msg_critical(str(detail))
+    finally:
+        setup_gui()
+
+def run_pkgm():
+    terminal = None
+    for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
+        spath = misc.whereis(term, False)
+        if spath:
+            terminal = spath
+
+    if not terminal:
+        msg_critical('No supported terminal emulator detected')
+        return
+
+    try:
+        subprocess.check_call((terminal, '-e', 'customizer -p'))
+    except Exception as detail:
+        # FIXME: set status failed
+        msg_critical(str(detail))
     finally:
         setup_gui()
 
@@ -128,15 +164,14 @@ def run_chroot():
             terminal = spath
 
     if not terminal:
-        QtGui.QMessageBox.critical(MainWindow, 'Critical', \
-            'No supported terminal emulator detected')
+        msg_critical('No supported terminal emulator detected')
         return
 
     try:
         subprocess.check_call((terminal, '-e', 'customizer -c'))
     except Exception as detail:
         # FIXME: set status failed
-        print(detail)
+        msg_critical(str(detail))
     finally:
         setup_gui()
 
@@ -148,17 +183,24 @@ def run_xnest():
             terminal = spath
 
     if not terminal:
-        QtGui.QMessageBox.critical(MainWindow, 'Critical', \
-            'No supported terminal emulator detected')
+        msg_critical('No supported terminal emulator detected')
         return
 
     try:
         subprocess.check_call((terminal, '-e', 'customizer -x'))
     except Exception as detail:
         # FIXME: set status failed
-        print(detail)
+        msg_critical(str(detail))
     finally:
         setup_gui()
+
+def change_user():
+    common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
+        'etc/casper.conf'), 'export USERNAME=', str(ui.userEdit.text()))
+
+def change_hostname():
+    common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
+        'etc/casper.conf'), 'export HOST=', str(ui.hostnameEdit.text()))
 
 
 ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
@@ -167,8 +209,11 @@ ui.rebuildButton.clicked.connect(run_rebuild)
 ui.cleanButton.clicked.connect(run_clean)
 ui.sourcesButton.clicked.connect(edit_sources)
 ui.debButton.clicked.connect(run_deb)
+ui.pkgmButton.clicked.connect(run_pkgm)
 ui.chrootButton.clicked.connect(run_chroot)
 ui.xnestButton.clicked.connect(run_xnest)
+ui.userEdit.textChanged.connect(change_user)
+ui.hostnameEdit.textEdited.connect(change_hostname)
 setup_gui()
 
 MainWindow.show()

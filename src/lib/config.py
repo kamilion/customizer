@@ -10,7 +10,6 @@ if not os.path.isfile('/etc/customizer.conf'):
     FILESYSTEM_DIR = "/home/FileSystem"
     ISO_DIR = "/home/ISO"
     MOUNT_DIR = "/media"
-    MESSAGES_COLORS = True
     FORCE_CHROOT = True
     LOCALES = "C"
     RESOLUTION = "800x600"
@@ -27,7 +26,6 @@ else:
     ISO_DIR = conf.get('main', 'ISO_DIR')
     MOUNT_DIR = conf.get('main', 'MOUNT_DIR')
 
-    MESSAGES_COLORS = conf.getboolean('preferences', 'MESSAGES_COLORS')
     FORCE_CHROOT = conf.getboolean('preferences', 'FORCE_CHROOT')
     LOCALES = conf.get('preferences', 'LOCALES')
     RESOLUTION = conf.get('preferences', 'RESOLUTION')
