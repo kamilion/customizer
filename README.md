@@ -83,7 +83,7 @@ To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Change
 
 
 ### COPYRIGHT
-    
+
 Copyright (C) 2010-2013 Ivailo Monev
 
 Copyright (C) 2013-2014 Mubiin Kimura
@@ -98,8 +98,8 @@ documentation is contributed. As December 2011, Customizer development has moved
 GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). One year later, 
 as December 2012, Customizer stable release has hit 3.2.3.
 
-Presently re-written from scratch with the goal to support Ubuntu releases newer than 11.10
-and extending its usefulness with features such as Web Interface.
+Presently re-written from scratch with the goal to support Ubuntu releases newer than 12.10
+and making it more stable and robust.
 
 
 ### SEE ALSO
