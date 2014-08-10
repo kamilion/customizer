@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (1c16e0c)"
+app_version = "4.1.0 (993d2a3)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -66,6 +66,29 @@ def setup_gui():
 
 def msg_critical(msg):
     QtGui.QMessageBox.critical(MainWindow, 'Critical', msg)
+
+def run_core(args, terminal=True):
+    if terminal:
+        terminal = None
+        for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
+            spath = misc.whereis(term, False)
+            if spath:
+                terminal = spath
+
+        if not terminal:
+            msg_critical('No supported terminal emulator detected')
+            return
+
+    try:
+        if terminal:
+            subprocess.check_call((terminal, '-e', 'customizer -D ' + args))
+        else:
+            subprocess.check_call(('customizer', '-D', args))
+    except Exception as detail:
+        # FIXME: set status failed
+        msg_critical(str(detail))
+    finally:
+        setup_gui()
 
 def run_extract():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
@@ -138,61 +161,13 @@ def run_deb():
         setup_gui()
 
 def run_pkgm():
-    terminal = None
-    for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
-        spath = misc.whereis(term, False)
-        if spath:
-            terminal = spath
-
-    if not terminal:
-        msg_critical('No supported terminal emulator detected')
-        return
-
-    try:
-        subprocess.check_call((terminal, '-e', 'customizer -p'))
-    except Exception as detail:
-        # FIXME: set status failed
-        msg_critical(str(detail))
-    finally:
-        setup_gui()
+    run_core('-p')
 
 def run_chroot():
-    terminal = None
-    for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
-        spath = misc.whereis(term, False)
-        if spath:
-            terminal = spath
-
-    if not terminal:
-        msg_critical('No supported terminal emulator detected')
-        return
-
-    try:
-        subprocess.check_call((terminal, '-e', 'customizer -c'))
-    except Exception as detail:
-        # FIXME: set status failed
-        msg_critical(str(detail))
-    finally:
-        setup_gui()
+    run_core('-c')
 
 def run_xnest():
-    terminal = None
-    for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
-        spath = misc.whereis(term, False)
-        if spath:
-            terminal = spath
-
-    if not terminal:
-        msg_critical('No supported terminal emulator detected')
-        return
-
-    try:
-        subprocess.check_call((terminal, '-e', 'customizer -x'))
-    except Exception as detail:
-        # FIXME: set status failed
-        msg_critical(str(detail))
-    finally:
-        setup_gui()
+    run_core('-x', False)
 
 def change_user():
     common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
@@ -218,4 +193,3 @@ setup_gui()
 
 MainWindow.show()
 sys.exit(app.exec_())
-
