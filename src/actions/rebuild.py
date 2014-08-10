@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, glob, subprocess, hashlib
+import sys, os, glob, subprocess, shutil, hashlib
 
 import lib.misc as misc
 import lib.config as config
@@ -85,7 +85,7 @@ def main():
         misc.chroot_exec(('apt-get', 'clean'))
     else:
         message.sub_info('Updating initramfs')
-        misc.chroot_exec(('update-initramfs', '-k', 'all', '-u'))
+        misc.chroot_exec(('update-initramfs', '-k', 'all', '-t', '-u'))
     detect_boot()
 
     if not initrd or not vmlinuz:
@@ -101,7 +101,18 @@ def main():
             misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, \
                 'casper/vmlinuz.efi'))
 
-    # FIXME: check for casper uuid.conf file in the initrd and place it in .disk
+    message.sub_info('Extracting casper UUID')
+    if os.path.isdir('conf'):
+        shutil.rmtree('conf')
+    os.makedirs('conf')
+    try:
+        os.system(misc.whereis('zcat') + ' ' + initrd + ' | ' + \
+            misc.whereis('cpio') + ' --quiet -id conf/uuid.conf')
+        # FIXME: copy as casper-uuid-<kernel_name>
+        misc.copy_file('conf/uuid.conf', misc.join_paths(config.ISO_DIR, \
+            '.disk/casper-uuid-generic'))
+    finally:
+        shutil.rmtree('conf')
 
     message.sub_info('Creating squashed FileSystem')
     subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR, \
