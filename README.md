@@ -38,6 +38,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
     make
     binutils
+    gcc (g++)
     python (python2.7 and python2.7-dev)
     pyqt4 (python-qt4 and pyqt4-dev-tools)
     squashfs-tools (>=4.2)
