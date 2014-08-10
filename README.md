@@ -51,7 +51,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
     make && sudo make install
     sudo customizer -h
-   
+
 ### AUTHORS
 
 Ivailo Monev 'SmiL3y' (code developer) `xakepa10@gmail.com`
