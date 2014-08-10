@@ -14,6 +14,7 @@ import actions.pkgm as pkgm
 import actions.deb as deb
 import actions.hook as hook
 import actions.rebuild as rebuild
+import actions.qemu as qemu
 import actions.clean as clean
 
 app_version = "4.1.0 (03eabeb)"
