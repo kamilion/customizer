@@ -109,6 +109,46 @@ def run_deb():
     finally:
         setup_gui()
 
+def run_chroot():
+    terminal = None
+    for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
+        spath = misc.whereis(term, False)
+        if spath:
+            terminal = spath
+
+    if not terminal:
+        QtGui.QMessageBox.critical(MainWindow, 'Critical', \
+            'No supported terminal emulator detected')
+        return
+
+    try:
+        subprocess.check_call((terminal, '-e', 'customizer -c'))
+    except Exception as detail:
+        # FIXME: set status failed
+        print(detail)
+    finally:
+        setup_gui()
+
+def run_xnest():
+    terminal = None
+    for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
+        spath = misc.whereis(term, False)
+        if spath:
+            terminal = spath
+
+    if not terminal:
+        QtGui.QMessageBox.critical(MainWindow, 'Critical', \
+            'No supported terminal emulator detected')
+        return
+
+    try:
+        subprocess.check_call((terminal, '-e', 'customizer -x'))
+    except Exception as detail:
+        # FIXME: set status failed
+        print(detail)
+    finally:
+        setup_gui()
+
 
 ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
 ui.selectButton.clicked.connect(run_extract)
@@ -116,6 +156,8 @@ ui.rebuildButton.clicked.connect(run_rebuild)
 ui.cleanButton.clicked.connect(run_clean)
 ui.sourcesButton.clicked.connect(edit_sources)
 ui.debButton.clicked.connect(run_deb)
+ui.chrootButton.clicked.connect(run_chroot)
+ui.xnestButton.clicked.connect(run_xnest)
 setup_gui()
 
 MainWindow.show()
