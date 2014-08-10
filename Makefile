@@ -14,7 +14,7 @@ GIT = git
 XZ = xz -v
 PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 PYLINT = pylint
-DEBUILD = debuild
+DPKG_BUILDPACKAGE = dpkg-buildpackage
 
 all: clean core gui
 
@@ -83,6 +83,6 @@ clean:
 		debian/customizer debian/files
 
 deb:
-	DEB_BUILD_OPTIONS=nocheck $(DEBUILD) -i -us -uc -b
+	DEB_BUILD_OPTIONS=nocheck $(DPKG_BUILDPACKAGE) -us -uc -b
 
 .PHONY: all bump static install uninstall dist clean
