@@ -1,5 +1,9 @@
 #!/usr/bin/python2
 
+################# NOTE #################
+# This is quick and dirty written GUI! #
+############### END NOTE ###############
+
 import gui_ui
 from PyQt4 import QtCore, QtGui
 import sys, os, subprocess
