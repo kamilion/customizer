@@ -77,8 +77,8 @@ check: clean
 	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py
 
 dist: clean
-	$(GIT) archive HEAD --prefix=customizer-$(VERSION)/ | $(XZ) > \
-		customizer-$(VERSION).tar.xz
+	$(GIT) archive HEAD --prefix="customizer-$(VERSION)/" | $(XZ) > \
+		"customizer-$(VERSION).tar.xz"
 
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
