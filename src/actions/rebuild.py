@@ -15,10 +15,10 @@ def detect_boot():
     for sfile in sorted(misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, 'boot'))):
         if 'initrd.img' in sfile:
             initrd = sfile
-            message.sub_debug('initrd', sfile)
+            message.sub_debug('Initrd detected', sfile)
         elif 'vmlinuz' in sfile:
             vmlinuz = sfile
-            message.sub_debug('vmlinuz', sfile)
+            message.sub_debug('Vmlinuz detected', sfile)
 
 
 def main():
@@ -93,8 +93,8 @@ def main():
         sys.exit(2)
     else:
         message.sub_info('Copying boot files')
-        message.sub_debug('initrd', initrd)
-        message.sub_debug('vmlinuz', vmlinuz)
+        message.sub_debug('Initrd', initrd)
+        message.sub_debug('Vmlinuz', vmlinuz)
         misc.copy_file(initrd, misc.join_paths(config.ISO_DIR, 'casper/initrd.lz'))
         misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz'))
         if os.path.isdir(misc.join_paths(config.ISO_DIR, 'efi/boot')):
