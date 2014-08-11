@@ -80,6 +80,10 @@ dist: clean
 	$(GIT) archive HEAD --prefix="customizer-$(VERSION)/" | $(XZ) > \
 		"customizer-$(VERSION).tar.xz"
 
+changelog:
+	$(GIT) log HEAD -n 1 --pretty='%cd %an <%ae> %n%H%d'
+	$(GIT) log 3.2.2..HEAD --no-merges --pretty='    * %s'
+
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
 	$(RM) -r debian/*.log debian/customizer.substvars \
