@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (aff3b22)"
+app_version = "4.1.0 (e3846ed)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
