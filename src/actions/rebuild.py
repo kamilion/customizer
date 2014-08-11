@@ -81,7 +81,7 @@ def main():
         message.sub_info('Re-installing kernel')
         misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
         misc.chroot_exec(('apt-get', 'install', '--yes', \
-            'linux-generic', '-q'))
+            'linux-image-generic', '-q'))
         misc.chroot_exec(('apt-get', 'clean'))
     else:
         message.sub_info('Updating initramfs')

@@ -11,8 +11,7 @@ def main():
     common.check_filesystem()
 
     pkgmngr = None
-    # FIXME: 'synaptic'
-    for sfile in ('aptitude', 'aptitude-curses'):
+    for sfile in ('aptitude', 'aptitude-curses', 'synaptic'):
         for sdir in ('bin', 'sbin', 'usr/bin', 'usr/sbin'):
             full_file = misc.join_paths(config.FILESYSTEM_DIR, sdir, sfile)
             if os.path.exists(full_file) and os.access(full_file, os.X_OK):

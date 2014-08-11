@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (11c5e49)"
+app_version = "4.1.0 (aff3b22)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -46,8 +46,7 @@ def setup_gui():
             misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export HOST='))
 
         ui.pkgmButton.setEnabled(False)
-        # FIXME: 'synaptic'
-        for sfile in ('aptitude', 'aptitude-curses'):
+        for sfile in ('aptitude', 'aptitude-curses', 'synaptic'):
             for sdir in ('bin', 'sbin', 'usr/bin', 'usr/sbin'):
                 full_file = misc.join_paths(config.FILESYSTEM_DIR, sdir, sfile)
                 if os.path.exists(full_file) and os.access(full_file, os.X_OK):
