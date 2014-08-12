@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (1771b75)"
+app_version = "4.1.0 (a98997b)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -44,6 +44,8 @@ def setup_gui():
             misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export USERNAME='))
         ui.hostnameEdit.setText(common.get_value( \
             misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export HOST='))
+        common.substitute(misc.join_paths(config.FILESYSTEM_DIR, \
+        'etc/casper.conf'), '# export FLAVOUR=.*', 'export FLAVOUR="Custom"')
 
         ui.pkgmButton.setEnabled(False)
         for sfile in ('aptitude', 'aptitude-curses', 'synaptic'):
