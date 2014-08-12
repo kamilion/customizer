@@ -128,6 +128,9 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
         if prepare:
             if not os.path.isfile('/etc/mtab'):
                 os.symlink('/proc/mounts', '/etc/mtab')
+            subprocess.check_call(('dpkg-divert', '--local', '--rename', \
+                '--add', '/sbin/initctl'))
+            os.symlink('/bin/true', '/sbin/initctl')
 
         os.putenv('HOME', '/root')
         os.putenv('LC_ALL', config.LOCALES)
@@ -153,6 +156,10 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
                 command = command.split()
             subprocess.check_call(command)
     finally:
+        if prepare:
+            os.unlink('/sbin/initctl')
+            subprocess.check_call(('dpkg-divert', '--rename', '--remove', '/sbin/initctl'))
+
         os.fchdir(real_root)
         os.chroot('.')
         os.close(real_root)
