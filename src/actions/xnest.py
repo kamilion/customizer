@@ -22,6 +22,8 @@ def main():
         message.sub_critical('No session avaialable')
         sys.exit(2)
 
+    # FIXME: race condition between session and Xephyr - if session
+    # starts before Xephyr it fails saying it does not find the DISPLAY
     message.sub_info('Starting Xephyr')
     x = subprocess.Popen((misc.whereis('Xephyr'), '-ac', '-screen', \
         config.RESOLUTION, '-br', ':13'))

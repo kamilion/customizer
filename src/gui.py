@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (f9a0d52)"
+app_version = "4.1.0 (2e14bcd)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -72,8 +72,10 @@ def run_core(args, terminal=True):
     if terminal:
         terminal = None
         for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
+            # make it so that misc.whereis() does not faile, but
+            # ensure that if fallback is returned terminal is not set
             spath = misc.whereis(term, False)
-            if spath:
+            if not spath == term:
                 terminal = spath
 
         if not terminal:
@@ -84,7 +86,7 @@ def run_core(args, terminal=True):
         if terminal:
             subprocess.check_call((terminal, '-e', 'customizer -D ' + args))
         else:
-            subprocess.check_call(('customizer', '-D', args))
+            subprocess.check_call((misc.whereis('customizer'), '-D', args))
     except Exception as detail:
         # FIXME: set status failed
         msg_critical(str(detail))
