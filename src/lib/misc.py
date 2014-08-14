@@ -107,7 +107,8 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
     try:
         if prepare:
             if os.path.isfile('/etc/resolv.conf'):
-                copy_file('/etc/resolv.conf', config.FILESYSTEM_DIR + '/etc/resolv.conf')
+                copy_file('/etc/resolv.conf', \
+                    config.FILESYSTEM_DIR + '/etc/resolv.conf')
             if os.path.isfile('/etc/hosts'):
                 copy_file('/etc/hosts', config.FILESYSTEM_DIR + '/etc/hosts')
 
@@ -158,7 +159,8 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
     finally:
         if prepare:
             os.unlink('/sbin/initctl')
-            subprocess.check_call(('dpkg-divert', '--rename', '--remove', '/sbin/initctl'))
+            subprocess.check_call(('dpkg-divert', '--rename', '--remove', \
+                '/sbin/initctl'))
 
         os.fchdir(real_root)
         os.chroot('.')

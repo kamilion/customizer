@@ -82,7 +82,7 @@ dist: clean
 
 changelog:
 	$(GIT) log HEAD -n 1 --pretty='%cd %an <%ae> %n%H%d'
-	$(GIT) log 3.2.2..HEAD --no-merges --pretty='    * %s'
+	$(GIT) log $(shell $(GIT) tag | tail -n1)..HEAD --no-merges --pretty='    * %s'
 
 clean:
 	$(RM) -r build $(shell find -name '*.pyc') *.tar.xz
