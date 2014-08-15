@@ -162,7 +162,8 @@ def run_clean():
 
 def edit_sources():
     editor = None
-    for edit in ('leafpad', 'mousepad', 'medit', 'gedit'):
+    for edit in ('mousepad', 'leafpad', 'pluma', 'gedit', 'kate', 'kwrite', \
+        'medit'):
         spath = misc.whereis(edit, False)
         if spath:
             editor = spath
