@@ -31,6 +31,23 @@ ui = gui_ui.Ui_MainWindow()
 ui.setupUi(MainWindow)
 
 
+class Thread(QtCore.QThread):
+    ''' Worker thread '''
+    def __init__(self, func):
+        super(Thread, self).__init__()
+        self.func = func
+
+    def run(self):
+        try:
+            self.func()
+        except SystemExit:
+            pass
+        except Exception as detail:
+            self.emit(QtCore.SIGNAL('failed'), str(detail))
+            self.quit()
+        finally:
+            self.finished.emit()
+
 def setup_gui():
     ui.WorkDirEdit.setText(config.FILESYSTEM_DIR)
     ui.ISODirEdit.setText(config.ISO_DIR)
@@ -74,8 +91,8 @@ def run_core(args, terminal=True):
         for term in ('xterm', 'xfce4-terminal', 'gnome-terminal'):
             # make it so that misc.whereis() does not faile, but
             # ensure that if fallback is returned terminal is not set
-            spath = misc.whereis(term, False)
-            if not spath == term:
+            spath = misc.whereis(term)
+            if spath:
                 terminal = spath
 
         if not terminal:
@@ -88,10 +105,34 @@ def run_core(args, terminal=True):
         else:
             subprocess.check_call((misc.whereis('customizer'), '-D', args))
     except Exception as detail:
-        # FIXME: set status failed
         msg_critical(str(detail))
     finally:
         setup_gui()
+
+def worker_started():
+    ui.progressBar.setRange(0,0)
+    ui.progressBar.show()
+    ui.configurationBox.setEnabled(False)
+    ui.customizationBox.setEnabled(False)
+    ui.selectButton.setEnabled(False)
+    ui.rebuildButton.setEnabled(False)
+    # ui.qemuButton.setEnabled(False)
+    ui.cleanButton.setEnabled(False)
+
+def worker_stopped():
+    ui.progressBar.setRange(0,1)
+    ui.progressBar.hide()
+    ui.selectButton.setEnabled(True)
+    setup_gui()
+
+def worker(func):
+    # prevent the thread being destroyed
+    global thread
+    thread = Thread(func)
+    thread.finished.connect(worker_stopped)
+    app.connect(thread, QtCore.SIGNAL('failed'), msg_critical)
+    worker_started()
+    thread.start()
 
 def run_extract():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
@@ -102,30 +143,21 @@ def run_extract():
     # FIXME: make the change permanent
     extract.config.ISO = sfile
     try:
-        extract.main()
+        worker(extract.main)
     except Exception as detail:
-        # FIXME: set status failed
         msg_critical(str(detail))
-    finally:
-        setup_gui()
 
 def run_rebuild():
     try:
-        rebuild.main()
+        worker(rebuild.main)
     except Exception as detail:
-        # FIXME: set status failed
         msg_critical(str(detail))
-    finally:
-        setup_gui()
 
 def run_clean():
     try:
-        clean.main()
+        worker(clean.main)
     except Exception as detail:
-        # FIXME: set status failed
         msg_critical(str(detail))
-    finally:
-        setup_gui()
 
 def edit_sources():
     editor = None
@@ -142,7 +174,6 @@ def edit_sources():
         subprocess.check_call((editor, misc.join_paths(config.FILESYSTEM_DIR, \
             'etc/apt/sources.list')))
     except Exception as detail:
-        # FIXME: set status failed
         msg_critical(str(detail))
     finally:
         setup_gui()
@@ -156,12 +187,9 @@ def run_deb():
     # FIXME: make the change permanent
     deb.config.DEB = sfile
     try:
-        deb.main()
+        worker(deb.main)
     except Exception as detail:
-        # FIXME: set status failed
         msg_critical(str(detail))
-    finally:
-        setup_gui()
 
 def run_pkgm():
     run_core('-p')
@@ -175,12 +203,9 @@ def run_hook():
     # FIXME: make the change permanent
     hook.config.HOOK = sfile
     try:
-        hook.main()
+        worker(hook.main)
     except Exception as detail:
-        # FIXME: set status failed
         msg_critical(str(detail))
-    finally:
-        setup_gui()
 
 def run_chroot():
     run_core('-c')
@@ -197,6 +222,7 @@ def change_hostname():
         'etc/casper.conf'), 'export HOST=', str(ui.hostnameEdit.text()))
 
 
+ui.progressBar.hide()
 ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
 ui.selectButton.clicked.connect(run_extract)
 ui.rebuildButton.clicked.connect(run_rebuild)
