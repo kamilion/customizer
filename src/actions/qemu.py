@@ -28,8 +28,15 @@ def main():
 
     message.sub_info('Running QEMU with ISO image', iso_file)
     host_arch = os.uname()[4]
-    message.sub_debug('Host architecture', host_arch)
     if host_arch == 'x86_64':
-        subprocess.check_call((misc.whereis('qemu-system-x86_64'), '-m', config.VRAM, '-cdrom', iso_file))
+        qemu = misc.whereis('qemu-system-x86_64')
     else:
-        subprocess.check_call((misc.whereis('qemu-system-i386'), '-m', config.VRAM, '-cdrom', iso_file))
+        qemu = misc.whereis('qemu-system-i386')
+    kvm = False
+    command = [qemu, '-m', config.VRAM, '-cdrom', iso_file]
+    if misc.search_string('-enable-kvm', misc.get_output((qemu, '-h'))):
+        kvm = True
+        command.append('-enable-kvm')
+    message.sub_debug('Host architecture', host_arch)
+    message.sub_debug('KVM', kvm)
+    subprocess.check_call(command)
