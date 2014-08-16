@@ -158,11 +158,11 @@ def worker(func):
 
 def run_extract():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        QtCore.QDir.currentPath(), 'ISO Files (*.iso);;All Files (*)')
+        config.ISO, 'ISO Files (*.iso);;All Files (*)')
     if not sfile:
         return
     sfile = str(sfile)
-    # FIXME: make the change permanent
+    change_value('saved', 'iso', sfile)
     extract.config.ISO = sfile
     try:
         worker(extract.main)
