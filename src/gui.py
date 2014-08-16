@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (a70719f)"
+app_version = "4.1.0 (2f3357d)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -60,6 +60,7 @@ def setup_gui():
     index = ui.compressionBox.findText(config.COMPRESSION)
     ui.compressionBox.setCurrentIndex(index)
     if os.path.isdir(config.FILESYSTEM_DIR):
+        ui.changeWorkDirButton.setEnabled(False)
         ui.configurationBox.setEnabled(True)
         ui.customizationBox.setEnabled(True)
         ui.rebuildButton.setEnabled(True)
@@ -85,6 +86,7 @@ def setup_gui():
             if sfile.endswith('.desktop'):
                 ui.xnestButton.setEnabled(True)
     else:
+        ui.changeWorkDirButton.setEnabled(True)
         ui.configurationBox.setEnabled(False)
         ui.customizationBox.setEnabled(False)
         ui.rebuildButton.setEnabled(False)
