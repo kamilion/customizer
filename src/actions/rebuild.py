@@ -71,7 +71,7 @@ def main():
             message.sub_debug('Removing', full_file)
             os.unlink(full_file)
 
-    iso_file = '/home/%s-%s-%s.iso' % (distrib, arch, release)
+    iso_file = '%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)
     if os.path.exists(iso_file):
         message.sub_debug('Removing', iso_file)
         os.unlink(iso_file)

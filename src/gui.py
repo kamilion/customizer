@@ -93,7 +93,7 @@ def setup_gui():
             'DISTRIB_ID=')
         release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
             'DISTRIB_RELEASE=')
-        if os.path.exists('/home/%s-%s-%s.iso' % (distrib, arch, release)):
+        if os.path.exists('%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)):
             ui.qemuButton.setEnabled(True)
     else:
         ui.changeWorkDirButton.setEnabled(True)

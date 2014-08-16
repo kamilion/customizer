@@ -21,7 +21,7 @@ def main():
     message.sub_debug('Distribution (DISTRIB_ID)', distrib)
     message.sub_debug('Release (DISTRIB_RELEASE)', release)
 
-    iso_file = '/home/%s-%s-%s.iso' % (distrib, arch, release)
+    iso_file = '%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)
     if not os.path.exists(iso_file):
         message.sub_critical('ISO Image does not exists', iso_file)
         sys.exit(2)
