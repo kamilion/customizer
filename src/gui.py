@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (a995ed3)"
+app_version = "4.1.0 (6c496f8)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -49,6 +49,7 @@ class Thread(QtCore.QThread):
             self.finished.emit()
 
 def setup_gui():
+    ui.qemuButton.setEnabled(False)
     ui.workDirEdit.setText(config.WORK_DIR)
     ui.forceChrootBox.setChecked(config.FORCE_CHROOT)
     index = ui.localesBox.findText(config.LOCALES)
@@ -85,6 +86,15 @@ def setup_gui():
             'usr/share/xsessions')):
             if sfile.endswith('.desktop'):
                 ui.xnestButton.setEnabled(True)
+
+        arch = misc.chroot_exec(('dpkg', '--print-architecture'), prepare=False, \
+            mount=False, output=True)
+        distrib = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
+            'DISTRIB_ID=')
+        release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
+            'DISTRIB_RELEASE=')
+        if os.path.exists('/home/%s-%s-%s.iso' % (distrib, arch, release)):
+            ui.qemuButton.setEnabled(True)
     else:
         ui.changeWorkDirButton.setEnabled(True)
         ui.configurationBox.setEnabled(False)
@@ -136,7 +146,7 @@ def worker_started():
     ui.customizationBox.setEnabled(False)
     ui.selectButton.setEnabled(False)
     ui.rebuildButton.setEnabled(False)
-    # ui.qemuButton.setEnabled(False)
+    ui.qemuButton.setEnabled(False)
     ui.cleanButton.setEnabled(False)
 
 def worker_stopped():
@@ -234,6 +244,9 @@ def run_chroot():
 def run_xnest():
     run_core('-x', False)
 
+def run_qemu():
+    run_core('-q', False)
+
 def change_user():
     common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
         'etc/casper.conf'), 'export USERNAME=', str(ui.userEdit.text()))
@@ -277,6 +290,7 @@ ui.progressBar.hide()
 ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
 ui.selectButton.clicked.connect(run_extract)
 ui.rebuildButton.clicked.connect(run_rebuild)
+ui.qemuButton.clicked.connect(run_qemu)
 ui.cleanButton.clicked.connect(run_clean)
 ui.sourcesButton.clicked.connect(edit_sources)
 ui.debButton.clicked.connect(run_deb)
