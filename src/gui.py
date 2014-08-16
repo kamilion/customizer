@@ -233,6 +233,36 @@ def change_hostname():
     common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
         'etc/casper.conf'), 'export HOST=', str(ui.hostnameEdit.text()))
 
+def change_work_dir():
+    spath = QtGui.getExistingDirectory(MainWindow, 'Directory', config.WORK_DIR)
+    if not spath:
+        return
+    # FIXME: implement
+
+def change_force_chroot():
+    # FIXME: implement
+    current = ui.forceChrootBox.isChecked()
+    print current
+
+def change_locales():
+    # FIXME: implement
+    current = ui.localesBox.currentText()
+    print current
+
+def change_resolution():
+    # FIXME: implement
+    current = ui.resolutionBox.currentText()
+    print current
+
+def change_vram():
+    # FIXME: implement
+    current = ui.vramBox.currentText()
+    print current
+
+def change_compression():
+    # FIXME: implement
+    current = ui.compressionBox.currentText()
+    print current
 
 ui.progressBar.hide()
 ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
@@ -247,6 +277,11 @@ ui.chrootButton.clicked.connect(run_chroot)
 ui.xnestButton.clicked.connect(run_xnest)
 ui.userEdit.textChanged.connect(change_user)
 ui.hostnameEdit.textEdited.connect(change_hostname)
+ui.forceChrootBox.stateChanged.connect(change_force_chroot)
+ui.localesBox.currentIndexChanged.connect(change_locales)
+ui.resolutionBox.currentIndexChanged.connect(change_resolution)
+ui.vramBox.currentIndexChanged.connect(change_vram)
+ui.compressionBox.currentIndexChanged.connect(change_compression)
 setup_gui()
 
 MainWindow.show()
