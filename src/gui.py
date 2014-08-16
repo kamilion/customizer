@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (2f3357d)"
+app_version = "4.1.0 (e75a0dd)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -123,6 +123,7 @@ def run_core(args, terminal=True):
 def worker_started():
     ui.progressBar.setRange(0,0)
     ui.progressBar.show()
+    ui.changeWorkDirButton.setEnabled(False)
     ui.configurationBox.setEnabled(False)
     ui.customizationBox.setEnabled(False)
     ui.selectButton.setEnabled(False)
