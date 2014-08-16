@@ -100,8 +100,6 @@ def run_core(args, terminal=True):
         terminal = None
         for term in ('xterm', 'lxterminal', 'xfce4-terminal', \
             'mate-terminal', 'gnome-terminal', 'konsole'):
-            # make it so that misc.whereis() does not faile, but
-            # ensure that if fallback is returned terminal is not set
             spath = misc.whereis(term)
             if spath:
                 terminal = spath
