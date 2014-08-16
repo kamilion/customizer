@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (0120f3e)"
+app_version = "4.1.0 (a995ed3)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -120,6 +120,16 @@ def run_core(args, terminal=True):
     finally:
         setup_gui()
 
+def change_value(sec, var, val):
+    config.conf.set(sec, var, val)
+    conf = None
+    try:
+        conf = open('/etc/customizer.conf', 'w')
+        config.conf.write(conf)
+    finally:
+        if conf:
+            conf.close()
+
 def worker_started():
     ui.progressBar.setRange(0,0)
     ui.progressBar.show()
@@ -193,11 +203,11 @@ def edit_sources():
 
 def run_deb():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        QtCore.QDir.currentPath(), 'Deb Files (*.deb);;All Files (*)')
+        config.DEB, 'Deb Files (*.deb);;All Files (*)')
     if not sfile:
         return
     sfile = str(sfile)
-    # FIXME: make the change permanent
+    change_value('saved', 'deb', sfile)
     deb.config.DEB = sfile
     try:
         worker(deb.main)
@@ -209,11 +219,11 @@ def run_pkgm():
 
 def run_hook():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        QtCore.QDir.currentPath(), 'Shell Scripts (*.sh);;All Files (*)')
+        config.HOOK, 'Shell Scripts (*.sh);;All Files (*)')
     if not sfile:
         return
     sfile = str(sfile)
-    # FIXME: make the change permanent
+    change_value('saved', 'hook', sfile)
     hook.config.HOOK = sfile
     try:
         worker(hook.main)
@@ -235,36 +245,35 @@ def change_hostname():
         'etc/casper.conf'), 'export HOST=', str(ui.hostnameEdit.text()))
 
 def change_work_dir():
-    # FIXME: implement
     spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, 'Directory', config.WORK_DIR)
     if not spath:
         return
-    print spath
+    change_value('preferences', 'work_dir', current)
+    config.WORK_DIR = current
 
 def change_force_chroot():
-    # FIXME: implement
-    current = ui.forceChrootBox.isChecked()
-    print current
+    current = str(ui.forceChrootBox.isChecked())
+    change_value('preferences', 'force_chroot', current)
 
 def change_locales():
-    # FIXME: implement
-    current = ui.localesBox.currentText()
-    print current
+    current = str(ui.localesBox.currentText())
+    change_value('preferences', 'locales', current)
+    config.LOCALES = current
 
 def change_resolution():
-    # FIXME: implement
-    current = ui.resolutionBox.currentText()
-    print current
+    current = str(ui.resolutionBox.currentText())
+    change_value('preferences', 'resolution', current)
+    config.RESOLUTION = current
 
 def change_vram():
-    # FIXME: implement
-    current = ui.vramBox.currentText()
-    print current
+    current = str(ui.vramBox.currentText())
+    change_value('preferences', 'vram', current)
+    config.VRAM = current
 
 def change_compression():
-    # FIXME: implement
-    current = ui.compressionBox.currentText()
-    print current
+    current = str(ui.compressionBox.currentText())
+    change_value('preferences', 'compression', current)
+    config.compression = current
 
 ui.progressBar.hide()
 ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
