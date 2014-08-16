@@ -234,10 +234,11 @@ def change_hostname():
         'etc/casper.conf'), 'export HOST=', str(ui.hostnameEdit.text()))
 
 def change_work_dir():
-    spath = QtGui.getExistingDirectory(MainWindow, 'Directory', config.WORK_DIR)
+    # FIXME: implement
+    spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, 'Directory', config.WORK_DIR)
     if not spath:
         return
-    # FIXME: implement
+    print spath
 
 def change_force_chroot():
     # FIXME: implement
@@ -277,6 +278,7 @@ ui.chrootButton.clicked.connect(run_chroot)
 ui.xnestButton.clicked.connect(run_xnest)
 ui.userEdit.textChanged.connect(change_user)
 ui.hostnameEdit.textEdited.connect(change_hostname)
+ui.changeWorkDirButton.clicked.connect(change_work_dir)
 ui.forceChrootBox.stateChanged.connect(change_force_chroot)
 ui.localesBox.currentIndexChanged.connect(change_locales)
 ui.resolutionBox.currentIndexChanged.connect(change_resolution)
