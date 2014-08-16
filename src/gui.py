@@ -49,7 +49,16 @@ class Thread(QtCore.QThread):
             self.finished.emit()
 
 def setup_gui():
-    ui.WorkDirEdit.setText(config.WORK_DIR)
+    ui.workDirEdit.setText(config.WORK_DIR)
+    ui.forceChrootBox.setChecked(config.FORCE_CHROOT)
+    index = ui.localesBox.findText(config.LOCALES)
+    ui.localesBox.setCurrentIndex(index)
+    index = ui.resolutionBox.findText(config.RESOLUTION)
+    ui.resolutionBox.setCurrentIndex(index)
+    index = ui.vramBox.findText(config.VRAM)
+    ui.vramBox.setCurrentIndex(index)
+    index = ui.compressionBox.findText(config.COMPRESSION)
+    ui.compressionBox.setCurrentIndex(index)
     if os.path.isdir(config.FILESYSTEM_DIR):
         ui.configurationBox.setEnabled(True)
         ui.customizationBox.setEnabled(True)
