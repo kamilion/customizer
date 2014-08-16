@@ -12,6 +12,7 @@ STRIP = strip
 RM = rm -vf
 MKDIR = mkdir -vp
 SED = sed
+GREP = grep
 INSTALL = install -v
 GIT = git
 XZ = xz -v
@@ -70,7 +71,7 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
 
 lint:
-	cd src && $(PYLINT) lib/* actions/*.py main.py | grep -v \
+	cd src && $(PYLINT) lib/* actions/*.py main.py | $(GREP) -v \
 		-e 'Line too long'
 
 check: clean
