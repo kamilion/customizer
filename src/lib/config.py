@@ -7,25 +7,20 @@ import lib.message as message
 if not os.path.isfile('/etc/customizer.conf'):
     message.warning('Configuration file does not exists', '/etc/customizer.comf')
 
-    FILESYSTEM_DIR = "/home/FileSystem"
-    ISO_DIR = "/home/ISO"
-    MOUNT_DIR = "/media"
-    FORCE_CHROOT = True
-    LOCALES = "C"
-    RESOLUTION = "800x600"
-    COMPRESSION = "xz"
-    VRAM = "256"
-    ISO = ""
-    DEB = ""
-    HOOK = ""
+    WORK_DIR = '/home'
+    FORCE_CHROOT = False
+    LOCALES = 'C'
+    RESOLUTION = '800x600'
+    COMPRESSION = 'xz'
+    VRAM = '256'
+    ISO = ''
+    DEB = ''
+    HOOK = ''
 else:
     conf = ConfigParser.SafeConfigParser()
     conf.read('/etc/customizer.conf')
 
-    FILESYSTEM_DIR = conf.get('main', 'FILESYSTEM_DIR')
-    ISO_DIR = conf.get('main', 'ISO_DIR')
-    MOUNT_DIR = conf.get('main', 'MOUNT_DIR')
-
+    WORK_DIR = conf.get('preferences', 'WORK_DIR')
     FORCE_CHROOT = conf.getboolean('preferences', 'FORCE_CHROOT')
     LOCALES = conf.get('preferences', 'LOCALES')
     RESOLUTION = conf.get('preferences', 'RESOLUTION')
@@ -35,3 +30,7 @@ else:
     ISO = conf.get('saved', 'ISO')
     DEB = conf.get('saved', 'DEB')
     HOOK = conf.get('saved', 'HOOK')
+
+MOUNT_DIR = '/media'
+FILESYSTEM_DIR = os.path.join(WORK_DIR, 'FileSystem')
+ISO_DIR = os.path.join(WORK_DIR, 'ISO')

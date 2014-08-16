@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (2e14bcd)"
+app_version = "4.1.0 (989b5ab)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -49,8 +49,7 @@ class Thread(QtCore.QThread):
             self.finished.emit()
 
 def setup_gui():
-    ui.WorkDirEdit.setText(config.FILESYSTEM_DIR)
-    ui.ISODirEdit.setText(config.ISO_DIR)
+    ui.WorkDirEdit.setText(config.WORK_DIR)
     if os.path.isdir(config.FILESYSTEM_DIR):
         ui.configurationBox.setEnabled(True)
         ui.customizationBox.setEnabled(True)
