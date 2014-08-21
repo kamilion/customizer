@@ -16,7 +16,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
 ### OPTIONS
 
-    -h, --help       show this help message and exit
+    -h, --help       Show this help message and exit
     -e, --extract    Exctract ISO image
     -c, --chroot     Chroot into the filesystem
     -x, --xnest      Execute nested X-session
@@ -27,7 +27,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     -q, --qemu       Test the builded image with QEMU
     -t, --clean      Clean all temporary files and folders
     -D, --debug      Enable debug messages
-    -v, --version    Show Customizer version and exits
+    -v, --version    Show Customizer version and exit
 
 ### ENVIRONMENT
 

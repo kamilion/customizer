@@ -14,7 +14,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (647af88)"
+app_version = "4.1.0 (32954a8)"
 
 try:
     class OverrideDebug(argparse.Action):
@@ -24,7 +24,6 @@ try:
 
     parser = argparse.ArgumentParser(prog='Customizer', \
         description='Ubuntu based LiveCD ISO images remastering tool')
-
     parser.add_argument('-e', '--extract', action='store_true', \
         help='Exctract ISO image')
     parser.add_argument('-c', '--chroot', action='store_true', \
@@ -43,7 +42,6 @@ try:
         help='Test the builded image with QEMU')
     parser.add_argument('-t', '--clean', action='store_true', \
         help='Clean all temporary files and folders')
-
     parser.add_argument('-D', '--debug', nargs=0, action=OverrideDebug, \
         help='Enable debug messages')
     parser.add_argument('-v', '--version', action='version', \
