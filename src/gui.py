@@ -30,6 +30,16 @@ MainWindow = QtGui.QMainWindow()
 ui = gui_ui.Ui_MainWindow()
 ui.setupUi(MainWindow)
 
+# limit instances to one
+running = False
+lock = '/run/lock/customizer'
+if os.path.isfile(lock):
+    QtGui.QMessageBox.critical(MainWindow, 'Critical', 'An instance of Customizer is already running')
+    sys.exit()
+else:
+    misc.write_file(lock, str(app.applicationPid()))
+    running = True
+
 
 class Thread(QtCore.QThread):
     ''' Worker thread '''
@@ -309,4 +319,9 @@ ui.compressionBox.currentIndexChanged.connect(change_compression)
 setup_gui()
 
 MainWindow.show()
-sys.exit(app.exec_())
+r = app.exec_()
+
+# remove lock
+if running and os.path.isfile(lock):
+    os.remove(lock)
+sys.exit(r)
