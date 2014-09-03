@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (32954a8)"
+app_version = "4.1.0 (7a868e9)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -59,6 +59,11 @@ class Thread(QtCore.QThread):
             self.finished.emit()
 
 def setup_gui():
+    locales_file = misc.join_paths(config.FILESYSTEM_DIR, 'usr/share/i18n/SUPPORTED')
+    if os.path.isfile(locales_file):
+        for line in misc.readlines_file(locales_file):
+            if not line or not line.startswith('#'):
+                ui.localesBox.addItem(line.split(' ')[0])
     ui.qemuButton.setEnabled(False)
     ui.workDirEdit.setText(config.WORK_DIR)
     ui.forceChrootBox.setChecked(config.FORCE_CHROOT)

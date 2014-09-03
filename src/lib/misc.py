@@ -133,6 +133,9 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
                 '--add', '/sbin/initctl'))
             os.symlink('/bin/true', '/sbin/initctl')
 
+        if not config.LOCALES == 'C':
+            subprocess.check_call(('locale-gen', config.LOCALES))
+
         os.putenv('HOME', '/root')
         os.putenv('LC_ALL', config.LOCALES)
         os.putenv('LANGUAGE', config.LOCALES)
