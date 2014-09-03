@@ -6,7 +6,7 @@
 
 import gui_ui
 from PyQt4 import QtCore, QtGui
-import sys, os, subprocess
+import sys, os, atexit, subprocess
 
 import lib.message as message
 import lib.config as config
@@ -31,14 +31,17 @@ ui = gui_ui.Ui_MainWindow()
 ui.setupUi(MainWindow)
 
 # limit instances to one
-running = False
 lock = '/run/lock/customizer'
+def remove_lock():
+    if os.path.isfile(lock):
+        os.remove(lock)
+atexit.register(remove_lock)
+
 if os.path.isfile(lock):
     QtGui.QMessageBox.critical(MainWindow, 'Critical', 'An instance of Customizer is already running')
     sys.exit()
 else:
     misc.write_file(lock, str(app.applicationPid()))
-    running = True
 
 
 class Thread(QtCore.QThread):
@@ -324,9 +327,4 @@ ui.compressionBox.currentIndexChanged.connect(change_compression)
 setup_gui()
 
 MainWindow.show()
-r = app.exec_()
-
-# remove lock
-if running and os.path.isfile(lock):
-    os.remove(lock)
-sys.exit(r)
+sys.exit(app.exec_())
