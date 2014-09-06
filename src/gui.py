@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (7a868e9)"
+app_version = "4.1.0 (e2e1db4)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -32,7 +32,10 @@ ui.setupUi(MainWindow)
 
 # limit instances to one
 lock = '/run/lock/customizer'
+running = False
 def remove_lock():
+    if not running:
+        return
     if os.path.isfile(lock):
         os.remove(lock)
 atexit.register(remove_lock)
@@ -42,6 +45,7 @@ if os.path.isfile(lock):
     sys.exit()
 else:
     misc.write_file(lock, str(app.applicationPid()))
+    running = True
 
 
 class Thread(QtCore.QThread):
