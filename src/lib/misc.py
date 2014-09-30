@@ -146,7 +146,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
         if xnest:
             os.putenv('HOME', '/etc/skel')
             os.putenv('XDG_CACHE_HOME', '/etc/skel/.cache')
-            os.putenv('XDG_DATA_HOME', '/etc/skel')
+            os.putenv('XDG_DATA_HOME', '/etc/skel/.local/share')
             os.putenv('XDG_CONFIG_HOME', '/etc/skel/.config')
             os.putenv('DISPLAY', ':13')
 
