@@ -93,4 +93,4 @@ clean:
 deb:
 	DEB_BUILD_OPTIONS=nocheck $(DPKG_BUILDPACKAGE) -us -uc -b
 
-.PHONY: all bump static install uninstall dist clean
+.PHONY: all core gui install install-core install-gui uninstall lint check dist changelog clean deb
