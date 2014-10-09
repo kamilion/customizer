@@ -45,7 +45,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     xorriso
     xhost (x11-xserver-utils)
     xephyr (xserver-xephyr)
-    qemu
+    qemu (qemu-kvm)
 
 ### INSTALL AND RUN
 
