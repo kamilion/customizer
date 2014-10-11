@@ -1,8 +1,9 @@
 #!/usr/bin/python2
 
-import os, re, shutil, subprocess
+import os, re, shutil, shlex, subprocess
 
 import lib.config as config
+CATCH = False
 
 def whereis(program, chroot=False):
     program = os.path.basename(program)
@@ -94,6 +95,30 @@ def list_files(directory):
             slist.append(os.path.join(root, sfile))
     return slist
 
+def dir_current():
+    try:
+        cwd = os.getcwd()
+    except OSError:
+        cwd = '/'
+    return cwd
+
+def system_command(command, shell=False, cwd=None, catch=False):
+    if not cwd:
+        cwd = dir_current()
+    elif not os.path.isdir(cwd):
+        cwd = '/'
+    if isinstance(command, str) and not shell:
+        command = shlex.split(command)
+    if catch or CATCH:
+        pipe = subprocess.Popen(command, stderr=subprocess.PIPE, \
+            shell=shell, cwd=cwd)
+        pipe.wait()
+        if pipe.returncode != 0:
+            raise(Exception(pipe.communicate()[1].strip()))
+        return pipe.returncode
+    else:
+        return subprocess.check_call(command, shell=shell, cwd=cwd)
+
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
     pseudofs = ['/proc', '/dev', '/sys', '/tmp']
     if xnest:
@@ -119,9 +144,9 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
                     if not os.path.isdir(sdir):
                         os.makedirs(sdir)
                     if s == '/dev':
-                        subprocess.check_call((whereis('mount'), '--rbind', s, sdir))
+                        system_command((whereis('mount'), '--rbind', s, sdir))
                     else:
-                        subprocess.check_call((whereis('mount'), '--bind', s, sdir))
+                        system_command((whereis('mount'), '--bind', s, sdir))
 
 
         os.chroot(config.FILESYSTEM_DIR)
@@ -131,7 +156,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
                 os.symlink('/proc/mounts', '/etc/mtab')
 
         if not config.LOCALES == 'C':
-            subprocess.check_call(('locale-gen', config.LOCALES))
+            system_command(('locale-gen', config.LOCALES))
 
         os.putenv('HOME', '/root')
         os.putenv('LC_ALL', config.LOCALES)
@@ -155,7 +180,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
         else:
             if isinstance(command, str):
                 command = command.split()
-            subprocess.check_call(command)
+            system_command(command)
     finally:
         os.fchdir(real_root)
         os.chroot('.')
@@ -165,6 +190,6 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
             for s in reversed(pseudofs):
                 sdir = config.FILESYSTEM_DIR + s
                 if os.path.ismount(sdir):
-                    subprocess.check_call((whereis('umount'), '-f', '-l', sdir))
+                    system_command((whereis('umount'), '-f', '-l', sdir))
     if output:
         return out

@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, subprocess
+import sys
 
 import lib.misc as misc
 import lib.config as config
@@ -34,13 +34,13 @@ def main():
 
     try:
         message.sub_info('Allwoing local access to X-server')
-        subprocess.check_call((misc.whereis('xhost'), '+local:'))
+        misc.system_command((misc.whereis('xhost'), '+local:'))
 
         message.sub_info('Starting nested X session', xsession)
         misc.chroot_exec((xsession), xnest=True)
 
         message.sub_info('Blocking local access to X-server')
-        subprocess.check_call((misc.whereis('xhost'), '-local:'))
+        misc.system_command((misc.whereis('xhost'), '-local:'))
     finally:
         message.sub_info('Terminating Xephyr')
         x.terminate()

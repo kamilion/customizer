@@ -21,6 +21,7 @@ import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
+misc.CATCH = True
 
 app_version = "4.1.0 (f1356e1)"
 

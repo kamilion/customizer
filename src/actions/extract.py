@@ -13,7 +13,7 @@ def unmount_iso():
     if not mount_dir:
         return
     message.sub_info('Unmounting', mount_dir)
-    subprocess.check_call((misc.whereis('umount'), '-f', mount_dir))
+    misc.system_command((misc.whereis('umount'), '-f', mount_dir))
 
     message.sub_info('Removing', mount_dir)
     os.rmdir(mount_dir)
@@ -36,10 +36,11 @@ def main():
 
     message.sub_info('Mounting ISO', config.ISO)
     try:
-        subprocess.check_call((misc.whereis('mount'), '-t', 'iso9660', '-o', \
+        misc.system_command((misc.whereis('mount'), '-t', 'iso9660', '-o', \
             'ro,loop', config.ISO, mount_dir))
-    finally:
+    except:
         common.clean_work_dirs()
+        raise
 
     message.sub_info('Checking ISO')
     for spath in (mount_dir + '/casper/filesystem.squashfs', \
@@ -55,7 +56,7 @@ def main():
 
     message.sub_info('Unsquashing filesystem')
     try:
-        subprocess.check_call((misc.whereis('unsquashfs'), '-f', '-d', \
+        misc.system_command((misc.whereis('unsquashfs'), '-f', '-d', \
             config.FILESYSTEM_DIR, mount_dir + '/casper/filesystem.squashfs'))
     except:
         unmount_iso()

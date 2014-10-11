@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, subprocess
+import sys, os
 
 import lib.misc as misc
 import lib.config as config
@@ -48,4 +48,4 @@ def main():
     message.sub_debug('Host architecture', host_arch)
     message.sub_debug('QEMU KVM', qemu_kvm)
     message.sub_debug('Host KVM', host_kvm)
-    subprocess.check_call(command)
+    misc.system_command(command)

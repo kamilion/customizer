@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, glob, subprocess, shutil, re, hashlib
+import sys, os, glob, shutil, re, hashlib
 
 import lib.misc as misc
 import lib.config as config
@@ -116,7 +116,7 @@ def main():
         shutil.rmtree('conf')
 
     message.sub_info('Creating squashed FileSystem')
-    subprocess.check_call(('mksquashfs', config.FILESYSTEM_DIR, \
+    misc.system_command(('mksquashfs', config.FILESYSTEM_DIR, \
         misc.join_paths(config.ISO_DIR, 'casper/filesystem.squashfs'), \
         '-wildcards', '-ef', os.path.join(sys.prefix, 'share/customizer/exclude.list'), \
         '-comp', config.COMPRESSION))
@@ -160,7 +160,7 @@ def main():
 
     message.sub_info('Creating ISO')
     os.chdir(config.ISO_DIR)
-    subprocess.check_call(('xorriso', '-as', 'mkisofs', '-r', '-V', \
+    misc.system_command(('xorriso', '-as', 'mkisofs', '-r', '-V', \
         distrib + '-' + arch + '-' + release, '-b', 'isolinux/isolinux.bin', \
         '-c', 'isolinux/boot.cat', '-J', '-l', '-no-emul-boot', \
         '-boot-load-size', '4', '-boot-info-table', '-o', iso_file, \
