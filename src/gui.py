@@ -281,8 +281,9 @@ def change_work_dir():
     spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, 'Directory', config.WORK_DIR)
     if not spath:
         return
-    change_value('preferences', 'work_dir', current)
-    config.WORK_DIR = current
+    spath = str(spath)
+    change_value('preferences', 'work_dir', spath)
+    config.WORK_DIR = spath
 
 def change_force_chroot():
     current = str(ui.forceChrootBox.isChecked())
