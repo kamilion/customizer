@@ -32,11 +32,20 @@ def main():
         qemu = misc.whereis('qemu-system-x86_64')
     else:
         qemu = misc.whereis('qemu-system-i386')
-    kvm = False
+    qemu_kvm = False
     command = [qemu, '-m', config.VRAM, '-cdrom', iso_file]
     if misc.search_string('-enable-kvm', misc.get_output((qemu, '-h'))):
-        kvm = True
+        qemu_kvm = True
+    # vmx for intel, svm for amd processors. it will most likely not work in
+    # XEN environment
+    host_kvm = False
+    if os.path.exists('/proc/cpuinfo') and \
+        misc.search_file('(?:\\s|^)flags.*(?:\\s)(vme|vmx)(?:\\s|$)', \
+        '/proc/cpuinfo', escape=False):
+        host_kvm = True
+    if qemu_kvm and host_kvm:
         command.append('-enable-kvm')
     message.sub_debug('Host architecture', host_arch)
-    message.sub_debug('KVM', kvm)
+    message.sub_debug('QEMU KVM', qemu_kvm)
+    message.sub_debug('Host KVM', host_kvm)
     subprocess.check_call(command)
