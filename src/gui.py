@@ -30,6 +30,15 @@ MainWindow = QtGui.QMainWindow()
 ui = gui_ui.Ui_MainWindow()
 ui.setupUi(MainWindow)
 
+def msg_info(msg):
+    QtGui.QMessageBox.information(MainWindow, 'Information', msg)
+
+def msg_warning(msg):
+    QtGui.QMessageBox.warning(MainWindow, 'Warning', msg)
+
+def msg_critical(msg):
+    QtGui.QMessageBox.critical(MainWindow, 'Critical', msg)
+
 # limit instances to one
 lock = '/run/lock/customizer'
 running = False
@@ -41,7 +50,7 @@ def remove_lock():
 atexit.register(remove_lock)
 
 if os.path.isfile(lock):
-    QtGui.QMessageBox.critical(MainWindow, 'Critical', 'An instance of Customizer is already running')
+    msg_critical('An instance of Customizer is already running.')
     sys.exit()
 else:
     misc.write_file(lock, str(app.applicationPid()))
@@ -116,15 +125,15 @@ def setup_gui():
             'DISTRIB_RELEASE=')
         if os.path.exists('%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)):
             ui.qemuButton.setEnabled(True)
+    elif os.path.isdir(config.FILESYSTEM_DIR):
+        msg_warning('The filesystem is not valid or corrupted. Clean is recommended.')
+        ui.cleanButton.setEnabled(True)
     else:
         ui.changeWorkDirButton.setEnabled(True)
         ui.configurationBox.setEnabled(False)
         ui.customizationBox.setEnabled(False)
         ui.rebuildButton.setEnabled(False)
         ui.cleanButton.setEnabled(False)
-
-def msg_critical(msg):
-    QtGui.QMessageBox.critical(MainWindow, 'Critical', msg)
 
 def run_core(args, terminal=True):
     if terminal:
@@ -136,7 +145,7 @@ def run_core(args, terminal=True):
                 terminal = spath
 
         if not terminal:
-            msg_critical('No supported terminal emulator detected')
+            msg_critical('No supported terminal emulator detected.')
             return
 
     try:
@@ -219,7 +228,7 @@ def edit_sources():
             editor = spath
 
     if not editor:
-        msg_critical('No supported text editor detected')
+        msg_critical('No supported text editor detected.')
         return
 
     try:
