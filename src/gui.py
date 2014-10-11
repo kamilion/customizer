@@ -22,7 +22,7 @@ import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
 
-app_version = "4.1.0 (e2e1db4)"
+app_version = "4.1.0 (f1356e1)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -82,19 +82,18 @@ def setup_gui():
     ui.vramBox.setCurrentIndex(index)
     index = ui.compressionBox.findText(config.COMPRESSION)
     ui.compressionBox.setCurrentIndex(index)
-    if os.path.isdir(config.FILESYSTEM_DIR):
+    casper = misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf')
+    if os.path.isdir(config.FILESYSTEM_DIR) \
+        and os.path.exists(casper):
         ui.changeWorkDirButton.setEnabled(False)
         ui.configurationBox.setEnabled(True)
         ui.customizationBox.setEnabled(True)
         ui.rebuildButton.setEnabled(True)
         ui.cleanButton.setEnabled(True)
 
-        ui.userEdit.setText(common.get_value( \
-            misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export USERNAME='))
-        ui.hostnameEdit.setText(common.get_value( \
-            misc.join_paths(config.FILESYSTEM_DIR, 'etc/casper.conf'), 'export HOST='))
-        common.substitute(misc.join_paths(config.FILESYSTEM_DIR, \
-        'etc/casper.conf'), '# export FLAVOUR=.*', 'export FLAVOUR="Custom"')
+        ui.userEdit.setText(common.get_value(casper, 'export USERNAME='))
+        ui.hostnameEdit.setText(common.get_value(casper, 'export HOST='))
+        common.substitute(casper, '# export FLAVOUR=.*', 'export FLAVOUR="Custom"')
 
         ui.pkgmButton.setEnabled(False)
         for sfile in ('aptitude', 'aptitude-curses', 'synaptic'):
