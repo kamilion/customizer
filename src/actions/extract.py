@@ -40,6 +40,8 @@ def main():
             'ro,loop', config.ISO, mount_dir))
     except:
         common.clean_work_dirs()
+        message.sub_info('Removing', mount_dir)
+        os.rmdir(mount_dir)
         raise
 
     message.sub_info('Checking ISO')
