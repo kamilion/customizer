@@ -35,8 +35,11 @@ def main():
     message.sub_debug('Mount directory is', mount_dir)
 
     message.sub_info('Mounting ISO', config.ISO)
-    subprocess.check_call((misc.whereis('mount'), '-t', 'iso9660', '-o', \
-        'ro,loop', config.ISO, mount_dir))
+    try:
+        subprocess.check_call((misc.whereis('mount'), '-t', 'iso9660', '-o', \
+            'ro,loop', config.ISO, mount_dir))
+    finally:
+        common.clean_work_dirs()
 
     message.sub_info('Checking ISO')
     for spath in (mount_dir + '/casper/filesystem.squashfs', \
