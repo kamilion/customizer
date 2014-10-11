@@ -292,6 +292,7 @@ def change_work_dir():
     spath = str(spath)
     change_value('preferences', 'work_dir', spath)
     config.WORK_DIR = spath
+    ui.workDirEdit.setText(spath)
 
 def change_force_chroot():
     current = str(ui.forceChrootBox.isChecked())
