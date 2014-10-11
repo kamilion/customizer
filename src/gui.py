@@ -8,18 +8,13 @@ import gui_ui
 from PyQt4 import QtCore, QtGui
 import sys, os, atexit, subprocess
 
-import lib.message as message
 import lib.config as config
 import lib.misc as misc
 import actions.common as common
 import actions.extract as extract
-import actions.chroot as chroot
-import actions.xnest as xnest
-import actions.pkgm as pkgm
 import actions.deb as deb
 import actions.hook as hook
 import actions.rebuild as rebuild
-import actions.qemu as qemu
 import actions.clean as clean
 misc.CATCH = True
 
@@ -76,7 +71,8 @@ class Thread(QtCore.QThread):
             self.finished.emit()
 
 def setup_gui():
-    locales_file = misc.join_paths(config.FILESYSTEM_DIR, 'usr/share/i18n/SUPPORTED')
+    locales_file = misc.join_paths(config.FILESYSTEM_DIR, \
+        'usr/share/i18n/SUPPORTED')
     if os.path.isfile(locales_file):
         for line in misc.readlines_file(locales_file):
             if not line or not line.startswith('#'):
@@ -103,7 +99,8 @@ def setup_gui():
 
         ui.userEdit.setText(common.get_value(casper, 'export USERNAME='))
         ui.hostnameEdit.setText(common.get_value(casper, 'export HOST='))
-        common.substitute(casper, '# export FLAVOUR=.*', 'export FLAVOUR="Custom"')
+        common.substitute(casper, '# export FLAVOUR=.*', \
+            'export FLAVOUR="Custom"')
 
         ui.pkgmButton.setEnabled(False)
         for sfile in ('aptitude', 'aptitude-curses', 'synaptic'):
@@ -118,13 +115,14 @@ def setup_gui():
             if sfile.endswith('.desktop'):
                 ui.xnestButton.setEnabled(True)
 
-        arch = misc.chroot_exec(('dpkg', '--print-architecture'), prepare=False, \
-            mount=False, output=True)
+        arch = misc.chroot_exec(('dpkg', '--print-architecture'), \
+            prepare=False, mount=False, output=True)
         distrib = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
             'DISTRIB_ID=')
         release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
             'DISTRIB_RELEASE=')
-        if os.path.exists('%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)):
+        if os.path.exists('%s/%s-%s-%s.iso' % \
+            (config.WORK_DIR, distrib, arch, release)):
             ui.qemuButton.setEnabled(True)
     elif os.path.isdir(config.FILESYSTEM_DIR):
         msg_warning('The filesystem is not valid or corrupted. Clean is recommended.')
@@ -170,7 +168,7 @@ def change_value(sec, var, val):
             conf.close()
 
 def worker_started():
-    ui.progressBar.setRange(0,0)
+    ui.progressBar.setRange(0, 0)
     ui.progressBar.show()
     ui.changeWorkDirButton.setEnabled(False)
     ui.configurationBox.setEnabled(False)
@@ -181,7 +179,7 @@ def worker_started():
     ui.cleanButton.setEnabled(False)
 
 def worker_stopped():
-    ui.progressBar.setRange(0,1)
+    ui.progressBar.setRange(0, 1)
     ui.progressBar.hide()
     ui.selectButton.setEnabled(True)
     setup_gui()
@@ -287,7 +285,8 @@ def change_hostname():
         'etc/casper.conf'), 'export HOST=', str(ui.hostnameEdit.text()))
 
 def change_work_dir():
-    spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, 'Directory', config.WORK_DIR)
+    spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, \
+        'Directory', config.WORK_DIR)
     if not spath:
         return
     spath = str(spath)

@@ -39,9 +39,9 @@ def main():
         misc.system_command((misc.whereis('mount'), '-t', 'iso9660', '-o', \
             'ro,loop', config.ISO, mount_dir))
     except:
-        common.clean_work_dirs()
         message.sub_info('Removing', mount_dir)
         os.rmdir(mount_dir)
+        common.clean_work_dirs()
         raise
 
     message.sub_info('Checking ISO')
