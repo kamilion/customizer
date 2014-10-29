@@ -30,6 +30,8 @@ core:
 
 gui:
 	$(MKDIR) build
+	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.policy.in > \
+		data/customizer.policy
 	$(SED) 's|^app_version.*|app_version = "$(VERSION)"|' -i src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 	cd build && $(NUITKA) --recurse-all ../src/gui.py
