@@ -52,6 +52,9 @@ else:
     misc.write_file(lock, str(app.applicationPid()))
     running = True
 
+if int(sys.version_info[0]) >= 3:
+    msg_critical('You are attempting to run Customizer with Python 3.')
+    sys.exit()
 
 class Thread(QtCore.QThread):
     ''' Worker thread '''

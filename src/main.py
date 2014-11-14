@@ -52,6 +52,9 @@ try:
     if not os.geteuid() == 0:
         message.critical('You are not root')
         sys.exit(2)
+    elif int(sys.version_info[0]) >= 3:
+        message.critical('You are attempting to run Customizer with Python 3')
+        sys.exit(2)
 
     if ARGS.extract:
         message.info('Extracting...')
