@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, tempfile, subprocess
+import sys, os, tempfile
 
 import lib.misc as misc
 import lib.config as config
@@ -46,8 +46,8 @@ def main():
 
     message.sub_info('Checking ISO')
     for spath in (mount_dir + '/casper/filesystem.squashfs', \
-        mount_dir + '/casper/filesystem.manifest',
-        mount_dir + '/casper/filesystem.manifest-remove',
+        mount_dir + '/casper/filesystem.manifest', \
+        mount_dir + '/casper/filesystem.manifest-remove', \
         mount_dir + '/.disk', mount_dir + '/isolinux', ):
         if not os.path.exists(spath):
             message.sub_debug('Non-existing path', spath)
