@@ -34,6 +34,19 @@ def create_work_dirs():
         os.makedirs(config.MOUNT_DIR)
 
 def clean_work_dirs():
+    # ensure that nothing is mounted to the working directories before cleanup,
+    # see https://github.com/clearkimura/Customizer/issues/82
+    if os.path.exists('/proc/mounts'):
+        for line in misc.readlines_file('/proc/mounts'):
+            # spaces are recorded as "\\040", handle them unconditionally
+            # TODO: test if this actually works with special characters
+            mpoint = line.split()[1].replace('\\040', ' ')
+            if mpoint.startswith((config.FILESYSTEM_DIR, config.ISO_DIR)):
+                message.sub_info('Unmounting', mpoint)
+                misc.system_command((misc.whereis('umount'), '-f', '-l', mpoint))
+    else:
+        message.sub_debug('/proc/mounts does not exists!')
+
     if os.path.isdir(config.FILESYSTEM_DIR):
         message.sub_info('Removing', config.FILESYSTEM_DIR)
         shutil.rmtree(config.FILESYSTEM_DIR)
