@@ -164,6 +164,8 @@ def change_value(sec, var, val):
     conf = None
     try:
         conf = open('/etc/customizer.conf', 'w')
+        if not config.conf.has_section(sec):
+            config.conf.add_section(sec)
         config.conf.set(sec, var, val)
         config.conf.write(conf)
     except Exception as detail:
