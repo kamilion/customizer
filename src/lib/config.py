@@ -4,6 +4,7 @@ import os, ConfigParser
 
 import lib.message as message
 
+conf = ConfigParser.SafeConfigParser()
 if not os.path.isfile('/etc/customizer.conf'):
     message.warning('Configuration file does not exists', '/etc/customizer.comf')
 
@@ -17,7 +18,6 @@ if not os.path.isfile('/etc/customizer.conf'):
     DEB = ''
     HOOK = ''
 else:
-    conf = ConfigParser.SafeConfigParser()
     conf.read('/etc/customizer.conf')
 
     WORK_DIR = conf.get('preferences', 'WORK_DIR')
