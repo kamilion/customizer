@@ -18,7 +18,7 @@ import actions.rebuild as rebuild
 import actions.clean as clean
 misc.CATCH = True
 
-app_version = "4.1.0 (ea5d850)"
+app_version = "4.1.0 (d87d49c)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)

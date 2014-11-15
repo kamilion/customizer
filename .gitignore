@@ -2,4 +2,6 @@
 *.pyc
 ./build
 src/gui_ui.py
+data/customizer.menu
+data/customizer.desktop
 data/customizer.policy

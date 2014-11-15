@@ -1,9 +1,9 @@
 [Desktop Entry]
 Name=Customizer
 Version=4.1.0
-Exec=pkexec /usr/sbin/customizer-gui
+Exec=pkexec @PREFIX@/sbin/customizer-gui
 Comment=Ubuntu based LiveCD ISO images remastering tool
-Icon=/usr/share/customizer/logo.png
+Icon=@PREFIX@/share/customizer/logo.png
 Type=Application
 Terminal=false
 StartupNotify=true

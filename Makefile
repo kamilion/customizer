@@ -30,6 +30,10 @@ core:
 
 gui:
 	$(MKDIR) build
+	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.menu.in > \
+		data/customizer.menu
+	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.desktop.in > \
+		data/customizer.desktop
 	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.policy.in > \
 		data/customizer.policy
 	$(SED) 's|^app_version.*|app_version = "$(VERSION)"|' -i src/gui.py
