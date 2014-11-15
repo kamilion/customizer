@@ -173,6 +173,7 @@ def change_value(sec, var, val):
     finally:
         if conf:
             conf.close()
+        reload(config)
 
 def worker_started():
     ui.progressBar.setRange(0, 0)
@@ -298,7 +299,6 @@ def change_work_dir():
         return
     spath = str(spath)
     change_value('preferences', 'work_dir', spath)
-    config.WORK_DIR = spath
     ui.workDirEdit.setText(spath)
 
 def change_force_chroot():
@@ -308,22 +308,18 @@ def change_force_chroot():
 def change_locales():
     current = str(ui.localesBox.currentText())
     change_value('preferences', 'locales', current)
-    config.LOCALES = current
 
 def change_resolution():
     current = str(ui.resolutionBox.currentText())
     change_value('preferences', 'resolution', current)
-    config.RESOLUTION = current
 
 def change_vram():
     current = str(ui.vramBox.currentText())
     change_value('preferences', 'vram', current)
-    config.VRAM = current
 
 def change_compression():
     current = str(ui.compressionBox.currentText())
     change_value('preferences', 'compression', current)
-    config.compression = current
 
 ui.progressBar.hide()
 ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
