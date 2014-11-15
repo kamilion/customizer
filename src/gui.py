@@ -161,11 +161,13 @@ def run_core(args, terminal=True):
         setup_gui()
 
 def change_value(sec, var, val):
-    config.conf.set(sec, var, val)
     conf = None
     try:
         conf = open('/etc/customizer.conf', 'w')
+        config.conf.set(sec, var, val)
         config.conf.write(conf)
+    except Exception as detail:
+        msg_critical(str(detail))
     finally:
         if conf:
             conf.close()
