@@ -93,7 +93,10 @@ changelog:
 clean:
 	$(RM) -r $(shell $(FIND) -name '*.pyc') *.tar.xz
 	$(RM) -r debian/*.log debian/customizer.substvars \
-		debian/customizer debian/files
+		debian/customizer debian/files \
+		src/gui_ui.py src/gui.py src/main.py \
+		data/customizer.policy data/customizer.menu \
+		data/customizer.desktop
 
 deb:
 	DEB_BUILD_OPTIONS=nocheck $(DPKG_BUILDPACKAGE) -us -uc -b
