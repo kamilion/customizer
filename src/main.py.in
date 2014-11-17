@@ -1,6 +1,7 @@
-#!/usr/bin/python2
+#!@PREFIX@/bin/python2
 
 import sys, ConfigParser, subprocess, shutil, os, re, argparse
+sys.path.append("@PREFIX@/share/customizer")
 
 import lib.message as message
 
@@ -13,8 +14,6 @@ import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.qemu as qemu
 import actions.clean as clean
-
-app_version = "4.1.0 (ea5d850)"
 
 try:
     class OverrideDebug(argparse.Action):
@@ -45,7 +44,7 @@ try:
     parser.add_argument('-D', '--debug', nargs=0, action=OverrideDebug, \
         help='Enable debug messages')
     parser.add_argument('-v', '--version', action='version', \
-        version='Customizer v' + app_version, \
+        version='Customizer v@VERSION@', \
         help='Show Customizer version and exit')
     ARGS = parser.parse_args()
 

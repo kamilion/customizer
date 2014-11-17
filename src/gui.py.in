@@ -1,12 +1,14 @@
-#!/usr/bin/python2
+#!@PREFIX@/bin/python2
 
 ################# NOTE #################
 # This is quick and dirty written GUI! #
 ############### END NOTE ###############
 
+import sys, os, atexit, subprocess
+sys.path.append("@PREFIX@/share/customizer")
+
 import gui_ui
 from PyQt4 import QtCore, QtGui
-import sys, os, atexit, subprocess
 
 import lib.config as config
 import lib.misc as misc
@@ -17,8 +19,6 @@ import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.clean as clean
 misc.CATCH = True
-
-app_version = "4.1.0 (d87d49c)"
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
@@ -322,7 +322,7 @@ def change_compression():
     change_value('preferences', 'compression', current)
 
 ui.progressBar.hide()
-ui.aboutLabel.setText('<b>Customizer v' + app_version + '</b>')
+ui.aboutLabel.setText('<b>Customizer v@VERSION@</b>')
 ui.selectButton.clicked.connect(run_extract)
 ui.rebuildButton.clicked.connect(run_rebuild)
 ui.qemuButton.clicked.connect(run_qemu)
