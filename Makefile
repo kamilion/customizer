@@ -9,6 +9,7 @@ PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
 PYUIC = pyuic4
 STRIP = strip
 RM = rm -vf
+FIND = find
 SED = sed
 GREP = grep
 INSTALL = install -v
@@ -90,7 +91,7 @@ changelog:
 	$(GIT) log $(shell $(GIT) tag | tail -n1)..HEAD --no-merges --pretty='    * %s'
 
 clean:
-	$(RM) -r $(shell find -name '*.pyc') *.tar.xz
+	$(RM) -r $(shell $(FIND) -name '*.pyc') *.tar.xz
 	$(RM) -r debian/*.log debian/customizer.substvars \
 		debian/customizer debian/files
 
