@@ -82,7 +82,6 @@ def setup_gui():
                 ui.localesBox.addItem(line.split(' ')[0])
     ui.qemuButton.setEnabled(False)
     ui.workDirEdit.setText(config.WORK_DIR)
-    ui.forceChrootBox.setChecked(config.FORCE_CHROOT)
     index = ui.localesBox.findText(config.LOCALES)
     ui.localesBox.setCurrentIndex(index)
     index = ui.resolutionBox.findText(config.RESOLUTION)
@@ -301,10 +300,6 @@ def change_work_dir():
     change_value('preferences', 'work_dir', spath)
     ui.workDirEdit.setText(spath)
 
-def change_force_chroot():
-    current = str(ui.forceChrootBox.isChecked())
-    change_value('preferences', 'force_chroot', current)
-
 def change_locales():
     current = str(ui.localesBox.currentText())
     change_value('preferences', 'locales', current)
@@ -336,7 +331,6 @@ ui.xnestButton.clicked.connect(run_xnest)
 ui.userEdit.textChanged.connect(change_user)
 ui.hostnameEdit.textEdited.connect(change_hostname)
 ui.changeWorkDirButton.clicked.connect(change_work_dir)
-ui.forceChrootBox.stateChanged.connect(change_force_chroot)
 ui.localesBox.currentIndexChanged.connect(change_locales)
 ui.resolutionBox.currentIndexChanged.connect(change_resolution)
 ui.vramBox.currentIndexChanged.connect(change_vram)

@@ -10,7 +10,6 @@ if not os.path.isfile('/etc/customizer.conf'):
     message.warning('Configuration file does not exists', '/etc/customizer.comf')
 
     WORK_DIR = '/home'
-    FORCE_CHROOT = False
     LOCALES = 'C'
     RESOLUTION = '800x600'
     COMPRESSION = 'xz'
@@ -22,7 +21,6 @@ else:
     conf.read('/etc/customizer.conf')
 
     WORK_DIR = conf.get('preferences', 'WORK_DIR')
-    FORCE_CHROOT = conf.getboolean('preferences', 'FORCE_CHROOT')
     LOCALES = conf.get('preferences', 'LOCALES')
     RESOLUTION = conf.get('preferences', 'RESOLUTION')
     COMPRESSION = conf.get('preferences', 'COMPRESSION')
