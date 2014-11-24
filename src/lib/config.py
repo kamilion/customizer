@@ -7,7 +7,7 @@ import lib.message as message
 conf = ConfigParser.SafeConfigParser()
 # FIXME: do not assume that the config has all sections and options set
 if not os.path.isfile('/etc/customizer.conf'):
-    message.warning('Configuration file does not exists', '/etc/customizer.comf')
+    message.warning('Configuration file does not exists', '/etc/customizer.conf')
 
     WORK_DIR = '/home'
     LOCALES = 'C'
