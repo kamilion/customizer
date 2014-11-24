@@ -150,7 +150,13 @@ def run_core(args, terminal=True):
             return
 
     try:
-        if terminal:
+        if terminal.endswith('konsole'):
+            # KDE apps tend to fork, this is not desired here since we want to
+            # detect if anything changed in the filesystem from setup_gui() at
+            # the end of the process but if forked the finished() signal gets
+            # emited immidiatly
+            subprocess.check_call((terminal, '--nofork', '-e', 'customizer -D ' + args))
+        elif terminal:
             subprocess.check_call((terminal, '-e', 'customizer -D ' + args))
         else:
             subprocess.check_call((misc.whereis('customizer'), '-D', args))
