@@ -119,7 +119,7 @@ def system_command(command, shell=False, cwd=None, catch=False):
     else:
         return subprocess.check_call(command, shell=shell, cwd=cwd)
 
-def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
+def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False):
     pseudofs = ['/proc', '/dev', '/sys', '/tmp']
     if xnest:
         if os.path.islink(config.FILESYSTEM_DIR + '/var/run'):
@@ -178,9 +178,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False):
         if output:
             out = get_output(command)
         else:
-            if isinstance(command, str):
-                command = command.split()
-            system_command(command)
+            system_command(command, shell=shell)
     finally:
         os.fchdir(real_root)
         os.chroot('.')

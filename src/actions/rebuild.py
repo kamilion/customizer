@@ -102,18 +102,18 @@ def main():
                 'casper/vmlinuz.efi'))
 
     message.sub_info('Extracting casper UUID')
-    if os.path.isdir('conf'):
-        shutil.rmtree('conf')
-    os.makedirs('conf')
+    confdir = config.FILESYSTEM_DIR + '/conf'
+    if os.path.isdir(confdir):
+        shutil.rmtree(confdir)
+    os.makedirs(confdir)
     try:
-        os.system(misc.whereis('zcat') + ' ' + initrd + ' | ' + \
-            misc.whereis('cpio') + ' --quiet -id conf/uuid.conf')
+        misc.chroot_exec('zcat ' + initrd.lstrip(config.FILESYSTEM_DIR) + ' | ' + ' cpio --quiet -id conf/uuid.conf', shell=True)
         kernel = re.search('initrd.img-*.*.*-*-(.*)', initrd).group(1)
         message.sub_debug('Kernel', kernel)
-        misc.copy_file('conf/uuid.conf', misc.join_paths(config.ISO_DIR, \
+        misc.copy_file(confdir + '/uuid.conf', misc.join_paths(config.ISO_DIR, \
             '.disk/casper-uuid-' + kernel))
     finally:
-        shutil.rmtree('conf')
+        shutil.rmtree(confdir)
 
     message.sub_info('Creating squashed FileSystem')
     misc.system_command(('mksquashfs', config.FILESYSTEM_DIR, \
