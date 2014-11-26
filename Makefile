@@ -3,6 +3,7 @@ GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo stable)
 
 DESTDIR = 
 PREFIX = $(shell $(PYTHON) -c "import sys; print(sys.prefix)")
+ELEVATOR = pkexec
 
 PYTHON = python2
 PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
@@ -28,8 +29,8 @@ core:
 gui:
 	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.menu.in > \
 		data/customizer.menu
-	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.desktop.in > \
-		data/customizer.desktop
+	$(SED) -e 's|@PREFIX@|$(PREFIX)|' -e 's|@ELEVATOR@|$(ELEVATOR)|' \
+		data/customizer.desktop.in > data/customizer.desktop
 	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.policy.in > \
 		data/customizer.policy
 	$(SED) -e 's|@VERSION@|$(VERSION)|' -e 's|@PREFIX@|$(PREFIX)|g' \
