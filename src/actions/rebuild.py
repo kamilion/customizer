@@ -35,6 +35,13 @@ def main():
         message.sub_critical(isolinux_dir + ' does not exist')
         sys.exit(2)
 
+    if misc.search_file('999:999', misc.join_paths(config.FILESYSTEM_DIR, 'etc/passwd')):
+        message.sub_critical('User with UID 999 exists, this mean that automatic login will fail')
+        sys.exit(2)
+    elif misc.search_file('999:999', misc.join_paths(config.FILESYSTEM_DIR, 'etc/group')):
+        message.sub_critical('Group with GID 999 exists, this mean that automatic login will fail')
+        sys.exit(2)
+
     casper_dir = misc.join_paths(config.ISO_DIR, 'casper')
     if not os.path.isdir(casper_dir):
         message.sub_debug('Creating', casper_dir)
