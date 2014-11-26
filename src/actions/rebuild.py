@@ -97,7 +97,17 @@ def main():
         message.sub_debug('Vmlinuz', vmlinuz)
         misc.copy_file(initrd, misc.join_paths(config.ISO_DIR, 'casper/initrd.lz'))
         misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz'))
-        if os.path.isdir(misc.join_paths(config.ISO_DIR, 'efi/boot')):
+        # FIXME: extend to support grub
+        efi_boot_entry = False
+        isolinux_dir = config.ISO_DIR + '/isolinux'
+        if os.path.isdir(isolinux_dir):
+            for sfile in os.listdir(isolinux_dir):
+                if sfile.endswith('.cfg') and misc.search_file('vmlinuz.efi', isolinux_dir + '/' + sfile):
+                    message.sub_debug('Found EFI entry in isolinux conf', sfile)
+                    efi_boot_entry = True
+        if os.path.isdir(misc.join_paths(config.ISO_DIR, 'efi/boot')) or \
+            efi_boot_entry:
+            message.sub_debug('Copying EFI vmlinuz')
             misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, \
                 'casper/vmlinuz.efi'))
 
