@@ -32,6 +32,9 @@ def main():
         qemu = misc.whereis('qemu-system-x86_64')
     else:
         qemu = misc.whereis('qemu-system-i386')
+    if not qemu:
+        message.sub_critical('QEMU is not installed')
+        sys.exit(2)
     qemu_kvm = False
     command = [qemu, '-m', config.VRAM, '-cdrom', iso_file]
     if misc.search_string('-enable-kvm', misc.get_output((qemu, '-h'))):
