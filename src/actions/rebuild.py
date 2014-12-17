@@ -139,6 +139,7 @@ def main():
         '-comp', config.COMPRESSION))
 
     message.sub_info('Checking filesystem size')
+    # FIXME: respect ignore files from exclude.list
     fs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.squashfs'))
     message.sub_debug('Filesystem size', fs_size)
