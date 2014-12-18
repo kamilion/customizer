@@ -139,15 +139,23 @@ def main():
         '-comp', config.COMPRESSION))
 
     message.sub_info('Checking filesystem size')
-    # FIXME: respect ignore files from exclude.list
-    fs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, \
+    sfs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.squashfs'))
-    message.sub_debug('Filesystem size', fs_size)
-    if fs_size > 4000000000:
+    message.sub_debug('SquashFS filesystem size', sfs_size)
+    if sfs_size > 4000000000:
         message.sub_critical('The squashed filesystem size is greater than 4GB')
         sys.exit(2)
 
     message.sub_info('Creating filesystem.size')
+    fs_size = 0
+    for root, subdirs, files in os.walk(config.FILESYSTEM_DIR):
+        for sfile in files:
+            sfull = os.path.join(root, sfile)
+            if os.path.islink(sfull):
+                continue
+            # FIXME: respect ignored files from exclude.list
+            fs_size += os.path.getsize(sfull)
+    message.sub_debug('Root filesystem size', fs_size)
     misc.write_file(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.size'), str(fs_size))
 
