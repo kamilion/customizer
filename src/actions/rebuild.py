@@ -138,12 +138,12 @@ def main():
         '-wildcards', '-ef', os.path.join(sys.prefix, 'share/customizer/exclude.list'), \
         '-comp', config.COMPRESSION))
 
-    message.sub_info('Checking filesystem size')
+    message.sub_info('Checking SquashFS filesystem size')
     sfs_size = os.path.getsize(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.squashfs'))
     message.sub_debug('SquashFS filesystem size', sfs_size)
     if sfs_size > 4000000000:
-        message.sub_critical('The squashed filesystem size is greater than 4GB')
+        message.sub_critical('The SquashFS filesystem size is greater than 4GB')
         sys.exit(2)
 
     message.sub_info('Creating filesystem.size')
@@ -160,12 +160,12 @@ def main():
         'casper/filesystem.size'), str(fs_size))
 
     message.sub_info('Creating filesystem.manifest')
-    packages_list = misc.chroot_exec(('dpkg-query', '-W', \
+    lpackages = misc.chroot_exec(('dpkg-query', '-W', \
         '--showformat=${Package} ${Version}\\n'), prepare=False, mount=False, \
         output=True)
-    message.sub_debug('Packages', packages_list)
+    message.sub_debug('Packages', lpackages)
     misc.write_file(misc.join_paths(config.ISO_DIR, \
-        'casper/filesystem.manifest'), packages_list)
+        'casper/filesystem.manifest'), lpackages)
 
     # FIXME: do some kung-fu to check if packages are installed
     # and remove them from filesystem.manifest-remove if they are not
