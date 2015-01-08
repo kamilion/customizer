@@ -2,7 +2,7 @@
 
 Customizer (formerly known as U-Customizer)
 
-	
+        
 ### SYNOPSIS
 
     customizer [-h] [-e] [-c] [-x] [-p] [-d] [-k] [-r] [-q] [-t] [-D] [-v]
