@@ -116,3 +116,6 @@ def sub_debug(msg, marker=None):
                 (cdebug, cnormal, msg, cdebug, marker, cnormal))
         else:
             print('%s  => %s%s' % (cdebug, cnormal, msg))
+
+class exception(Exception):
+    pass

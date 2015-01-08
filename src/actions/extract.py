@@ -21,11 +21,9 @@ def unmount_iso():
 def main():
     global mount_dir
     if not os.path.isfile(config.ISO):
-        message.sub_critical('ISO does not exists', config.ISO)
-        sys.exit(2)
+        raise(message.exception('ISO does not exists', config.ISO))
     elif not config.ISO.endswith('.iso'):
-        message.sub_critical('File is not ISO', config.ISO)
-        sys.exit(2)
+        raise(message.exception('File is not ISO', config.ISO))
 
     common.clean_work_dirs()
     common.create_work_dirs()
@@ -56,10 +54,9 @@ def main():
         mount_dir + '/.disk', mount_dir + '/isolinux', ):
         if not os.path.exists(spath):
             message.sub_debug('Non-existing path', spath)
-            message.sub_critical('Invalid ISO', config.ISO)
             common.clean_work_dirs()
             unmount_iso()
-            sys.exit(2)
+            raise(message.exception('Invalid ISO', config.ISO))
 
     message.sub_info('Unsquashing filesystem')
     try:
@@ -76,10 +73,10 @@ def main():
     message.sub_debug('Filesystem architecture', fs_arch)
     message.sub_debug('Host architecture', host_arch)
     if fs_arch == 'amd64' and not host_arch == 'x86_64':
-        message.sub_critical('The ISO architecture is amd64 and yours is not')
+        message.sub_debug('The ISO architecture is amd64 and yours is not')
         common.clean_work_dirs()
         unmount_iso()
-        sys.exit(2)
+        raise(CustomizerException('The ISO architecture is amd64 and yours is not'))
 
     message.sub_info('Copying ISO files')
     for sfile in misc.list_files(mount_dir):

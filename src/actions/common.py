@@ -17,8 +17,7 @@ def check_filesystem():
             break
 
     if corrupted:
-        message.sub_critical('Filesystem is missing or corrupted')
-        sys.exit(2)
+        raise(message.exception('Filesystem is missing or corrupted'))
 
 def create_work_dirs():
     if not os.path.isdir(config.FILESYSTEM_DIR):

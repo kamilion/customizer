@@ -93,7 +93,7 @@ try:
         clean.main()
 
 except ConfigParser.Error as detail:
-    message.critical('CONFIGPARSER' + str(detail))
+    message.critical('CONFIGPARSER: ' + str(detail))
     sys.exit(3)
 except subprocess.CalledProcessError as detail:
     message.critical('SUBPROCESS: ' + str(detail))
@@ -113,6 +113,9 @@ except re.error as detail:
 except KeyboardInterrupt:
     message.critical('Interupt signal received')
     sys.exit(9)
+except message.exception as detail:
+    message.critical('CUSTOMIZER: ' + str(detail))
+    sys.exit(10)
 except SystemExit:
     sys.exit(2)
 except Exception as detail:

@@ -19,8 +19,7 @@ def main():
                 message.sub_debug('Package manager detected', sfile)
 
     if not pkgmngr:
-        message.sub_critical('No package manager available')
-        sys.exit(2)
+        raise(message.exception('No package manager available'))
 
     message.sub_info('Executing package manager')
     misc.chroot_exec((pkgmngr))

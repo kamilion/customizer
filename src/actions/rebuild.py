@@ -27,20 +27,16 @@ def main():
     message.sub_info('Doing sanity checks')
     lsb_file = misc.join_paths(config.FILESYSTEM_DIR, 'etc/lsb-release')
     if not os.path.isfile(lsb_file):
-        message.sub_critical(lsb_file + ' does not exists')
-        sys.exit(2)
+        raise(message.exception(lsb_file + ' does not exists'))
 
     isolinux_dir = misc.join_paths(config.ISO_DIR, 'isolinux')
     if not os.path.isdir(isolinux_dir):
-        message.sub_critical(isolinux_dir + ' does not exist')
-        sys.exit(2)
+        raise(message.exception(isolinux_dir + ' does not exist'))
 
     if misc.search_file('999:999', misc.join_paths(config.FILESYSTEM_DIR, 'etc/passwd')):
-        message.sub_critical('User with UID 999 exists, this mean that automatic login will fail')
-        sys.exit(2)
+        raise(message.exception('User with UID 999 exists, this mean that automatic login will fail'))
     elif misc.search_file('999:999', misc.join_paths(config.FILESYSTEM_DIR, 'etc/group')):
-        message.sub_critical('Group with GID 999 exists, this mean that automatic login will fail')
-        sys.exit(2)
+        raise(message.exception('Group with GID 999 exists, this mean that automatic login will fail'))
 
     casper_dir = misc.join_paths(config.ISO_DIR, 'casper')
     if not os.path.isdir(casper_dir):
@@ -96,8 +92,7 @@ def main():
     detect_boot()
 
     if not initrd or not vmlinuz:
-        message.sub_critical('Missing boot file (initrd or vmlinuz)')
-        sys.exit(2)
+        raise(message.exception('Missing boot file (initrd or vmlinuz)'))
     else:
         message.sub_info('Copying boot files')
         message.sub_debug('Initrd', initrd)
@@ -143,8 +138,7 @@ def main():
         'casper/filesystem.squashfs'))
     message.sub_debug('SquashFS filesystem size', sfs_size)
     if sfs_size > 4000000000:
-        message.sub_critical('The SquashFS filesystem size is greater than 4GB')
-        sys.exit(2)
+        raise(message.exception('The SquashFS filesystem size is greater than 4GB'))
 
     message.sub_info('Creating filesystem.size')
     fs_size = 0

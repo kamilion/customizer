@@ -11,11 +11,9 @@ def main():
     common.check_filesystem()
 
     if not os.path.isfile(config.DEB):
-        message.sub_critical('DEB does not exists', config.DEB)
-        sys.exit(2)
+        raise(message.exception('DEB does not exists', config.DEB))
     elif not config.DEB.endswith('.deb'):
-        message.sub_critical('File is not DEB', config.DEB)
-        sys.exit(2)
+        raise(message.exception('File is not DEB', config.DEB))
 
     message.sub_info('Copying DEB file')
     deb_file = misc.join_paths(config.FILESYSTEM_DIR, 'temp.deb')

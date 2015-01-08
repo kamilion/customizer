@@ -23,8 +23,7 @@ def main():
 
     iso_file = '%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)
     if not os.path.exists(iso_file):
-        message.sub_critical('ISO Image does not exists', iso_file)
-        sys.exit(2)
+        raise(message.exception('ISO Image does not exists', iso_file))
 
     message.sub_info('Running QEMU with ISO image', iso_file)
     host_arch = os.uname()[4]
@@ -33,8 +32,8 @@ def main():
     else:
         qemu = misc.whereis('qemu-system-i386')
     if not qemu:
-        message.sub_critical('QEMU is not installed')
-        sys.exit(2)
+        raise(message.exception('QEMU is not installed'))
+
     qemu_kvm = False
     command = [qemu, '-m', config.VRAM, '-cdrom', iso_file]
     if misc.search_string('-enable-kvm', misc.get_output((qemu, '-h'))):

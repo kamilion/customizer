@@ -19,8 +19,7 @@ def main():
             message.sub_debug('Session detected', xsession)
 
     if not xsession:
-        message.sub_critical('No session avaialable')
-        sys.exit(2)
+        raise(message.exception('No session avaialable'))
 
     # FIXME: race condition between session and Xephyr - if session
     # starts before Xephyr it fails saying it does not find the DISPLAY
@@ -29,8 +28,7 @@ def main():
         config.RESOLUTION, '-br', ':13'))
     x.poll()
     if x.returncode > 0:
-        message.sub_critical('Failed to start Xephyr', x.returncode)
-        sys.exit(2)
+        raise(message.exception('Failed to start Xephyr', x.returncode))
 
     try:
         message.sub_info('Allwoing local access to X-server')

@@ -11,8 +11,7 @@ def main():
     common.check_filesystem()
 
     if not os.path.isfile(config.HOOK):
-        message.sub_critical('HOOK does not exists', config.HOOK)
-        sys.exit(2)
+        raise(message.exception('HOOK does not exists', config.HOOK))
 
     message.sub_info('Copying HOOK file')
     hook_file = misc.join_paths(config.FILESYSTEM_DIR, 'hook')
