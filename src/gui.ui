@@ -34,6 +34,9 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
+       <attribute name="icon">
+        <iconset theme="system-run"/>
+       </attribute>
        <attribute name="title">
         <string>Main</string>
        </attribute>
@@ -181,6 +184,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tab_2">
+       <attribute name="icon">
+        <iconset theme="preferences-other"/>
+       </attribute>
        <attribute name="title">
         <string>Settings</string>
        </attribute>
@@ -334,6 +340,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tab_3">
+       <attribute name="icon">
+        <iconset theme="help-about"/>
+       </attribute>
        <attribute name="title">
         <string>About</string>
        </attribute>
