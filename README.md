@@ -1,32 +1,58 @@
-# Customizer
+### NAME
 
-Customizer is an advanced Live CD customization and remastering tool. With it, you can build your own Ubuntu-based remix using either the Ubuntu Mini Remix, Ubuntu or its derivatives ISO image with a few mouse clicks.
+Customizer (formerly known as U-Customizer)
 
-This branch relies on Gambas 2 packages, optimized for 12.04 and older releases.
+        
+### SYNOPSIS
 
-**IMPORTANT** You need to enable some repositories to install the dependencies and `gambas2` packages. Ensure that you have enabled the **universe** repository in your Software Sources. Then, update the repository (or open Terminal and run `sudo apt-get update`) and follow the instructions below.
+    customizer [-h] [-e] [-c] [-x] [-p] [-d] [-k] [-r] [-q] [-t] [-D] [-v]
 
-## Getting Started
 
-Download installation script and execute:
+### DESCRIPTION
 
-    wget https://dl.dropboxusercontent.com/u/54183088/install.sh
-    chmod +x install.sh
-    sudo ./install.sh -i
+Customizer is an advanced LiveCD customization and remastering tool. With it, you can build own
+Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image with a few mouse clicks.
 
-Then, run Customizer in CLI:
 
-    sudo /opt/Customizer/CLI.sh -h
+### OPTIONS
 
-Or, run Customizer in GUI:
+    -h, --help       Show this help message and exit
+    -e, --extract    Exctract ISO image
+    -c, --chroot     Chroot into the filesystem
+    -x, --xnest      Execute nested X-session
+    -p, --pkgm       Execute package manager
+    -d, --deb        Install Debian package
+    -k, --hook       Execute hook
+    -r, --rebuild    Rebuild the ISO image
+    -q, --qemu       Test the builded image with QEMU
+    -t, --clean      Clean all temporary files and folders
+    -D, --debug      Enable debug messages
+    -v, --version    Show Customizer version and exit
 
-    gksu /opt/Customizer/GUI.gambas
+### ENVIRONMENT
 
-**IMPORTANT** If you are using KDE, replace `gksu` with `kdesu` or `kdesudo`.
+    /etc/customizer.conf  -  configuration file
+    <prefix>/share/customizer/exclude.list - files/dirs to exclude when compressing filesystem
 
-Visit our GitHub Wiki at  https://github.com/clearkimura/Customizer/wiki  for details.
+### REQUIREMENTS
 
-## Credits
+    make
+    binutils
+    gcc (g++)
+    python (python2.7 and python2.7-dev)
+    pyqt4 (python-qt4 and pyqt4-dev-tools)
+    squashfs-tools (>=4.2)
+    xorriso
+    xhost (x11-xserver-utils)
+    xephyr (xserver-xephyr)
+    qemu (qemu-kvm)
+
+### INSTALL AND RUN
+
+    make && sudo make install
+    sudo customizer -h
+
+### AUTHORS
 
 Ivailo Monev 'SmiL3y' (code developer) `xakepa10@gmail.com`
 
@@ -34,16 +60,52 @@ Michal Glowienka 'eloaders' (PPA maintainer) `eloaders@yahoo.com`
 
 Mubiin Kimura 'clearkimura' (documentation) `clearkimura@gmail.com`
 
-Andrie Vorster 'andries-petrus-vorster' (README.md)
 
-Ayman 'aymanim' (typo, spellcheck)
+### BUGS REPORT
 
-Yes 'eByrd' (typo, spellcheck)
+Create and submit your issue at https://github.com/fluxer/Customizer/issues
 
-## Legal
+**IMPORTANT** You should include the following details: what version of system host, 
+what version of customizer, what ISO image, description of problem, full output log that is 
+not just the part of what you consider relevant, and if possible, relevant screenshots.
 
-The GNU General Public License version 2 (GPLv2)
+Example of issue submission details:
+
+    Ubuntu 12.04 32-bit, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64.iso.
+    Using GUI, after select 'Build', cannot create ISO image file, Terminal shows
+    Error 119: No kernel found when compiling image.
+
+The developers will look into submitted issues from time to time, usually a day or two.
+Only issues found in latest versions of Customizer are concerned. Issues in older versions
+will be ignored.
+
+To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Changes-log
+
+
+### COPYRIGHT
 
 Copyright (C) 2010-2013 Ivailo Monev
 
 Copyright (C) 2013-2014 Mubiin Kimura
+
+License: GPLv2
+
+
+### HISTORY
+
+In late 2010, this project was registered on Sourceforge.net. Since November 2011,
+documentation is contributed. As December 2011, Customizer development has moved to
+GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). One year later, 
+as December 2012, Customizer stable release has hit 3.2.3.
+
+Presently re-written from scratch with the goal to support Ubuntu releases newer than 12.10
+and making it more stable and robust.
+
+
+### SEE ALSO
+
+PPA stable  https://launchpad.net/~customizer-dev-team/+archive/stable
+
+PPA devel  https://launchpad.net/~customizer-dev-team/+archive/devel
+
+You can find more information about Customizer at https://github.com/fluxer/Customizer/wiki

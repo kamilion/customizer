@@ -1,1 +1,8 @@
 *~
+*.pyc
+src/gui_ui.py
+src/main.py
+src/gui.py
+data/customizer.menu
+data/customizer.desktop
+data/customizer.policy

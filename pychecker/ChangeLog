@@ -1,0 +1,1103 @@
+=== release 0.8.19 ===
+
+2011-01-08  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* setup.py:
+	* NEWS:
+	  Releasing 0.8.19, "Two Seven"
+	* README:
+	  Note that we support 2.2 - 2.7
+	* MANIFEST.in:
+	  Adding pychecker.doap
+
+2011-01-08  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker.doap:
+	* setup.py:
+	  Add a DOAP file.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/utils.py:
+	  debug suppressions detected.
+	* test_check.sh:
+	  Do a unified diff.  Reverse order, so that + lines show us
+	  what the new output is.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test76:
+	  For some reason line numbers for warnings shifted from 6 to 7.
+	  Neither seems correct.  Adjust expected output for now since
+	  it's not more wrong than before.
+	* TODO:
+	  Add a note to investigate this later.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/warn.py:
+	  Push config before processing a nested function.
+	  This fixes the new test_nestedsuppression.py
+	* test/expected/test_nestedsuppression__objattrs:
+	* test/test_suppressions.py:
+	  Add the new test to the test suite, with four expected warnings.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  add Code.codeOrder attribute, keeping track of the order in
+	  which codeObjects is added to.
+	  add addCodeObject method.
+	* pychecker/warn.py:
+	  Go through codeObjects in order.
+	  Fixing the ordering moves the warning in the previous test from
+	  containerFirst to containerSecond, which makes more sense, but
+	  still shows suppression bleed.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/input/test_nestedsuppression.py:
+	  Add a test that shows that suppressions in nested code
+	  bleed over into their sibling code blocks and parent.
+	  Curiously, in my case it warned correctly about containerFirst,
+	  but did not warn in containerSecond.
+	  Debug log indicates that in containerSecond, the second() function
+	  was parsed (and suppression was added) before first().
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Document CodeChecks.Code.codeObjects
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/warn.py:
+	  Identify nested code better.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/warn.py:
+	  Give us stats on how many warnings were triggered processing
+	  each kind of block.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/Config.py:
+	  Process command line args before config files.
+	  This gives a -d option a change to debug the processing of
+	  config files.
+	  Add debugging of loaded suppressions.
+
+2011-01-07  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/warn.py:
+	  Debug filtering the warnings with the blacklist.
+	* pychecker/pcmodules.py:
+	  Document Class.ignoreAttrs.
+	* pychecker/checker.py:
+	  getWarnings only used by TKInter; so don't untils.debug there
+	  too.
+	* pychecker/Stack.py:
+	  Clean up and document getType a little.  There are unneeded
+	  if's there complicating the code.
+	* pychecker/CodeChecks.py:
+	  typemap documenting, and pep-8-ifying.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/test_pychecker_function.py:
+	  Before 2.5, .0 for co_varnames was [outmost-iterable].
+	  Go figure.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test103-2.2:
+	* test_expected/test103-2.4:
+	* test_expected/test103 (deleted):
+	  Test 103 uses syntax that only works from 2.4 on.
+	  Break up expected results in broken pre-2.4 and working 2.4 and
+	  later.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_todo/test78.py:
+	* test_input/test78.py (deleted):
+	  Move a test that breaks on python 2.6 and older.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_todo/import44.py:
+	* test_todo/test34.py:
+	* test_todo/test44.py:
+	* test_todo/test70.py:
+	* test_todo/test71.py:
+	* test_todo/test77.py:
+	* test_input/test44.py (deleted):
+	* test_input/test34.py (deleted):
+	* test_input/test77.py (deleted):
+	* test_input/test71.py (deleted):
+	* test_input/test70.py (deleted):
+	* test_input/import44.py (deleted):
+	  Move known broken tests to todo.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Debug every warning when it gets created.
+	  Prefix all opcode debugging with DIS, makes it easier to find.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/Warning.py:
+	* pychecker/options.py:
+	* pychecker/pcmodules.py:
+	* pychecker/utils.py:
+	* pychecker/warn.py:
+	  Clean up a bunch of pychecker warnings.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/Config.py:
+	* pychecker/OP.py:
+	* pychecker/OptionTypes.py:
+	* pychecker/Stack.py:
+	* pychecker/Warning.py:
+	* pychecker/checker.py:
+	* pychecker/function.py:
+	* pychecker/msgs.py:
+	* pychecker/options.py:
+	* pychecker/pcmodules.py:
+	* pychecker/printer.py:
+	* pychecker/python.py:
+	* pychecker/utils.py:
+	* pychecker/warn.py:
+	  Add Python mode lines.  Remove shebang lines where not needed.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Extract PyCheckerModule, Variable and Class...
+	* pychecker/pcmodules.py:
+	  ... and move it here.
+	  This allows us importing a module that has PyCheckerModule without
+	  all sorts of side effects.
+	* pychecker/CodeChecks.py:
+	* pychecker/utils.py:
+	  Follow up on changes.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/utils.py:
+	  Make utils.debug output something slightly nicer.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/warn.py:
+	  Make sure that every disassembly has a header saying what it
+	  is (module/class/class method/function)
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Add docstrings.
+	  Fix some inconsistent casing.
+	  More PEP-8 adherence.
+	* pychecker/checker.py:
+	  All of the above, plus add PyCheckerModule.getToken() which
+	  can be used later to handle token conflicts.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Make output of NOT PROCESSED UNABLE TO IMPORT report filename
+	  similarly to other warnings.
+	* test_expected/test58-2.3:
+	* test_expected/test77:
+	* test_expected/test8:
+	* test_expected/test89:
+	  Adjust expected output to match.
+
+2011-01-06  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/warn.py:
+	  Add debug output to list number of modules and number of
+	  warnings found.
+
+2011-01-05  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Add support for opcode 99, DUP_TOPX
+	* test/expected/test_DUP_TOPX:
+	* test/input/test_DUP_TOPX.py:
+	* test/test_pychecker_CodeChecks.py:
+	  Add a test for it.
+
+2010-12-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Rework confusing addMethod method such that instead of mixing
+	  method and methodName and doing confusing checks and asserts,
+	  the name is always passed, and optionally the method.
+	  In the third case where it was used, a name was always passed,
+	  hence the second argument wasn't even used; so drop it.
+
+2010-12-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* TODO:
+	  Add a TODO item.
+	* test/test_pychecker_function.py:
+	  Add a unit test for function.Function
+	  Add a surprising result for co_varnames for generators.
+
+2010-12-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	* pychecker/function.py:
+	* pychecker/pcmodules.py:
+	* pychecker/warn.py:
+	  Documentation, comments, and PEP-8.
+
+2010-12-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/test_global.py:
+	  Add a test for globals, same as test13.
+	* test/input/test_global.py:
+	  Test it without and with -g as the test input says.
+	* test/expected/test_global:
+	* test/expected/test_global_g:
+	  Expected outputs in both cases.
+
+2010-12-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/common.py:
+	  Add underscored arguments to expected file name, so that we can
+	  run the same input file with more than one argument.
+	* test/expected/test_zope_interface:
+	* test/expected/test_zope_interface_q:
+	  Renamed now that args are encoded in filename.
+
+2010-12-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* TODO:
+	* test_expected/test13:
+	  For some reason the expected output was warning about the second
+	  occurrence of each global, not the first.  So the expected output
+	  was wrong.  Even in 2.2 the behaviour was the same.
+	  So, regenerate expected output.  Verified it passes from 2.2 to
+	  2.7.
+
+2010-12-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  In 2.2 and older, __file__ might not be set on the current
+	  module.
+
+2010-12-28  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement BUILD_SLICE, opcode 133.  Now dis can be pychecked.
+	  Not sure what to push on stack for non-const slices though.
+
+2010-12-28  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/Stack.py:
+	  Document and pep-8-ify.
+
+2010-12-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement PRINT_NEWLINE_TO taking a cue from PRINT_ITEM_TO.
+	  Also triggered by twisted.trial.unittest.
+
+2010-12-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* test/input/test_STORE_SLICE_PLUS_0.py:
+	* test/test_pychecker_CodeChecks.py:
+	  Add support for STORE_SLICE+0, as triggered by
+	  twisted.trial.unittest, plus a test.
+
+2010-12-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/common.py:
+	  Make it clear when we actually generate an expected output file
+	  the first time.
+
+2010-12-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Add WITH_CLEANUP implementation for the case where TOS is None.
+	  Now can check unittest.case
+
+2010-12-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Add SETUP_WITH implementation, similar to SETUP_FINALLY.
+	  Fixes one of the two unimplemented opcodes warnings about
+	  unittest.case
+
+2010-12-19  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Mark SETUP_WITH and BUILD_SET as unimplemented.
+	  Makes unit tests pass again.
+
+2010-12-19  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Instead of peaking two intstructions ahead past POP_TOP for
+	  LOAD_CONST, with the new POP/JUMP instructions, peak only one
+	  ahead.
+	  Fixes test 85 for 2.7.
+
+2010-12-18  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement support for SET_ADD, MAP_ADD and the new style
+	  LIST_APPEND.
+
+2010-12-18  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement support for JUMP_IF_FALSE/TRUE and
+	  JUMP_IF_FALSE/TRUE_OR_POP.
+	  Brings 2.7 test failures from 33 to 7.
+	  Compared to 2.6, the only difference is 85 now failing and 78
+	  passing.
+
+2010-12-18  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Rearrange opcodes for 2.7, without implementing new or
+	  changed opcodes.
+	  Brings 2.7 test failures from 54 to 33.
+
+2010-12-18  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* HACKING:
+	  Add notes on updating to newer Python version.
+	* pychecker/OP.py:
+	  Adapt to opcode changes and additions.
+	  Brings 2.7 test failures from 69 to 54.
+
+2010-12-16  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/checker.py:
+	* pychecker/function.py:
+	* pychecker/warn.py:
+	  Rename PyCheckerModule's main_code to mainCode to be consistent with
+	  other instance variable names.
+	  More PEP-8-ifying.
+	  More docstrings.
+
+2010-12-16  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  PEP-8-ify more.  Document _filterDir.  Add _getModuleTokens similar
+	  to _getClassTokens.
+
+2010-12-16  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Make function PEP-8.  Comment and restructure.
+
+2010-12-16  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Make code more PEP-8.
+	  If we get pcmodule, reuse it on the next line.
+
+2010-12-15  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/utils.py:
+	  Add constant for 2.7
+
+2010-12-04  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* doc/opcodes/opcodes-2.3:
+	* doc/opcodes/opcodes-2.4:
+	* doc/opcodes/opcodes-2.5:
+	* doc/opcodes/opcodes-2.6:
+	* doc/opcodes/opcodes-2.7:
+	* scripts/opcodes.py:
+	  Add a script to list opcodes, and record the results for 5 python
+	  versions.
+
+2010-12-04  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_check.sh:
+	  Fix simple typo so it reports number of failed tests.
+
+2009-10-01  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* TODO:
+	  Add notes about failing test.
+	* test_input/test71.py:
+	  comment the lines that really should be unreacheable.
+	  They're not the lines the pre-2.5 results actually hit.
+
+2009-10-01  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/OP.py:
+	  Document.
+
+2009-10-01  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/utils.py:
+	  From 2.4 to 2.5, the name for generator code objects changed.
+	  In 2.4, lib/compile.c has the function compile_generator_expression
+	  with:
+	          c->c_name = "<generator expression>";
+
+	  In 2.5, lib/compile.c has the function compiler_genexp with:
+	          if (!name) {
+		                  name = PyString_FromString("<genexpr>");
+	  So adapt to this change by adding another utils string, and
+	  comparing against it in _LODE_CONST.
+	  Fixes test 103 on 2.5/2.6
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_check.sh:
+	  Mangle output from warnings for system libraries so that we replace
+	  the system path with [system path] much like pychecker does.
+	  Allows us to consistently check against expected output without
+	  relying on where python is installed.
+	* test_expected/test88-2.4:
+	  Change to use [system path].  Fixes test 88 for python 2.4
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test87-2.5:
+	  Since Python 2.5, disassembly is able to pinpoint the exact line
+	  number of multiline statements.  So update line numbers to the
+	  correct source line.
+	  Fixes test 87 for 2.5 and later.
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  More documentation.
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test53-2.5:
+	  Similarly, ~~ is now optimized away; in 2.4, we see:
+	  >>> dis.dis(test53.x)
+	    5           0 LOAD_CONST               1 (10)
+	                3 UNARY_INVERT        
+			4 UNARY_INVERT        
+			5 STORE_FAST
+			0 (i)
+	 In 2.5, the two UNARY_INVERT are gone.
+	  "Fixes" test 53 on 2.5 and 2.6
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test48-2.5:
+	  Similarly, the following piece of opcode is now optimized away
+	  since 2.5:
+	  >>> dis.dis(test_input.test48.abc)
+	  57          16 LOAD_CONST               1 (5)
+	              19 POP_TOP             
+	  "Fixes" test 48 on 2.5 and 2.6
+
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test22-2.5:
+	  From Python 2.5 "What's new" at
+	  http://www.python.org/doc/2.5/whatsnew/other-lang.html:
+	  "The code generator's peephole optimizer now performs simple constant
+	   folding in expressions. If you write something like a = 2+3, the
+	   code generator will do the arithmetic and produce code corresponding
+	   to a = 5. (Proposed and implemented by Raymond Hettinger.)"
+	  Verified from debug info that this actually happens; the code
+	  generator now transforms the statement on line 79 to 1, and line 81
+	  to 0.
+	  So, remove these warnings from the expected output as they can't
+	  be triggered anymore.  Fixes test 22 for Python 2.5
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_input/test88.py:
+	  gopherlib has been removed in 2.6, so wrap it inside a try/except.
+	* test_expected/test88:
+	* test_expected/test88-2.4:
+	* test_expected/test88-2.5:
+	  Update the line numbers since they've all changed.
+	* test_expected/test88-2.6:
+	  Add an expected output, which is now different since the deprecation
+	  warning from the module itself is now gone.
+	  Fixes test 88.
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Since Python 2.6, BUILD_MAP can take a non-zero argument.
+	  This argument is the size of the dictionary to pre-size with,
+	  but the opcode doesn't actually consume this number of items
+	  from the stack; adding items to the dict comes later on the stack.
+	  So, the factory function makeDict should be called with an index of
+	  0 always.
+	  Fixes tests 26, 36, 59 on Python 2.6.
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Add docs and comments on some methods before fixing test26
+	  on Python 2.6
+
+2009-09-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_check.sh:
+	  Use mktemp to create a temporary directory.  Makes testsuite
+	  robust against parallel execution.  First buglet caught by
+	  buildbot.
+
+2009-07-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_check.sh:
+	  Return the number of failed tests, similar to make check.
+	  This makes sure tools like buildbot see a failure.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement more opcodes, this time triggered by checking
+	  pychecker itself.
+	  pycheckering pychecker is a sobering experience, and bad PR.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement STORE_SLICE2, which is triggered by anaconda.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  moduleDir can be '' which is None, in the case where
+	  the module being tested lives in the current directory.
+	  So always compare with is/is not None.
+
+	  Fixes
+	  https://sourceforge.net/tracker/index.php?
+	  func=detail&aid=2209631&group_id=24686&atid=382217
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/warn.py:
+	  Note where test44 seems to fail.  Can't figure out how
+	  to fix it yet though.
+	  Add more comments.
+	  Reorder a function to be more clear to follow.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement DELETE_SLICE3.  ./test_check.sh no longer
+	  triggers dispatch errors.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement SLICE0 and YIELD_VALUE.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* bin/pychecker:
+	  Adding a script to be used as the pychecker binary when
+	  running uninstalled.
+	* misc/pychecker-uninstalled:
+	  Add a script to run pychecker uninstalled.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Implement STORE_MAP dispatcher.
+	  Fixes test/test_dict.py
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/checker.py:
+	* pychecker/utils.py:
+	  Further documentation and commenting.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/Warning.py:
+	* pychecker/utils.py:
+	* pychecker/warn.py:
+	  Add comments and docstrings as I learn.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	* pychecker/warn.py:
+	  raise NotImplementedError where we actually have the
+	  opcode.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Add opcodes from 2.5 and 2.6
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/test_stdlib.py:
+	  For now, return OK if we can't import zope.interface,
+	  since there is no skip support in the standard unittest.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* HACKING:
+	  Add note on setting PYTHONPATH for running tests.
+	* test/common.py:
+	  Also make trial work for Twisted 1.3.0 which we use for
+	  Python 2.3 testing.
+
+2009-06-27  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Add _empty and _unimplemented as opcode dispatchers.
+	  Add all missing opcodes for python 2.4
+	* pychecker/warn.py:
+	  For now, print a NotImplementedError if there are still
+	  missing opcodes.  This should be changed to a raise
+	  when we've added all opcodes from released python versions.
+	* test/main.py:
+	  Add new tests for pychecker.CodeChecks
+	* test/test_pychecker_CodeChecks.py:
+	  Add a test to make sure we have all opcodes handled.
+
+2009-06-26  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* HACKING:
+	  Add a note on trial as an option.
+	* test/expected/test_dict:
+	* test/expected/test_getmodule:
+	* test/expected/test_zope_interface:
+	  Make everything relative to the test dir
+	* test/common.py:
+	  Make 'trial test' run similarly to 'python test/main.py'
+	  Diff from expected to output, so the + are what the test has.
+
+2009-06-26  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* HACKING:
+	  Add notes about the testsuite.
+	* test/expected/test_dict:
+	* test/input/test_dict.py:
+	* test/main.py:
+	* test/test_dict.py:
+	  Add a test for someDict.keys() in a function which fails in
+	  python 2.6, but not earlier.
+
+2009-06-21  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test3-2.4:
+	  Fix expected output to include [system path] like the others.
+	  Fixes the test on 2.4.
+
+2009-06-21  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test34-2.4:
+	  Fix expected output to include [system path] like the others.
+	  Fixes the test on 2.4.
+
+2009-06-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* scripts/delete-duplicate-expected:
+	  Also catch when -2.4 and -2.6 are the same, and there's no -2.5
+
+2009-06-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test88-2.5:
+	  Add a 2.5-specific version since whrandom really is gone now.
+
+2009-06-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/Warning.py:
+	  remove sys.path list members from the warning's file path, so that
+	  we don't need different expected test outputs for different versions
+	  when nothing important has changed.
+	* pychecker/checker.py:
+	  remove sys.path entries by default.  This could be made configurable
+	  if people would still want to see the old behaviour that lists the
+	  full path for some errors.
+	* test_expected/test3-2.3:
+	* test_expected/test3-2.5:
+	* test_expected/test3-2.6:
+	* test_expected/test34-2.2:
+	* test_expected/test34-2.3:
+	* test_expected/test34-2.5:
+	* test_expected/test34-2.6:
+	  Adapt the expected output to the new [system path] output.
+	  Removes some hardcoded neils in the process, and fixes 3 and 34
+	  on my F9 python 2.5 version.
+
+2009-06-20  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_check.sh:
+	  Instead of comparing to an exact match for test_expected for our
+	  Python version, allow comparing against the newest expected version
+	  that is equal to or below our Python version.
+	  Avoids needing to add output for test 17 on python 2.5, and fixes
+	  test 17 in my python 2.5 test run.
+
+2008-07-29  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/common.py:
+	* test/test_module.py:
+	* test/test_stdlib.py:
+	  Switch to mixedCase as Neil prefers.
+
+2008-07-14  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Don't pollute sys.path by inserting every moduleDir into it.
+	  This allows projects to have for example a gtk.py file in a
+	  package that does not conflict with the gtk system library.
+	  Instead, pollute it right before loading the module, then clean up
+	  immediately after.
+
+2008-07-14  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* setup.py:
+	  If installing to a staging root, don't include this path in the
+	  install_lib dir.
+	* setup.cfg:
+	  Set optimize = 1 to make rpm not complain about installed but
+	  missing .pyo files.
+	  Fixes python setup.py bdist_rpm
+
+2008-07-14  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Make sure args passed for checking now create PyCheckerModule
+	  instances with moduleDir set properly.  This triggers the new
+	  code behaviour where modules are stored as a moduleName, moduleDir
+	  tuple in pcmodules.py, making sure same-named modules get treated
+	  separately.
+	  New test suite now passes again.
+	  Fixes #1563572.
+
+2008-07-14  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/input/getmodule/A/C.py:
+	* test/input/getmodule/A/__init__.py:
+	* test/input/getmodule/B/C.py:
+	* test/input/getmodule/B/__init__.py:
+	* test/input/getmodule/__init__.py:
+	* test/input/test_getmodule.py:
+	* test/test_module.py:
+	* test/main.py:
+	  Add a test that shows how warnings in modules with the same name,
+	  but different directories, shadow each other. See
+	  http://sourceforge.net/tracker/index.php?func=detail&aid=1563572&group_id=24686&atid=382217
+
+2008-07-14  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/common.py:
+	  add check_multiple test method that allows checking more than one
+	  argument.
+	* test/expected/test_zope_interface:
+	  update expected string
+
+2008-07-14  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/pcmodules.py:
+	  New module; replaces checker._allModules
+	  Allows us to track and differentiate between modules with the same
+	  name but from different paths.
+	* pychecker/checker.py:
+	  Use it instead of _allModules
+	* pychecker/warn.py:
+	  Also use it in the code that checks if a base class's __init__ was
+	  called, instead of only checking sys.modules, which only works
+	  if we pollute sys.modules (which is what we're trying to fix)
+
+2008-07-13  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Instantiate Class with the PycheckerModule instance instead of the
+	  real module; this allows us to see and act on presence of moduleDir.
+
+2008-07-13  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Change _findModule to take an optional moduleDir keyword argument.
+	  Use it in setupMainCode
+	  Make sibling imports work by temporarily putting moduleDir on
+	  sys.path
+
+2008-07-13  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Add self.moduleDir to filename() for PyCheckerModule.
+
+2008-07-13  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Refactor code such that we can pass a moduleDir keyword argument to
+	  PyCheckerModule.  This will allow us to discern between modules
+	  with the same name, but in a different directory.
+	  Change allModules to be a dict of (moduleName, moduleDir) -> module
+	  No behaviour change yet.
+
+2008-07-13  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  When showing what we're processing, show module name and file name.
+	* test_expected/test1:
+	* test_expected/test1-2.3:
+	* test_expected/test1-2.4:
+	* test_expected/test1-2.5:
+	* test_expected/test10:
+	* test_expected/test100:
+	* test_expected/test101:
+	* test_expected/test11:
+	* test_expected/test12:
+	* test_expected/test13:
+	* test_expected/test14:
+	* test_expected/test15:
+	* test_expected/test16:
+	* test_expected/test17:
+	* test_expected/test17-2.4:
+	* test_expected/test18:
+	* test_expected/test19:
+	* test_expected/test2:
+	* test_expected/test20:
+	* test_expected/test20-2.4:
+	* test_expected/test20-2.5:
+	* test_expected/test21:
+	* test_expected/test22:
+	* test_expected/test23:
+	* test_expected/test24:
+	* test_expected/test25:
+	* test_expected/test26:
+	* test_expected/test27:
+	* test_expected/test27-2.2:
+	* test_expected/test27-2.3:
+	* test_expected/test27-2.4:
+	* test_expected/test27-2.5:
+	* test_expected/test28:
+	* test_expected/test29:
+	* test_expected/test3:
+	* test_expected/test3-2.2:
+	* test_expected/test3-2.3:
+	* test_expected/test3-2.4:
+	* test_expected/test3-2.5:
+	* test_expected/test30:
+	* test_expected/test31:
+	* test_expected/test32:
+	* test_expected/test33:
+	* test_expected/test34:
+	* test_expected/test34-2.2:
+	* test_expected/test34-2.3:
+	* test_expected/test34-2.4:
+	* test_expected/test34-2.5:
+	* test_expected/test35:
+	* test_expected/test36:
+	* test_expected/test37:
+	* test_expected/test38:
+	* test_expected/test39:
+	* test_expected/test39-2.2:
+	* test_expected/test39-2.3:
+	* test_expected/test39-2.4:
+	* test_expected/test39-2.5:
+	* test_expected/test4:
+	* test_expected/test40:
+	* test_expected/test41:
+	* test_expected/test42:
+	* test_expected/test43:
+	* test_expected/test44:
+	* test_expected/test45:
+	* test_expected/test46:
+	* test_expected/test47:
+	* test_expected/test48:
+	* test_expected/test49:
+	* test_expected/test5:
+	* test_expected/test50:
+	* test_expected/test51:
+	* test_expected/test52:
+	* test_expected/test53:
+	* test_expected/test54:
+	* test_expected/test55:
+	* test_expected/test56:
+	* test_expected/test57:
+	* test_expected/test58:
+	* test_expected/test58-2.2:
+	* test_expected/test58-2.3:
+	* test_expected/test58-2.4:
+	* test_expected/test58-2.5:
+	* test_expected/test59:
+	* test_expected/test6:
+	* test_expected/test60:
+	* test_expected/test61:
+	* test_expected/test62:
+	* test_expected/test63:
+	* test_expected/test64:
+	* test_expected/test65:
+	* test_expected/test66:
+	* test_expected/test67:
+	* test_expected/test68:
+	* test_expected/test68-2.4:
+	* test_expected/test68-2.5:
+	* test_expected/test69:
+	* test_expected/test7:
+	* test_expected/test70:
+	* test_expected/test71:
+	* test_expected/test71-2.4:
+	* test_expected/test71-2.5:
+	* test_expected/test72:
+	* test_expected/test73:
+	* test_expected/test74:
+	* test_expected/test74-2.4:
+	* test_expected/test74-2.5:
+	* test_expected/test75:
+	* test_expected/test75-2.2:
+	* test_expected/test75-2.3:
+	* test_expected/test75-2.4:
+	* test_expected/test75-2.5:
+	* test_expected/test76:
+	* test_expected/test77:
+	* test_expected/test78:
+	* test_expected/test79:
+	* test_expected/test8:
+	* test_expected/test80:
+	* test_expected/test80-2.2:
+	* test_expected/test80-2.3:
+	* test_expected/test80-2.4:
+	* test_expected/test80-2.5:
+	* test_expected/test81:
+	* test_expected/test82:
+	* test_expected/test83:
+	* test_expected/test84:
+	* test_expected/test85:
+	* test_expected/test86:
+	* test_expected/test87:
+	* test_expected/test88:
+	* test_expected/test88-2.4:
+	* test_expected/test89:
+	* test_expected/test89-2.2:
+	* test_expected/test89-2.3:
+	* test_expected/test89-2.4:
+	* test_expected/test89-2.5:
+	* test_expected/test9:
+	* test_expected/test90:
+	* test_expected/test92:
+	* test_expected/test93:
+	* test_expected/test94:
+	* test_expected/test95:
+	* test_expected/test96:
+	* test_expected/test97:
+	* test_expected/test98:
+	* test_expected/test99:
+	  Fix all expected test output for this change, without any
+	  regressions.
+
+2008-07-13  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Document and change getModules such that, for each argument
+	  that is a file, it returns a moduleName, moduleDir tuple
+	  so that modules with the same name can still be treated separately.
+	  Change callers to follow.
+	  First step towards fixing the bug where modules with the same name
+	  shadow each other's pychecker warnings.
+
+2008-07-13  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/common.py:
+	  Document method.
+
+2008-07-12  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/warn.py:
+	  Change getStandardLibrary to getStandardLibraries (a list),
+	  so we can handle both the arch-invariant and arch-specific python
+	  site-packages.
+	  This makes sure that -q/--stdlib works the same way on 32-bit and
+	  64-bit systems.
+	  Fixes #1564614, and makes the new test suite pass.
+	  (Try it with python test/main.py)
+
+2008-07-12  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/test_stdlib.py:
+	  Rename and document test.
+
+2008-07-12  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test/common.py:
+	* test/expected/test_zope_interface:
+	* test/input/test_zope_interface.py:
+	* test/main.py:
+	* test/test_stdlib.py:
+	  Add a first stab at a unittest-based testsuite.
+	  Add a test for bug #382217 that I wanted to fix that can't
+	  be tested in the current test suite.
+
+2008-07-04  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_input/test86.py:
+	  Add a test for except KeyboardInterrupt, which was fixed by Neil
+	  in pychecker/CodeChecks.py: 1.170 on 23-Apr-07.
+
+2008-07-02  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/CodeChecks.py:
+	  Allow using setattr with a static argument inside lambda calls,
+	  where the alternative is a syntax error since you're not allowed to
+	  do an assignment expression.
+	  Fixes #1565876.
+
+2008-07-01  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  Revert IDLE patch which breaks test42.py
+	  See #2007203.
+
+2008-07-01  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	* pychecker/warn.py:
+	  Respect the blacklist of modules when warning about classes for
+	  which the module cannot be found.
+	* test_check.sh:
+	* test_expected/test101:
+	* test_input/test101.py:
+	  Add a test for it.
+	  Fixes #1563495.
+
+2008-07-01  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* test_expected/test100:
+	* test_input/test100.py:
+	  Actually add the tests.
+
+2008-06-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* pychecker/checker.py:
+	  If an object looks like a class object because it has __bases__
+	  but it does not have __names__, make up a name.
+	  Fixes #1563494.
+	* test_check.sh:
+	  Add a test that previously failed.
+
+2008-06-30  Thomas Vander Stichele  <thomas at apestaart dot org>
+
+	* MANIFEST.in:
+	* CHANGELOG:
+	* NEWS:
+	  Moved CHANGELOG to NEWS since it really contains release news.
+	  Created real ChangeLog.
+

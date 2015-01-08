@@ -1,0 +1,21 @@
+Source: customizer
+Section: x11
+Priority: optional
+Maintainer: Ivailo Monev <xakepa10@gmail.com>
+Homepage: https://github.com/clearkimura/Customizer
+Vcs-Git: git://github.com/clearkimura/Customizer
+Vcs-browser: https://github.com/clearkimura/Customizer
+Standards-Version: 4.1.0
+X-Python-Version: >= 2.7
+Build-Depends: debhelper (>= 9~), g++, python-dev (>= 2.7~), pyqt4-dev-tools
+
+Package: customizer
+Architecture: i386 amd64
+Depends: ${shlibs:Depends}, ${misc:Depends}, libpython2.7 , python-qt4,
+ squashfs-tools (>= 4.2~), xorriso, x11-xserver-utils, xserver-xephyr,
+ qemu-kvm, policykit-1
+Recommends: policykit-1-gnome | polkit-kde-1
+Description: advanced Ubuntu LiveCD customization and remastering tool
+ Customizer is an advanced LiveCD customization and remastering tool.
+ With it, you can build own Ubuntu-based remix using Ubuntu Mini Remix,
+ Ubuntu or its derivatives ISO image with a few mouse clicks.
