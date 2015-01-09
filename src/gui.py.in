@@ -100,6 +100,7 @@ def setup_gui():
         ui.customizationBox.setEnabled(True)
         ui.rebuildButton.setEnabled(True)
         ui.cleanButton.setEnabled(True)
+        ui.extraCustomizationBox.setEnabled(True)
 
         ui.userEdit.setText(common.get_value(casper, 'export USERNAME='))
         ui.hostnameEdit.setText(common.get_value(casper, 'export HOST='))
@@ -137,6 +138,7 @@ def setup_gui():
         ui.customizationBox.setEnabled(False)
         ui.rebuildButton.setEnabled(False)
         ui.cleanButton.setEnabled(False)
+        ui.extraCustomizationBox.setEnabled(False)
 
 def run_core(args, terminal=True):
     if terminal:
@@ -314,6 +316,31 @@ def change_compression():
     current = str(ui.compressionBox.currentText())
     change_value('preferences', 'compression', current)
 
+def browse_dir(sdir):
+    manager = None
+    for term in ('dolphin', 'thunar', 'pcmanfm', \
+        'nautilus', 'emelfm'):
+        spath = misc.whereis(term)
+        if spath:
+            manager = spath
+
+    if not manager:
+        msg_critical(app.tr('No supported file manager detected.'))
+        return
+
+    try:
+        subprocess.check_call((manager, sdir))
+    except Exception as detail:
+        msg_critical(str(detail))
+    finally:
+        setup_gui()
+
+def browse_filesystem():
+    browse_dir(config.FILESYSTEM_DIR)
+
+def browse_iso():
+    browse_dir(config.ISO_DIR)
+
 ui.progressBar.hide()
 ui.aboutLabel.setText('<b>Customizer v@VERSION@</b>')
 ui.selectButton.clicked.connect(run_extract)
@@ -333,6 +360,9 @@ ui.localesBox.currentIndexChanged.connect(change_locales)
 ui.resolutionBox.currentIndexChanged.connect(change_resolution)
 ui.vramBox.currentIndexChanged.connect(change_vram)
 ui.compressionBox.currentIndexChanged.connect(change_compression)
+# extra
+ui.browseFileSystemButton.clicked.connect(browse_filesystem)
+ui.browseISOButton.clicked.connect(browse_iso)
 setup_gui()
 
 MainWindow.show()

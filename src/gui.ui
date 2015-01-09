@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>405</width>
-    <height>269</height>
+    <height>271</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -35,7 +35,9 @@
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="icon">
-        <iconset theme="system-run"/>
+        <iconset theme="system-run">
+         <normaloff/>
+        </iconset>
        </attribute>
        <attribute name="title">
         <string>Main</string>
@@ -183,9 +185,51 @@
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="icon">
+        <iconset theme="emblem-favorite"/>
+       </attribute>
+       <attribute name="title">
+        <string>Extra</string>
+       </attribute>
+       <widget class="QGroupBox" name="extraCustomizationBox">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>10</y>
+          <width>381</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="title">
+         <string> Extra Customization </string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_7">
+         <item row="0" column="0">
+          <widget class="QPushButton" name="browseFileSystemButton">
+           <property name="text">
+            <string>Browse FileSystem</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="browseISOButton">
+           <property name="text">
+            <string>Browse ISO</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="icon">
-        <iconset theme="preferences-other"/>
+        <iconset theme="preferences-other">
+         <normaloff/>
+        </iconset>
        </attribute>
        <attribute name="title">
         <string>Settings</string>
@@ -341,7 +385,9 @@
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="icon">
-        <iconset theme="help-about"/>
+        <iconset theme="help-about">
+         <normaloff/>
+        </iconset>
        </attribute>
        <attribute name="title">
         <string>About</string>
