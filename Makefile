@@ -4,10 +4,14 @@ GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo stable)
 DESTDIR = 
 PREFIX = $(shell $(PYTHON) -c "import sys; print(sys.prefix)")
 ELEVATOR = pkexec
+TRDIR =$(shell $(PYTHON) -c "from PyQt4.QtCore import QLibraryInfo; \
+	print(QLibraryInfo.location(QLibraryInfo.TranslationsPath))")
 
 PYTHON = python2
 PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
 PYUIC = pyuic4
+PYLUPDATE = pylupdate4 -noobsolete -verbose
+LRELEASE = lrelease
 STRIP = strip
 RM = rm -vf
 FIND = find
@@ -36,6 +40,8 @@ gui:
 	$(SED) -e 's|@VERSION@|$(VERSION)|' -e 's|@PREFIX@|$(PREFIX)|g' \
 		src/gui.py.in > src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
+	$(PYLUPDATE) src/*.py -ts tr/customizer_bg_BG.ts
+	$(LRELEASE) tr/customizer_bg_BG.ts
 	
 install: install-core install-gui
 
@@ -66,6 +72,8 @@ install-gui:
 		$(DESTDIR)$(PREFIX)/share/menu/customizer
 	$(INSTALL) -m644 data/customizer.policy \
 		$(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
+	$(INSTALL) -dm755 $(DESTDIR)$(TRDIR)/
+	$(INSTALL) -m644 tr/*.qm $(DESTDIR)$(TRDIR)/
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/sbin/customizer
@@ -92,7 +100,7 @@ changelog:
 	$(GIT) log $(shell $(GIT) tag | tail -n1)..HEAD --no-merges --pretty='    * %s'
 
 clean:
-	$(RM) -r $(shell $(FIND) -name '*.pyc') *.tar.xz
+	$(RM) -r $(shell $(FIND) -name '*.pyc') tr/*.qm *.tar.xz
 	$(RM) -r debian/*.log debian/customizer.substvars \
 		debian/customizer debian/files \
 		src/gui_ui.py src/gui.py src/main.py \

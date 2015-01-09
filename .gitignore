@@ -1,5 +1,6 @@
 *~
 *.pyc
+*.qm
 src/gui_ui.py
 src/main.py
 src/gui.py

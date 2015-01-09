@@ -20,18 +20,22 @@ misc.CATCH = True
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)
+translator = QtCore.QTranslator()
+tr_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath)
+if translator.load('customizer_' +  QtCore.QLocale.system().name(), tr_path):
+    app.installTranslator(translator)
 MainWindow = QtGui.QMainWindow()
 ui = gui_ui.Ui_MainWindow()
 ui.setupUi(MainWindow)
 
 def msg_info(msg):
-    QtGui.QMessageBox.information(MainWindow, 'Information', msg)
+    QtGui.QMessageBox.information(MainWindow, app.tr('Information'), msg)
 
 def msg_warning(msg):
-    QtGui.QMessageBox.warning(MainWindow, 'Warning', msg)
+    QtGui.QMessageBox.warning(MainWindow, app.tr('Warning'), msg)
 
 def msg_critical(msg):
-    QtGui.QMessageBox.critical(MainWindow, 'Critical', msg)
+    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), msg)
 
 # limit instances to one
 lock = '/run/lock/customizer'
@@ -44,14 +48,14 @@ def remove_lock():
 atexit.register(remove_lock)
 
 if os.path.isfile(lock):
-    msg_critical('An instance of Customizer is already running.')
+    msg_critical(app.tr('An instance of Customizer is already running.'))
     sys.exit()
 else:
     misc.write_file(lock, str(app.applicationPid()))
     running = True
 
 if int(sys.version_info[0]) >= 3:
-    msg_critical('You are attempting to run Customizer with Python 3.')
+    msg_critical(app.tr('You are attempting to run Customizer with Python 3.'))
     sys.exit()
 
 class Thread(QtCore.QThread):
@@ -125,7 +129,7 @@ def setup_gui():
             (config.WORK_DIR, distrib, arch, release)):
             ui.qemuButton.setEnabled(True)
     elif os.path.isdir(config.FILESYSTEM_DIR):
-        msg_warning('The filesystem is not valid or corrupted. Clean is recommended.')
+        msg_warning(app.tr('The filesystem is not valid or corrupted. Clean is recommended.'))
         ui.cleanButton.setEnabled(True)
     else:
         ui.changeWorkDirButton.setEnabled(True)
@@ -144,7 +148,7 @@ def run_core(args, terminal=True):
                 terminal = spath
 
         if not terminal:
-            msg_critical('No supported terminal emulator detected.')
+            msg_critical(app.tr('No supported terminal emulator detected.'))
             return
 
     try:
@@ -205,8 +209,8 @@ def worker(func):
     thread.start()
 
 def run_extract():
-    sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        config.ISO, 'ISO Files (*.iso);;All Files (*)')
+    sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, app.tr('Open'), \
+        config.ISO, app.tr('ISO Files (*.iso);;All Files (*)'))
     if not sfile:
         return
     sfile = str(sfile)
@@ -238,7 +242,7 @@ def edit_sources():
             editor = spath
 
     if not editor:
-        msg_critical('No supported text editor detected.')
+        msg_critical(app.tr('No supported text editor detected.'))
         return
 
     try:
@@ -251,7 +255,7 @@ def edit_sources():
 
 def run_deb():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        config.DEB, 'Deb Files (*.deb);;All Files (*)')
+        config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
     if not sfile:
         return
     change_value('saved', 'deb', str(sfile))
@@ -262,7 +266,7 @@ def run_pkgm():
 
 def run_hook():
     sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        config.HOOK, 'Shell Scripts (*.sh);;All Files (*)')
+        config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
     if not sfile:
         return
     change_value('saved', 'hook', str(sfile))
