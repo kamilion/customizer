@@ -76,7 +76,7 @@ def main():
         message.sub_debug('The ISO architecture is amd64 and yours is not')
         common.clean_work_dirs()
         unmount_iso()
-        raise(CustomizerException('The ISO architecture is amd64 and yours is not'))
+        raise(message.exception('The ISO architecture is amd64 and yours is not'))
 
     message.sub_info('Copying ISO files')
     for sfile in misc.list_files(mount_dir):
