@@ -136,6 +136,8 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
             else:
                 pseudofs.append('/var/run/dbus')
             for s in pseudofs:
+                if not os.path.exists(s):
+                    continue
                 sdir = config.FILESYSTEM_DIR + s
                 if not os.path.ismount(sdir):
                     if not os.path.isdir(sdir):
