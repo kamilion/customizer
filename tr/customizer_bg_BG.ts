@@ -295,5 +295,10 @@ p, li { white-space: pre-wrap; }
         <source>Shell Scripts (*.sh);;All Files (*)</source>
         <translation>Скриптове на Обвивката (*.sh);;Всички Файлове (*)</translation>
     </message>
+    <message>
+        <location filename="gui.py" line="328"/>
+        <source>No supported file manager detected.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

@@ -120,14 +120,6 @@ def system_command(command, shell=False, cwd=None, catch=False):
         return subprocess.check_call(command, shell=shell, cwd=cwd)
 
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False):
-    pseudofs = ['/proc', '/dev', '/sys', '/tmp']
-    if xnest:
-        if os.path.islink(config.FILESYSTEM_DIR + '/var/run'):
-            pseudofs.append('/run/dbus')
-        else:
-            pseudofs.append('/var/run/dbus')
-        pseudofs.append('/var/lib/dbus')
-
     real_root = os.open('/', os.O_RDONLY)
     try:
         if prepare:
@@ -138,6 +130,11 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
                 copy_file('/etc/hosts', config.FILESYSTEM_DIR + '/etc/hosts')
 
         if mount:
+            pseudofs = ['/proc', '/dev', '/sys', '/tmp', '/var/lib/dbus']
+            if os.path.islink(config.FILESYSTEM_DIR + '/var/run'):
+                pseudofs.append('/run/dbus')
+            else:
+                pseudofs.append('/var/run/dbus')
             for s in pseudofs:
                 sdir = config.FILESYSTEM_DIR + s
                 if not os.path.ismount(sdir):
@@ -158,15 +155,17 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
         if not config.LOCALES == 'C':
             system_command(('locale-gen', config.LOCALES))
 
+        os.putenv('PATH', '/usr/sbin:/usr/bin:/sbin:/bin')
         os.putenv('HOME', '/root')
         os.putenv('LC_ALL', config.LOCALES)
         os.putenv('LANGUAGE', config.LOCALES)
         os.putenv('LANG', config.LOCALES)
-        os.putenv('DEBIAN_FRONTEND', 'noninteractive')
-        # FIXME: os.putenv('DEBIAN_PRIORITY', '')
-        os.putenv('DEBCONF_NONINTERACTIVE_SEEN', 'true')
-        os.putenv('DEBCONF_NOWARNINGS', 'true')
         os.putenv('CASPER_GENERATE_UUID', '1')
+        if not xnest:
+            os.putenv('DEBIAN_FRONTEND', 'noninteractive')
+            # FIXME: os.putenv('DEBIAN_PRIORITY', '')
+            os.putenv('DEBCONF_NONINTERACTIVE_SEEN', 'true')
+            os.putenv('DEBCONF_NOWARNINGS', 'true')
 
         if xnest:
             os.putenv('HOME', '/etc/skel')
