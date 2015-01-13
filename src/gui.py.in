@@ -14,6 +14,8 @@ import lib.config as config
 import lib.misc as misc
 import actions.common as common
 import actions.extract as extract
+import actions.deb as deb
+import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.clean as clean
 misc.CATCH = True
@@ -260,8 +262,13 @@ def run_deb():
         config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
     if not sfile:
         return
-    change_value('saved', 'deb', str(sfile))
-    run_core('-d')
+    sfile = str(sfile)
+    change_value('saved', 'deb', sfile)
+    deb.config.DEB = sfile
+    try:
+        worker(deb.main)
+    except Exception as detail:
+        msg_critical(str(detail))
 
 def run_pkgm():
     run_core('-p')
@@ -271,8 +278,13 @@ def run_hook():
         config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
     if not sfile:
         return
-    change_value('saved', 'hook', str(sfile))
-    run_core('-k')
+    sfile = str(sfile)
+    change_value('saved', 'hook', sfile)
+    hook.config.HOOK = sfile
+    try:
+        worker(hook.main)
+    except Exception as detail:
+        msg_critical(str(detail))
 
 def run_chroot():
     run_core('-c')
