@@ -98,14 +98,10 @@ documentation is contributed. As December 2011, Customizer development has moved
 GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). One year later, 
 as December 2012, Customizer stable release has hit 3.2.3.
 
-Presently re-written from scratch with the goal to support Ubuntu releases newer than 12.10
+Presently re-written from scratch with the goal to support Ubuntu releases newer than 12.04
 and making it more stable and robust.
 
 
 ### SEE ALSO
-
-PPA stable  https://launchpad.net/~customizer-dev-team/+archive/stable
-
-PPA devel  https://launchpad.net/~customizer-dev-team/+archive/devel
 
 You can find more information about Customizer at https://github.com/fluxer/Customizer/wiki
