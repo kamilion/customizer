@@ -2,7 +2,7 @@
 
 Customizer (formerly known as U-Customizer)
 
-        
+
 ### SYNOPSIS
 
     customizer [-h] [-e] [-c] [-x] [-p] [-d] [-k] [-r] [-q] [-t] [-D] [-v]
@@ -29,10 +29,12 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     -D, --debug      Enable debug messages
     -v, --version    Show Customizer version and exit
 
+
 ### ENVIRONMENT
 
     /etc/customizer.conf  -  configuration file
     <prefix>/share/customizer/exclude.list - files/dirs to exclude when compressing filesystem
+
 
 ### REQUIREMENTS
 
@@ -47,10 +49,12 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     xephyr (xserver-xephyr)
     qemu (qemu-kvm)
 
+
 ### INSTALL AND RUN
 
     make && sudo make install
     sudo customizer -h
+
 
 ### AUTHORS
 
@@ -86,7 +90,7 @@ To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Change
 
 Copyright (C) 2010-2013 Ivailo Monev
 
-Copyright (C) 2013-2014 Mubiin Kimura
+Copyright (C) 2013-2015 Mubiin Kimura
 
 License: GPLv2
 
