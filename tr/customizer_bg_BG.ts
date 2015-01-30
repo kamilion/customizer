@@ -5,7 +5,7 @@
     <message>
         <location filename="gui_ui.py" line="211"/>
         <source>Customizer GUI</source>
-        <translation type="unfinished"></translation>
+        <translation>Customizer ГПИ</translation>
     </message>
     <message>
         <location filename="gui_ui.py" line="212"/>
@@ -30,7 +30,7 @@
     <message>
         <location filename="gui_ui.py" line="216"/>
         <source> Customization </source>
-        <translation type="unfinished"></translation>
+        <translation>Персонализации</translation>
     </message>
     <message>
         <location filename="gui_ui.py" line="217"/>
@@ -195,22 +195,22 @@
     <message>
         <location filename="gui_ui.py" line="227"/>
         <source> Extra Customization </source>
-        <translation type="unfinished"></translation>
+        <translation>Допълнителни персонализации</translation>
     </message>
     <message>
         <location filename="gui_ui.py" line="228"/>
         <source>Browse FileSystem</source>
-        <translation type="unfinished"></translation>
+        <translation>Разгледай FileSystem</translation>
     </message>
     <message>
         <location filename="gui_ui.py" line="229"/>
         <source>Browse ISO</source>
-        <translation type="unfinished"></translation>
+        <translation>Разгледай ISO</translation>
     </message>
     <message>
         <location filename="gui_ui.py" line="230"/>
         <source>Extra</source>
-        <translation type="unfinished"></translation>
+        <translation>Допълнителни</translation>
     </message>
     <message>
         <location filename="gui_ui.py" line="251"/>
@@ -298,7 +298,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="gui.py" line="340"/>
         <source>No supported file manager detected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не е намерен файлов мениджър, който се поддържа.</translation>
     </message>
 </context>
 </TS>
