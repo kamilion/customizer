@@ -266,37 +266,37 @@ p, li { white-space: pre-wrap; }
         <translation>Файловата система не е валидна или е повредена. Изчистване е препоръчително.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="157"/>
+        <location filename="gui.py" line="158"/>
         <source>No supported terminal emulator detected.</source>
         <translation>Не е намерен терминал, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="218"/>
+        <location filename="gui.py" line="219"/>
         <source>Open</source>
         <translation>Отвори</translation>
     </message>
     <message>
-        <location filename="gui.py" line="218"/>
+        <location filename="gui.py" line="219"/>
         <source>ISO Files (*.iso);;All Files (*)</source>
         <translation>ISO Файлове (*.iso);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="251"/>
+        <location filename="gui.py" line="252"/>
         <source>No supported text editor detected.</source>
         <translation>Не е намерен текстов редактор, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="263"/>
+        <location filename="gui.py" line="264"/>
         <source>Deb Files (*.deb);;All Files (*)</source>
         <translation>Deb Файлове (*.deb);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="279"/>
+        <location filename="gui.py" line="280"/>
         <source>Shell Scripts (*.sh);;All Files (*)</source>
         <translation>Скриптове на Обвивката (*.sh);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="348"/>
+        <location filename="gui.py" line="350"/>
         <source>No supported file manager detected.</source>
         <translation>Не е намерен файлов мениджър, който се поддържа.</translation>
     </message>

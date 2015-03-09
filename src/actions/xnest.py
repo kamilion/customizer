@@ -32,13 +32,13 @@ def main():
 
     try:
         message.sub_info('Allwoing local access to X-server')
-        misc.system_command((misc.whereis('xhost'), '+local:'))
+        misc.system_command((misc.whereis('xhost'), '+local:13'))
 
         message.sub_info('Starting nested X session', xsession)
         misc.chroot_exec((xsession), xnest=True)
 
         message.sub_info('Blocking local access to X-server')
-        misc.system_command((misc.whereis('xhost'), '-local:'))
+        misc.system_command((misc.whereis('xhost'), '-local:13'))
     finally:
         message.sub_info('Terminating Xephyr')
         x.terminate()
