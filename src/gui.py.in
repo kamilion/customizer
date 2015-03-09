@@ -147,8 +147,9 @@ def setup_gui():
 def run_core(args, terminal=True):
     if terminal:
         terminal = None
-        for term in ('xterm', 'lxterminal', 'xfce4-terminal', \
-            'mate-terminal', 'gnome-terminal', 'konsole'):
+        for term in ('xterm', 'lxterminal', 'xfce4-terminal', 'terminal',
+            'konsole', 'mate-terminal', 'gnome-terminal', 'terminator', \
+            'sakura', 'yakuake', 'urxterm', 'aterm', 'Eterm'):
             spath = misc.whereis(term)
             if spath:
                 terminal = spath
@@ -242,7 +243,7 @@ def run_clean():
 def edit_sources():
     editor = None
     for edit in ('mousepad', 'leafpad', 'pluma', 'gedit', 'kate', 'kwrite', \
-        'medit'):
+        'medit', 'nedit', 'geany', 'bluefish', 'ultraedit'):
         spath = misc.whereis(edit, False)
         if spath:
             editor = spath
@@ -338,8 +339,9 @@ def change_compression():
 
 def browse_dir(sdir):
     manager = None
-    for term in ('dolphin', 'thunar', 'pcmanfm', \
-        'nautilus', 'emelfm'):
+    for term in ('dolphin', 'thunar', 'pcmanfm', 'nautilus', 'emelfm', \
+        'caja', 'xfe', 'worker', 'gentoo', 'filerunner', 'krusader', \
+        'rox-filer'):
         spath = misc.whereis(term)
         if spath:
             manager = spath
