@@ -6,12 +6,11 @@
     * Improved hooks support (issue #64)
     * Fixed some upgrade issues by not diverting /sbin/initctl (issue #63)
     + Bind-mount /tmp neccessary in some cases (issue #67)
-    + Introduced build system via [GNU Make](http://www.gnu.org/software/make/)
+    + Introduced build system via GNU Make (http://www.gnu.org/software/make/)
     + Unified code for CLI and GUI without the need for glue
     + Support for Ubuntu releases 12.04+ introduced
     - Support for Ubuntu releases prior to 12.04 dropped
     - Temporary dropped some extra features
-
 
 -- SmiL3y <xakepa10@gmail.com>  Thu, 8 Jan 2015 19:38:21 UTC
 
