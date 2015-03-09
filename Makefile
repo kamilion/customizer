@@ -31,8 +31,8 @@ core:
 		src/main.py.in > src/main.py
 
 gui:
-	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.menu.in > \
-		data/customizer.menu
+	$(SED) -e 's|@PREFIX@|$(PREFIX)|' -e 's|@ELEVATOR@|$(ELEVATOR)|' \
+		data/customizer.menu.in > data/customizer.menu
 	$(SED) -e 's|@PREFIX@|$(PREFIX)|' -e 's|@ELEVATOR@|$(ELEVATOR)|' \
 		data/customizer.desktop.in > data/customizer.desktop
 	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.policy.in > \

@@ -3,5 +3,5 @@ needs="x11" \
 hints="Ubuntu LiveCD Remastering Tool" \
 section="Applications/System/Administration" \
 title="Customizer" \
-command="pkgexec @PREFIX@/sbin/customizer-gui" \
+command="@ELEVATOR@ @PREFIX@/sbin/customizer-gui" \
 icon="@PREFIX@/share/customizer/logo.png"
