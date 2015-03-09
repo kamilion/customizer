@@ -236,67 +236,67 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>app</name>
     <message>
-        <location filename="gui.py" line="35"/>
+        <location filename="gui.py" line="36"/>
         <source>Information</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="gui.py" line="38"/>
+        <location filename="gui.py" line="39"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="gui.py" line="41"/>
+        <location filename="gui.py" line="42"/>
         <source>Critical</source>
         <translation>Критично</translation>
     </message>
     <message>
-        <location filename="gui.py" line="54"/>
+        <location filename="gui.py" line="55"/>
         <source>An instance of Customizer is already running.</source>
         <translation>Инстанция на Customizer вече е стартирана.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="61"/>
+        <location filename="gui.py" line="62"/>
         <source>You are attempting to run Customizer with Python 3.</source>
         <translation>Опитвате се да стартирате Customizer с Python 3.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="136"/>
+        <location filename="gui.py" line="137"/>
         <source>The filesystem is not valid or corrupted. Clean is recommended.</source>
         <translation>Файловата система не е валидна или е повредена. Изчистване е препоръчително.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="156"/>
+        <location filename="gui.py" line="157"/>
         <source>No supported terminal emulator detected.</source>
         <translation>Не е намерен терминал, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="217"/>
+        <location filename="gui.py" line="218"/>
         <source>Open</source>
         <translation>Отвори</translation>
     </message>
     <message>
-        <location filename="gui.py" line="217"/>
+        <location filename="gui.py" line="218"/>
         <source>ISO Files (*.iso);;All Files (*)</source>
         <translation>ISO Файлове (*.iso);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="250"/>
+        <location filename="gui.py" line="251"/>
         <source>No supported text editor detected.</source>
         <translation>Не е намерен текстов редактор, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="262"/>
+        <location filename="gui.py" line="263"/>
         <source>Deb Files (*.deb);;All Files (*)</source>
         <translation>Deb Файлове (*.deb);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="278"/>
+        <location filename="gui.py" line="279"/>
         <source>Shell Scripts (*.sh);;All Files (*)</source>
         <translation>Скриптове на Обвивката (*.sh);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="344"/>
+        <location filename="gui.py" line="348"/>
         <source>No supported file manager detected.</source>
         <translation>Не е намерен файлов мениджър, който се поддържа.</translation>
     </message>

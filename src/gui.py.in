@@ -16,6 +16,7 @@ import actions.common as common
 import actions.extract as extract
 import actions.deb as deb
 import actions.hook as hook
+import actions.xnest as xnest
 import actions.rebuild as rebuild
 import actions.clean as clean
 import actions.qemu as qemu
@@ -291,7 +292,10 @@ def run_chroot():
     run_core('-c')
 
 def run_xnest():
-    run_core('-x', False)
+    try:
+        worker(xnest.main)
+    except Exception as detail:
+        msg_critical(str(detail))
 
 def run_qemu():
     try:
