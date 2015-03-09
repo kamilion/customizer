@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, subprocess
+import subprocess
 
 import lib.misc as misc
 import lib.config as config

@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import sys, os, re, shutil
+import os, re, shutil
 
 import lib.misc as misc
 import lib.config as config

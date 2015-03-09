@@ -85,7 +85,7 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
 
 lint:
-	cd src && $(PYLINT) lib/* actions/*.py main.py | $(GREP) -v \
+	cd src && $(PYLINT) lib/* actions/*.py main.py.in | $(GREP) -v \
 		-e 'Line too long'
 
 check: clean
