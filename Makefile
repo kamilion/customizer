@@ -88,9 +88,6 @@ lint:
 	cd src && $(PYLINT) lib/* actions/*.py main.py.in | $(GREP) -v \
 		-e 'Line too long'
 
-check: clean
-	cd src && $(PYCHECKER) --limit=1000 lib/* actions/*.py
-
 dist: clean
 	$(GIT) archive HEAD --prefix="customizer-$(VERSION)/" | $(XZ) > \
 		"customizer-$(VERSION).tar.xz"
