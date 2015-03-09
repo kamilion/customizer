@@ -12,7 +12,6 @@ PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
 PYUIC = pyuic4
 PYLUPDATE = pylupdate4 -noobsolete -verbose
 LRELEASE = lrelease
-STRIP = strip
 RM = rm -vf
 FIND = find
 SED = sed
