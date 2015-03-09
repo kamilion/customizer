@@ -105,4 +105,4 @@ clean:
 deb:
 	DEB_BUILD_OPTIONS=nocheck $(DPKG_BUILDPACKAGE) -us -uc -b
 
-.PHONY: all core gui install install-core install-gui uninstall lint check dist changelog clean deb
+.PHONY: all core gui install install-core install-gui uninstall lint dist changelog clean deb
