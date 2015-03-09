@@ -18,6 +18,7 @@ import actions.deb as deb
 import actions.hook as hook
 import actions.rebuild as rebuild
 import actions.clean as clean
+import actions.qemu as qemu
 misc.CATCH = True
 
 # prepare for lift-off
@@ -293,7 +294,10 @@ def run_xnest():
     run_core('-x', False)
 
 def run_qemu():
-    run_core('-q', False)
+    try:
+        worker(qemu.main)
+    except Exception as detail:
+        msg_critical(str(detail))
 
 def change_user():
     common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
