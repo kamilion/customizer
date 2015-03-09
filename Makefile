@@ -20,7 +20,6 @@ GREP = grep
 INSTALL = install -v
 GIT = git
 XZ = xz -v
-PYCHECKER = $(PYTHON) ../pychecker/pychecker/checker.py
 PYLINT = pylint
 DPKG_BUILDPACKAGE = dpkg-buildpackage
 
