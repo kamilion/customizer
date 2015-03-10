@@ -121,6 +121,7 @@ def system_command(command, shell=False, cwd=None, catch=False, env=None):
 
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False):
     real_root = os.open('/', os.O_RDONLY)
+    out = None
     try:
         if prepare:
             if os.path.isfile('/etc/resolv.conf'):
