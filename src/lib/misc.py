@@ -157,14 +157,13 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
         if not config.LOCALES == 'C':
             system_command(('locale-gen', config.LOCALES))
 
-        environment = {
-            'PATH': '/usr/sbin:/usr/bin:/sbin:/bin',
-            'HOME': '/root',
-            'LC_ALL': config.LOCALES,
-            'LANGUAGE': config.LOCALES,
-            'LANG': config.LOCALES,
-            'CASPER_GENERATE_UUID': '1',
-        }
+        environment = os.environ
+        environment['PATH'] = '/usr/sbin:/usr/bin:/sbin:/bin'
+        environment['HOME'] = '/root'
+        environment['LC_ALL'] = config.LOCALES
+        environment['LANGUAGE'] = config.LOCALES
+        environment['LANG'] = config.LOCALES
+        environment['CASPER_GENERATE_UUID'] = '1'
         if xnest:
             environment['HOME'] = '/etc/skel'
             environment['XDG_CACHE_HOME'] = '/etc/skel/.cache'
