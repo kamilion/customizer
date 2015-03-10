@@ -102,7 +102,7 @@ def dir_current():
         cwd = '/'
     return cwd
 
-def system_command(command, shell=False, cwd=None, catch=False):
+def system_command(command, shell=False, cwd=None, catch=False, env=None):
     if not cwd:
         cwd = dir_current()
     elif not os.path.isdir(cwd):
@@ -111,13 +111,13 @@ def system_command(command, shell=False, cwd=None, catch=False):
         command = shlex.split(command)
     if catch or CATCH:
         pipe = subprocess.Popen(command, stderr=subprocess.PIPE, \
-            shell=shell, cwd=cwd)
+            shell=shell, cwd=cwd, env=env)
         pipe.wait()
         if pipe.returncode != 0:
             raise(Exception(pipe.communicate()[1].strip()))
         return pipe.returncode
     else:
-        return subprocess.check_call(command, shell=shell, cwd=cwd)
+        return subprocess.check_call(command, shell=shell, cwd=cwd, env=env)
 
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False):
     real_root = os.open('/', os.O_RDONLY)
@@ -157,29 +157,31 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
         if not config.LOCALES == 'C':
             system_command(('locale-gen', config.LOCALES))
 
-        os.putenv('PATH', '/usr/sbin:/usr/bin:/sbin:/bin')
-        os.putenv('HOME', '/root')
-        os.putenv('LC_ALL', config.LOCALES)
-        os.putenv('LANGUAGE', config.LOCALES)
-        os.putenv('LANG', config.LOCALES)
-        os.putenv('CASPER_GENERATE_UUID', '1')
-        if not xnest:
-            os.putenv('DEBIAN_FRONTEND', 'noninteractive')
-            # FIXME: os.putenv('DEBIAN_PRIORITY', '')
-            os.putenv('DEBCONF_NONINTERACTIVE_SEEN', 'true')
-            os.putenv('DEBCONF_NOWARNINGS', 'true')
-
+        environment = {
+            'PATH': '/usr/sbin:/usr/bin:/sbin:/bin',
+            'HOME': '/root',
+            'LC_ALL': config.LOCALES,
+            'LANGUAGE': config.LOCALES,
+            'LANG': config.LOCALES,
+            'CASPER_GENERATE_UUID': '1',
+        }
         if xnest:
-            os.putenv('HOME', '/etc/skel')
-            os.putenv('XDG_CACHE_HOME', '/etc/skel/.cache')
-            os.putenv('XDG_DATA_HOME', '/etc/skel/.local/share')
-            os.putenv('XDG_CONFIG_HOME', '/etc/skel/.config')
-            os.putenv('DISPLAY', ':13')
+            environment['HOME'] = '/etc/skel'
+            environment['XDG_CACHE_HOME'] = '/etc/skel/.cache'
+            environment['XDG_DATA_HOME'] = '/etc/skel/.local/share'
+            environment['XDG_CONFIG_HOME'] = '/etc/skel/.config'
+            environment['DISPLAY'] = ':13'
+        else:
+            environment['DEBIAN_FRONTEND'] = 'noninteractive'
+            # FIXME: is this needed?
+            # environment['DEBIAN_PRIORITY'] = ''
+            environment['DEBCONF_NONINTERACTIVE_SEEN'] = 'true'
+            environment['DEBCONF_NOWARNINGS'] = 'true'
 
         if output:
             out = get_output(command)
         else:
-            system_command(command, shell=shell)
+            system_command(command, shell=shell, env=environment)
     finally:
         os.fchdir(real_root)
         os.chroot('.')
