@@ -199,6 +199,7 @@ def worker_started():
     ui.rebuildButton.setEnabled(False)
     ui.qemuButton.setEnabled(False)
     ui.cleanButton.setEnabled(False)
+    ui.extraCustomizationBox.setEnabled(False)
 
 def worker_stopped():
     ui.progressBar.setRange(0, 1)
