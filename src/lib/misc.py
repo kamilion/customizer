@@ -107,6 +107,8 @@ def system_command(command, shell=False, cwd=None, catch=False, env=None):
         cwd = dir_current()
     elif not os.path.isdir(cwd):
         cwd = '/'
+    if not env:
+        env = os.environ
     if isinstance(command, str) and not shell:
         command = shlex.split(command)
     if catch or CATCH:
