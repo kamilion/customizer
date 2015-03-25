@@ -55,6 +55,9 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     make && sudo make install
     sudo customizer -h
 
+The graphical frontend: `sudo customizer-gui`
+
+After customizing your LiveCD run `sudo customizer -r`. The new ISO file will be placed in `/home`.
 
 ### AUTHORS
 
