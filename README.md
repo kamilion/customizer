@@ -57,7 +57,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
 The graphical frontend: `sudo customizer-gui`
 
-After customizing your LiveCD run `sudo customizer -e`. The new ISO file will be placed in `/home`.
+After customizing your LiveCD run `sudo customizer -r`. The new ISO file will be placed in `/home`.
 
 ### AUTHORS
 
