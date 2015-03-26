@@ -53,11 +53,11 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 ### INSTALL AND RUN
 
     make && sudo make install
-    sudo customizer -h
+    // to run it: 
+    sudo customizer -h // command line version
+    sudo customizer-gui // GUI version
 
-The graphical frontend: `sudo customizer-gui`
-
-After customizing your LiveCD run `sudo customizer -r`. The new ISO file will be placed in `/home`.
+See our [first guide](https://github.com/clearkimura/Customizer/wiki/First-guide) to get you started.
 
 ### AUTHORS
 
