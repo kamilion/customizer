@@ -8,9 +8,10 @@ Vcs-browser: https://github.com/clearkimura/Customizer
 Standards-Version: 4.1.0
 X-Python-Version: >= 2.7
 Build-Depends: debhelper (>= 9~), g++, python-dev (>= 2.7~), pyqt4-dev-tools
+ qt4-linguist-tools
 
 Package: customizer
-Architecture: i386 amd64
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, libpython2.7 , python-qt4,
  squashfs-tools (>= 4.2~), xorriso, x11-xserver-utils, xserver-xephyr,
  qemu-kvm, policykit-1

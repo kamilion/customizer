@@ -282,17 +282,17 @@ Copyright (C) 2013-2015 Mubiin Kimura</source>
         <translation>Не е намерен текстов редактор, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="265"/>
+        <location filename="gui.py" line="266"/>
         <source>Deb Files (*.deb);;All Files (*)</source>
         <translation>Deb Файлове (*.deb);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="281"/>
+        <location filename="gui.py" line="282"/>
         <source>Shell Scripts (*.sh);;All Files (*)</source>
         <translation>Скриптове на Обвивката (*.sh);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="351"/>
+        <location filename="gui.py" line="355"/>
         <source>No supported file manager detected.</source>
         <translation>Не е намерен файлов мениджър, който се поддържа.</translation>
     </message>
