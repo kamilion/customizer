@@ -149,7 +149,7 @@ def run_core(args, terminal=True):
         terminal = None
         for term in ('xterm', 'lxterminal', 'xfce4-terminal', 'terminal',
             'konsole', 'mate-terminal', 'gnome-terminal', 'terminator', \
-            'sakura', 'yakuake', 'urxterm', 'aterm', 'Eterm'):
+            'sakura', 'urxterm', 'aterm', 'Eterm'):
             spath = misc.whereis(term)
             if spath:
                 terminal = spath
