@@ -55,7 +55,7 @@ if os.path.isfile(lock):
     msg_critical(app.tr('An instance of Customizer is already running.'))
     sys.exit()
 else:
-    misc.write_file(lock, str(app.applicationPid()))
+    misc.write_file(lock, unicode(app.applicationPid()))
     running = True
 
 if int(sys.version_info[0]) >= 3:
@@ -74,7 +74,7 @@ class Thread(QtCore.QThread):
         except SystemExit:
             pass
         except Exception as detail:
-            self.emit(QtCore.SIGNAL('failed'), str(detail))
+            self.emit(QtCore.SIGNAL('failed'), unicode(detail))
             self.quit()
         finally:
             self.finished.emit()
@@ -170,7 +170,7 @@ def run_core(args, terminal=True):
         else:
             subprocess.check_call((misc.whereis('customizer'), '-D', args))
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
     finally:
         setup_gui()
 
@@ -183,7 +183,7 @@ def change_value(sec, var, val):
         config.conf.set(sec, var, val)
         config.conf.write(conf)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
     finally:
         if conf:
             conf.close()
@@ -221,25 +221,25 @@ def run_extract():
         config.ISO, app.tr('ISO Files (*.iso);;All Files (*)'))
     if not sfile:
         return
-    sfile = str(sfile)
+    sfile = unicode(sfile)
     change_value('saved', 'iso', sfile)
     extract.config.ISO = sfile
     try:
         worker(extract.main)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
 
 def run_rebuild():
     try:
         worker(rebuild.main)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
 
 def run_clean():
     try:
         worker(clean.main)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
 
 def edit_sources():
     editor = None
@@ -257,38 +257,38 @@ def edit_sources():
         subprocess.check_call((editor, misc.join_paths(config.FILESYSTEM_DIR, \
             'etc/apt/sources.list')))
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
     finally:
         setup_gui()
 
 def run_deb():
-    sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
-    if not sfile:
-        return
-    sfile = str(sfile)
-    change_value('saved', 'deb', sfile)
-    deb.config.DEB = sfile
     try:
+        sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
+            config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
+        if not sfile:
+            return
+        sfile = unicode(sfile)
+        change_value('saved', 'deb', sfile)
+        deb.config.DEB = sfile
         worker(deb.main)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
 
 def run_pkgm():
     run_core('-p')
 
 def run_hook():
-    sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
-        config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
-    if not sfile:
-        return
-    sfile = str(sfile)
-    change_value('saved', 'hook', sfile)
-    hook.config.HOOK = sfile
     try:
+        sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
+            config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
+        if not sfile:
+            return
+        sfile = unicode(sfile)
+        change_value('saved', 'hook', sfile)
+        hook.config.HOOK = sfile
         worker(hook.main)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
 
 def run_chroot():
     run_core('-c')
@@ -297,64 +297,67 @@ def run_xnest():
     try:
         worker(xnest.main)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
 
 def run_qemu():
     try:
         worker(qemu.main)
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
 
 def change_user():
     common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
-        'etc/casper.conf'), 'export USERNAME=', str(ui.userEdit.text()))
+        'etc/casper.conf'), 'export USERNAME=', unicode(ui.userEdit.text()))
 
 def change_hostname():
     common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
-        'etc/casper.conf'), 'export HOST=', str(ui.hostnameEdit.text()))
+        'etc/casper.conf'), 'export HOST=', unicode(ui.hostnameEdit.text()))
 
 def change_work_dir():
-    spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, \
-        'Directory', config.WORK_DIR)
-    if not spath:
-        return
-    spath = str(spath)
-    change_value('preferences', 'work_dir', spath)
-    ui.workDirEdit.setText(spath)
+    try:
+        spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, \
+            'Directory', config.WORK_DIR)
+        if not spath:
+            return
+        spath = unicode(spath)
+        change_value('preferences', 'work_dir', spath)
+        ui.workDirEdit.setText(spath)
+    except Exception as detail:
+        msg_critical(unicode(detail))
 
 def change_locales():
-    current = str(ui.localesBox.currentText())
+    current = unicode(ui.localesBox.currentText())
     change_value('preferences', 'locales', current)
 
 def change_resolution():
-    current = str(ui.resolutionBox.currentText())
+    current = unicode(ui.resolutionBox.currentText())
     change_value('preferences', 'resolution', current)
 
 def change_vram():
-    current = str(ui.vramBox.currentText())
+    current = unicode(ui.vramBox.currentText())
     change_value('preferences', 'vram', current)
 
 def change_compression():
-    current = str(ui.compressionBox.currentText())
+    current = unicode(ui.compressionBox.currentText())
     change_value('preferences', 'compression', current)
 
 def browse_dir(sdir):
-    manager = None
-    for term in ('dolphin', 'thunar', 'pcmanfm', 'nautilus', 'emelfm', \
-        'caja', 'xfe', 'worker', 'gentoo', 'filerunner', 'krusader', \
-        'rox-filer'):
-        spath = misc.whereis(term)
-        if spath:
-            manager = spath
-
-    if not manager:
-        msg_critical(app.tr('No supported file manager detected.'))
-        return
-
     try:
+        manager = None
+        for term in ('dolphin', 'thunar', 'pcmanfm', 'nautilus', 'emelfm', \
+            'caja', 'xfe', 'worker', 'gentoo', 'filerunner', 'krusader', \
+            'rox-filer'):
+            spath = misc.whereis(term)
+            if spath:
+                manager = spath
+
+        if not manager:
+            msg_critical(app.tr('No supported file manager detected.'))
+            return
+
         subprocess.check_call((manager, sdir))
     except Exception as detail:
-        msg_critical(str(detail))
+        msg_critical(unicode(detail))
     finally:
         setup_gui()
 
