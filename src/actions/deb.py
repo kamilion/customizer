@@ -22,7 +22,11 @@ def main():
         os.unlink(deb_file)
     misc.copy_file(config.DEB, deb_file)
 
-    message.sub_info('Installing DEB')
-    misc.chroot_exec(('dpkg', '-i', '/temp.deb'))
-    message.sub_info('Installing dependencies')
-    misc.chroot_exec(('apt-get', 'install', '-f', '-y'))
+    try:
+        message.sub_info('Installing DEB')
+        misc.chroot_exec(('dpkg', '-i', '/temp.deb'))
+        message.sub_info('Installing dependencies')
+        misc.chroot_exec(('apt-get', 'install', '-f', '-y'))
+    finally:
+        if os.path.isfile(deb_file):
+            os.unlink(deb_file)
