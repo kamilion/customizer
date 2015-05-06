@@ -1,3 +1,13 @@
+## Customizer v4.1.1
+    * Various bug fixes and improvements
+    * Support Unicode paths (issue #93)
+    * Improve chroot and config handling
+    + Support running Apper software manager
+    + Implemented browsing of working directories
+    + Support translations, affects only the GUI
+
+-- SmiL3y <xakepa10@gmail.com>  Wed, 6 May 2015 21:41:28 UTC
+
 ## Customizer v4.1.0
 
     * Re-written in Python
