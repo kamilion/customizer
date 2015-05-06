@@ -20,8 +20,12 @@ def main():
         os.unlink(hook_file)
     misc.copy_file(config.HOOK, hook_file)
 
-    message.sub_info('Making HOOK executable')
-    os.chmod(hook_file, stat.S_IEXEC)
+    try:
+        message.sub_info('Making HOOK executable')
+        os.chmod(hook_file, stat.S_IEXEC)
 
-    message.sub_info('Running HOOK')
-    misc.chroot_exec(('/hook'))
+        message.sub_info('Running HOOK')
+        misc.chroot_exec(('/hook'))
+    finally:
+        if os.path.isfie(hook_file):
+            os.unlink(hook_file)
