@@ -13,7 +13,7 @@ def unmount_iso():
     if not mount_dir:
         return
     message.sub_info('Unmounting', mount_dir)
-    misc.system_command((misc.whereis('umount'), '-f', mount_dir))
+    misc.system_command((misc.whereis('umount'), '-fl', mount_dir))
 
     message.sub_info('Removing', mount_dir)
     os.rmdir(mount_dir)
