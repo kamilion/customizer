@@ -51,7 +51,7 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
 
 On Ubuntu do:
 ```sh
-sudo apt-get install sudo apt-get install make binutils g++ python2.7 python2.7-dev python-qt4 pyqt4-dev-tools squashfs-tools xorriso x11-xserver-utils xserver-xephyr qemu-kvm
+sudo apt-get install git build-essential fakeroot make binutils g++ python python-dev python-qt4 pyqt4-dev-tools squashfs-tools xorriso x11-xserver-utils xserver-xephyr qemu-kvm dpkg-dev debhelper qt4-dev-tools qt4-linguist-tools --no-install-recommends
 ```
 
 ### INSTALL AND RUN
