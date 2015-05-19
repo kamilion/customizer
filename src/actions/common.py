@@ -64,7 +64,7 @@ def get_value(sfile, string):
     return ''
 
 def set_value(sfile, string, value):
-    substitute(sfile, '(\\s)' + string + '.*(\\s)', '\n' + string + '"' + value + '"\n')
+    substitute(sfile, '\\s' + string + '.*\\s', '\n' + string + '"' + value + '"\n')
 
 def substitute(sfile, regex, string):
     content = misc.read_file(sfile)

@@ -106,7 +106,10 @@ def setup_gui():
         ui.cleanButton.setEnabled(True)
         ui.extraCustomizationBox.setEnabled(True)
 
-        ui.userEdit.setText(common.get_value(casper, 'export USERNAME='))
+        liveuser = common.get_value(casper, 'export USERNAME=')
+        if not liveuser.strip():
+            liveuser = 'ubuntu'
+        ui.userEdit.setText(liveuser)
         ui.hostnameEdit.setText(common.get_value(casper, 'export HOST='))
         common.substitute(casper, '# export FLAVOUR=.*', \
             'export FLAVOUR="Custom"')
@@ -306,12 +309,23 @@ def run_qemu():
         msg_critical(detail)
 
 def change_user():
-    common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
-        'etc/casper.conf'), 'export USERNAME=', unicode(ui.userEdit.text()))
+    try:
+        value = unicode(ui.userEdit.text())
+        if not value.strip():
+            msg_critical(app.tr('Live user can not be empty.'))
+            ui.userEdit.setText('ubuntu')
+            return
+        common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
+            'etc/casper.conf'), 'export USERNAME=', value)
+    except Exception as detail:
+        msg_critical(detail)
 
 def change_hostname():
-    common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
-        'etc/casper.conf'), 'export HOST=', unicode(ui.hostnameEdit.text()))
+    try:
+        common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
+            'etc/casper.conf'), 'export HOST=', unicode(ui.hostnameEdit.text()))
+    except Exception as detail:
+        msg_critical(detail)
 
 def change_work_dir():
     try:

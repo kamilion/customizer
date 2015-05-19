@@ -257,44 +257,49 @@ Copyright (C) 2013-2015 Mubiin Kimura</source>
         <translation>Опитвате се да стартирате Customizer с Python 3.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="137"/>
+        <location filename="gui.py" line="140"/>
         <source>The filesystem is not valid or corrupted. Clean is recommended.</source>
         <translation>Файловата система не е валидна или е повредена. Изчистване е препоръчително.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="158"/>
+        <location filename="gui.py" line="161"/>
         <source>No supported terminal emulator detected.</source>
         <translation>Не е намерен терминал, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="220"/>
+        <location filename="gui.py" line="223"/>
         <source>Open</source>
         <translation>Отвори</translation>
     </message>
     <message>
-        <location filename="gui.py" line="220"/>
+        <location filename="gui.py" line="223"/>
         <source>ISO Files (*.iso);;All Files (*)</source>
         <translation>ISO Файлове (*.iso);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="253"/>
+        <location filename="gui.py" line="256"/>
         <source>No supported text editor detected.</source>
         <translation>Не е намерен текстов редактор, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="266"/>
+        <location filename="gui.py" line="269"/>
         <source>Deb Files (*.deb);;All Files (*)</source>
         <translation>Deb Файлове (*.deb);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="282"/>
+        <location filename="gui.py" line="285"/>
         <source>Shell Scripts (*.sh);;All Files (*)</source>
         <translation>Скриптове на Обвивката (*.sh);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="355"/>
+        <location filename="gui.py" line="369"/>
         <source>No supported file manager detected.</source>
         <translation>Не е намерен файлов мениджър, който се поддържа.</translation>
+    </message>
+    <message>
+        <location filename="gui.py" line="315"/>
+        <source>Live user can not be empty.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

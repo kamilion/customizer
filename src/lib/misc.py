@@ -48,9 +48,18 @@ def write_file(sfile, content):
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
 
+    original = None
+    if os.path.isfile(sfile):
+        original = read_file(sfile)
     wfile = open(sfile, 'w')
-    wfile.write(content)
-    wfile.close()
+    try:
+        wfile.write(content)
+    except:
+        if original:
+            wfile.write(original)
+        raise
+    finally:
+        wfile.close()
 
 def append_file(sfile, content):
     dirname = os.path.dirname(sfile)
