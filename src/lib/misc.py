@@ -175,12 +175,18 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
         # all operations on reference to os.environ change the environment!
         environment = {}
         for item in os.environ:
+            # skip desktop environment specifiec variables because if a DE is
+            # run in the chroot it may encounter some issues, e.g. with the
+            # XDG menus
+            if item.startswith('KDE_') or item == 'XDG_CURRENT_DESKTOP':
+                continue
             environment[item] = os.environ.get(item)
         environment['PATH'] = '/usr/sbin:/usr/bin:/sbin:/bin'
         environment['HOME'] = '/root'
         environment['LC_ALL'] = config.LOCALES
         environment['LANGUAGE'] = config.LOCALES
         environment['LANG'] = config.LOCALES
+        environment['USER'] = 'root'
         environment['CASPER_GENERATE_UUID'] = '1'
         if xnest:
             environment['HOME'] = '/etc/skel'
