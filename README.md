@@ -49,6 +49,10 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     xephyr (xserver-xephyr)
     qemu (qemu-kvm)
 
+On Ubuntu do:
+```sh
+sudo apt-get install git build-essential fakeroot make binutils g++ python python-dev python-qt4 pyqt4-dev-tools squashfs-tools xorriso x11-xserver-utils xserver-xephyr qemu-kvm dpkg-dev debhelper qt4-dev-tools qt4-linguist-tools --no-install-recommends
+```
 
 ### INSTALL AND RUN
 
