@@ -31,7 +31,7 @@ def main():
         raise(message.exception('Failed to start Xephyr', x.returncode))
 
     try:
-        message.sub_info('Allwoing local access to X-server')
+        message.sub_info('Allowing local access to X-server')
         misc.system_command((misc.whereis('xhost'), '+local:13'))
 
         message.sub_info('Starting nested X session', xsession)

@@ -2,7 +2,7 @@ VERSION = 4.1.1 ($(GIT_VERSION))
 GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo stable)
 
 DESTDIR = 
-PREFIX = $(shell $(PYTHON) -c "import sys; print(sys.prefix)")
+PREFIX = $(shell $(PYTHON)-config --prefix)
 ELEVATOR = pkexec
 TRDIR =$(shell $(PYTHON) -c "from PyQt4.QtCore import QLibraryInfo; \
 	print(QLibraryInfo.location(QLibraryInfo.TranslationsPath))")
