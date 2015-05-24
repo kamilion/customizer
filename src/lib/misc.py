@@ -131,15 +131,19 @@ def system_command(command, shell=False, cwd=None, catch=False, env=None):
         return subprocess.check_call(command, shell=shell, cwd=cwd, env=env)
 
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False):
-    real_root = os.open('/', os.O_RDONLY)
     out = None
+    mount = whereis('mount')
+    umount = whereis('umount')
+    chroot = whereis('chroot')
+    chroot_command = [chroot, config.FILESYSTEM_DIR]
     try:
         if prepare:
+            resolv = '%s/etc/resolv.conf' % config.FILESYSTEM_DIR
+            hosts = '%s/etc/hosts' % config.FILESYSTEM_DIR
             if os.path.isfile('/etc/resolv.conf'):
-                copy_file('/etc/resolv.conf', \
-                    config.FILESYSTEM_DIR + '/etc/resolv.conf')
+                copy_file('/etc/resolv.conf', resolv)
             if os.path.isfile('/etc/hosts'):
-                copy_file('/etc/hosts', config.FILESYSTEM_DIR + '/etc/hosts')
+                copy_file('/etc/hosts', hosts)
 
         if mount:
             pseudofs = ['/proc', '/dev', '/sys', '/tmp', '/var/lib/dbus']
@@ -155,21 +159,23 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
                     if not os.path.isdir(sdir):
                         os.makedirs(sdir)
                     if s == '/dev':
-                        system_command((whereis('mount'), '--rbind', s, sdir))
+                        system_command((mount, '--rbind', s, sdir))
                     else:
-                        system_command((whereis('mount'), '--bind', s, sdir))
+                        system_command((mount, '--bind', s, sdir))
 
 
-        os.chroot(config.FILESYSTEM_DIR)
-        os.chdir('/')
         if prepare:
-            if not os.path.isfile('/etc/mtab'):
-                os.symlink('/proc/mounts', '/etc/mtab')
+            mtab = '%s/etc/mtab' % config.FILESYSTEM_DIR
+            if not os.path.isfile(mtab) and not os.path.islink(mtab):
+                os.symlink('../../proc/mounts', mtab)
 
         if not config.LOCALES == 'C':
             system_command(('locale-gen', config.LOCALES))
 
-        environment = os.environ
+        # all operations on reference to os.environ change the environment!
+        environment = {}
+        for item in os.environ:
+            environment[item] = os.environ.get(item)
         environment['PATH'] = '/usr/sbin:/usr/bin:/sbin:/bin'
         environment['HOME'] = '/root'
         environment['LC_ALL'] = config.LOCALES
@@ -189,19 +195,19 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
             environment['DEBCONF_NONINTERACTIVE_SEEN'] = 'true'
             environment['DEBCONF_NOWARNINGS'] = 'true'
 
+        if isinstance(command, str):
+            command = shlex.split(command)
+        chroot_command.extend(command)
         if output:
-            out = get_output(command)
+            out = get_output(chroot_command)
         else:
-            system_command(command, shell=shell, env=environment)
+            system_command(chroot_command, shell=shell, \
+                env=environment)
     finally:
-        os.fchdir(real_root)
-        os.chroot('.')
-        os.close(real_root)
-
         if mount:
             for s in reversed(pseudofs):
                 sdir = config.FILESYSTEM_DIR + s
                 if os.path.ismount(sdir):
-                    system_command((whereis('umount'), '-f', '-l', sdir))
+                    system_command((umount, '-f', '-l', sdir))
     if output:
         return out
