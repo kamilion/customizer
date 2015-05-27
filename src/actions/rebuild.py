@@ -119,7 +119,8 @@ def main():
         shutil.rmtree(confdir)
     os.makedirs(confdir)
     try:
-        misc.chroot_exec('zcat ' + initrd.lstrip(config.FILESYSTEM_DIR) + ' | ' + ' cpio --quiet -id conf/uuid.conf', shell=True)
+        misc.chroot_exec('zcat ' + initrd.lstrip(config.FILESYSTEM_DIR) + ' | ' + ' cpio --quiet -id conf/uuid.conf', \
+            shell=True, cwd=config.FILESYSTEM_DIR)
         kernel = re.search('initrd.img-*.*.*-*-(.*)', initrd).group(1)
         message.sub_debug('Kernel', kernel)
         misc.copy_file(confdir + '/uuid.conf', misc.join_paths(config.ISO_DIR, \

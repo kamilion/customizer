@@ -111,7 +111,7 @@ def dir_current():
         cwd = '/'
     return cwd
 
-def system_command(command, shell=False, cwd=None, catch=False, env=None):
+def system_command(command, shell=False, cwd=None, env=None):
     if not cwd:
         cwd = dir_current()
     elif not os.path.isdir(cwd):
@@ -120,7 +120,7 @@ def system_command(command, shell=False, cwd=None, catch=False, env=None):
         env = os.environ
     if isinstance(command, str) and not shell:
         command = shlex.split(command)
-    if catch or CATCH:
+    if CATCH:
         pipe = subprocess.Popen(command, stderr=subprocess.PIPE, \
             shell=shell, cwd=cwd, env=env)
         pipe.wait()
@@ -130,12 +130,16 @@ def system_command(command, shell=False, cwd=None, catch=False, env=None):
     else:
         return subprocess.check_call(command, shell=shell, cwd=cwd, env=env)
 
-def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False):
+def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False, cwd=None):
     out = None
     mount = whereis('mount')
     umount = whereis('umount')
     chroot = whereis('chroot')
-    chroot_command = [chroot, config.FILESYSTEM_DIR]
+    if isinstance(command, str):
+        chroot_command = '%s %s %s' % (chroot, config.FILESYSTEM_DIR, command)
+    else:
+        chroot_command = [chroot, config.FILESYSTEM_DIR]
+        chroot_command.extend(command)
     try:
         if prepare:
             resolv = '%s/etc/resolv.conf' % config.FILESYSTEM_DIR
@@ -201,14 +205,11 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
             environment['DEBCONF_NONINTERACTIVE_SEEN'] = 'true'
             environment['DEBCONF_NOWARNINGS'] = 'true'
 
-        if isinstance(command, str):
-            command = shlex.split(command)
-        chroot_command.extend(command)
         if output:
             out = get_output(chroot_command)
         else:
             system_command(chroot_command, shell=shell, \
-                env=environment)
+                env=environment, cwd=cwd)
     finally:
         if mount:
             for s in reversed(pseudofs):
