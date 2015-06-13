@@ -3,217 +3,217 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="gui_ui.py" line="215"/>
+        <location filename="gui_ui.py" line="214"/>
         <source>Customizer GUI</source>
         <translation>Customizer ГПИ</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="216"/>
+        <location filename="gui_ui.py" line="215"/>
         <source>Select ISO</source>
         <translation>Избери ISO</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="217"/>
+        <location filename="gui_ui.py" line="216"/>
         <source>Rebuild ISO</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="218"/>
+        <location filename="gui_ui.py" line="217"/>
         <source>QEMU</source>
         <translation>QEMU</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="219"/>
+        <location filename="gui_ui.py" line="218"/>
         <source>Clean</source>
         <translation>Изчисти</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="220"/>
+        <location filename="gui_ui.py" line="219"/>
         <source> Customization </source>
         <translation>Персонализации</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="221"/>
+        <location filename="gui_ui.py" line="220"/>
         <source>Edit sources</source>
         <translation>Промени източници</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="222"/>
+        <location filename="gui_ui.py" line="221"/>
         <source>Archive</source>
         <translation>Архив</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="223"/>
+        <location filename="gui_ui.py" line="222"/>
         <source>Install DEB</source>
         <translation>Инсталирай ДЕБ</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="224"/>
+        <location filename="gui_ui.py" line="223"/>
         <source>Terminal</source>
         <translation>Терминал</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="225"/>
+        <location filename="gui_ui.py" line="224"/>
         <source>Desktop</source>
         <translation>Десктоп</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="226"/>
+        <location filename="gui_ui.py" line="225"/>
         <source>Execute hook</source>
         <translation>Изпълни кука</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="227"/>
+        <location filename="gui_ui.py" line="226"/>
         <source> Configuration </source>
         <translation>Конфигурация</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="228"/>
+        <location filename="gui_ui.py" line="227"/>
         <source>Hostname</source>
         <translation>Име на хоста</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="229"/>
+        <location filename="gui_ui.py" line="228"/>
         <source>Live user</source>
         <translation>Жив потребител</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="230"/>
+        <location filename="gui_ui.py" line="229"/>
         <source>Main</source>
         <translation>Основни</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="235"/>
+        <location filename="gui_ui.py" line="234"/>
         <source>X-nest resolution</source>
         <translation>Х-нест резолюция</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="236"/>
+        <location filename="gui_ui.py" line="235"/>
         <source>Change</source>
         <translation>Промени</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="237"/>
+        <location filename="gui_ui.py" line="236"/>
         <source>Working directory</source>
         <translation>Работна директория</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="238"/>
+        <location filename="gui_ui.py" line="237"/>
         <source>QEMU RAM (in MB)</source>
         <translation>QEMU РАМ (в МБ)</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="239"/>
+        <location filename="gui_ui.py" line="238"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="240"/>
+        <location filename="gui_ui.py" line="239"/>
         <source>Locales</source>
         <translation>Локализации</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="241"/>
+        <location filename="gui_ui.py" line="240"/>
         <source>64</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="242"/>
+        <location filename="gui_ui.py" line="241"/>
         <source>128</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="243"/>
+        <location filename="gui_ui.py" line="242"/>
         <source>256</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="244"/>
+        <location filename="gui_ui.py" line="243"/>
         <source>512</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="245"/>
+        <location filename="gui_ui.py" line="244"/>
         <source>1024</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="246"/>
+        <location filename="gui_ui.py" line="245"/>
         <source>2048</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="247"/>
+        <location filename="gui_ui.py" line="246"/>
         <source>4086</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="248"/>
+        <location filename="gui_ui.py" line="247"/>
         <source>640x480</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="249"/>
+        <location filename="gui_ui.py" line="248"/>
         <source>800x600</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="250"/>
+        <location filename="gui_ui.py" line="249"/>
         <source>1024x768</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="251"/>
+        <location filename="gui_ui.py" line="250"/>
         <source>SquashFS format</source>
         <translation>SquashFS формат</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="252"/>
+        <location filename="gui_ui.py" line="251"/>
         <source>xz</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="253"/>
+        <location filename="gui_ui.py" line="252"/>
         <source>gzip</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="254"/>
+        <location filename="gui_ui.py" line="253"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="255"/>
+        <location filename="gui_ui.py" line="254"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;set on runtime!&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="268"/>
+        <location filename="gui_ui.py" line="267"/>
         <source>About</source>
         <translation>Относно</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="231"/>
+        <location filename="gui_ui.py" line="230"/>
         <source> Extra Customization </source>
         <translation>Допълнителни персонализации</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="232"/>
+        <location filename="gui_ui.py" line="231"/>
         <source>Browse FileSystem</source>
         <translation>Разгледай FileSystem</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="233"/>
+        <location filename="gui_ui.py" line="232"/>
         <source>Browse ISO</source>
         <translation>Разгледай ISO</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="234"/>
+        <location filename="gui_ui.py" line="233"/>
         <source>Extra</source>
         <translation>Допълнителни</translation>
     </message>
     <message>
-        <location filename="gui_ui.py" line="256"/>
+        <location filename="gui_ui.py" line="255"/>
         <source>Ivailo Monev &apos;SmiL3y&apos; (code developer) xakepa10@gmail.com
 Michal Glowienka &apos;eloaders&apos; (PPA maintainer) eloaders@yahoo.com
 Mubiin Kimura &apos;clearkimura&apos; (documentation) clearkimura@gmail.com

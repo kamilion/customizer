@@ -150,7 +150,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
                 copy_file('/etc/hosts', hosts)
 
         if mount:
-            pseudofs = ['/proc', '/dev', '/sys', '/tmp', '/var/lib/dbus']
+            pseudofs = ['/proc', '/dev', '/dev/pts', '/dev/shm', '/sys', '/tmp', '/var/lib/dbus']
             if os.path.islink(config.FILESYSTEM_DIR + '/var/run'):
                 pseudofs.append('/run/dbus')
             else:
@@ -162,10 +162,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
                 if not os.path.ismount(sdir):
                     if not os.path.isdir(sdir):
                         os.makedirs(sdir)
-                    if s == '/dev':
-                        system_command((mount, '--rbind', s, sdir))
-                    else:
-                        system_command((mount, '--bind', s, sdir))
+                    system_command((mount, '--bind', s, sdir))
 
 
         if prepare:
