@@ -21,6 +21,11 @@ import actions.rebuild as rebuild
 import actions.clean as clean
 import actions.qemu as qemu
 misc.CATCH = True
+common.misc.CATCH = True
+extract.misc.CATCH = True
+deb.misc.CATCH = True
+hook.misc.CATCH = True
+qemu.misc.CATCH = True
 
 # prepare for lift-off
 app = QtGui.QApplication(sys.argv)

@@ -34,11 +34,13 @@ def main():
 
     message.sub_info('Mounting ISO', config.ISO)
     try:
-        # in some cases the modules may not be loaded, if they are builtin
-        # a warning should be printed but (AFAIK) the command should not fail.
-        # the "-b" argument is to ensure blacklisted modules are respected,
-        # I hope it does not cause trouble (it works with buysbox and kmod)
-        misc.system_command((misc.whereis('modprobe'), '-ba', 'loop', 'iso9660'))
+        # load the required kernel modules in cases the are not, if they are
+        # builtin the command fails so ignoring that. the "-b" argument is to
+        # ensure blacklisted modules are respected
+        try:
+            misc.system_command((misc.whereis('modprobe'), '-ba', 'loop', 'iso9660'))
+        except:
+            pass
         misc.system_command((misc.whereis('mount'), '-t', 'iso9660', '-o', \
             'ro,loop', config.ISO, mount_dir))
     except:

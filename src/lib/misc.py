@@ -132,6 +132,8 @@ def system_command(command, shell=False, cwd=None, env=None):
 
 def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, shell=False, cwd=None):
     out = None
+    resolv = '%s/etc/resolv.conf' % config.FILESYSTEM_DIR
+    hosts = '%s/etc/hosts' % config.FILESYSTEM_DIR
     mount = whereis('mount')
     umount = whereis('umount')
     chroot = whereis('chroot')
@@ -142,11 +144,18 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
         chroot_command.extend(command)
     try:
         if prepare:
-            resolv = '%s/etc/resolv.conf' % config.FILESYSTEM_DIR
-            hosts = '%s/etc/hosts' % config.FILESYSTEM_DIR
-            if os.path.isfile('/etc/resolv.conf'):
+            if os.path.isfile('/etc/resolv.conf') and not os.path.islink(resolv):
+                 copy_file('/etc/resolv.conf', resolv)
+            elif os.path.islink(resolv):
+                # usually /run/resolvconf/resolv.conf
+                resolv = os.path.realpath(resolv)
+                rdir = os.path.dirname(resolv)
+                if not os.path.isdir(rdir):
+                    os.makedirs(rdir)
                 copy_file('/etc/resolv.conf', resolv)
             if os.path.isfile('/etc/hosts'):
+                if os.path.isfile(hosts):
+                    copy_file(hosts, '%s.backup' % hosts)
                 copy_file('/etc/hosts', hosts)
 
         if mount:
@@ -208,6 +217,10 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
             system_command(chroot_command, shell=shell, \
                 env=environment, cwd=cwd)
     finally:
+        if prepare:
+            if os.path.isfile('%s.backup' % hosts):
+                copy_file('%s.backup' % hosts, hosts)
+                os.unlink('%s.backup' % hosts)
         if mount:
             for s in reversed(pseudofs):
                 sdir = config.FILESYSTEM_DIR + s

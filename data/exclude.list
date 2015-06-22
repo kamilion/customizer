@@ -16,11 +16,6 @@ boot/syslinux/*
 boot/lilo/*
 boot/*.bak
 boot/*.old-dkms
-etc/hostname
-etc/hosts
-etc/resolv.conf
-etc/fstab
-etc/mtab
 etc/group-
 etc/passwd-
 etc/gshadow-
