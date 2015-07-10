@@ -38,9 +38,11 @@ gui:
 	$(SED) -e 's|@VERSION@|$(VERSION)|' -e 's|@PREFIX@|$(PREFIX)|g' \
 		src/gui.py.in > src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
+ifneq ($(shell which $(LRELEASE)),)
 	$(PYLUPDATE) src/*.py -ts tr/customizer_bg_BG.ts
 	$(LRELEASE) tr/customizer_bg_BG.ts
-	
+endif
+
 install: install-core install-gui
 
 install-core:
@@ -70,8 +72,10 @@ install-gui:
 		$(DESTDIR)$(PREFIX)/share/menu/customizer
 	$(INSTALL) -m644 data/customizer.policy \
 		$(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
+ifneq ($(shell which $(LRELEASE)),)
 	$(INSTALL) -dm755 $(DESTDIR)$(TRDIR)/
 	$(INSTALL) -m644 tr/*.qm $(DESTDIR)$(TRDIR)/
+endif
 
 uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/sbin/customizer
