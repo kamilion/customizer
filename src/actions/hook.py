@@ -27,5 +27,5 @@ def main():
         message.sub_info('Running HOOK')
         misc.chroot_exec(('/hook'))
     finally:
-        if os.path.isfie(hook_file):
+        if os.path.isfile(hook_file):
             os.unlink(hook_file)
