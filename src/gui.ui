@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>389</width>
-    <height>305</height>
+    <height>316</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -423,8 +423,10 @@
            <string>Ivailo Monev 'SmiL3y' (code developer) xakepa10@gmail.com
 Michal Glowienka 'eloaders' (PPA maintainer) eloaders@yahoo.com
 Mubiin Kimura 'clearkimura' (documentation) clearkimura@gmail.com
-Andrie Vorster 'andries-petrus-vorster' (README.md) Ayman 'aymanim' (typo, spellcheck)
+Andrie Vorster 'andries-petrus-vorster' (README.md)
+Ayman 'aymanim' (typo, spellcheck)
 Yes 'eByrd' (typo, spellcheck)
+Minwook Shin  'minwook-shin' (Korean translation) smw0106@naver.com
 
 If you feel like you deserve to be mentioned here but you are not feel free to contact us.
 
