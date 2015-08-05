@@ -39,8 +39,8 @@ gui:
 		src/gui.py.in > src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 ifneq ($(shell which $(LRELEASE)),)
-	$(PYLUPDATE) src/*.py -ts tr/customizer_bg_BG.ts
-	$(LRELEASE) tr/customizer_bg_BG.ts
+	$(PYLUPDATE) src/*.py -ts tr/customizer_bg_BG.ts tr/customizer_ko_KR.ts
+	$(LRELEASE) tr/customizer_bg_BG.ts tr/customizer_ko_KR.ts
 endif
 
 install: install-core install-gui
