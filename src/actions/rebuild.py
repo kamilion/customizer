@@ -162,26 +162,26 @@ def main():
             misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz'))
             # We only need to copy the bare kernel if we're not using EFI at all.
 
-        # Copy optional boot-enablement packages onto the ISO, if found.
-        if mt86plus:
-            message.sub_debug('Memtest86+ kernel', mt86plus)
-            misc.copy_file(mt86plus, misc.join_paths(config.ISO_DIR, 'install/mt86plus'))
-        if xen_kernel:
-            message.sub_debug('Xen kernel', xen_kernel)
-            misc.copy_file(xen_kernel, \
-                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(xen_kernel)))
-        if xen_efi:
-            message.sub_debug('Xen EFI kernel', xen_efi)
-            misc.copy_file(xen_efi, \
-                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(xen_efi)))
-        if ipxe_kernel:
-            message.sub_debug('iPXE kernel', ipxe_kernel)
-            misc.copy_file(ipxe_kernel, \
-                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(ipxe_kernel)))
-        if ipxe_efi:
-            message.sub_debug('iPXE EFI kernel', ipxe_efi)
-            misc.copy_file(ipxe_efi, \
-                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(ipxe_efi)))
+    # Copy optional boot-enablement packages onto the ISO, if found.
+    if mt86plus:
+        message.sub_debug('Memtest86+ kernel', mt86plus)
+        misc.copy_file(mt86plus, misc.join_paths(config.ISO_DIR, 'install/mt86plus'))
+    if xen_kernel:
+        message.sub_debug('Xen kernel', xen_kernel)
+        misc.copy_file(xen_kernel, \
+            misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(xen_kernel)))
+    if xen_efi:
+        message.sub_debug('Xen EFI kernel', xen_efi)
+        misc.copy_file(xen_efi, \
+            misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(xen_efi)))
+    if ipxe_kernel:
+        message.sub_debug('iPXE kernel', ipxe_kernel)
+        misc.copy_file(ipxe_kernel, \
+            misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(ipxe_kernel)))
+    if ipxe_efi:
+        message.sub_debug('iPXE EFI kernel', ipxe_efi)
+        misc.copy_file(ipxe_efi, \
+            misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(ipxe_efi)))
 
     message.sub_info('Extracting casper UUID')
     confdir = config.FILESYSTEM_DIR + '/conf'
