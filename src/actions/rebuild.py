@@ -8,10 +8,14 @@ import lib.message as message
 import actions.common as common
 
 def detect_boot():
-    global initrd, vmlinuz, xenkernel
+    global initrd, vmlinuz, mt86plus, xen_kernel, xen_efi, ipxe_kernel, ipxe_efi
     initrd = None
     vmlinuz = None
-    xenkernel = None
+    mt86plus = None
+    xen_kernel = None
+    xen_efi = None
+    ipxe_kernel = None
+    ipxe_efi = None
 
     for sfile in sorted(misc.list_files(misc.join_paths(config.FILESYSTEM_DIR, 'boot'))):
         if 'initrd.img' in sfile:
@@ -20,10 +24,26 @@ def detect_boot():
         elif 'vmlinuz' in sfile:
             vmlinuz = sfile
             message.sub_debug('Vmlinuz detected', sfile)
+        elif 'memtest86' in sfile:
+            if '+.bin' in sfile:
+                # In theory, We want memtest86+.bin, not memtest86+_multiboot.bin
+                # But in actual practice, they're often the same file. Let's be picky.
+                mt86plus = sfile
+                message.sub_debug('Memtest86+ kernel detected', sfile)
         elif 'xen' in sfile:
             if 'gz' in sfile:
-                xenkernel = sfile
-                message.sub_debug('Xen kernel detected', sfile)
+                xen_kernel = sfile
+                message.sub_debug('Xen Hypervisor kernel detected', sfile)
+            if 'efi' in sfile:
+                xen_efi = sfile
+                message.sub_debug('Xen Hypervisor EFI kernel detected', sfile)
+        elif 'ipxe' in sfile:
+            if 'lkrn' in sfile:
+                ipxe_kernel = sfile
+                message.sub_debug('iPXE kernel detected', sfile)
+            if 'efi' in sfile:
+                ipxe_efi = sfile
+                message.sub_debug('iPXE EFI kernel detected', sfile)
 
 def main():
     common.check_filesystem()
@@ -141,12 +161,27 @@ def main():
         else:
             misc.copy_file(vmlinuz, misc.join_paths(config.ISO_DIR, 'casper/vmlinuz'))
             # We only need to copy the bare kernel if we're not using EFI at all.
-        if xenkernel:
-            # Xen is optional, and will be included on the ISO if found.
-            message.sub_debug('Xen kernel', xenkernel)
-            misc.copy_file(xenkernel, \
-                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(xenkernel)))
 
+        # Copy optional boot-enablement packages onto the ISO, if found.
+        if mt86plus:
+            message.sub_debug('Memtest86+ kernel', mt86plus)
+            misc.copy_file(mt86plus, misc.join_paths(config.ISO_DIR, 'install/mt86plus'))
+        if xen_kernel:
+            message.sub_debug('Xen kernel', xen_kernel)
+            misc.copy_file(xen_kernel, \
+                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(xen_kernel)))
+        if xen_efi:
+            message.sub_debug('Xen EFI kernel', xen_efi)
+            misc.copy_file(xen_efi, \
+                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(xen_efi)))
+        if ipxe_kernel:
+            message.sub_debug('iPXE kernel', ipxe_kernel)
+            misc.copy_file(ipxe_kernel, \
+                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(ipxe_kernel)))
+        if ipxe_efi:
+            message.sub_debug('iPXE EFI kernel', ipxe_efi)
+            misc.copy_file(ipxe_efi, \
+                misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(ipxe_efi)))
 
     message.sub_info('Extracting casper UUID')
     confdir = config.FILESYSTEM_DIR + '/conf'
@@ -244,7 +279,6 @@ def main():
             checksum = hashlib.sha256(misc.read_file(sfile)).hexdigest()
             misc.append_file(shasums_file, checksum + '  .' + \
                 sfile.replace(config.ISO_DIR, '') +'\n')
-
 
     # Create the ISO filesystem
     message.sub_info('Creating ISO')
