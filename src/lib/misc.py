@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-import os, re, shutil, shlex, subprocess, time
+import os, re, shutil, shlex, subprocess, time, hashlib
 
 import lib.message as message
 CMD_DEBUG = True
