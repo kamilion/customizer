@@ -47,75 +47,75 @@ else:
 def info(msg, marker=None):
     ''' Print message with INFO status '''
     if not marker is None:
-        print('%s* %s%s: %s%s%s' % \
-            (cmarker, cnormal, msg, cinfo, marker, cnormal))
+        print('{}* {}{}: {}{}{}'.format( \
+            cmarker, cnormal, msg, cinfo, marker, cnormal))
     else:
-        print('%s* %s%s' % (cmarker, cnormal, msg))
+        print('{}* {}{}'.format(cmarker, cnormal, msg))
 
 
 def warning(msg, marker=None):
     ''' Print message with WARNING status '''
     if not marker is None:
-        sys.stderr.write('%s* %s%s: %s%s%s\n' % \
-            (cwarning, cnormal, msg, cwarning, marker, cnormal))
+        sys.stderr.write('{}* {}{}: {}{}{}\n'.format( \
+            cwarning, cnormal, msg, cwarning, marker, cnormal))
     else:
-        sys.stderr.write('%s* %s%s\n' % (cwarning, cnormal, msg))
+        sys.stderr.write('{}* {}{}\n'.format(cwarning, cnormal, msg))
 
 
 def critical(msg, marker=None):
     ''' Print message with CRITICAL status '''
     if not marker is None:
-        sys.stderr.write('%s* %s%s: %s%s%s\n' % \
-            (ccritical, cnormal, msg, ccritical, marker, cnormal))
+        sys.stderr.write('{}* {}{}: {}{}{}\n'.format( \
+            ccritical, cnormal, msg, ccritical, marker, cnormal))
     else:
-        sys.stderr.write('%s* %s%s\n' % (ccritical, cnormal, msg))
+        sys.stderr.write('{}* {}{}\n'.format(ccritical, cnormal, msg))
 
 
 def debug(msg, marker=None):
     ''' Print message with DEBUG status '''
     if DEBUG:
         if not marker is None:
-            print('%s* %s%s: %s%s%s' % \
-                (cdebug, cnormal, msg, cdebug, marker, cnormal))
+            print('{}* {}{}: {}{}{}'.format( \
+                cdebug, cnormal, msg, cdebug, marker, cnormal))
         else:
-            print('%s* %s%s' % (cdebug, cnormal, msg))
+            print('{}* {}{}'.format(cdebug, cnormal, msg))
 
 
 def sub_info(msg, marker=None):
     ''' Print sub-message with INFO status '''
     if not marker is None:
-        print('%s  => %s%s: %s%s%s' % \
-            (cmarker, cnormal, msg, cinfo, marker, cnormal))
+        print('{}  => {}{}: {}{}{}'.format( \
+            cmarker, cnormal, msg, cinfo, marker, cnormal))
     else:
-        print('%s  => %s%s' % (cmarker, cnormal, msg))
+        print('{}  => {}{}'.format(cmarker, cnormal, msg))
 
 
 def sub_warning(msg, marker=None):
     ''' Print sub-message with WARNING status '''
     if not marker is None:
-        sys.stderr.write('%s  => %s%s: %s%s%s\n' % \
-            (cwarning, cnormal, msg, cwarning, marker, cnormal))
+        sys.stderr.write('{}  => {}{}: {}{}{}\n'.format( \
+            cwarning, cnormal, msg, cwarning, marker, cnormal))
     else:
-        sys.stderr.write('%s  => %s%s\n' % (cwarning, cnormal, msg))
+        sys.stderr.write('{}  => {}{}\n'.format(cwarning, cnormal, msg))
 
 
 def sub_critical(msg, marker=None):
     ''' Print sub-message with CRITICAL status '''
     if not marker is None:
-        sys.stderr.write('%s  => %s%s: %s%s%s\n' % \
-            (ccritical, cnormal, msg, ccritical, marker, cnormal))
+        sys.stderr.write('{}  => {}{}: {}{}{}\n'.format( \
+            ccritical, cnormal, msg, ccritical, marker, cnormal))
     else:
-        sys.stderr.write('%s  => %s%s\n' % (ccritical, cnormal, msg))
+        sys.stderr.write('{}  => {}{}\n'.format(ccritical, cnormal, msg))
 
 
 def sub_debug(msg, marker=None):
     ''' Print sub-message with DEBUG status '''
     if DEBUG:
         if not marker is None:
-            print('%s  => %s%s: %s%s%s' % \
-                (cdebug, cnormal, msg, cdebug, marker, cnormal))
+            print('{}  => {}{}: {}{}{}'.format( \
+			cdebug, cnormal, msg, cdebug, marker, cnormal))
         else:
-            print('%s  => %s%s' % (cdebug, cnormal, msg))
+            print('{}  => {}{}'.format(cdebug, cnormal, msg))
 
 class exception(Exception):
     pass

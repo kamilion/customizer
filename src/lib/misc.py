@@ -219,7 +219,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
                 os.symlink('../../proc/mounts', mtab)
             if not os.path.isfile(inhibit):
                 write_file(inhibit, "exit 101")
-                os.chmod(inhibit, 0755)
+                os.chmod(inhibit, 0o755)
         
         if not config.LOCALES == 'C':
             system_command(('locale-gen', config.LOCALES))

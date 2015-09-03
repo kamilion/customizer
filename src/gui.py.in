@@ -45,7 +45,7 @@ def msg_warning(msg):
     QtGui.QMessageBox.warning(MainWindow, app.tr('Warning'), msg)
 
 def msg_critical(msg):
-    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), str(msg).decode('utf-8'))
+    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), u''.format(msg))
 
 # limit instances to one
 lock = '/run/lock/customizer'
@@ -66,7 +66,6 @@ else:
 
 if int(sys.version_info[0]) >= 3:
     msg_critical(app.tr('You are attempting to run Customizer with Python 3.'))
-    sys.exit()
 
 class Thread(QtCore.QThread):
     ''' Worker thread '''
@@ -192,7 +191,8 @@ def change_value(sec, var, val):
         conf = open('/etc/customizer.conf', 'w')
         if not config.conf.has_section(sec):
             config.conf.add_section(sec)
-        config.conf.set(sec, var, val.encode('utf-8'))
+        config.conf.set(sec, var, u'{}'.format(val))
+        message.debug('Writing Configuration file', '/etc/customizer.conf')
         config.conf.write(conf)
     except Exception as detail:
         msg_critical(detail)
@@ -233,7 +233,7 @@ def run_extract():
         config.ISO, app.tr('ISO Files (*.iso);;All Files (*)'))
     if not sfile:
         return
-    sfile = unicode(sfile)
+    sfile = u'{}'.format(sfile)
     change_value('saved', 'iso', sfile)
     extract.config.ISO = sfile
     message.sub_debug('Extracting ISO', sfile)
@@ -283,7 +283,7 @@ def run_deb():
             config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
         if not sfile:
             return
-        sfile = unicode(sfile)
+        sfile = u'{}'.format(sfile)
         change_value('saved', 'deb', sfile)
         deb.config.DEB = sfile
         message.sub_debug('Installing DEB package', sfile)
@@ -301,7 +301,7 @@ def run_hook():
             config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
         if not sfile:
             return
-        sfile = unicode(sfile)
+        sfile = u'{}'.format(sfile)
         change_value('saved', 'hook', sfile)
         hook.config.HOOK = sfile
         message.sub_debug('Attempting to run hook', sfile)
@@ -330,7 +330,7 @@ def run_qemu():
 def change_user():
     message.sub_debug('Attempting to change username...')
     try:
-        value = unicode(ui.userEdit.text())
+        value = u'{}'.format(ui.userEdit.text())
         if not value.strip():
             msg_critical(app.tr('Live user can not be empty.'))
             ui.userEdit.setText('ubuntu')
@@ -344,7 +344,7 @@ def change_hostname():
     message.sub_debug('Attempting to change hostname...')
     try:
         common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
-            'etc/casper.conf'), 'export HOST=', unicode(ui.hostnameEdit.text()))
+            'etc/casper.conf'), 'export HOST=', u'{}'.format(ui.hostnameEdit.text()))
     except Exception as detail:
         msg_critical(detail)
 
@@ -355,7 +355,7 @@ def change_work_dir():
             'Directory', config.WORK_DIR)
         if not spath:
             return
-        spath = unicode(spath)
+        spath = u'{}'.format(spath)
         change_value('preferences', 'work_dir', spath)
         ui.workDirEdit.setText(spath)
     except Exception as detail:
@@ -363,22 +363,22 @@ def change_work_dir():
 
 def change_locales():
     message.sub_debug('Attempting to change Locales...')
-    current = unicode(ui.localesBox.currentText())
+    current = u'{}'.format(ui.localesBox.currentText())
     change_value('preferences', 'locales', current)
 
 def change_resolution():
     message.sub_debug('Attempting to change qemu resolution...')
-    current = unicode(ui.resolutionBox.currentText())
+    current = u'{}'.format(ui.resolutionBox.currentText())
     change_value('preferences', 'resolution', current)
 
 def change_vram():
     message.sub_debug('Attempting to change qemu VRAM size...')
-    current = unicode(ui.vramBox.currentText())
+    current = u'{}'.format(ui.vramBox.currentText())
     change_value('preferences', 'vram', current)
 
 def change_compression():
     message.sub_debug('Attempting to change compression type...')
-    current = unicode(ui.compressionBox.currentText())
+    current = u'{}'.format(ui.compressionBox.currentText())
     change_value('preferences', 'compression', current)
 
 def browse_dir(sdir):

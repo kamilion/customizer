@@ -301,12 +301,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.<
         <translation>당신은 파이썬 3으로 커스터마이저를 실행하려고합니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="146"/>
+        <location filename="gui.py" line="145"/>
         <source>The filesystem is not valid or corrupted. Clean is recommended.</source>
         <translation>파일시스템이 잘못되거나 손상되었습니다. 청소를 하는 것이 좋습니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="169"/>
+        <location filename="gui.py" line="168"/>
         <source>No supported terminal emulator detected.</source>
         <translation>지원되는 터미널 에뮬레이터가 감지 되지 않습니다.</translation>
     </message>
