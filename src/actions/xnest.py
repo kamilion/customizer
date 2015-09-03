@@ -27,7 +27,7 @@ def main():
     x = subprocess.Popen((misc.whereis('Xephyr'), '-ac', '-screen', \
         config.RESOLUTION, '-br', ':13'))
     x.poll()
-    if x.returncode > 0:
+    if x.returncode is not None and x.returncode > 0:
         raise(message.exception('Failed to start Xephyr', x.returncode))
 
     try:

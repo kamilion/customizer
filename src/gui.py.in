@@ -4,7 +4,7 @@
 # This is quick and dirty written GUI! #
 ############### END NOTE ###############
 
-import sys, os, atexit, subprocess
+import sys, os, atexit, subprocess, imp
 sys.path.append("@PREFIX@/share/customizer")
 
 import gui_ui
@@ -199,7 +199,7 @@ def change_value(sec, var, val):
     finally:
         if conf:
             conf.close()
-        reload(config)
+        imp.reload(config)
 
 def worker_started():
     ui.progressBar.setRange(0, 0)
