@@ -3,11 +3,10 @@
 import os, re, shutil, shlex, subprocess, time, hashlib
 
 import lib.message as message
-CMD_DEBUG = True
-COPY_DEBUG = True
+CMD_DEBUG = False
 CHROOT_DEBUG = True
-FILE_DEBUG = True
-MOUNT_DEBUG = True
+FILE_DEBUG = False
+MOUNT_DEBUG = False
 
 import lib.config as config
 CATCH = False
@@ -91,7 +90,7 @@ def append_file(sfile, content):
     afile.close()
 
 def copy_file(source, destination):
-    if COPY_DEBUG: message.sub_debug('File {} copied to'.format(source), destination)
+    if FILE_DEBUG: message.sub_debug('File {} copied to'.format(source), destination)
     base = os.path.dirname(destination)
     if not os.path.isdir(base):
         os.makedirs(base)
@@ -124,11 +123,11 @@ def search_string(string, string2, exact=False, escape=True):
         return re.findall(string, str(string2))
 
 def search_file(string, sfile, exact=False, escape=True):
-    if CMD_DEBUG: message.sub_debug('Searching {} for'.format(sfile), string)
+    if FILE_DEBUG: message.sub_debug('Searching {} for'.format(sfile), string)
     return search_string(string, read_file(sfile), exact=exact, escape=escape)
 
 def list_files(directory):
-    if CMD_DEBUG: message.sub_debug('Listing files in', directory)
+    if FILE_DEBUG: message.sub_debug('Listing files in', directory)
     slist = []
     if not os.path.exists(directory):
         return slist
@@ -145,7 +144,7 @@ def dir_current():
     return cwd
 
 def system_command(command, shell=False, cwd=None, env=None):
-    message.sub_debug('Executing system command', command)
+    if CMD_DEBUG: message.sub_debug('Executing system command', command)
     if not cwd:
         cwd = dir_current()
     elif not os.path.isdir(cwd):
