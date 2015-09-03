@@ -1,11 +1,12 @@
 #!/usr/bin/python2
 
-import os, re, shutil, shlex, subprocess
+import os, re, shutil, shlex, subprocess, time
 
 import lib.message as message
 CMD_DEBUG = True
 COPY_DEBUG = True
 CHROOT_DEBUG = True
+FILE_DEBUG = True
 MOUNT_DEBUG = True
 
 import lib.config as config
@@ -47,18 +48,21 @@ def join_fs_path(*paths):
 
 ''' File operations '''
 def read_file(sfile):
+    if FILE_DEBUG: message.sub_debug('Reading entire file', sfile)
     rfile = open(sfile, 'r')
     content = rfile.read()
     rfile.close()
     return content
 
 def readlines_file(sfile):
+    if FILE_DEBUG: message.sub_debug('Reading lines from', sfile)
     rfile = open(sfile, 'r')
     content = rfile.readlines()
     rfile.close()
     return content
 
 def write_file(sfile, content):
+    if FILE_DEBUG: message.sub_debug('Writing data to', sfile)
     dirname = os.path.dirname(sfile)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -77,6 +81,7 @@ def write_file(sfile, content):
         wfile.close()
 
 def append_file(sfile, content):
+    if FILE_DEBUG: message.sub_debug('Appending data to', sfile)
     dirname = os.path.dirname(sfile)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -130,7 +135,7 @@ def dir_current():
     return cwd
 
 def system_command(command, shell=False, cwd=None, env=None):
-    if CMD_DEBUG: message.sub_debug('Executing system command', command)
+    message.sub_debug('Executing system command', command)
     if not cwd:
         cwd = dir_current()
     elif not os.path.isdir(cwd):
@@ -256,6 +261,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
                 if os.path.ismount(sdir):
                     if MOUNT_DEBUG: message.sub_debug('Unmounting -f -l', sdir)
                     system_command((umount, '-f', '-l', sdir))
-        system_command(('sleep', '3'))
+            time.sleep(0.1)  # Wait for lazy unmounts to unlazy...
+        system_command(('sleep', '1')) # Make sure of it. (and log it)
     if output:
         return out
