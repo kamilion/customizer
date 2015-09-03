@@ -168,6 +168,7 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
     out = None
     resolv = '{}/etc/resolv.conf'.format(config.FILESYSTEM_DIR)
     hosts = '{}/etc/hosts'.format(config.FILESYSTEM_DIR)
+    inhibit = '{}/usr/sbin/policy-rc.d'.format(config.FILESYSTEM_DIR)
     mount = whereis('mount')
     umount = whereis('umount')
     chroot = whereis('chroot')
@@ -216,7 +217,10 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
             mtab = '{}/etc/mtab'.format(config.FILESYSTEM_DIR)
             if not os.path.isfile(mtab) and not os.path.islink(mtab):
                 os.symlink('../../proc/mounts', mtab)
-
+            if not os.path.isfile(inhibit):
+                write_file(inhibit, "exit 101")
+                os.chmod(inhibit, 0755)
+        
         if not config.LOCALES == 'C':
             system_command(('locale-gen', config.LOCALES))
 
@@ -264,6 +268,8 @@ def chroot_exec(command, prepare=True, mount=True, output=False, xnest=False, sh
             if os.path.isfile('{}.backup'.format(hosts)):
                 copy_file('{}.backup'.format(hosts), hosts)
                 os.unlink('{}.backup'.format(hosts))
+            if os.path.isfile(inhibit):
+                os.unlink(inhibit)
         if mount:
             for s in reversed(pseudofs):
                 sdir = config.FILESYSTEM_DIR + s
