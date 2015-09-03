@@ -304,7 +304,7 @@ def run_hook():
         sfile = unicode(sfile)
         change_value('saved', 'hook', sfile)
         hook.config.HOOK = sfile
-            message.sub_debug('Attempting to run hook', sfile)
+        message.sub_debug('Attempting to run hook', sfile)
         worker(hook.main)
     except Exception as detail:
         msg_critical(detail)
