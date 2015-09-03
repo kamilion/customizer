@@ -256,10 +256,8 @@ def main():
                 continue
             if sfile.endswith('SHA256SUMS'):
                 continue
-
-            # FIXME: read in chunks
             message.sub_debug('MD5 Checksumming', sfile)
-            checksum = hashlib.md5(misc.read_file(sfile)).hexdigest()
+            checksum = misc.generate_hash_for_file('md5', sfile)
             misc.append_file(md5sums_file, checksum + '  .' + \
                 sfile.replace(config.ISO_DIR, '') +'\n')
 
@@ -273,10 +271,8 @@ def main():
                 continue
             if sfile.endswith('SHA256SUMS'):
                 continue
-
-            # FIXME: read in chunks
             message.sub_debug('SHA256 Checksumming', sfile)
-            checksum = hashlib.sha256(misc.read_file(sfile)).hexdigest()
+            checksum = misc.generate_hash_for_file('sha256', sfile)
             misc.append_file(shasums_file, checksum + '  .' + \
                 sfile.replace(config.ISO_DIR, '') +'\n')
 
@@ -290,15 +286,15 @@ def main():
         '-cache-inodes', '-input-charset', 'utf-8', '.'))
 
     message.sub_info('Creating ISO checksums')
-    md5checksum = hashlib.md5(misc.read_file(iso_file)).hexdigest()
+    md5checksum = misc.generate_hash_for_file('md5', isofile)
     message.sub_info('ISO md5 checksum', md5checksum)
     misc.append_file(md5sum_iso_file, md5checksum + '  .' + \
         iso_file.replace(config.WORK_DIR, '') +'\n')
-    sha1checksum = hashlib.sha1(misc.read_file(iso_file)).hexdigest()
+    sha1checksum = misc.generate_hash_for_file('sha1', isofile)
     message.sub_info('ISO sha1 checksum', sha1checksum)
     misc.append_file(sha1sum_iso_file, sha1checksum + '  .' + \
         iso_file.replace(config.WORK_DIR, '') +'\n')
-    sha256checksum = hashlib.sha256(misc.read_file(iso_file)).hexdigest()
+    sha256checksum = misc.generate_hash_for_file('sha256', isofile)
     message.sub_info('ISO sha256 checksum', sha256checksum)
     misc.append_file(sha256sum_iso_file, sha256checksum + '  .' + \
         iso_file.replace(config.WORK_DIR, '') +'\n')

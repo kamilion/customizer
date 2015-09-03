@@ -97,6 +97,16 @@ def copy_file(source, destination):
         os.makedirs(base)
     shutil.copyfile(source, destination)
 
+def generate_hash_for_file(hashtype, filename, blocksize=2**20):
+    m = hashlib.new(hashtype)
+    with open(filename, "rb") as f:
+        while True:
+            buf = f.read(blocksize)
+            if not buf:
+                break
+            m.update(buf)
+    return m.hexdigest()
+
 ''' System operations '''
 def get_output(command):
     pipe = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
