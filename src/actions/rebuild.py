@@ -286,15 +286,15 @@ def main():
         '-cache-inodes', '-input-charset', 'utf-8', '.'))
 
     message.sub_info('Creating ISO checksums')
-    md5checksum = misc.generate_hash_for_file('md5', isofile)
+    md5checksum = misc.generate_hash_for_file('md5', iso_file)
     message.sub_info('ISO md5 checksum', md5checksum)
     misc.append_file(md5sum_iso_file, md5checksum + '  .' + \
         iso_file.replace(config.WORK_DIR, '') +'\n')
-    sha1checksum = misc.generate_hash_for_file('sha1', isofile)
+    sha1checksum = misc.generate_hash_for_file('sha1', iso_file)
     message.sub_info('ISO sha1 checksum', sha1checksum)
     misc.append_file(sha1sum_iso_file, sha1checksum + '  .' + \
         iso_file.replace(config.WORK_DIR, '') +'\n')
-    sha256checksum = misc.generate_hash_for_file('sha256', isofile)
+    sha256checksum = misc.generate_hash_for_file('sha256', iso_file)
     message.sub_info('ISO sha256 checksum', sha256checksum)
     misc.append_file(sha256sum_iso_file, sha256checksum + '  .' + \
         iso_file.replace(config.WORK_DIR, '') +'\n')
