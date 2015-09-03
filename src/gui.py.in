@@ -4,7 +4,7 @@
 # This is quick and dirty written GUI! #
 ############### END NOTE ###############
 
-import sys, os, atexit, subprocess
+import sys, os, atexit, subprocess, imp
 sys.path.append("@PREFIX@/share/customizer")
 
 import gui_ui
@@ -12,6 +12,7 @@ from PyQt4 import QtCore, QtGui
 
 import lib.config as config
 import lib.misc as misc
+import lib.message as message
 import actions.common as common
 import actions.extract as extract
 import actions.deb as deb
@@ -44,7 +45,7 @@ def msg_warning(msg):
     QtGui.QMessageBox.warning(MainWindow, app.tr('Warning'), msg)
 
 def msg_critical(msg):
-    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), str(msg).decode('utf-8'))
+    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), u''.format(msg))
 
 # limit instances to one
 lock = '/run/lock/customizer'
@@ -65,7 +66,6 @@ else:
 
 if int(sys.version_info[0]) >= 3:
     msg_critical(app.tr('You are attempting to run Customizer with Python 3.'))
-    sys.exit()
 
 class Thread(QtCore.QThread):
     ''' Worker thread '''
@@ -153,18 +153,21 @@ def setup_gui():
         ui.extraCustomizationBox.setEnabled(False)
 
 def run_core(args, terminal=True):
+    message.sub_debug('GUI Running', 'customizer ' + args)
     if terminal:
         terminal = None
         for term in ('xterm', 'lxterminal', 'xfce4-terminal', 'terminal',
             'konsole', 'mate-terminal', 'gnome-terminal', 'terminator', \
-            'sakura', 'urxterm', 'aterm', 'Eterm'):
+            'sakura', 'urxterm', 'aterm', 'Eterm', 'x-terminal-emulator'):
             spath = misc.whereis(term)
             if spath:
                 terminal = spath
+                message.sub_debug('Found terminal', terminal)
 
         if not terminal:
             msg_critical(app.tr('No supported terminal emulator detected.'))
             return
+    message.sub_debug('Selected last found terminal', terminal)
 
     try:
         if terminal and terminal.endswith('konsole'):
@@ -188,14 +191,15 @@ def change_value(sec, var, val):
         conf = open('/etc/customizer.conf', 'w')
         if not config.conf.has_section(sec):
             config.conf.add_section(sec)
-        config.conf.set(sec, var, val.encode('utf-8'))
+        config.conf.set(sec, var, u'{}'.format(val))
+        message.debug('Writing Configuration file', '/etc/customizer.conf')
         config.conf.write(conf)
     except Exception as detail:
         msg_critical(detail)
     finally:
         if conf:
             conf.close()
-        reload(config)
+        imp.reload(config)
 
 def worker_started():
     ui.progressBar.setRange(0, 0)
@@ -229,27 +233,31 @@ def run_extract():
         config.ISO, app.tr('ISO Files (*.iso);;All Files (*)'))
     if not sfile:
         return
-    sfile = unicode(sfile)
+    sfile = u'{}'.format(sfile)
     change_value('saved', 'iso', sfile)
     extract.config.ISO = sfile
+    message.sub_debug('Extracting ISO', sfile)
     try:
         worker(extract.main)
     except Exception as detail:
         msg_critical(detail)
 
 def run_rebuild():
+    message.sub_debug('Starting Rebuild...')
     try:
         worker(rebuild.main)
     except Exception as detail:
         msg_critical(detail)
 
 def run_clean():
+    message.sub_debug('Starting Cleaning...')
     try:
         worker(clean.main)
     except Exception as detail:
         msg_critical(detail)
 
 def edit_sources():
+    message.sub_debug('Trying to edit sources...')
     editor = None
     for edit in ('mousepad', 'leafpad', 'pluma', 'gedit', 'kate', 'kwrite', \
         'medit', 'nedit', 'geany', 'bluefish', 'ultraedit'):
@@ -275,14 +283,16 @@ def run_deb():
             config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
         if not sfile:
             return
-        sfile = unicode(sfile)
+        sfile = u'{}'.format(sfile)
         change_value('saved', 'deb', sfile)
         deb.config.DEB = sfile
+        message.sub_debug('Installing DEB package', sfile)
         worker(deb.main)
     except Exception as detail:
         msg_critical(detail)
 
 def run_pkgm():
+    message.sub_debug('Starting Graphical Package Manager...')
     run_core('-p')
 
 def run_hook():
@@ -291,31 +301,36 @@ def run_hook():
             config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
         if not sfile:
             return
-        sfile = unicode(sfile)
+        sfile = u'{}'.format(sfile)
         change_value('saved', 'hook', sfile)
         hook.config.HOOK = sfile
+        message.sub_debug('Attempting to run hook', sfile)
         worker(hook.main)
     except Exception as detail:
         msg_critical(detail)
 
 def run_chroot():
+    message.sub_debug('Opening terminal...')
     run_core('-c')
 
 def run_xnest():
+    message.sub_debug('Opening Nested GUI Desktop...')
     try:
         worker(xnest.main)
     except Exception as detail:
         msg_critical(detail)
 
 def run_qemu():
+    message.sub_debug('Starting qemu...')
     try:
         worker(qemu.main)
     except Exception as detail:
         msg_critical(detail)
 
 def change_user():
+    message.sub_debug('Attempting to change username...')
     try:
-        value = unicode(ui.userEdit.text())
+        value = u'{}'.format(ui.userEdit.text())
         if not value.strip():
             msg_critical(app.tr('Live user can not be empty.'))
             ui.userEdit.setText('ubuntu')
@@ -326,41 +341,48 @@ def change_user():
         msg_critical(detail)
 
 def change_hostname():
+    message.sub_debug('Attempting to change hostname...')
     try:
         common.set_value(misc.join_paths(config.FILESYSTEM_DIR, \
-            'etc/casper.conf'), 'export HOST=', unicode(ui.hostnameEdit.text()))
+            'etc/casper.conf'), 'export HOST=', u'{}'.format(ui.hostnameEdit.text()))
     except Exception as detail:
         msg_critical(detail)
 
 def change_work_dir():
+    message.sub_debug('Attempting to change hostname...')
     try:
         spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, \
             'Directory', config.WORK_DIR)
         if not spath:
             return
-        spath = unicode(spath)
+        spath = u'{}'.format(spath)
         change_value('preferences', 'work_dir', spath)
         ui.workDirEdit.setText(spath)
     except Exception as detail:
         msg_critical(detail)
 
 def change_locales():
-    current = unicode(ui.localesBox.currentText())
+    message.sub_debug('Attempting to change Locales...')
+    current = u'{}'.format(ui.localesBox.currentText())
     change_value('preferences', 'locales', current)
 
 def change_resolution():
-    current = unicode(ui.resolutionBox.currentText())
+    message.sub_debug('Attempting to change qemu resolution...')
+    current = u'{}'.format(ui.resolutionBox.currentText())
     change_value('preferences', 'resolution', current)
 
 def change_vram():
-    current = unicode(ui.vramBox.currentText())
+    message.sub_debug('Attempting to change qemu VRAM size...')
+    current = u'{}'.format(ui.vramBox.currentText())
     change_value('preferences', 'vram', current)
 
 def change_compression():
-    current = unicode(ui.compressionBox.currentText())
+    message.sub_debug('Attempting to change compression type...')
+    current = u'{}'.format(ui.compressionBox.currentText())
     change_value('preferences', 'compression', current)
 
 def browse_dir(sdir):
+    message.sub_debug('Attempting to open GUI file browser for', sdir)
     try:
         manager = None
         for term in ('dolphin', 'thunar', 'pcmanfm', 'nautilus', 'emelfm', \

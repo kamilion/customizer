@@ -1,6 +1,10 @@
 #!/usr/bin/python2
 
-import os, ConfigParser
+import os
+try:  # Importing python3 style first.
+    import configparser as ConfigParser
+except:  # Fall back to python2.
+    import ConfigParser
 
 import lib.message as message
 
@@ -18,22 +22,24 @@ conf = ConfigParser.SafeConfigParser(
 )
 
 if not os.path.isfile('/etc/customizer.conf'):
-    message.warning('Configuration file does not exists', '/etc/customizer.conf')
+    message.warning('Configuration file does not exist', '/etc/customizer.conf')
 
 conf.read('/etc/customizer.conf')
+message.info('Read Configuration file', '/etc/customizer.conf')
 for section in ('preferences', 'saved'):
     if not conf.has_section(section):
         conf.add_section(section)
 
-WORK_DIR = conf.get('preferences', 'WORK_DIR')
-LOCALES = conf.get('preferences', 'LOCALES')
-RESOLUTION = conf.get('preferences', 'RESOLUTION')
-COMPRESSION = conf.get('preferences', 'COMPRESSION')
-VRAM = conf.get('preferences', 'VRAM')
+# Make sure these end up to be strings in both python2 and python3.
+WORK_DIR = '{}'.format(conf.get('preferences', 'WORK_DIR'))
+LOCALES = '{}'.format(conf.get('preferences', 'LOCALES'))
+RESOLUTION = '{}'.format(conf.get('preferences', 'RESOLUTION'))
+COMPRESSION = '{}'.format(conf.get('preferences', 'COMPRESSION'))
+VRAM = '{}'.format(conf.get('preferences', 'VRAM'))
 
-ISO = conf.get('saved', 'ISO')
-DEB = conf.get('saved', 'DEB')
-HOOK = conf.get('saved', 'HOOK')
+ISO = '{}'.format(conf.get('saved', 'ISO'))
+DEB = '{}'.format(conf.get('saved', 'DEB'))
+HOOK = '{}'.format(conf.get('saved', 'HOOK'))
 
 MOUNT_DIR = '/media'
 FILESYSTEM_DIR = os.path.join(WORK_DIR, 'FileSystem')
