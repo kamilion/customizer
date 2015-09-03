@@ -4,7 +4,7 @@ import os, re, shutil, shlex, subprocess, time, hashlib
 
 import lib.message as message
 CMD_DEBUG = False
-CHROOT_DEBUG = True
+CHROOT_DEBUG = False
 FILE_DEBUG = False
 MOUNT_DEBUG = False
 

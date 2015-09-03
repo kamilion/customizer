@@ -4,7 +4,7 @@ import sys
 import curses
 
 tty_colors = 0
-DEBUG = True
+DEBUG = False
 
 try:
     curses.setupterm()
