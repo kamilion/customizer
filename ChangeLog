@@ -1,3 +1,17 @@
+## Customizer v4.1.1 (as commit f45d7e4)
+    * Minor changes to GUI; "About" tab now split into "Credits" and "License"
+    * Updated README.md
+    * Updated Contributors (fixed typo, added new contributor)
+    * Various fixes (issue #93, #98, #90, #100, #103, #85, #105, #106)
+    * Various improvements for handling rebuild and checksums (pull request #108)
+    + Implemented chunked hashing that significantly reduces memory usage (pull request #110)
+    + Added Korean translation
+    + Added Contributors
+    + Added genabout.py with option to convert Contributors into HTML format
+    + Added early support for Python 3 (Better compatibility for Python 2.7 and Python 3)
+
+-- clearkimura <clearkimura@gmail.com>
+
 ## Customizer v4.1.1
     * Various bug fixes and improvements
     * Support Unicode paths (issue #93)
