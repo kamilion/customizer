@@ -4,6 +4,7 @@
     * Updated Contributors (fixed typo, added new contributor)
     * Various fixes (issue #93, #98, #90, #100, #103, #85, #105, #106)
     * Various improvements for handling rebuild and checksums (pull request #108)
+    * Better support for 15.04 and newer releases
     + Implemented chunked hashing that significantly reduces memory usage (pull request #110)
     + Added Korean translation
     + Added Contributors
