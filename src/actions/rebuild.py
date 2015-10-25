@@ -204,7 +204,7 @@ def main():
         # Using the branch-call-jump filter provides a compression boost with executable code.
         # This can save a hundred megabytes easily, on an 800MB ISO. The dictionary size must
         # match the block size, and it's advisable to use larger block sizes, like 1MB or 4MB.
-        compression_parameters += ('-Xbcj', 'x86', '-Xdict-size', '100%')
+        compression_parameters += ('-Xbcj', 'x86,ia64', '-Xdict-size', '100%')
     message.sub_info('SquashFS Compression parameters', compression_parameters)
 
     # Create the compressed filesystem
