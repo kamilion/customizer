@@ -61,7 +61,7 @@ sudo apt-get install git build-essential fakeroot make binutils g++ python pytho
     sudo customizer -h // command line version
     sudo customizer-gui // GUI version
 
-See our [first guide](https://github.com/clearkimura/Customizer/wiki/First-guide) to get you started.
+See our [first guide](https://github.com/kamilion/customizer/wiki/First-guide) to get you started.
 
 ### AUTHORS
 
@@ -71,10 +71,11 @@ Michal Glowienka 'eloaders' (PPA maintainer) `eloaders@yahoo.com`
 
 Mubiin Kimura 'clearkimura' (documentation) `clearkimura@gmail.com`
 
+Graham Cantin 'Kamilion' (maintainer) `kamilion@gmail.com`
 
 ### BUGS REPORT
 
-Create and submit your issue at https://github.com/fluxer/Customizer/issues
+Create and submit your issue at https://github.com/kamilion/customizer/issues
 
 **IMPORTANT** You should include the following details: what version of system host, 
 what version of customizer, what ISO image, description of problem, full output log that is 
@@ -90,7 +91,7 @@ The developers will look into submitted issues from time to time, usually a day 
 Only issues found in latest versions of Customizer are concerned. Issues in older versions
 will be ignored.
 
-To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Changes-log
+To check latest releases, visit https://github.com/kamilion/customizer/blob/master/ChangeLog
 
 
 ### COPYRIGHT
@@ -98,6 +99,8 @@ To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Change
 Copyright (C) 2010-2013 Ivailo Monev
 
 Copyright (C) 2013-2015 Mubiin Kimura
+
+Copyright (C) 2015-2016 Graham Cantin
 
 License: GPLv2
 
@@ -109,10 +112,12 @@ documentation is contributed. As December 2011, Customizer development has moved
 GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). One year later, 
 as December 2012, Customizer stable release has hit 3.2.3.
 
-Presently re-written from scratch with the goal to support Ubuntu releases newer than 12.04
-and making it more stable and robust.
+Early in 2015, re-written from scratch in python2 and qt4 with the goal to support
+Ubuntu releases newer than 12.04 and making it more stable and robust.
+
+Somewhere around 2015-2016, updated for python3 to support 14.04 to 16.04 releases.
 
 
 ### SEE ALSO
 
-You can find more information about Customizer at https://github.com/fluxer/Customizer/wiki
+You can find more information about Customizer at https://github.com/kamilion/customizer/wiki
