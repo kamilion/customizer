@@ -52,7 +52,7 @@ def main():
     message.sub_info('Doing sanity checks')
     lsb_file = misc.join_paths(config.FILESYSTEM_DIR, 'etc/lsb-release')
     if not os.path.isfile(lsb_file):
-        raise(message.exception(lsb_file + ' does not exists'))
+        raise(message.exception(lsb_file + ' does not exist'))
 
     isolinux_dir = misc.join_paths(config.ISO_DIR, 'isolinux')
     if not os.path.isdir(isolinux_dir):
@@ -85,6 +85,18 @@ def main():
         'DISTRIB_ID=')
     release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
         'DISTRIB_RELEASE=')
+
+    # It's really annoying to override the output filename other ways.
+    # If you actually try to change lsb-release, you end up breaking apt.
+    livecd_file = misc.join_paths(config.FILESYSTEM_DIR, 'etc/livecd-release')
+    if os.path.isfile(livecd_file):
+        distrib = common.get_value(config.FILESYSTEM_DIR + '/etc/livecd-release', \
+            'DISTRIB_ID=')
+        release = common.get_value(config.FILESYSTEM_DIR + '/etc/livecd-release', \
+            'DISTRIB_RELEASE=')
+        message.sub_debug('Distribution and Release overriden by /etc/livecd-release')
+        # Just overwrite the variables if the file actually exists, it's cleaner.
+
     message.sub_debug('Architecture', arch)
     message.sub_debug('Distribution (DISTRIB_ID)', distrib)
     message.sub_debug('Release (DISTRIB_RELEASE)', release)
