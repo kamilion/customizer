@@ -1,3 +1,5 @@
+**As January 2016, Customizer has been forked and is now being maintained at https://github.com/kamilion/customizer. For more details, see [issue #70](https://github.com/clearkimura/Customizer/issues/70). The existing repository is now considered as "old stable".**
+
 ### NAME
 
 Customizer (formerly known as U-Customizer)
