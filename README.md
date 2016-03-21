@@ -51,9 +51,13 @@ Ubuntu-based remix using Ubuntu Mini Remix, Ubuntu or its derivatives ISO image 
     xephyr (xserver-xephyr)
     qemu (qemu-kvm)
 
-On Ubuntu do:
+On Ubuntu 12.04 or 14.04 release, do:
 ```sh
-sudo apt-get install git build-essential fakeroot make binutils g++ python python-dev python-qt4 pyqt4-dev-tools squashfs-tools xorriso x11-xserver-utils xserver-xephyr qemu-kvm dpkg-dev debhelper qt4-dev-tools qt4-linguist-tools --no-install-recommends
+sudo apt-get install git build-essential fakeroot make binutils g++ \
+ python python-dev python-qt4 pyqt4-dev-tools squashfs-tools \
+ xorriso x11-xserver-utils xserver-xephyr qemu-kvm dpkg-dev \
+ debhelper qt4-dev-tools qt4-linguist-tools \
+ --no-install-recommends
 ```
 
 ### INSTALL AND RUN
@@ -64,6 +68,7 @@ sudo apt-get install git build-essential fakeroot make binutils g++ python pytho
     sudo customizer-gui // GUI version
 
 See our [first guide](https://github.com/clearkimura/Customizer/wiki/First-guide) to get you started.
+
 
 ### AUTHORS
 
@@ -82,17 +87,11 @@ Create and submit your issue at https://github.com/fluxer/Customizer/issues
 what version of customizer, what ISO image, description of problem, full output log that is 
 not just the part of what you consider relevant, and if possible, relevant screenshots.
 
-Example of issue submission details:
-
-    Ubuntu 12.04 32-bit, Customizer 3.2.1, ubuntu-mini-remix-12.04-amd64.iso.
-    Using GUI, after select 'Build', cannot create ISO image file, Terminal shows
-    Error 119: No kernel found when compiling image.
+See our guideline on [issue submission](https://github.com/clearkimura/Customizer/wiki/Issue-submission).
 
 The developers will look into submitted issues from time to time, usually a day or two.
 Only issues found in latest versions of Customizer are concerned. Issues in older versions
 will be ignored.
-
-To check latest releases, visit https://github.com/fluxer/Customizer/wiki/Changes-log
 
 
 ### COPYRIGHT
@@ -108,11 +107,11 @@ License: GPLv2
 
 In late 2010, this project was registered on Sourceforge.net. Since November 2011,
 documentation is contributed. As December 2011, Customizer development has moved to
-GitHub and has been tested thoroughly on Ubuntu 10.04(Lucid Lynx). One year later, 
+GitHub and has been tested thoroughly on Ubuntu 10.04 (Lucid Lynx). One year later, 
 as December 2012, Customizer stable release has hit 3.2.3.
 
-Presently re-written from scratch with the goal to support Ubuntu releases newer than 12.04
-and making it more stable and robust.
+Between late-2014 and early-2015, Customizer was rewritten in Python with the goal to 
+support Ubuntu releases newer than 12.04 and making it more stable and robust.
 
 
 ### SEE ALSO
