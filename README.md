@@ -63,9 +63,9 @@ sudo apt-get install git build-essential fakeroot make binutils g++ \
 ### INSTALL AND RUN
 
     make && sudo make install
-    // to run it: 
-    sudo customizer -h // command line version
-    sudo customizer-gui // GUI version
+    # to run it: 
+    sudo customizer -h # command line version
+    sudo customizer-gui # GUI version
 
 See our [first guide](https://github.com/clearkimura/Customizer/wiki/First-guide) to get you started.
 
