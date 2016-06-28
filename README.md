@@ -69,7 +69,7 @@ Ivailo Monev 'SmiL3y' (code developer) `xakepa10@gmail.com`
 
 Michal Glowienka 'eloaders' (PPA maintainer) `eloaders@yahoo.com`
 
-Mubiin Kimura 'clearkimura' (documentation) `clearkimura@gmail.com`
+Mubiin Kimura 'clearkimura' (documentation)
 
 Graham Cantin 'Kamilion' (maintainer) `kamilion@gmail.com`
 
