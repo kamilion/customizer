@@ -45,7 +45,7 @@ def msg_warning(msg):
     QtGui.QMessageBox.warning(MainWindow, app.tr('Warning'), msg)
 
 def msg_critical(msg):
-    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), u''.format(msg))
+    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), u'{0}'.format(msg))
 
 # limit instances to one
 lock = '/run/lock/customizer'
