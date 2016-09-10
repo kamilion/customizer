@@ -21,7 +21,7 @@ def unmount_iso():
 def main():
     global mount_dir
     if not os.path.isfile(config.ISO):
-        raise(message.exception('ISO does not exists', config.ISO))
+        raise(message.exception('ISO does not exist', config.ISO))
     elif not config.ISO.endswith('.iso'):
         raise(message.exception('File is not ISO', config.ISO))
 
