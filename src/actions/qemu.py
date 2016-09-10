@@ -23,7 +23,7 @@ def main():
 
     iso_file = '%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)
     if not os.path.exists(iso_file):
-        raise(message.exception('ISO Image does not exists', iso_file))
+        raise(message.exception('ISO image does not exist', iso_file))
 
     message.sub_info('Running QEMU with ISO image', iso_file)
     host_arch = os.uname()[4]
