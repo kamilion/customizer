@@ -1,3 +1,13 @@
+## Customizer v4.1.2
+    + Implemented first 'proper' update by interim maintainer @clearkimura
+    + Initial commit based on code review (issue #119, ongoing)
+    * Updated Contributors (latest listing as August 2016)
+    * Fixed minor bug that cause error messages not being displayed (kamilion@b2020fd)
+    * Fixed various typos in src/* files
+    * Fixed desktop entry according to spec
+
+-- clearkimura <clearkimura@gmail.com> Sat, 10 Sep 2016 08:45:08 UTC
+
 ## Customizer v4.1.1 (as commit 207cad4)
     * Updated README.md
     * Updated Contributors (latest listing as March 2016)
