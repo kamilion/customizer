@@ -23,7 +23,7 @@ def main():
 
     if not pkgmngr.startswith('aptitude'):
         try:
-            message.sub_info('Allwoing local access to X-server')
+            message.sub_info('Allowing local access to X-server')
             misc.system_command((misc.whereis('xhost'), '+local:'))
 
             message.sub_info('Executing package manager')
