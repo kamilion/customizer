@@ -19,7 +19,7 @@ def main():
             message.sub_debug('Session detected', xsession)
 
     if not xsession:
-        raise(message.exception('No session avaialable'))
+        raise(message.exception('No session available'))
 
     # FIXME: race condition between session and Xephyr - if session
     # starts before Xephyr it fails saying it does not find the DISPLAY
