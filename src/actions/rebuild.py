@@ -52,16 +52,16 @@ def main():
     message.sub_info('Doing sanity checks')
     lsb_file = misc.join_paths(config.FILESYSTEM_DIR, 'etc/lsb-release')
     if not os.path.isfile(lsb_file):
-        raise(message.exception(lsb_file + ' does not exists'))
+        raise(message.exception(lsb_file + ' does not exist'))
 
     isolinux_dir = misc.join_paths(config.ISO_DIR, 'isolinux')
     if not os.path.isdir(isolinux_dir):
         raise(message.exception(isolinux_dir + ' does not exist'))
 
     if misc.search_file('999:999', misc.join_paths(config.FILESYSTEM_DIR, 'etc/passwd')):
-        raise(message.exception('User with UID 999 exists, this mean that automatic login will fail'))
+        raise(message.exception('User with UID 999 exists, this means automatic login will fail'))
     elif misc.search_file('999:999', misc.join_paths(config.FILESYSTEM_DIR, 'etc/group')):
-        raise(message.exception('Group with GID 999 exists, this mean that automatic login will fail'))
+        raise(message.exception('Group with GID 999 exists, this means automatic login will fail'))
 
     casper_dir = misc.join_paths(config.ISO_DIR, 'casper')
     if not os.path.isdir(casper_dir):
@@ -208,7 +208,7 @@ def main():
     message.sub_info('SquashFS Compression parameters', compression_parameters)
 
     # Create the compressed filesystem
-    message.sub_info('Creating SquashFS Compressed Filesystem')
+    message.sub_info('Creating SquashFS compressed filesystem')
     make_squash_fs = ('mksquashfs', config.FILESYSTEM_DIR, \
         misc.join_paths(config.ISO_DIR, 'casper/filesystem.squashfs'), \
         '-wildcards', '-no-recovery', '-noappend', \
