@@ -1,33 +1,30 @@
-## Customizer v4.1.2
-    + Implemented first 'proper' update by interim maintainer @clearkimura
-    + Initial commit based on code review (issue #119, ongoing)
-    * Updated Contributors (latest listing as August 2016)
-    * Fixed minor bug that cause error messages not being displayed (kamilion@b2020fd)
-    * Fixed various typos in src/* files
-    * Fixed desktop entry according to spec
+4.1.2 - 9fba42b - 2016-09-10
+------------------------------
++ Implemented first 'proper' update by interim maintainer @clearkimura
++ Initial commit based on code review (issue #119, ongoing)
+* Updated Contributors (as August 2016)
+* Fixed minor bug that cause error messages not being displayed (kamilion@b2020fd)
+* Fixed various typos in src/* files
+* Fixed desktop entry according to spec
 
--- clearkimura <clearkimura@gmail.com> Sat, 10 Sep 2016 08:45:08 UTC
+4.1.1 - 207cad4 - untagged
+------------------------------
+* Updated README.md
+* Updated Contributors (as March 2016)
 
-## Customizer v4.1.1 (as commit 207cad4)
-    * Updated README.md
-    * Updated Contributors (latest listing as March 2016)
-
--- clearkimura <clearkimura@gmail.com> Tue, 29 Mar 2016 11:39:08 UTC
-
-## Customizer v4.1.1 (as commit 2a7864f)
-    * Minor changes to GUI; "About" tab now split into "Credits" and "License"
-    * Updated README.md
-    * Updated Contributors (fixed typo, added new contributor)
-    * Various fixes (issue #93, #98, #90, #100, #103, #85, #105, #106)
-    * Various improvements for handling rebuild and checksums (pull request #108)
-    * Better support for 15.04 and newer releases
-    + Implemented chunked hashing that significantly reduces memory usage (pull request #110)
-    + Added Korean translation
-    + Added Contributors
-    + Added genabout.py with option to convert Contributors into HTML format
-    + Added early support for Python 3 (Better compatibility for Python 2.7 and Python 3)
-
--- clearkimura <clearkimura@gmail.com> Fri, 4 Sep 2015 08:01:51 UTC
+4.1.1 - 2a7864f - untagged
+------------------------------
+* Minor changes to GUI; "About" tab now split into "Credits" and "License"
+* Updated README.md
+* Updated Contributors (fixed typo, added new contributor)
+* Various fixes (issue #93, #98, #90, #100, #103, #85, #105, #106)
+* Various improvements for handling rebuild and checksums (pull request #108)
+* Better support for 15.04 and newer releases
++ Implemented chunked hashing that reduces memory usage (pull request #110)
++ Added Korean translation
++ Added Contributors
++ Added genabout.py with option to convert Contributors into HTML format
++ Added early support for Python 3 (compatible with Python 2.7)
 
 ## Customizer v4.1.1
     * Various bug fixes and improvements
