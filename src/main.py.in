@@ -1,4 +1,4 @@
-#!@PREFIX@/bin/python2
+#!@PREFIX@/bin/python2.7
 
 import sys, ConfigParser, subprocess, shutil, os, re, argparse
 sys.path.append("@PREFIX@/share/customizer")
