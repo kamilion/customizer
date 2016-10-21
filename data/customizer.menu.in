@@ -1,4 +1,4 @@
-"?package(customizer)": \
+?package(customizer): \
 needs="x11" \
 hints="Ubuntu LiveCD Remastering Tool" \
 section="Applications/System/Administration" \
