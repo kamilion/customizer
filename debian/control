@@ -12,7 +12,8 @@ Build-Depends: debhelper (>= 9~), g++, python-dev (>= 2.7~), pyqt4-dev-tools,
 
 Package: customizer
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, libpython2.7 , python-qt4,
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
+ libpython2.7, python-qt4,
  squashfs-tools (>= 4.2~), xorriso, x11-xserver-utils, xserver-xephyr,
  qemu-kvm, policykit-1
 Recommends: policykit-1-gnome | polkit-kde-1
