@@ -4,4 +4,3 @@ hints="Ubuntu LiveCD Remastering Tool" \
 section="Applications/System/Administration" \
 title="Customizer" \
 command="@ELEVATOR@ @PREFIX@/sbin/customizer-gui" \
-icon="@PREFIX@/share/customizer/logo.png"
