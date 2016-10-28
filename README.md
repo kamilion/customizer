@@ -39,7 +39,7 @@ The fork is maintained by Graham Cantin 'Kamilion'.
 
 
 [manual]: docs/manual.md
-[wiki]: ./../wiki
+[wiki]: ../../wiki
 [Contributors]: Contributors
 [license]: COPYING
 [kamilion/customizer]: https://github.com/kamilion/customizer
