@@ -22,10 +22,9 @@ Development
 Customizer is stable and not under active development.
 
 The original repository is kept as "old stable", which is subject to tentative
-updates of bug fixes and clean up. This supports up to Ubuntu 14.04.
-
-Future development has moved to the fork, which aims to migrate the code
-to Python 3 and Qt 5. The fork will support newer releases of Ubuntu.
+updates of bug fixes and clean up. This supports up to Ubuntu 14.04. Future 
+development has moved to the fork, which aims to migrate the code to Python 3
+and Qt 5. The fork will support newer releases of Ubuntu.
 
 This repository
 ---------------
@@ -39,8 +38,8 @@ The official fork is available at [kamilion/customizer].
 The fork is maintained by Graham Cantin 'Kamilion'.
 
 
-[manual]: ./../blob/pre413/docs/manual.md
+[manual]: docs/manual.md
 [wiki]: ./../wiki
-[Contributors]: ./../blob/pre413/Contributors
-[license]: ./../blob/pre413/COPYING
+[Contributors]: Contributors
+[license]: COPYING
 [kamilion/customizer]: https://github.com/kamilion/customizer
