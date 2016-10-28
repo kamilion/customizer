@@ -14,6 +14,8 @@ Acknowledgements
 Customizer was founded and developed by Ivailo Monev 'fluxer' and has been
 improved by many [contributors].
 
+Customizer is [copyright] by Ivailo Monev, et al.
+
 Distributed under GPL-2.0 [license].
 
 Development
@@ -41,5 +43,6 @@ The fork is maintained by Graham Cantin 'Kamilion'.
 [manual]: docs/manual.md
 [wiki]: ../../wiki
 [Contributors]: Contributors
+[copyright]: debian/copyright
 [license]: COPYING
 [kamilion/customizer]: https://github.com/kamilion/customizer
