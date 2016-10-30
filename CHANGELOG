@@ -1,7 +1,24 @@
+4.1.3 - 228049f - 2016-10-30
+------------------------------
+* Reference commit in change log now refers to pull request for target milestone;
+   Or last relevant commit, prior to updating this change log
+   i.e. This commit 228049f refers to pull request #139 for milestone 4.1.3
+* Simplified listing, change log, readme (issue #124, #132, #134)
+* Renamed ChangeLog to CHANGELOG (issue #132)
+* Fixed missing window icon and Alt-Tab icon (issue #123)
+* Fixed packaging errors (issue #131)
+* Fixed various spec and hashbang lines (issue #133, pull request #135)
+* Updated package changelog with latest version (issue #127)
+* Updated version in Makefile
+* Updated copyright year
++ Added maintainer of the official fork in debian/copyright
++ Added docs/manual.md to contain text from old readme
+- Removed genabout.py
+
 4.1.2 - 9fba42b - 2016-09-10
 ------------------------------
-+ Implemented first 'proper' update by interim maintainer @clearkimura
-+ Initial commit based on code review (issue #119, ongoing)
+* Implemented first 'proper' update by interim maintainer @clearkimura
+* Initial commit based on code review (issue #119, ongoing)
 * Updated Contributors (as August 2016)
 * Fixed minor bug that cause error messages not being displayed (kamilion@b2020fd)
 * Fixed various typos in src/* files
