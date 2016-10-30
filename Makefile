@@ -1,4 +1,4 @@
-VERSION = 4.1.2 ($(GIT_VERSION))
+VERSION = 4.1.3 ($(GIT_VERSION))
 GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo stable)
 
 DESTDIR = 
@@ -11,7 +11,7 @@ PYTHON = python2
 PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
 PYUIC = pyuic4
 PYLUPDATE = pylupdate4 -noobsolete -verbose
-LRELEASE = lrelease
+LRELEASE = lrelease-qt4
 RM = rm -vf
 FIND = find
 SED = sed

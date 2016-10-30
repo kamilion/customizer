@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python2.7
 
 import os
 try:  # Importing python3 style first.
@@ -13,7 +13,7 @@ conf = ConfigParser.SafeConfigParser(
         'WORK_DIR': '/home',
         'LOCALES': 'C',
         'RESOLUTION': '800x600',
-        'COMPRESSION': 'xz',
+        'COMPRESSION': 'gzip',
         'VRAM': '256',
         'ISO': '',
         'DEB': '',

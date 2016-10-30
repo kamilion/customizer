@@ -1,7 +1,5 @@
-"?package(customizer)": \
-needs="x11" \
-hints="Ubuntu LiveCD Remastering Tool" \
+?package(customizer): \
+needs="X11" \
 section="Applications/System/Administration" \
 title="Customizer" \
-command="@ELEVATOR@ @PREFIX@/sbin/customizer-gui" \
-icon="@PREFIX@/share/customizer/logo.png"
+command="@ELEVATOR@ @PREFIX@/sbin/customizer-gui"

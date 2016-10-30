@@ -1,4 +1,4 @@
-#!@PREFIX@/bin/python2
+#!@PREFIX@/bin/python2.7
 
 ################# NOTE #################
 # This is quick and dirty written GUI! #
@@ -431,6 +431,6 @@ ui.compressionBox.currentIndexChanged.connect(change_compression)
 ui.browseFileSystemButton.clicked.connect(browse_filesystem)
 ui.browseISOButton.clicked.connect(browse_iso)
 setup_gui()
-
+MainWindow.setWindowIcon(QtGui.QIcon("@PREFIX@/share/customizer/logo.png"))
 MainWindow.show()
 sys.exit(app.exec_())
