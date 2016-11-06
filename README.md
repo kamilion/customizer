@@ -6,7 +6,7 @@ and remastering tool. Use any supported Ubuntu-based ISO image, such as Ubuntu
 Mini Remix, Ubuntu or its derivatives ISO image to build your own remix or custom
 ISO image with a few mouse clicks.
 
-For quick reference, refer to [manual]. More information in [wiki].
+For quick reference, refer to [manual]. More information in [wiki]. Else, skip reading and refer to [INSTALL].
 
 Acknowledgements
 ----------------
@@ -43,6 +43,7 @@ The fork is maintained by Graham Cantin 'Kamilion'.
 
 [manual]: docs/manual.md
 [wiki]: ../../wiki
+[INSTALL]: INSTALL
 [Contributors]: Contributors
 [copyright]: debian/copyright
 [license]: COPYING
