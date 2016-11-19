@@ -1,5 +1,5 @@
 VERSION = 4.1.3 ($(GIT_VERSION))
-GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo stable)
+GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo "old stable")
 
 DESTDIR = 
 PREFIX = $(shell $(PYTHON)-config --prefix)
