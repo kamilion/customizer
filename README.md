@@ -6,13 +6,14 @@ and remastering tool. Use any supported Ubuntu-based ISO image, such as Ubuntu
 Mini Remix, Ubuntu or its derivatives ISO image to build your own remix or custom
 ISO image with a few mouse clicks.
 
-For quick reference, refer to [manual]. More information in [wiki]. Else, skip reading and refer to [INSTALL].
+For quick reference, refer to [manual]. More information in [wiki]. Else, skip
+reading and refer to [INSTALL].
 
 Acknowledgements
 ----------------
 
-Customizer was founded and developed by Ivailo Monev 'fluxer' and has been
-improved by many [contributors].
+Customizer was founded and developed by Ivailo Monev and has been improved by
+many [contributors].
 
 Customizer is [copyright] by Ivailo Monev, et al.
 
@@ -44,7 +45,7 @@ The fork is maintained by Graham Cantin 'Kamilion'.
 [manual]: docs/manual.md
 [wiki]: ../../wiki
 [INSTALL]: INSTALL
-[Contributors]: Contributors
+[Contributors]: data/contributors
 [copyright]: debian/copyright
 [license]: COPYING
 [kamilion/customizer]: https://github.com/kamilion/customizer
