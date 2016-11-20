@@ -9,7 +9,7 @@
 # Distributed under GNU GPL-2.0 license
 # This script shall be distributed with source code of Customizer.
 #
-# REQUIRES: bash, sudo, apt, wget, tar, make, dpkg, debianutils
+# REQUIRES: bash, sudo, apt, wget, tar, make, dpkg, coreutils
 #
 # USAGE: For each STEP, copy and paste commands, then press ENTER in
 # the Terminal. Else download and run: chmod +x INSTALL && ./INSTALL
@@ -44,11 +44,15 @@ cd && sudo dpkg --install customizer*.deb
 #####################################################################
 }
 
-function uninstall_bin {
+function uninstall {
 echo "[*] Purge via dpkg..."                           ### PURGES ###
 #####################################################################
 sudo dpkg --purge customizer
 #####################################################################
+echo "[*] Matching directories and files for deletion..."
+ls -1d ?ustomizer* master.tar.gz*
+echo "[!] User consent is required [y to confirm, else will skip]"
+rm -I --verbose --recursive ?ustomizer* master.tar.gz*
 }
 
 # VARIABLES:
@@ -83,8 +87,8 @@ do {
     read KEY
     case $KEY in
         1|i) install_req && download_src && install_bin && KEY="q" ;;
-        2|r) uninstall_bin && download_src && install_bin && KEY="q" ;;
-        3|u) uninstall_bin && KEY="q" ;;
+        2|r) uninstall && download_src && install_bin && KEY="q" ;;
+        3|u) uninstall && KEY="q" ;;
         q) echo; break ;;
         *) echo "[?] Unknown option" ;;
     esac
