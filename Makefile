@@ -68,6 +68,10 @@ install-gui:
 		$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
 	$(INSTALL) -m644 data/logo.png \
 		$(DESTDIR)$(PREFIX)/share/customizer/logo.png
+	$(INSTALL) -m644 data/contributors \
+		$(DESTDIR)$(PREFIX)/share/customizer/contributors
+	$(INSTALL) -m644 debian/copyright \
+		$(DESTDIR)$(PREFIX)/share/customizer/copyright
 	$(INSTALL) -m644 data/customizer.menu \
 		$(DESTDIR)$(PREFIX)/share/menu/customizer
 	$(INSTALL) -m644 data/customizer.policy \
