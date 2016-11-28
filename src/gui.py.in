@@ -409,7 +409,7 @@ def browse_iso():
     browse_dir(config.ISO_DIR)
 
 ui.progressBar.hide()
-ui.aboutLabel.setText('<b>Customizer v@VERSION@</b>')
+ui.aboutLabel.setText('<b>Customizer @VERSION@</b>')
 ui.selectButton.clicked.connect(run_extract)
 ui.rebuildButton.clicked.connect(run_rebuild)
 ui.qemuButton.clicked.connect(run_qemu)
