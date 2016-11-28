@@ -17,7 +17,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
  squashfs-tools (>= 4.2~), xorriso, x11-xserver-utils, xserver-xephyr,
  qemu-kvm, policykit-1
 Recommends: policykit-1-gnome | polkit-kde-1
-Description: advanced Ubuntu LiveCD customization and remastering tool
- Customizer is an advanced LiveCD customization and remastering tool.
- With it, you can build own Ubuntu-based remix using Ubuntu Mini Remix,
- Ubuntu or its derivatives ISO image with a few mouse clicks.
+Description: Ubuntu Live CD remastering tool
+ Customizer, formerly known as U-Customizer, is an advanced Live CD
+ customization and remastering tool. Use any supported Ubuntu-based ISO
+ image, such as Ubuntu Mini Remix, Ubuntu or its derivatives ISO image
+ to build your own remix with a few mouse clicks.
