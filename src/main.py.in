@@ -21,8 +21,8 @@ try:
             message.DEBUG = True
             setattr(namespace, self.dest, values)
 
-    parser = argparse.ArgumentParser(prog='Customizer', \
-        description='Ubuntu based LiveCD ISO images remastering tool')
+    parser = argparse.ArgumentParser(prog='customizer', \
+        description='Ubuntu Live CD remastering tool')
     parser.add_argument('-e', '--extract', action='store_true', \
         help='Extract ISO image')
     parser.add_argument('-c', '--chroot', action='store_true', \
@@ -44,7 +44,7 @@ try:
     parser.add_argument('-D', '--debug', nargs=0, action=OverrideDebug, \
         help='Enable debug messages')
     parser.add_argument('-v', '--version', action='version', \
-        version='Customizer v@VERSION@', \
+        version='Customizer @VERSION@', \
         help='Show Customizer version and exit')
     ARGS = parser.parse_args()
 
