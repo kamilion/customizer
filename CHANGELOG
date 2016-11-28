@@ -1,14 +1,14 @@
 4.1.3 - 228049f - 2016-10-30
 ------------------------------
-* Reference commit in change log now refers to pull request for target milestone;
-   Or last relevant commit, prior to updating this change log
-   i.e. This commit 228049f refers to pull request #139 for milestone 4.1.3
-* Simplified listing, change log, readme (issue #124, #132, #134)
-* Renamed ChangeLog to CHANGELOG (issue #132)
-* Fixed missing window icon and Alt-Tab icon (issue #123)
-* Fixed packaging errors (issue #131)
-* Fixed various spec and hashbang lines (issue #133, pull request #135)
-* Updated package changelog with latest version (issue #127)
+* From this release, reference commit refers to last relevant commit
+   that has been made prior to updating this change log
+   i.e. 228049f refers to pr#139 for milestone 4.1.3
+* Simplified listing, change log, readme (#124, #132, #134)
+* Renamed ChangeLog to CHANGELOG (#132)
+* Fixed missing window icon and Alt-Tab icon (#123)
+* Fixed packaging errors (#131)
+* Fixed various spec and hashbang lines (#133, pr#135)
+* Updated package changelog with latest version (#127)
 * Updated version in Makefile
 * Updated copyright year
 + Added maintainer of the official fork in debian/copyright
@@ -17,10 +17,10 @@
 
 4.1.2 - 9fba42b - 2016-09-10
 ------------------------------
-* Implemented first 'proper' update by interim maintainer @clearkimura
-* Initial commit based on code review (issue #119, ongoing)
+* First 'proper' update by interim maintainer @clearkimura
+* Initial commit based on code review (#119, ongoing)
 * Updated Contributors (as August 2016)
-* Fixed minor bug that cause error messages not being displayed (kamilion@b2020fd)
+* Fixed error messages not being displayed (kamilion@b2020fd)
 * Fixed various typos in src/* files
 * Fixed desktop entry according to spec
 
@@ -31,16 +31,16 @@
 
 4.1.1 - 2a7864f - untagged
 ------------------------------
-* Minor changes to GUI; "About" tab now split into "Credits" and "License"
+* Modified GUI: 'About' tab splits into 'Credits' and 'License'
 * Updated README.md
-* Updated Contributors (fixed typo, added new contributor)
-* Various fixes (issue #93, #98, #90, #100, #103, #85, #105, #106)
-* Various improvements for handling rebuild and checksums (pull request #108)
+* Updated Contributors
+* Various fixes (#93, #98, #90, #100, #103, #85, #105, #106)
+* Various improvements for handling rebuild and checksums (pr#108)
 * Better support for 15.04 and newer releases
-+ Implemented chunked hashing that reduces memory usage (pull request #110)
++ Implemented chunked hashing that reduces memory usage (pr#110)
 + Added Korean translation
 + Added Contributors
-+ Added genabout.py with option to convert Contributors into HTML format
++ Added genabout.py to convert Contributors into HTML format
 + Added early support for Python 3 (compatible with Python 2.7)
 
 4.1.1 - 4bdcc7a - 2015-05-06
@@ -55,12 +55,13 @@
 4.1.0 - b75e06a - 2015-01-08
 ------------------------------
 * Re-written in Python
-* Updated locales handling for newer Ubuntu releases (issue #68)
-* Updated QEMU wrapping code to hanlde newer versions (issue #59)
-* Improved hooks support (issue #64)
-* Fixed some upgrade issues by not diverting /sbin/initctl (issue #63)
-+ Bind-mount /tmp neccessary in some cases (issue #67)
-+ Introduced build system via GNU Make (http://www.gnu.org/software/make/)
+* Updated locales handling for newer Ubuntu releases (#68)
+* Updated QEMU wrapping code to hanlde newer versions (#59)
+* Improved hooks support (#64)
+* Fixed some upgrade issues by not diverting /sbin/initctl (#63)
++ Bind-mount /tmp neccessary in some cases (#67)
++ Introduced build system via GNU Make
+   (http://www.gnu.org/software/make/)
 + Unified code for CLI and GUI without the need for glue
 + Support for Ubuntu releases 12.04+ introduced
 - Support for Ubuntu releases prior to 12.04 dropped
@@ -69,9 +70,9 @@
 3.2.3 - a75b4f7 - 2013-06-21
 ------------------------------
 * Updated license/copyright year
-* Tweaked config file restore function to restore variables according to
-   the current defaults
-* Compression variable is now used to choose SquashFS image compression
+* Tweaked config file restore function to restore variables according
+   to the current defaults
+* Using compression variable to choose SquashFS image compression
 * Expanded exclude.list to exclude more junk
 * Fixed QEMU start on Ubuntu 12.04 (issue #11)
 * Fixed regression in deb script (issue #9)
@@ -88,17 +89,18 @@
 * Updated license year
 * Event/Debug messages changes/added
 * Linking /proc/mounts to /etc/mtab so that applications relying on it
-   work as expected
-* Blocking/unblocking /sbin/initctl and /sbin/update-grub is done outside
-   of chroot as well as the clean-up
+   will work as expected
+* Blocking/unblocking /sbin/initctl and /sbin/update-grub is done
+   outside of chroot as well as the clean-up
 * Mounting the ISO image in random sub-directory of MOUNT_DIR
 * Always picking-up the most recent Kernel when rebuilding ISO
 * Mounting the ISO image as readonly to supress warnings
 * Fixed Release Notes URL text box showing strange symbol at the end
-+ Locking GUI via /opt/Customizer/gui_lock to prevent multiple instances
-+ while chrooted the init scripts (/etc/init.d) are blocked (faked with
-   /bin/true) so upgrading packages related with them shouldn't be a problem
-+ If gfxboot.cfg doesn't exist only splash picture widgets left in SysLinux form
++ Lock GUI via /opt/Customizer/gui_lock to prevent multiple instances
++ while chroot the init scripts (/etc/init.d) are blocked (faked with
+   /bin/true) so upgrading related packages shouldn't be a problem
++ If gfxboot.cfg doesn't exist only splash picture widgets left in
+   SysLinux form
 + Added support for MATE applications (caja and pluma)
 + Added option to choose locales
 + Showing time and date on scripts execution
@@ -108,9 +110,10 @@
 * Using public variables in GUI to avoid re-reading of files
 * Removed double check for X-sessions and package manager on startup
 * Avoided double loading files when getting/replacing regexp
-* Terminal emulator is detected instead of using x-terminal-emulator link for
-   better compatibility
-* GUI widgets will be disabled if work directories doesn't exist on Check.Existense()
+* Terminal emulator is detected instead of using x-terminal-emulator
+   link for better compatibility
+* GUI widgets will be disabled if work directories doesn't exist on
+   Check.Existense()
 * Other minor corrections
 + GUI will print debug messages in terminal for tracking events
 + Appending default values in files if match not found (by GUI)
@@ -118,14 +121,16 @@
 + Added more essential files and directories
 - Motd is not rebranded anymore
 - Titles are no longer appended to the terminal
-- Checking for another running instance of the GUI is removed, unreliable (temporary)
+- Checking for another running instance of the GUI is removed, due to
+   unreliable (temporary)
 - Text editor is no longer set, detected whenever it is needed
 - Editing sources.list from CLI no longer possible
 
 3.2.0 - 8aa140e - 2012-01-09
 ------------------------------
 * QEMU will now handle amd64 machines when emulating the ISO
-* GUI gathers variables and changes them without 'SHELL' code (should be faster)
+* GUI gathers variables and changes them without 'SHELL' code
+   (should be faster)
 * Improved file-manager detecting for browsing directories
 * Split TimeZone selection in 2-textboxes for easier selection
 * Tar now default compression for snapshots
@@ -133,8 +138,8 @@
 * GUI code cleanup
 + Existence of configuration file is checked from GUI and created with
    defaults if needed
-+ Fixing path to /home directory and display entries after exiting the nested
-   X-session ('Desktop')
++ Fixing path to /home directory and display entries after exiting the
+   nested X-session ('Desktop')
 + Browsing essential directories available in menu
 + Editing essential files available in menu
 
@@ -142,12 +147,12 @@
 ------------------------------
 * Default resolution for Xephyr is 800x600
 * Credits, License and About are now separate GUI forms
-* Supporting only aptitude and synaptic for package management from now on
+* Support only aptitude and synaptic for package management from now
 * No prompt which package manager should be run (priority is synaptic,
    aptitude is next)
 * Removed double check for Xorg when executing package manager
-+ Added option to append (or not) title to terminal (for compability with 
-   different Terminal emulators)
++ Added option to append (or not) title to terminal (for compability
+   with different Terminal emulators)
 + Added option to change MOUNT_DIR from GUI (in settings)
 + Archive enabled only if package manager is installed
 + Skipping mount of pseudo filesystems if already mounted
@@ -161,11 +166,11 @@
 * Messages fixes
 + Skipping initctl and grub-update blocking if chroot is forced,
    to prevent major disasters
-+ Enabling 'Clean' in GUI if important files are missing to be able to clean
++ Enabling 'Clean' in GUI, even when important files are missing
 + Added apt-helper enable/disable option
 + Added warning message to chrooted terminal to quit with "exit"
-+ Mounting pseudo filesystems when rebuilding (was missing in 3.1.0 due
-   to major changes)
++ Mounting pseudo filesystems when rebuilding (was missing in 3.1.0
+   due to major changes)
 + Added missing license form icon
 
 3.1.0 - undated
@@ -199,42 +204,45 @@
 * Fixed Xnest.sh termination
 * Fixed GUI crash when unable to extract ISOs content
 * Improved bash scripts portability
-* Replaced 'uname -m' with 'dpkg --print-architecture' to get the proper arch
+* Replaced 'uname -m' with 'dpkg --print-architecture' to get the
+   proper architecture
 * Some QEMU.sh improvements
-+ User can choose compression format in which the snapshots will be compressed
++ User can choose compression format for the snapshots
 + Killing customizer at GUI exit
 + Added check if filesystem is already locked by another script
 + Implemented long arguments handling into CLI.sh
-- Removed obsolete update feature due to changes in the development techniques 
+- Removed obsolete update feature due to changes in the development 
 
 3.0.5 - 2011-09-27
 ------------------------------
 * Enhanced DEB package post-installation scripts
 * DEB package now depends on gambas packages >2.0 and <2.9
 * DEB package now depends on x11-xserver-utils
-* /usr/bin/customizer uses sh instead of bash to execute the GUI, initiates faster
-* Fixes applied so when WORK_DIR is path with spaces everything works fine
+* /usr/bin/customizer uses sh instead of bash to execute the GUI,
+   initiates faster
+* Fixes applied for WORK_DIR path that contains spaces
 * QEMU.sh also initiated as root, needed to chroot to get variables
 * QEMU.sh checks for running X-server (Xorg)
-* Squashed filesystem no longer created with "-all-root", causes dbus issues and
-   probably more
+* Squashed filesystem no longer created with "-all-root", causes dbus
+   issues and probably more
 * Changing WORK_DIR not possible in the middle of customization
-* Dbus should work fine, mounting /var/lib/dbus and /var/run/dbus
-   for running X applications (sessions and package managers) from within the chroot
+* Dbus should work fine, mounting /var/lib/dbus and /var/run/dbus for
+   running X applications (sessions, package managers) within chroot
 + Added Software-Center to supported package managers (doesn't work
    if Distribution name is changed)
-+ DEB package creates menu entry for window managers (such as Fluxbox, Openbox etc.)
++ DEB package creates menu entry for window managers, such as
+   Fluxbox, Openbox etc.
 
 3.0.4 - 2011-09-18
 ------------------------------
 * Removed title change in scripts and moved to GUI, solves few issues
-* Removed not needed "#!/bin/bash" in some of the chroot-hooks to prevent spawning
-   unnecessary bash shells
+* Removed not needed "#!/bin/bash" in some of the chroot-hooks to
+   prevent spawning unnecessary bash shells
 + Added option to change the work directory from GUI
-+ Added check if another instance of the GUI is already running to prevent double-
-   chrooting and other issues
-+ Added missing import of "Functions.sh" in the "QEMU.sh" and "Update.sh" script to
-   report errors properly
++ Added check if another instance of the GUI is already running to
+   prevent double-chrooting and other issues
++ Added missing import of "Functions.sh" in "QEMU.sh" and "Update.sh"
+   script to report errors properly
 + Added comments in the main configuration file
 
 3.0.3 - 2011-09-17
@@ -245,15 +253,17 @@
 
 3.0.2 - 2011-09-15
 ------------------------------
-* Fixed copying settings to /etc/skel after closing the nested X-session
+* Fixed copying settings to /etc/skel after closing nested X-session
 * Changed version text in GUI (in 3.0.1 was not)
 * QEMU VRAM is now 256 by default
 
 3.0.1 - 2011-09-14
 ------------------------------
 * Removed some chmod lines in Use.sh which were left in the rush
-* SysLinux splash change fixes (changing Linux Mint syslinux colors still not possible)
-+ Added imagemagick to DEB package dependencies needed for syslinux splash change
+* SysLinux splash change fixes (changing Linux Mint syslinux colors
+   still not possible)
++ Added imagemagick to DEB package dependencies needed for changing
+   syslinux splash
 + Added forgotten IceWM GUI installation
 + Changing the Linux Mint syslinux splash is possible now
 + /opt/Customizer deleted before installation using DEB packages
@@ -267,5 +277,6 @@
 + Option to choose which package manager to run
 - Full user name and Code name dropped from GUI configuration fields,
    changing code name isn't recommended at all
-- UMR Downloader not available anymore, downloading as root isn't recommended
+- UMR Downloader not available anymore, because downloading as root
+   isn't recommended
 - Zenity isn't used to report errors for TTY compatibility
