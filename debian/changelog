@@ -1,3 +1,12 @@
+customizer (4.1.3-0+20161130) unstable; urgency=medium
+
+  * Added suffix '-0' to indicate "old stable"
+  * Added suffix '+YYYYMMDD' to indicate latest changes to version X.Y.Z
+  * Enhanced debian/copyright. Fixes: #143 B.
+  * Updated description in debian/control. Fixes: #146 A.
+
+ -- Mubiin Kimura <clearkimura@gmail.com>  Wed, 30 Nov 2016 23:54:04 +0800
+
 customizer (4.1.3) unstable; urgency=medium
 
   * Update package version to 4.1.3
