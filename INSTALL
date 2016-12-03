@@ -15,7 +15,7 @@
 # the Terminal. Else download and run: chmod +x INSTALL && ./INSTALL
 # 
 
-# FUNCTIONS:
+# FUNCTIONS FOR ACTION:
 
 function install_req {
 echo "[*] Install dependencies..."                     ### STEP 1 ###
@@ -55,12 +55,7 @@ echo "[!] User consent is required [y to confirm, else will skip]"
 rm -I --verbose --recursive ?ustomizer* master.tar.gz*
 }
 
-# VARIABLES:
-
-HINT="Customizer \"old stable\""
-KEY="0"
-
-# FUNCTIONS WITH VARIABLES:
+# FUNCTIONS FOR DISPLAY:
 
 function show_msg {
     if [ "$KEY" != q ];
@@ -76,6 +71,11 @@ function show_menu {
     echo " 2: r: Reinstall with latest version"
     echo " 3: u: Uninstall"
 }
+
+# SET VARIABLES:
+
+HINT="Customizer \"old stable\""
+KEY="0"
 
 # BEGIN SCRIPT:
 
