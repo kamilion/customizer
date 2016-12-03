@@ -18,7 +18,7 @@
 # FUNCTIONS FOR ACTION:
 
 function install_req {
-echo "[*] Install dependencies..."                     ### STEP 1 ###
+echo "*** Install dependencies..."                     ### STEP 1 ###
 #####################################################################
 sudo apt-get install git build-essential fakeroot make binutils g++ \
 python python-dev python-qt4 pyqt4-dev-tools squashfs-tools \
@@ -29,7 +29,7 @@ debhelper qt4-dev-tools qt4-linguist-tools \
 }
 
 function download_src {
-echo "[*] Download source and extract..."              ### STEP 2 ###
+echo "*** Download source and extract..."              ### STEP 2 ###
 #####################################################################
 wget https://github.com/clearkimura/Customizer/archive/master.tar.gz
 tar zxvf master.tar.gz
@@ -37,7 +37,7 @@ tar zxvf master.tar.gz
 }
 
 function install_bin {
-echo "[*] Compile and install via dpkg..."             ### STEP 3 ###
+echo "*** Compile and install via dpkg..."             ### STEP 3 ###
 #####################################################################
 cd Customizer-master && make deb
 cd && sudo dpkg --install customizer*.deb
@@ -45,11 +45,11 @@ cd && sudo dpkg --install customizer*.deb
 }
 
 function uninstall {
-echo "[*] Purge via dpkg..."                           ### PURGES ###
+echo "*** Purge via dpkg..."                           ### PURGES ###
 #####################################################################
 sudo dpkg --purge customizer
 #####################################################################
-echo "[*] Matching directories and files for deletion..."
+echo "*** Matching directories and files for deletion..."
 ls -1d ?ustomizer* master.tar.gz*
 echo "[!] User consent is required [y to confirm, else will skip]"
 rm -I --verbose --recursive ?ustomizer* master.tar.gz*
@@ -58,10 +58,10 @@ rm -I --verbose --recursive ?ustomizer* master.tar.gz*
 # FUNCTIONS FOR DISPLAY:
 
 function show_msg {
-    if [ "$KEY" != q ];
-        then echo "[*] Started INSTALL script";
-             echo "[*] This script is compatible for $HINT";
-        else echo "[*] Finished now" && sleep 1;
+    if [ "$KEY" != q ]
+        then echo "Started INSTALL script"
+             echo "This script is compatible for $HINT"
+        else echo "Finished now" && sleep 1
     fi
 }
 
@@ -79,10 +79,10 @@ KEY="0"
 
 # BEGIN SCRIPT:
 
-show_msg;
-while [ "$KEY" != q ];
+show_msg
+while [ "$KEY" != q ]
 do {
-    show_menu;
+    show_menu
     echo -n "Type your choice [q to quit]: "
     read KEY
     case $KEY in
@@ -94,4 +94,4 @@ do {
     esac
 }
 done
-show_msg;
+show_msg
