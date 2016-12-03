@@ -13,7 +13,7 @@
 #
 # USAGE: For each STEP, copy and paste commands, then press ENTER in
 # the Terminal. Else download and run: chmod +x INSTALL && ./INSTALL
-# 
+#
 
 # FUNCTIONS FOR ACTION:
 
@@ -55,6 +55,19 @@ echo "[!] User consent is required [y to confirm, else will skip]"
 rm -I --verbose --recursive ?ustomizer* master.tar.gz*
 }
 
+function renew_sh {
+echo "[!] This action will rename existing script as *.old file then"
+echo "[!]  will download new script from GitHub and make executable"
+echo "[!] You just need to run again ./INSTALL later"
+echo "Press any key to continue [^C to cancel and exit]" && read -n 1
+echo "*** Rename and overwrite existing script..."
+mv INSTALL customizer-INSTALL.old
+echo "*** Download new INSTALL script..."
+wget --quiet $(echo $URLH$URL1)
+echo "*** Enable executable bit for new INSTALL script..."
+chmod +x INSTALL
+}
+
 # FUNCTIONS FOR DISPLAY:
 
 function show_msg {
@@ -68,6 +81,7 @@ function show_msg {
 function show_menu {
     echo && echo "What is your action?"
     echo " 1: i: New installation"
+    echo "    s: Renew INSTALL script"
     echo " 2: r: Reinstall with latest version"
     echo " 3: u: Uninstall"
 }
@@ -76,6 +90,8 @@ function show_menu {
 
 HINT="Customizer \"old stable\""
 KEY="0"
+URLH="https://raw.githubusercontent.com/"
+URL1="clearkimura/Customizer/master/INSTALL"
 
 # BEGIN SCRIPT:
 
@@ -89,6 +105,7 @@ do {
         1|i) install_req && download_src && install_bin && KEY="q" ;;
         2|r) uninstall && download_src && install_bin && KEY="q" ;;
         3|u) uninstall && KEY="q" ;;
+        s) renew_sh && KEY="q" ;;
         q) echo; break ;;
         *) echo "[?] Unknown option" ;;
     esac
