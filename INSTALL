@@ -82,7 +82,7 @@ function show_menu {
     echo && echo "What is your action?"
     echo " 1: i: New installation"
     echo "    s: Renew INSTALL script"
-    echo " 2: r: Reinstall with latest version"
+    echo " 2: r: Download and reinstall package"
     echo " 3: u: Uninstall"
 }
 
