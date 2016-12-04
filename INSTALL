@@ -106,7 +106,7 @@ do {
         2|r) uninstall && download_src && install_bin && KEY="q" ;;
         3|u) uninstall && KEY="q" ;;
         s) renew_sh && KEY="q" ;;
-        q) echo; break ;;
+        q) echo "Do nothing"; break ;;
         *) echo "[?] Unknown option" ;;
     esac
 }
