@@ -130,11 +130,11 @@ history of development and ownership.
 [Wiki] for more information.
 
 
-[First guide]: ../../wiki/First-guide
-[INSTALL]: ../../blob/master/INSTALL
-[debian/control]: ../../blob/master/debian/control
-[debian/copyright]: ../../blob/master/debian/copyright
-[graphs/contributors]: ../../graphs/contributors
-[data/contributors]: ../../blob/master/data/contributors
-[contributing]: ../../blob/master/CONTRIBUTING.md
-[Wiki]: ../../wiki
+[First guide]: /../../wiki/First-guide
+[INSTALL]: ../../master/INSTALL
+[debian/control]: ../../master/debian/control
+[debian/copyright]: ../../master/debian/copyright
+[graphs/contributors]: /../../graphs/contributors
+[data/contributors]: ../../master/data/contributors
+[contributing]: ../../master/CONTRIBUTING.md
+[Wiki]: /../../wiki
