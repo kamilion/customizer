@@ -13,7 +13,8 @@ Acknowledgements
 ----------------
 
 Customizer was founded and developed by Ivailo Monev and has been
-improved by many [contributors].
+improved by many [contributors]. Thanks to all who helped making this
+project useful to this date!
 
 Customizer is [copyright] by Ivailo Monev, et al.
 
@@ -49,7 +50,7 @@ The fork is maintained by Graham Cantin 'Kamilion'.
 [manual]: docs/manual.md
 [wiki]: ../../wiki
 [INSTALL]: INSTALL
-[Contributors]: data/contributors
+[contributors]: data/contributors
 [copyright]: debian/copyright
 [license]: COPYING
 [contributing]: CONTRIBUTING.md
