@@ -38,11 +38,12 @@ def main():
     command = [qemu, '-m', config.VRAM, '-cdrom', iso_file]
     if misc.search_string('-enable-kvm', misc.get_output((qemu, '-h'))):
         qemu_kvm = True
-    # vmx for intel, svm for amd processors. it will most likely not work in
-    # XEN environment
+    # CPU flag: "vmx" for Intel processors, "svm" for AMD processors
+    # These flags are hidden in Xen environment
+    # https://wiki.xenproject.org/wiki/Xen_Common_Problems
     host_kvm = False
     if os.path.exists('/dev/kvm') and os.path.exists('/proc/cpuinfo') and \
-        misc.search_file('(?:\\s|^)flags.*(?:\\s)(vme|vmx)(?:\\s|$)', \
+        misc.search_file('(?:\\s|^)flags.*(?:\\s)(vmx|svm)(?:\\s|$)', \
         '/proc/cpuinfo', escape=False):
         host_kvm = True
     if qemu_kvm and host_kvm:
