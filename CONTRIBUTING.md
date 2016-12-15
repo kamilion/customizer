@@ -32,12 +32,6 @@ Feedback priority
 For "old stable" repository, bug reports that include suggested fixes
 shall have the highest priority and attention.
 
-Use the following steps to submit fixes.
-
-1. Create [fork] of the repository, usually 'master' branch
-2. Commit your changes in the created fork repository
-3. Make [pull request] from the "old stable" repository
-
 Documentation
 -------------
 
@@ -55,7 +49,7 @@ have any guide for adding translation to Customizer GUI.
 Use either one of the following ways to submit translation.
 
 * submit as new issue with the link to translation files, or
-* fork the repository and make pull request, or
+* [fork] the repository and make [pull request], or
 * send the translation files itself to `xakepa10@gmail.com`
 
 Maintainership
@@ -90,9 +84,9 @@ or link to existing resources that supports the attribution.
 [#77]: ../../issues/77
 [#64]: ../../issues/64
 [#74]: ../../issues/74
-[fork]: https://help.github.com/articles/fork-a-repo/
-[pull request]: https://help.github.com/articles/using-pull-requests/
 [GitHub Wiki]: ../../wiki
 [Qt Linguist]: http://doc.qt.io/qt-4.8/linguist-manual.html
+[fork]: https://help.github.com/articles/fork-a-repo/
+[pull request]: https://help.github.com/articles/using-pull-requests/
 [members]: https://launchpad.net/~customizer-dev-team/+members
 [contributors]: data/contributors
