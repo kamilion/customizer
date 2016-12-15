@@ -45,7 +45,7 @@ cd && sudo dpkg --install customizer*.deb
 }
 
 function uninstall {
-echo "*** Purge via dpkg..."                           ### PURGES ###
+echo "*** Prepare to uninstall (or reinstall)..."      ### PURGES ###
 #####################################################################
 sudo dpkg --purge customizer
 #####################################################################
@@ -58,7 +58,6 @@ rm -I --verbose --recursive ?ustomizer* master.tar.gz*
 function renew_sh {
 echo "[!] This action will rename existing script as *.old file then"
 echo "[!]  will download new script from GitHub and make executable"
-echo "[!] You just need to run again ./INSTALL later"
 echo "Press any key to continue [^C to cancel and exit]" && read -n 1
 echo "*** Rename and overwrite existing script..."
 mv INSTALL customizer-INSTALL.old
@@ -66,6 +65,7 @@ echo "*** Download new INSTALL script..."
 wget --quiet $(echo $URLH$URL1)
 echo "*** Enable executable bit for new INSTALL script..."
 chmod +x INSTALL
+echo "[!] Run ./INSTALL again to use new script"
 }
 
 # FUNCTIONS FOR DISPLAY:
@@ -82,7 +82,7 @@ function show_menu {
     echo && echo "What is your action?"
     echo " 1: i: New installation"
     echo "    s: Renew INSTALL script"
-    echo " 2: r: Download and reinstall package"
+    echo " 2: r: Download source and reinstall"
     echo " 3: u: Uninstall"
 }
 
