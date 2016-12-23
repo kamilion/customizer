@@ -6,7 +6,7 @@
 
   <vendor>Customizer</vendor>
   <vendor_url>file:///usr/share/doc/customizer</vendor_url>
-  <icon_name>help-about</icon_name>
+  <icon_name>customizer</icon_name>
 
   <action id="org.freedesktop.policykit.pkexec.customizer">
     <description>Run Customizer GUI</description>
