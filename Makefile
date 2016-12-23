@@ -39,8 +39,8 @@ gui:
 		src/gui.py.in > src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 ifneq ($(shell which $(LRELEASE)),)
-	$(PYLUPDATE) src/*.py -ts tr/customizer_bg_BG.ts tr/customizer_ko_KR.ts
-	$(LRELEASE) tr/customizer_bg_BG.ts tr/customizer_ko_KR.ts
+	$(PYLUPDATE) src/*.py -ts tr/*.ts
+	$(LRELEASE) tr/*.ts
 endif
 
 install: install-core install-gui
@@ -49,10 +49,14 @@ install-core:
 	$(INSTALL) -dm755 $(DESTDIR)/etc $(DESTDIR)$(PREFIX)/sbin \
 		$(DESTDIR)$(PREFIX)/share/customizer/lib \
 		$(DESTDIR)$(PREFIX)/share/customizer/actions
-	$(INSTALL) -m755 src/main.py $(DESTDIR)$(PREFIX)/sbin/customizer
-	$(INSTALL) -m644 src/lib/*.py $(DESTDIR)$(PREFIX)/share/customizer/lib/
-	$(INSTALL) -m644 src/actions/*.py $(DESTDIR)$(PREFIX)/share/customizer/actions/
-	$(INSTALL) -m644 data/customizer.conf $(DESTDIR)/etc/customizer.conf
+	$(INSTALL) -m755 src/main.py \
+		$(DESTDIR)$(PREFIX)/sbin/customizer
+	$(INSTALL) -m644 src/lib/*.py \
+		$(DESTDIR)$(PREFIX)/share/customizer/lib/
+	$(INSTALL) -m644 src/actions/*.py \
+		$(DESTDIR)$(PREFIX)/share/customizer/actions/
+	$(INSTALL) -m644 data/customizer.conf \
+		$(DESTDIR)/etc/customizer.conf
 	$(INSTALL) -m644 data/exclude.list \
 		$(DESTDIR)$(PREFIX)/share/customizer/exclude.list
 
@@ -62,8 +66,10 @@ install-gui:
 		$(DESTDIR)$(PREFIX)/share/customizer \
 		$(DESTDIR)$(PREFIX)/share/menu \
 		$(DESTDIR)$(PREFIX)/share/polkit-1/actions
-	$(INSTALL) -m755 src/gui.py $(DESTDIR)$(PREFIX)/sbin/customizer-gui
-	$(INSTALL) -m644 src/gui_ui.py $(DESTDIR)$(PREFIX)/share/customizer/
+	$(INSTALL) -m755 src/gui.py \
+		$(DESTDIR)$(PREFIX)/sbin/customizer-gui
+	$(INSTALL) -m644 src/gui_ui.py \
+		$(DESTDIR)$(PREFIX)/share/customizer/
 	$(INSTALL) -m644 data/customizer.desktop \
 		$(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
 	$(INSTALL) -m644 data/logo.png \
