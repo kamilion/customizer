@@ -65,7 +65,9 @@ install-gui:
 		$(DESTDIR)$(PREFIX)/share/applications \
 		$(DESTDIR)$(PREFIX)/share/customizer \
 		$(DESTDIR)$(PREFIX)/share/menu \
-		$(DESTDIR)$(PREFIX)/share/polkit-1/actions
+		$(DESTDIR)$(PREFIX)/share/polkit-1/actions \
+		$(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps \
+		$(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps
 	$(INSTALL) -m755 src/gui.py \
 		$(DESTDIR)$(PREFIX)/sbin/customizer-gui
 	$(INSTALL) -m644 src/gui_ui.py \
@@ -82,6 +84,10 @@ install-gui:
 		$(DESTDIR)$(PREFIX)/share/menu/customizer
 	$(INSTALL) -m644 data/customizer.policy \
 		$(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
+	$(INSTALL) -m644 icons/customizer-24.png \
+		$(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps/customizer.png
+	$(INSTALL) -m644 icons/customizer-24.svg \
+		$(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps/customizer.svg
 ifneq ($(shell which $(LRELEASE)),)
 	$(INSTALL) -dm755 $(DESTDIR)$(TRDIR)/
 	$(INSTALL) -m644 tr/*.qm $(DESTDIR)$(TRDIR)/
@@ -95,6 +101,8 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/share/applications/customizer.desktop
 	$(RM) $(DESTDIR)$(PREFIX)/share/menu/customizer
 	$(RM) $(DESTDIR)$(PREFIX)/share/polkit-1/actions/customizer.policy
+	$(RM) $(DESTDIR)$(PREFIX)/share/icons/hicolor/24x24/apps/customizer.png
+	$(RM) $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps/customizer.svg
 
 lint:
 	cd src && $(PYLINT) lib/* actions/*.py main.py.in | $(GREP) -v \
