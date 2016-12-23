@@ -2,4 +2,15 @@
 
 set -e
 
-if test -x /usr/bin/update-menus; then update-menus; fi
+if test -x /usr/bin/update-menus
+    then update-menus
+    else echo "postinst: cannot update Debian menu or not available"
+fi
+
+# The update wrapper script requires only directory path to run
+# Use gtk-update-icon-cache for more advanced options
+
+if test -x /usr/sbin/update-icon-caches
+    then update-icon-caches /usr/share/icons/hicolor
+    else echo "postinst: cannot update icon caches or not available"
+fi
