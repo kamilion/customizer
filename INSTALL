@@ -47,6 +47,17 @@ sudo dpkg --purge customizer
 }
 
 # FUNCTIONS FOR SUPPORT ACTION:
+function ensure_new {
+    echo "Check files before install..." && sleep 1
+    if [ -f master.tar.gz ]
+        then echo "[!] Source was found, wrong choice" && return 1
+    fi
+    if [ -f /usr/sbin/customizer ]
+        then echo "[!] Binary was found, wrong choice" && return 1
+    fi
+    echo "Proceed to install..."
+}
+
 function uninstall_make {
     echo "Check files to uninstall..." && sleep 1
     local -r BIN="/usr/sbin/customizer"
@@ -130,6 +141,7 @@ function renew_bin {
 # FUNCTIONS FOR CHOICE:
 function choice_1 {
     echo "*** This will install dependencies and $NAME"
+    ensure_new || return 1
     install_req && download_src && install_bin
 }
 
