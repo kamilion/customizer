@@ -15,10 +15,8 @@
 # the Terminal. Else download and run: chmod +x INSTALL && ./INSTALL
 #
 
-# FUNCTIONS FOR ACTION:
-
-function install_req {
-echo "*** Install dependencies..."                     ### STEP 1 ###
+# FUNCTIONS FOR DIRECT ACTION:
+function install_req {                                 ### STEP 1 ###
 #####################################################################
 sudo apt-get install git build-essential fakeroot make binutils g++ \
 python python-dev python-qt4 pyqt4-dev-tools squashfs-tools \
@@ -28,52 +26,69 @@ debhelper qt4-dev-tools qt4-linguist-tools \
 #####################################################################
 }
 
-function download_src {
-echo "*** Download source and extract..."              ### STEP 2 ###
+function download_src {                                ### STEP 2 ###
 #####################################################################
 wget https://github.com/clearkimura/Customizer/archive/master.tar.gz
 tar zxvf master.tar.gz
 #####################################################################
 }
 
-function install_bin {
-echo "*** Compile and install via dpkg..."             ### STEP 3 ###
+function install_bin {                                 ### STEP 3 ###
 #####################################################################
 cd Customizer-master && make deb
 cd && sudo dpkg --install customizer*.deb
 #####################################################################
 }
 
-function uninstall {
-echo "*** Prepare to uninstall (or reinstall)..."      ### PURGES ###
+function uninstall {                                   ### PURGES ###
 #####################################################################
 sudo dpkg --purge customizer
 #####################################################################
-echo "*** Matching directories and files for deletion..."
-ls -1d ?ustomizer* master.tar.gz*
-echo "[!] User consent is required [y to confirm, else will skip]"
-rm -I --verbose --recursive ?ustomizer* master.tar.gz*
+}
+
+# FUNCTIONS FOR SUPPORT ACTION:
+function clean {
+    echo "Matching files for deletion..."
+    ls -1d ?ustomizer* master.tar.gz*
+    echo "[!] User consent is required [y to confirm, else skip]"
+    rm -I --verbose --recursive ?ustomizer* master.tar.gz*
 }
 
 function renew_sh {
-echo "[!] This action will rename existing script as *.old file then"
-echo "[!]  will download new script from GitHub and make executable"
-echo "Press any key to continue [^C to cancel and exit]" && read -n 1
-echo "*** Rename and overwrite existing script..."
-mv INSTALL customizer-INSTALL.old
-echo "*** Download new INSTALL script..."
-wget --quiet $(echo $URLH$URL1)
-echo "*** Enable executable bit for new INSTALL script..."
-chmod +x INSTALL
-echo "[!] Run ./INSTALL again to use new script"
+    mv INSTALL customizer-INSTALL.old
+    wget --quiet $URLR1
+    chmod +x INSTALL
+    echo "[!] Run ./INSTALL again to use new script"
+}
+
+# FUNCTIONS FOR CHOICE:
+function choice_1 {
+    echo "*** This will install dependencies and $NAME"
+    install_req && download_src && install_bin
+}
+
+function choice_2 {
+    echo "*** This will install $NAME only"
+    uninstall && download_src && install_bin
+}
+
+function choice_3 {
+    echo "*** This will uninstall $NAME"
+    uninstall && clean
+}
+
+function choice_s {
+    echo "*** This is only useful whenever the script had changes"
+    echo "*** on GitHub. Else, do not misuse this choice."
+    echo "Press any key to continue [^C to abort]" && read -n 1
+    renew_sh
 }
 
 # FUNCTIONS FOR DISPLAY:
-
 function show_msg {
     if [ "$KEY" != q ]
         then echo "Started INSTALL script"
-             echo "This script is compatible for $HINT"
+             echo "Use this script for $HINT"
         else echo "Finished now" && sleep 1
     fi
 }
@@ -81,31 +96,31 @@ function show_msg {
 function show_menu {
     echo && echo "What is your action?"
     echo " 1: i: New installation"
-    echo "    s: Renew INSTALL script"
+    echo "    s: Download new script, if any"
     echo " 2: r: Download source and reinstall"
     echo " 3: u: Uninstall"
 }
 
-# SET VARIABLES:
-
-HINT="Customizer \"old stable\""
-KEY="0"
-URLH="https://raw.githubusercontent.com/"
-URL1="clearkimura/Customizer/master/INSTALL"
+# VARIABLES FOR GLOBAL USE:
+declare KEY="0"
+declare -r NAME="customizer"
+declare -r HINT="Customizer \"old stable\""
+declare -r REPO="clearkimura/Customizer"
+declare -r URLR="https://raw.githubusercontent.com"
+declare -r URLR1="$URLR/$REPO/master/INSTALL"
 
 # BEGIN SCRIPT:
-
 show_msg
 while [ "$KEY" != q ]
 do {
     show_menu
     echo -n "Type your choice [q to quit]: "
-    read KEY
+    read -n 1 KEY && echo
     case $KEY in
-        1|i) install_req && download_src && install_bin && KEY="q" ;;
-        2|r) uninstall && download_src && install_bin && KEY="q" ;;
-        3|u) uninstall && KEY="q" ;;
-        s) renew_sh && KEY="q" ;;
+        1|i) choice_1 && KEY="q" ;;
+        2|r) choice_2 && KEY="q" ;;
+        3|u) choice_3 && KEY="q" ;;
+        s) choice_s && KEY="q" ;;
         q) echo "Do nothing"; break ;;
         *) echo "[?] Unknown option" ;;
     esac
