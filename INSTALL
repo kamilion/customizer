@@ -176,6 +176,8 @@ declare KEY="0"
 declare -r NAME="customizer"
 declare -r HINT="Customizer \"old stable\""
 declare -r REPO="clearkimura/Customizer"
+declare -r URLS="https://github.com"
+declare -r URLS1="$URLS/$REPO/archive/master.tar.gz"
 declare -r URLR="https://raw.githubusercontent.com"
 declare -r URLR1="$URLR/$REPO/master/INSTALL"
 
