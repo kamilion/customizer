@@ -60,9 +60,18 @@ function clean {
 }
 
 function renew_sh {
-    mv INSTALL customizer-INSTALL.old
-    wget --quiet $URLR1
-    chmod +x INSTALL
+    echo "Prepare to download script..." && sleep 1
+    local -r FILE="$(basename $URLR1)"
+    if [ -f "$FILE" ]
+        then mv $FILE $NAME.sh.old && chmod -x $NAME.sh.old
+        else echo "Existing file was not found, skip rename"
+    fi
+    echo "Download will start..."
+    wget --no-verbose $URLR1
+    if [ -f "$FILE" ]
+        then chmod +x $FILE
+        else echo "[!] File was not downloaded" && return 1
+    fi
     echo "[!] Run ./INSTALL again to use new script"
 }
 
