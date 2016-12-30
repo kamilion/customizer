@@ -48,6 +48,11 @@ sudo dpkg --purge customizer
 
 # FUNCTIONS FOR SUPPORT ACTION:
 function clean {
+    echo "Check files to clean..." && sleep 1
+    if [ -f master.tar.gz -o -d Customizer-master ]
+        then echo "Found in current directory: $PWD"
+        else return 0
+    fi
     echo "Matching files for deletion..."
     ls -1d ?ustomizer* master.tar.gz*
     echo "[!] User consent is required [y to confirm, else skip]"
