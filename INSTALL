@@ -69,10 +69,20 @@ function clean {
         then echo "Found in current directory: $PWD"
         else return 0
     fi
-    echo "Matching files for deletion..."
+    echo "Matching files to remove..."
     ls -1d ?ustomizer* master.tar.gz*
     echo "[!] User consent is required [y to confirm, else skip]"
     rm -I --verbose --recursive ?ustomizer* master.tar.gz*
+}
+
+function clean_part {
+    echo "Check particular files to clean..." && sleep 1
+    if [ -d Customizer-master ]
+        then echo "Found in current directory: $PWD"
+        else return 0
+    fi
+    echo "Remove selective directory and files without prompt"
+    rm --verbose --recursive ?ustomizer-master ?ustomizer*.deb
 }
 
 function renew_sh {
@@ -91,6 +101,32 @@ function renew_sh {
     echo "[!] Run ./INSTALL again to use new script"
 }
 
+function renew_src {
+    echo "Prepare to download source..." && sleep 1
+    local -r FILE="$(basename $URLS1)"
+    if [ -f "$FILE" ]
+        then mv $FILE $FILE.old && chmod -x $FILE.old
+        else echo "Existing file was not found, skip rename"
+    fi
+    echo "Download will start..."
+    wget --no-verbose $URLS1
+    if [ -f "$FILE" ]
+        then tar zxf $FILE
+        else echo "[!] File was not downloaded" && return 1
+    fi
+}
+
+function renew_bin {
+    echo "Prepare to make binary..." && sleep 1
+    local -r FILE="Customizer-master"
+    if [ -d "$FILE" ]
+        then cd $FILE && make deb 1>/dev/null && cd
+        else echo "[!] File was not extracted" && return 1
+    fi
+    echo "Proceed to install binary..."
+    sudo dpkg --install customizer*.deb
+}
+
 # FUNCTIONS FOR CHOICE:
 function choice_1 {
     echo "*** This will install dependencies and $NAME"
@@ -99,7 +135,9 @@ function choice_1 {
 
 function choice_2 {
     echo "*** This will install $NAME only"
-    uninstall && download_src && install_bin
+    clean_part
+    renew_src
+    renew_bin
 }
 
 function choice_3 {
