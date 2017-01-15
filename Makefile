@@ -1,5 +1,10 @@
-VERSION = 4.1.4 ($(GIT_VERSION))
-GIT_VERSION = $(shell $(GIT) rev-parse --short HEAD || echo "old stable")
+VERSION = 4.1.4 ($(REVISION))
+REVISION = 
+ifeq ($(wildcard .git), .git)
+REVISION = $(shell $(GIT) rev-parse --short HEAD)
+else
+REVISION = $(shell echo "old stable")
+endif
 
 DESTDIR = 
 PREFIX = $(shell $(PYTHON)-config --prefix)
