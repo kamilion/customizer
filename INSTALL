@@ -175,6 +175,12 @@ function show_msg {
     fi
 }
 
+function show_warn {
+    if [ "$PWD" != "$HOME" ]
+        then echo "[!] Script is not run from $HOME" && KEY="q"
+    fi
+}
+
 function show_menu {
     echo && echo "What is your action?"
     echo " 1: i: New installation"
@@ -195,6 +201,7 @@ declare -r URLR1="$URLR/$REPO/master/INSTALL"
 
 # BEGIN SCRIPT:
 show_msg
+show_warn
 while [ "$KEY" != q ]
 do {
     show_menu
