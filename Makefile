@@ -110,8 +110,8 @@ uninstall:
 	$(RM) $(DESTDIR)$(PREFIX)/share/icons/hicolor/scalable/apps/customizer.svg
 
 lint:
-	cd src && $(PYLINT) lib/* actions/*.py main.py.in | $(GREP) -v \
-		-e 'Line too long'
+	cd src && $(PYLINT) lib/* actions/*.py main.py.in gui.py.in \
+		| $(GREP) -v -e 'invalid syntax'
 
 dist: clean
 	$(GIT) archive HEAD --prefix="customizer-$(VERSION)/" | $(XZ) > \
