@@ -1,6 +1,11 @@
 #!@PREFIX@/bin/python2.7
 
-import sys, ConfigParser, subprocess, shutil, os, re, argparse
+try: # Python2 compat first
+    import ConfigParser as configparser
+except ImportError as e:
+    import configparser # Okay, python3's stdlib version it is.
+
+import sys, subprocess, shutil, os, re, argparse
 sys.path.append("@PREFIX@/share/customizer")
 
 import lib.message as message
@@ -53,7 +58,6 @@ try:
         sys.exit(2)
     elif int(sys.version_info[0]) >= 3:
         message.critical('You are attempting to run Customizer with Python 3')
-        sys.exit(2)
 
     if ARGS.extract:
         message.info('Extracting...')
@@ -92,7 +96,7 @@ try:
         message.info('Cleaning up...')
         clean.main()
 
-except ConfigParser.Error as detail:
+except configparser.Error as detail:
     message.critical('CONFIGPARSER: ' + str(detail))
     sys.exit(3)
 except subprocess.CalledProcessError as detail:

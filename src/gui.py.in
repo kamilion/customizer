@@ -7,8 +7,24 @@
 import sys, os, atexit, subprocess, imp
 sys.path.append("@PREFIX@/share/customizer")
 
-import gui_ui
-from PyQt4 import QtCore, QtGui
+import gui_ui # This will tell us which pyuic version was used
+
+QT_VER = None
+if sys.modules.keys().__contains__('PyQt4'):
+    from PyQt4 import QtCore
+    from PyQt4.QtCore import pyqtSignal, QObject, QThread
+    from PyQt4.QtCore import QTranslator, QLibraryInfo, QLocale
+    from PyQt4.QtGui import QApplication, QMainWindow, QFileDialog, QIcon
+    from PyQt4.QtGui import QMessageBox, QWidget
+    QT_VER = 4
+elif sys.modules.keys().__contains__('PyQt5'):
+    from PyQt5 import QtCore # We derive our Thread class from this.
+    from PyQt5.QtCore import pyqtSignal, QObject, QThread
+    from PyQt5.QtCore import QTranslator, QLibraryInfo, QLocale
+    from PyQt5.QtGui import QIcon
+    from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+    from PyQt5.QtWidgets import QMessageBox, QWidget
+    QT_VER = 5
 
 import lib.config as config
 import lib.misc as misc
@@ -29,23 +45,23 @@ hook.misc.CATCH = True
 qemu.misc.CATCH = True
 
 # prepare for lift-off
-app = QtGui.QApplication(sys.argv)
-translator = QtCore.QTranslator()
-tr_path = QtCore.QLibraryInfo.location(QtCore.QLibraryInfo.TranslationsPath)
-if translator.load('customizer_' +  QtCore.QLocale.system().name(), tr_path):
+app = QApplication(sys.argv)
+translator = QTranslator()
+tr_path = QLibraryInfo.location(QLibraryInfo.TranslationsPath)
+if translator.load('customizer_' +  QLocale.system().name(), tr_path):
     app.installTranslator(translator)
-MainWindow = QtGui.QMainWindow()
+MainWindow = QMainWindow()
 ui = gui_ui.Ui_MainWindow()
 ui.setupUi(MainWindow)
 
 def msg_info(msg):
-    QtGui.QMessageBox.information(MainWindow, app.tr('Information'), msg)
+    QMessageBox.information(MainWindow, app.tr('Information'), u'{0}'.format(msg))
 
 def msg_warning(msg):
-    QtGui.QMessageBox.warning(MainWindow, app.tr('Warning'), msg)
+    QMessageBox.warning(MainWindow, app.tr('Warning'), u'{0}'.format(msg))
 
 def msg_critical(msg):
-    QtGui.QMessageBox.critical(MainWindow, app.tr('Critical'), u'{}'.format(msg))
+    QMessageBox.critical(MainWindow, app.tr('Critical'), u'{0}'.format(msg))
 
 # limit instances to one
 lock = '/run/lock/customizer'
@@ -67,7 +83,18 @@ else:
 if int(sys.version_info[0]) >= 3:
     msg_critical(app.tr('You are attempting to run Customizer with Python 3.'))
 
-class Thread(QtCore.QThread):
+# Create a quick class to communicate PyQT Signals to the main window
+class ThreadMailbox(QObject):
+    # Note that because we use a string to specify the type of
+    # the QString argument then this code will run under Python v2 and v3.
+    critical_messagebox = pyqtSignal(['QString'])
+    
+# Threads use this mailbox to signal the main window on the main thread.
+# Add more pyqtSignal in the class above to 'connect' or 'emit'.
+main_thread_mailbox = ThreadMailbox() 
+
+# Create a quick class for worker threads
+class Thread(QThread):
     ''' Worker thread '''
     def __init__(self, func):
         super(Thread, self).__init__()
@@ -79,7 +106,7 @@ class Thread(QtCore.QThread):
         except SystemExit:
             pass
         except Exception as detail:
-            self.emit(QtCore.SIGNAL('failed'), detail)
+            main_thread_mailbox.critical_messagebox.emit(detail[0])
             self.quit()
         finally:
             self.finished.emit()
@@ -224,16 +251,19 @@ def worker(func):
     global thread
     thread = Thread(func)
     thread.finished.connect(worker_stopped)
-    app.connect(thread, QtCore.SIGNAL('failed'), msg_critical)
+    main_thread_mailbox.critical_messagebox.connect(msg_critical)
     worker_started()
     thread.start()
 
 def run_extract():
-    sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, app.tr('Open'), \
+    sfile = QFileDialog.getOpenFileName(MainWindow, app.tr('Open'), \
         config.ISO, app.tr('ISO Files (*.iso);;All Files (*)'))
     if not sfile:
         return
-    sfile = u'{}'.format(sfile)
+    if QT_VER is not 5:
+        sfile = u'{}'.format(sfile)
+    else: # QFileDialog's return is a tuple in 5.x+
+        sfile = u'{}'.format(sfile[0])
     change_value('saved', 'iso', sfile)
     extract.config.ISO = sfile
     message.sub_debug('Extracting ISO', sfile)
@@ -279,11 +309,14 @@ def edit_sources():
 
 def run_deb():
     try:
-        sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
+        sfile = QFileDialog.getOpenFileName(MainWindow, 'Open', \
             config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
         if not sfile:
             return
-        sfile = u'{}'.format(sfile)
+        if QT_VER is not 5:
+            sfile = u'{}'.format(sfile)
+        else: # QFileDialog's return is a tuple in 5.x+
+            sfile = u'{}'.format(sfile[0])
         change_value('saved', 'deb', sfile)
         deb.config.DEB = sfile
         message.sub_debug('Installing DEB package', sfile)
@@ -297,11 +330,14 @@ def run_pkgm():
 
 def run_hook():
     try:
-        sfile = QtGui.QFileDialog.getOpenFileName(MainWindow, 'Open', \
+        sfile = QFileDialog.getOpenFileName(MainWindow, 'Open', \
             config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
         if not sfile:
             return
-        sfile = u'{}'.format(sfile)
+        if QT_VER is not 5:
+            sfile = u'{}'.format(sfile)
+        else: # QFileDialog's return is a tuple in 5.x+
+            sfile = u'{}'.format(sfile[0])
         change_value('saved', 'hook', sfile)
         hook.config.HOOK = sfile
         message.sub_debug('Attempting to run hook', sfile)
@@ -351,11 +387,14 @@ def change_hostname():
 def change_work_dir():
     message.sub_debug('Attempting to change hostname...')
     try:
-        spath = QtGui.QFileDialog.getExistingDirectory(MainWindow, \
+        spath = QFileDialog.getExistingDirectory(MainWindow, \
             'Directory', config.WORK_DIR)
         if not spath:
             return
-        spath = u'{}'.format(spath)
+        if QT_VER is not 5:
+            spath = u'{}'.format(spath)
+        else: # QFileDialog's return is a tuple in 5.x+
+            spath = u'{}'.format(spath[0])
         change_value('preferences', 'work_dir', spath)
         ui.workDirEdit.setText(spath)
     except Exception as detail:
@@ -431,6 +470,6 @@ ui.compressionBox.currentIndexChanged.connect(change_compression)
 ui.browseFileSystemButton.clicked.connect(browse_filesystem)
 ui.browseISOButton.clicked.connect(browse_iso)
 setup_gui()
-MainWindow.setWindowIcon(QtGui.QIcon("@PREFIX@/share/customizer/logo.png"))
+MainWindow.setWindowIcon(QIcon("@PREFIX@/share/customizer/logo.png"))
 MainWindow.show()
 sys.exit(app.exec_())
