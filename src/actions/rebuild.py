@@ -85,6 +85,18 @@ def main():
         'DISTRIB_ID=')
     release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
         'DISTRIB_RELEASE=')
+
+    # It's really annoying to override the output filename other ways.
+    # If you actually try to change lsb-release, you end up breaking apt.
+    livecd_file = misc.join_paths(config.FILESYSTEM_DIR, 'etc/livecd-release')
+    if os.path.isfile(livecd_file):
+        distrib = common.get_value(config.FILESYSTEM_DIR + '/etc/livecd-release', \
+            'DISTRIB_ID=')
+        release = common.get_value(config.FILESYSTEM_DIR + '/etc/livecd-release', \
+            'DISTRIB_RELEASE=')
+        message.sub_debug('Distribution and Release overriden by /etc/livecd-release')
+        # Just overwrite the variables if the file actually exists, it's cleaner.
+
     message.sub_debug('Architecture', arch)
     message.sub_debug('Distribution (DISTRIB_ID)', distrib)
     message.sub_debug('Release (DISTRIB_RELEASE)', release)
@@ -124,8 +136,12 @@ def main():
     if not vmlinuz:
         message.sub_info('Re-installing kernel')
         misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
-        misc.chroot_exec(('apt-get', 'install', '--yes', \
-            'linux-image-generic', '-q'))
+        if arch is not "amd64": # then use the 32bit 'linux-image-generic'
+            misc.chroot_exec(('apt-get', 'install', '--yes', \
+                'linux-image-generic', '-q'))
+        else: # use the amd64 'linux-signed-generic' for uEFI
+            misc.chroot_exec(('apt-get', 'install', '--yes', \
+                'linux-signed-generic', '-q'))
         misc.chroot_exec(('apt-get', 'clean'))
     else:
         message.sub_info('Updating initramfs')
