@@ -46,6 +46,19 @@ This is currently maintained by Mubiin Kimura 'clearkimura'.
 The official fork is available at [kamilion/customizer].
 The fork is maintained by Graham Cantin 'Kamilion'.
 
+Notice
+---------------
+
+As January 2017, "old stable" is deprecated.
+
+A grace period of 2 weeks shall be effective from day of last commit,
+to allow any updates within GitHub network or repositories. When the
+grace period ends, this repository will be permanently deleted.
+
+**Grace period will end on 2017-02-11 (Feb 11, 2017)**
+
+Please use official fork after the grace period. Thank you.
+
 
 [manual]: docs/manual.md
 [wiki]: ../../wiki

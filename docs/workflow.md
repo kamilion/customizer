@@ -177,7 +177,9 @@ adopted by the interim maintainer.
 Future work flow
 ----------------
 
-> To be updated after observing next milestones
+This document was intended to be useful for beginning contributors.
+Future work flow shall be decided by future contributors who have
+relevant experience to decide work flow that suits this project.
 
 [Git]: https://git-scm.com/
 [GitHub Flow]: https://guides.github.com/introduction/flow/
