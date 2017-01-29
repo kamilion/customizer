@@ -1,2 +1,8 @@
-customizer-24.png: PNG image data, 24 x 24, 8-bit/color RGBA, non-interlaced
-customizer-24.svg: SVG Scalable Vector Graphics image
+customizer-128.png: PNG image data, 128 x 128, 8-bit/color RGBA, non-interlaced
+customizer-128.svg: SVG Scalable Vector Graphics image
+customizer-24.png:  PNG image data, 24 x 24, 8-bit/color RGBA, non-interlaced
+customizer-24.svg:  SVG Scalable Vector Graphics image
+customizer-256.png: PNG image data, 256 x 256, 8-bit/color RGBA, non-interlaced
+customizer-256.svg: SVG Scalable Vector Graphics image
+customizer-48.png:  PNG image data, 48 x 48, 8-bit/color RGBA, non-interlaced
+customizer-48.svg:  SVG Scalable Vector Graphics image
