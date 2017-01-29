@@ -3,8 +3,8 @@ Source: https://github.com/clearkimura/Customizer
 
 Files: *
 Copyright: 2010-2013 Ivailo Monev
-           2013-2016 Mubiin Kimura
-           2015-2016 Graham Cantin
+           2013-2017 Mubiin Kimura
+           2015-2017 Graham Cantin
 License: GPL-2
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public
@@ -30,21 +30,27 @@ Comment: History of development and ownership
  .
  Customizer is copyright by Ivailo Monev, et al.
  .
- From 2010 to 2013, Customizer was developed and maintained by Ivailo Monev
- and few contributors. The program was initially written in Bash, Zenity
- and Gambas. In 2012, Gambas 3 port was created by Thiago Abreu (pr#17).
+ From 2010 to 2013, Customizer was developed and maintained
+ by Ivailo Monev and few contributors. The program was
+ initially written in Bash, Zenity and Gambas. In 2012,
+ Gambas 3 port was created by Thiago Abreu (pr#17).
  .
- In 2013, Ivailo Monev had transferred the ownership of repository to 
- Mubiin Kimura. Development was less active until late 2014.
+ In 2013, Ivailo Monev had transferred the ownership of
+ repository to Mubiin Kimura. Development was less active
+ until late 2014.
  .
- In 2015, Customizer was rewritten in Python by Ivailo Monev. In same year,
- Python 3 support was added by Graham Cantin (pr#110) while continue to
- depend on Python 2.7.
+ In 2015, Customizer was rewritten in Python by Ivailo Monev
+ In same year, Python 3 support was added by Graham Cantin
+ (pr#110) while continue to depend on Python 2.7.
  .
- From 2016, Customizer was forked and maintained by Graham Cantin with no
- further planned migration. As a result, Customizer has two sources: the
- official fork that handles future development and the original repository
- that is considered as "old stable".
+ From 2016, Customizer was forked and maintained by Graham
+ Cantin with no further planned migration. As a result,
+ Customizer had two sources: official fork that handles
+ future development and the original repository that is
+ considered as "old stable".
+ .
+ As January 2017, "old stable" is deprecated and development
+ has moved on in official fork.
 
 Files: data/logo.png
 Copyright: 2011 Ivailo Monev
@@ -53,13 +59,15 @@ Comment: Logotype or icon for Customizer GUI
  .
  PNG image data, 140 x 140, 8-bit/color RGBA, non-interlaced
  .
- The logo was derived from the base image "Tools, Hammer, Spanner" by Andy
- on Openclipart, which can be found at the following URL
+ The logo was derived from the base image "Tools, Hammer,
+ Spanner" by Andy on Openclipart, which can be found at the
+ following URL
  'https://openclipart.org/detail/67/tools-hammer-spanner'
  .
- Openclipart may be used for any purpose, including unlimited commercial
- productions, as royalty-free clipart, for schools, churches, commercial
- and non-commercial reasons.
+ Openclipart may be used for any purpose, including
+ unlimited commercial productions, as royalty-free clipart,
+ for schools, churches, commercial and non-commercial
+ reasons.
 
 Files: tr/*
 Copyright: 2015 contributors
@@ -72,6 +80,23 @@ Comment: Translation files for Customizer GUI
  * bg_BG: Ivailo Monev
  * ko_KR: Minwook Shin
 
+Files: icons/*
+Copyright: 2016 Mubiin Kimura
+License: GPL-2
+Comment: Refresh icons for Customizer
+ .
+ PNG image data, SVG Scalable Vector Graphics image
+ .
+ These icons were recreated from source images of logo.png
+ using Inkscape vector image editor.
+ .
+ Provided size: 256, 128, 48, 24
+ .
+ Provided format: SVG, PNG
+ .
+ The size of 128 may be used to replace logo.png and size
+ of 24 is used for authentication dialog by pkexec. 
+
 Files: INSTALL
 Copyright: 2016 Mubiin Kimura
 License: GPL-2
@@ -79,5 +104,6 @@ Comment: Install script for Customizer "old stable"
  .
  Bourne-Again shell script, ASCII text executable
  .
- This will make installation easier (#141). This script shall be distributed
- with source code of Customizer.
+ This will make installation easier (#141). This script shall
+ be distributed with source code of Customizer. This was
+ removed in last commit when "old stable" is deprecated.
