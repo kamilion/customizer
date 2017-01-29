@@ -26,12 +26,6 @@ Refer to the following issues as example.
 * Issues with simple question: [#49], [#77]
 * Issues with useful details: [#64], [#74]
 
-Feedback priority
------------------
-
-For "old stable" repository, bug reports that include suggested fixes
-shall have the highest priority and attention.
-
 Documentation
 -------------
 
@@ -59,10 +53,6 @@ Customizer was initially maintained by "Customizer Development Team"
 that consists of several [members] on Launchpad. Since development has
 moved to GitHub, the project relies more contributions from users on
 GitHub rather than contributions from the team or maintainers.
-
-At the moment, this project has two sources at "old stable" repository
-and the official fork with respective maintainers. The "old stable"
-repository may need a new maintainer in near future (to be discussed).
 
 Attribution
 -----------
