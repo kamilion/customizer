@@ -38,26 +38,22 @@ code to Python 3 and Qt 5. The fork is optimized for remastering
 This repository
 ---------------
 
-You are viewing the original repository of Customizer.
+You are viewing the 'upstream' master repository of Customizer.
 
 The repo was previously maintained by Ivailo Monev 'fluxer'.
-This is currently maintained by Mubiin Kimura 'clearkimura'.
+The repo was previously maintained by Mubiin Kimura 'clearkimura'.
 
-The official fork is available at [kamilion/customizer].
-The fork is maintained by Graham Cantin 'Kamilion'.
+The official repo is available at [kamilion/customizer].
+This repo is maintained by @kamilion (Graham Cantin).
 
 Notice
 ---------------
 
-As January 2017, "old stable" is deprecated.
-
-A grace period of 2 weeks shall be effective from day of last commit,
-to allow any updates within GitHub network or repositories. When the
-grace period ends, this repository will be permanently deleted.
-
-**Grace period will end on 2017-02-11 (Feb 11, 2017)**
-
-Please use official fork after the grace period. Thank you.
+As January 2017, this is now the official repository.
+Previous bookmarks will now be redirected here.
+The repository has changed to a lower case c to reflect UNIX tradition
+of typing lowercase commands and preferring lowercase directories.
+The project name remains Customizer with a capital C.
 
 
 [manual]: docs/manual.md
