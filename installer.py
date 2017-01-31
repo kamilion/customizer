@@ -529,10 +529,13 @@ def remove_readonly(func, path):
     func(path)
 
 
-if os.geteuid() != 0:
-    IS_ROOT = False
+if not IS_WINDOWS:
+    if os.geteuid() != 0:
+        IS_ROOT = False
+    else:
+        IS_ROOT = True
 else:
-    IS_ROOT = True
+    IS_ROOT = False
 
 
 def root_warning():
@@ -541,12 +544,23 @@ def root_warning():
     Returns nothing.
     """
     if IS_ROOT:
-        print(u"Root account: is available ✓")
+        print(u"Root account: is available.")
     else:
-        print(u"Root account: is not available ✗")
-        print("Sorry, we won't be able to directly manage packages unless"
-              "the installer is run as root. (perhaps with 'sudo !!'"
-              "However we'll try to sudo commands if possible.")
+        print(u"Root account: is not available.")
+        print("Sorry, we won't be able to directly manage packages unless\n"
+              "the installer is run as root. (perhaps with 'sudo !!')\n"
+              "\nHowever we'll try to sudo commands if possible.\n")
+
+
+def platform_warning():
+    """
+    Print a helpful message when an unsupported platform is used.
+    Returns nothing.
+    """
+    if IS_MAC:
+        print("Sorry, your Macintosh platform isn't supported.\n\n")
+    elif IS_WINDOWS:
+        print("Sorry, your Windows platform isn't supported.\n\n")
 
 
 def tool_check(tool, was_found=False, critical=False):
@@ -554,7 +568,7 @@ def tool_check(tool, was_found=False, critical=False):
     Print a message when a tool is missing. Returns nothing.
     """
     if was_found:
-        print(u"Tool: '{0}' is available ✓".format(tool))
+        print(u"Tool: '{0}' is available.".format(tool))
     else:
         tool_warning(tool, critical)
 
@@ -564,7 +578,7 @@ def tool_warning(tool, critical=False):
     Print a message when a tool is missing. Returns nothing.
     """
     if not critical:
-        print(u"Tool: '{0}' is not available ✗".format(tool))
+        print(u"Tool: '{0}' is not available.".format(tool))
     else:
         print("WARNING: '{0}' not found. This means that it's either not "
               "installed\nor not in the PATH environment variable like "
@@ -606,26 +620,23 @@ def main_menu():
     while True:
         print(INTRO.format(THIS_TITLE, THIS_VERSION))
         root_warning()
-        if IS_WINDOWS:
-            print("Sorry, your Windows platform isn't supported.\n\n")
-        if IS_MAC:
-            print("Sorry, your Macintosh platform isn't supported.\n\n")
         if apt is None: # This will be printed users lacking apt.
-            print("Customizer installer cannot interact with the"
+            print("Customizer installer cannot interact with the\n"
                   "ubuntu package manager without the apt module!\n")
         if not is_git_installation:
             print("WARNING: It doesn't look like Customizer has been "
                   "installed with git.\nThis means that you won't "
                   "be able to use this script to update or change\n"
                   "which repository you're currently using.\n")
-        print(u"Unicode status: ✓ \n(If this is a ?, your terminal does not"
-              " support printing unicode.)\n")
+        platform_warning()
+
         print("\nTool status:")
-        tool_check("git", GIT_INSTALLED)
-        tool_check("dpkg", DPKG_INSTALLED, critical=True)
-        tool_check("apt-get", APTGET_INSTALLED, critical=True)
-        tool_check("apt", APT_INSTALLED)
-        tool_check("rpm", RPM_INSTALLED, critical=False)
+        tool_check("git", GIT_INSTALLED) # Always check git.
+        if not IS_WINDOWS or IS_MAC: # no further tools are needed.
+            tool_check("dpkg", DPKG_INSTALLED, critical=True)
+            tool_check("apt-get", APTGET_INSTALLED, critical=True)
+            tool_check("apt", APT_INSTALLED)
+            tool_check("rpm", RPM_INSTALLED, critical=False)
 
         print("\n")
         if not IS_WINDOWS or IS_MAC:
