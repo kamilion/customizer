@@ -56,7 +56,7 @@ BUILD_DEPS = ["build-essential", "debhelper"]
 
 RUNTIME_DEPS = ["squashfs-tools", "xorriso", "x11-xserver-utils",
                 "xserver-xephyr", "qemu-kvm", "policykit-1",
-                "hicolor-icon-theme"]
+                "hicolor-icon-theme", "isolinux"]
 
 GIT_REPOS = {
     "development"  : "kamilion/customizer/tree/development",
@@ -92,6 +92,28 @@ def switch_branch(branchname):
         print("\nBranch has been switched to: {0}".format(branchname))
     else:
         print("\nCustomizer could not update properly. If this is caused"
+              " by edits you have made to the code you can try the repair"
+              " option from the Maintenance submenu")
+
+
+def perform_git_install(compat=True):
+    """
+    Performs a git-based install.
+    """
+    if compat:
+        run_cmd = ("make")
+    else:
+        run_cmd = ("make", "PYQT=5")
+    try:
+        code = subprocess.call(run_cmd)
+    except FileNotFoundError:
+        print("\nError: Make not found. It's either not installed or not in "
+              "the PATH environment variable like expected.")
+        return
+    if code == 0:
+        print("\nCustomizer has been installed from git.")
+    else:
+        print("\nCustomizer could not install properly. If this is caused"
               " by edits you have made to the code you can try the repair"
               " option from the Maintenance submenu")
 
@@ -664,7 +686,7 @@ def main_menu():
         if choice == "1":
             run_app(interpreter=sys.executable)
         elif choice == "2":
-            package_menu()
+            perform_git_install()
         elif choice == "3":
             requirements_menu()
         elif choice == "4":

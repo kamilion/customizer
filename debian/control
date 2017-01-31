@@ -15,7 +15,7 @@ Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
  libpython2.7, python-qt4,
  squashfs-tools (>= 4.2~), xorriso, x11-xserver-utils, xserver-xephyr,
- qemu-kvm, policykit-1, hicolor-icon-theme
+ qemu-kvm, policykit-1, hicolor-icon-theme, isolinux
 Recommends: policykit-1-gnome | polkit-kde-1, libgtk2.0-bin | libgtk-3-bin
 Description: Ubuntu Live CD remastering tool
  Customizer, formerly known as U-Customizer, is an advanced Live CD

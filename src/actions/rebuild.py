@@ -296,7 +296,8 @@ def main():
     message.sub_info('Creating ISO')
     os.chdir(config.ISO_DIR)
     misc.system_command(('xorriso', '-as', 'mkisofs', '-r', '-V', \
-        distrib + '-' + arch + '-' + release, '-b', 'isolinux/isolinux.bin', \
+        distrib + '-' + arch + '-' + release, '-isohybrid-mbr',\
+        '/usr/lib/ISOLINUX/isohdpfx.bin', '-b', 'isolinux/isolinux.bin', \
         '-c', 'isolinux/boot.cat', '-J', '-l', '-no-emul-boot', \
         '-boot-load-size', '4', '-boot-info-table', '-o', iso_file, \
         '-cache-inodes', '-input-charset', 'utf-8', '.'))
