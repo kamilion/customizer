@@ -1,3 +1,13 @@
+4.1.5 - b3225aa - 2017-01-31
+------------------------------
+* First version of the installer that mostly works and can actually install Customizer. (#163)
+* ISOHybrid is now run on the image. This requires installation of the 'isolinux' package. (#163)
+* Fix the Makefile up to handle pyqt5 and python3. (#163)
+* Functional checks on the installer have passed on linux and windows. Mac remains to be tested. (#163)
+* Support for renaming the final iso with /etc/livecd-release in the rootfs (#163)
+* Support for 64bit efi signed kernels (#163)
+* Support for PyQT5 (Not enabled by default yet, but the code is in a working state) (#163)
+
 4.1.4 - 2815f71 - 2016-12-31
 ------------------------------
 * Updated version in debian/changelog, Makefile

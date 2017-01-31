@@ -1,22 +1,33 @@
-VERSION = 4.1.4 ($(REVISION))
+VERSION = 4.1.5 ($(REVISION))
 REVISION = 
 ifeq ($(wildcard .git), .git)
 REVISION = $(shell $(GIT) rev-parse --short HEAD)
 else
-REVISION = $(shell echo "old stable")
+REVISION = $(shell echo "Zip Release")
 endif
-
+# Set this to 5 to use PyQT5
+PYQT = 4
+# Set this to python3 to use python3
+PYTHON = python2
+PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
 DESTDIR = 
 PREFIX = $(shell $(PYTHON)-config --prefix)
 ELEVATOR = pkexec
-TRDIR =$(shell $(PYTHON) -c "from PyQt4.QtCore import QLibraryInfo; \
+# Use PyQT5
+TRDIR =$(shell $(PYTHON) -c "from PyQt5.QtCore import QLibraryInfo; \
 	print(QLibraryInfo.location(QLibraryInfo.TranslationsPath))")
+PYUIC = pyuic5
+PYLUPDATE = pylupdate5 -noobsolete -verbose
+LRELEASE = lrelease
+# Use PyQT4
+ifeq ($(PYQT),4)
+  TRDIR =$(shell $(PYTHON) -c "from PyQt4.QtCore import QLibraryInfo; \
+	print(QLibraryInfo.location(QLibraryInfo.TranslationsPath))")
+  PYUIC = pyuic4
+  PYLUPDATE = pylupdate4 -noobsolete -verbose
+  LRELEASE = lrelease-qt4
+endif
 
-PYTHON = python2
-PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
-PYUIC = pyuic4
-PYLUPDATE = pylupdate4 -noobsolete -verbose
-LRELEASE = lrelease-qt4
 RM = rm -vf
 FIND = find
 SED = sed
@@ -27,7 +38,19 @@ XZ = xz -v
 PYLINT = pylint
 DPKG_BUILDPACKAGE = dpkg-buildpackage
 
-all: clean core gui
+all: show-status clean core gui
+
+show-status: check-pyqt4 check-pyqt5
+	@echo "Building Customizer v$(VERSION)"
+	@echo "Using PyQT Version: $(PYQT) on python$(PYTHON_VERSION)"
+
+check-pyqt4:
+	@echo "Using python$(PYTHON_VERSION) to test for PyQT4:"
+	@$(PYTHON) -c 'import PyQt4' && echo 'PyQt4 has been found'
+
+check-pyqt5:
+	@echo "Using python$(PYTHON_VERSION) to test for PyQT5:"
+	@$(PYTHON) -c 'import PyQt5' && echo 'PyQt5 has been found'
 
 core:
 	$(SED) -e 's|@VERSION@|$(VERSION)|' -e 's|@PREFIX@|$(PREFIX)|g' \
@@ -132,4 +155,4 @@ clean:
 deb:
 	DEB_BUILD_OPTIONS=nocheck $(DPKG_BUILDPACKAGE) -us -uc -b
 
-.PHONY: all core gui install install-core install-gui uninstall lint dist changelog clean deb
+.PHONY: all show-status check-pyqt4 check-pyqt5 core gui install install-core install-gui uninstall lint dist changelog clean deb
