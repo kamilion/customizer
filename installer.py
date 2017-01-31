@@ -52,6 +52,8 @@ PYTHON3_OK = sys.version_info >= (3, 3)  # If python3 runs us
 GITHUB_ROOT = "https://github.com"
 GITHUB_RAW = "https://raw.githubusercontent.com"
 
+BUILD_DEPS = ["build-essential", "debhelper"]
+
 RUNTIME_DEPS = ["squashfs-tools", "xorriso", "x11-xserver-utils",
                 "xserver-xephyr", "qemu-kvm", "policykit-1",
                 "hicolor-icon-theme"]
@@ -141,12 +143,20 @@ def build_apt_reqs(compat=False, build_deps=True):
     to_install = []
     to_install.extend(RUNTIME_DEPS)
     if compat:
-        to_install.append("python-qt4")
+        if PYTHON3_OK:# We were run from python3, prefer newer packages.
+            to_install.append("python3-pyqt4") # python3, pyqt4
+        else:
+            to_install.append("python-qt4") # python2, classic qt4
         if build_deps:
+            to_install.extend(BUILD_DEPS)
             to_install.extend(["pyqt4-dev-tools", "qt4-linguist-tools"])
     else:
-        to_install.append("python-pyqt5")
+        if PYTHON3_OK: # We were run from python3, prefer newer packages.
+            to_install.append("python3-pyqt5") # python3, pyqt5
+        else:
+            to_install.append("python-pyqt5") # python2, pyqt5
         if build_deps:
+            to_install.extend(BUILD_DEPS)
             to_install.extend(["pyqt5-dev-tools", "qttools5-dev-tools"])
     return to_install
 
