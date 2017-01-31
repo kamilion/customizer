@@ -84,10 +84,11 @@ def switch_branch(branchname):
     """
     try:
         code = subprocess.call(("git", "checkout", branchname))
-    except FileNotFoundError:
-        print("\nError: Git not found. It's either not installed or not in "
-              "the PATH environment variable like expected.")
-        return
+    except OSError as errmsg:
+        if errmsg.errno == errno.ENOENT:
+            print("\nError: Git not found. It's either not installed or "
+                  "not in the PATH environment variable like expected.")
+            return
     if code == 0:
         print("\nBranch has been switched to: {0}".format(branchname))
     else:
@@ -96,26 +97,35 @@ def switch_branch(branchname):
               " option from the Maintenance submenu")
 
 
-def perform_git_install(compat=True):
+def perform_git_install(use_pyqt5):
     """
     Performs a git-based install.
     """
-    if compat:
-        run_cmd = ("make")
-    else:
+    if not IS_ROOT:
+        root_warning()
+    if use_pyqt5:
         run_cmd = ("make", "PYQT=5")
+    else:
+        run_cmd = ("make")
     try:
         code = subprocess.call(run_cmd)
-    except FileNotFoundError:
-        print("\nError: Make not found. It's either not installed or not in "
-              "the PATH environment variable like expected.")
-        return
+    except OSError as errmsg:
+        if errmsg.errno == errno.ENOENT:
+            print("\nError: 'make' not found. It's either not installed or "
+                  "not in the PATH environment variable like expected.")
+            return
     if code == 0:
-        print("\nCustomizer has been installed from git.")
+        print("\nCustomizer has been built from git.")
     else:
-        print("\nCustomizer could not install properly. If this is caused"
+        print("\nCustomizer could not build properly. If this is caused"
               " by edits you have made to the code you can try the repair"
               " option from the Maintenance submenu")
+    if not IS_ROOT:
+        code = subprocess.call(("sudo", "make", "install"))
+        if code == 0:
+            print("\nCustomizer has been installed from git.")
+        else:
+            print("The installation has failed.")
 
 
 def update_install():
@@ -124,9 +134,10 @@ def update_install():
     """
     try:
         code = subprocess.call(("git", "pull", "--ff-only"))
-    except FileNotFoundError:
-        print("\nError: Git not found. It's either not installed or not in "
-              "the PATH environment variable like expected.")
+    except OSError as errmsg:
+        if errmsg.errno == errno.ENOENT:
+            print("\nError: Git not found. It's either not installed or "
+                  "not in the PATH environment variable like expected.")
         return
     if code == 0:
         print("\nCustomizer has been updated")
@@ -144,8 +155,9 @@ def reset_install(config=False, git_reset=False):
         try:
             os.unlink("/etc/customizer.conf")
             print("config file has been wiped.")
-        except FileNotFoundError:
-            pass
+        except OSError as errmsg:
+            if errmsg.errno == errno.ENOENT:
+                pass
         except Exception as errmsg:
             print("An error occured when trying to remove the config file: "
                   "{}".format(errmsg))
@@ -686,7 +698,8 @@ def main_menu():
         if choice == "1":
             run_app(interpreter=sys.executable)
         elif choice == "2":
-            perform_git_install()
+            perform_git_install(is_pyqt5_available())
+            wait()
         elif choice == "3":
             requirements_menu()
         elif choice == "4":
