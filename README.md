@@ -50,9 +50,12 @@ Notice
 ---------------
 
 As January 2017, this is now the official repository.
+
 Previous bookmarks will now be redirected here.
+
 The repository has changed to a lower case c to reflect UNIX tradition
 of typing lowercase commands and preferring lowercase directories.
+
 The project name remains Customizer with a capital C.
 
 
