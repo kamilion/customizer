@@ -113,8 +113,6 @@ Customizer is copyright by Ivailo Monev, et al.
 
 [First guide] to get you started.
 
-[INSTALL] file to make installation easier.
-
 [debian/control] file for requirements to build and compile package
 in Ubuntu and Debian.
 
@@ -131,7 +129,6 @@ history of development and ownership.
 
 
 [First guide]: /../../wiki/First-guide
-[INSTALL]: ../../master/INSTALL
 [debian/control]: ../../master/debian/control
 [debian/copyright]: ../../master/debian/copyright
 [graphs/contributors]: /../../graphs/contributors
