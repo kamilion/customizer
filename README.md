@@ -7,7 +7,6 @@ image, such as Ubuntu Mini Remix, Ubuntu or its derivatives ISO image
 to build your own remix with a few mouse clicks.
 
 For quick reference, refer to [manual]. More information in [wiki].
-Else, skip reading and refer to [INSTALL].
 
 Acknowledgements
 ----------------
@@ -61,7 +60,6 @@ The project name remains Customizer with a capital C.
 
 [manual]: docs/manual.md
 [wiki]: ../../wiki
-[INSTALL]: INSTALL
 [contributors]: data/contributors
 [copyright]: debian/copyright
 [license]: COPYING

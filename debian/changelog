@@ -1,12 +1,19 @@
+customizer (4.1.5-0+20170208) unstable; urgency=medium
+
+  * Fix space indentation in this changelog
+  * debian/copyright: Revise "History of development and ownership"
+
+ -- Mubiin Kimura <clearkimura@gmail.com>  Wed, 08 Feb 2017 17:17:36 +0800
+
 customizer (4.1.5-0+20170131) unstable; urgency=medium
 
-* ISOHybrid is now run on the image. This requires installation of the 'isolinux' package. (#163)
-* Fix the Makefile up to handle pyqt5 and python3. (#163)
-* Support for renaming the final iso with /etc/livecd-release in the rootfs (#163)
-* Support for 64bit efi signed kernels (#163)
-* Support for PyQT5 (Not enabled by default yet, but the code is in a working state) (#163)
+  * ISOHybrid is now run on the image. This requires installation of the 'isolinux' package. (#163)
+  * Fix the Makefile up to handle pyqt5 and python3. (#163)
+  * Support for renaming the final iso with /etc/livecd-release in the rootfs (#163)
+  * Support for 64bit efi signed kernels (#163)
+  * Support for PyQT5 (Not enabled by default yet, but the code is in a working state) (#163)
 
--- Graham Cantin <kamilion@gmail.com>  Sun, 31 Jan 2017 04:46:11 -0800
+ -- Graham Cantin <kamilion@gmail.com>  Sun, 31 Jan 2017 04:46:11 -0800
 
 customizer (4.1.4-0+20170129) unstable; urgency=medium
 

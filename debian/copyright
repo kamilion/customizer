@@ -49,8 +49,9 @@ Comment: History of development and ownership
  future development and the original repository that is
  considered as "old stable".
  .
- As January 2017, "old stable" is deprecated and development
- has moved on in official fork.
+ As January 2017, both official fork and "old stable" were
+ deprecated and Mubiin Kimura has transferred the original
+ repository to Graham Cantin.
 
 Files: data/logo.png
 Copyright: 2011 Ivailo Monev
