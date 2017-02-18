@@ -1,4 +1,4 @@
-#!@PREFIX@/bin/python2.7
+#!@PREFIX@/bin/python@PYTHON_VERSION@
 
 ################# NOTE #################
 # This is quick and dirty written GUI! #
@@ -88,6 +88,9 @@ class ThreadMailbox(QObject):
     # Note that because we use a string to specify the type of
     # the QString argument then this code will run under Python v2 and v3.
     critical_messagebox = pyqtSignal(['QString'])
+    warning_messagebox = pyqtSignal(['QString'])
+    info_messagebox = pyqtSignal(['QString'])
+    exit_customizer = pyqtSignal()
     
 # Threads use this mailbox to signal the main window on the main thread.
 # Add more pyqtSignal in the class above to 'connect' or 'emit'.
@@ -105,8 +108,16 @@ class Thread(QThread):
             self.func()
         except SystemExit:
             pass
-        except Exception as detail:
-            main_thread_mailbox.critical_messagebox.emit(detail[0])
+        except RuntimeError as detail:  # catch misc.system_command
+            errmsg = u"An error occured while a thread was running: \n \
+            Type: {0}\nDetails: \n{1}\n\n".format(type(detail), detail)
+            print(errmsg)
+            myval = main_thread_mailbox.warning_messagebox.emit(errmsg)
+        except Exception as detail:  # Something else went wrong.
+            errmsg = u"An Exception occured while a thread was running: \n \
+            Type: {0}\nDetails: \n{1}\n\n".format(type(detail), detail)
+            print(errmsg)
+            myval = main_thread_mailbox.critical_messagebox.emit(errmsg)
             self.quit()
         finally:
             self.finished.emit()
@@ -178,6 +189,10 @@ def setup_gui():
         ui.rebuildButton.setEnabled(False)
         ui.cleanButton.setEnabled(False)
         ui.extraCustomizationBox.setEnabled(False)
+    main_thread_mailbox.critical_messagebox.connect(msg_critical)
+    main_thread_mailbox.warning_messagebox.connect(msg_warning)
+    main_thread_mailbox.info_messagebox.connect(msg_info)
+    main_thread_mailbox.exit_customizer.connect(quit)
 
 def run_core(args, terminal=True):
     message.sub_debug('GUI Running', 'customizer ' + args)
@@ -251,19 +266,24 @@ def worker(func):
     global thread
     thread = Thread(func)
     thread.finished.connect(worker_stopped)
-    main_thread_mailbox.critical_messagebox.connect(msg_critical)
     worker_started()
     thread.start()
 
-def run_extract():
+def obtain_filename(dir, extfilter):
     sfile = QFileDialog.getOpenFileName(MainWindow, app.tr('Open'), \
-        config.ISO, app.tr('ISO Files (*.iso);;All Files (*)'))
+        dir, extfilter)
+    message.sub_debug("File Dialog returned: {0} {1}".format(sfile, type(sfile)))
+    if QT_VER is not 5:
+        return sfile
+    else:  # QFileDialog's return is a tuple in 5.x+
+        message.sub_debug("File Dialog was QT5 formatted: {0} {1}".format(sfile[0], type(sfile[0])))
+        return sfile[0]
+
+def run_extract():
+    sfile = obtain_filename(config.ISO, \
+        app.tr('ISO Files (*.iso);;All Files (*)'))
     if not sfile:
         return
-    if QT_VER is not 5:
-        sfile = u'{}'.format(sfile)
-    else: # QFileDialog's return is a tuple in 5.x+
-        sfile = u'{}'.format(sfile[0])
     change_value('saved', 'iso', sfile)
     extract.config.ISO = sfile
     message.sub_debug('Extracting ISO', sfile)
@@ -309,14 +329,10 @@ def edit_sources():
 
 def run_deb():
     try:
-        sfile = QFileDialog.getOpenFileName(MainWindow, 'Open', \
-            config.DEB, app.tr('Deb Files (*.deb);;All Files (*)'))
+        sfile = obtain_filename(config.DEB, \
+            app.tr('Deb Files (*.deb);;All Files (*)'))
         if not sfile:
             return
-        if QT_VER is not 5:
-            sfile = u'{}'.format(sfile)
-        else: # QFileDialog's return is a tuple in 5.x+
-            sfile = u'{}'.format(sfile[0])
         change_value('saved', 'deb', sfile)
         deb.config.DEB = sfile
         message.sub_debug('Installing DEB package', sfile)
@@ -330,14 +346,10 @@ def run_pkgm():
 
 def run_hook():
     try:
-        sfile = QFileDialog.getOpenFileName(MainWindow, 'Open', \
-            config.HOOK, app.tr('Shell Scripts (*.sh);;All Files (*)'))
+        sfile = obtain_filename(config.HOOK, \
+            app.tr('Shell Scripts (*.sh);;All Files (*)'))
         if not sfile:
             return
-        if QT_VER is not 5:
-            sfile = u'{}'.format(sfile)
-        else: # QFileDialog's return is a tuple in 5.x+
-            sfile = u'{}'.format(sfile[0])
         change_value('saved', 'hook', sfile)
         hook.config.HOOK = sfile
         message.sub_debug('Attempting to run hook', sfile)
@@ -391,10 +403,8 @@ def change_work_dir():
             'Directory', config.WORK_DIR)
         if not spath:
             return
-        if QT_VER is not 5:
-            spath = u'{}'.format(spath)
-        else: # QFileDialog's return is a tuple in 5.x+
-            spath = u'{}'.format(spath[0])
+        # QFileDialog.getExistingDirectory's return is NOT a tuple in 5.x+
+        spath = u'{}'.format(spath)
         change_value('preferences', 'work_dir', spath)
         ui.workDirEdit.setText(spath)
     except Exception as detail:

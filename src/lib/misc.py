@@ -159,7 +159,7 @@ def system_command(command, shell=False, cwd=None, env=None):
             shell=shell, cwd=cwd, env=env)
         pipe.wait()
         if pipe.returncode != 0:
-            raise(Exception(pipe.communicate()[1].strip()))
+            raise(RuntimeError(pipe.communicate()[1].strip()))
         return pipe.returncode
     else:
         return subprocess.check_call(command, shell=shell, cwd=cwd, env=env)
