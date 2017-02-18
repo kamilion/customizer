@@ -86,6 +86,12 @@ def main():
     release = common.get_value(config.FILESYSTEM_DIR + '/etc/lsb-release', \
         'DISTRIB_RELEASE=')
 
+    if isinstance(arch, bytes):  # For some reason this is of type 'bytes'.
+        if int(sys.version_info[0]) >= 3:  # If we're running under python3
+            arch = str(arch, 'utf-8')
+        else:  # Otherwise just cast it to a str without the 'utf-8' option.
+            arch = str(arch)
+
     # It's really annoying to override the output filename other ways.
     # If you actually try to change lsb-release, you end up breaking apt.
     livecd_file = misc.join_paths(config.FILESYSTEM_DIR, 'etc/livecd-release')
@@ -134,14 +140,21 @@ def main():
     # Detect files needed for booting, the kernel, initramfs, xen and anything else.
     detect_boot()
     if not vmlinuz:
-        message.sub_info('Re-installing kernel')
-        misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
-        if arch is not "amd64": # then use the 32bit 'linux-image-generic'
+        if config.PURGE_KERNEL:
+            message.sub_info('Re-installing kernel')
+            misc.chroot_exec(('apt-get', 'purge', '--yes', 'linux-image*', '-q'))
+        message.sub_debug("Kernel Selection Debug: {0}, {1}".format(type(config.KERNEL), config.KERNEL))
+        if config.KERNEL is not "default" or None:
             misc.chroot_exec(('apt-get', 'install', '--yes', \
-                'linux-image-generic', '-q'))
-        else: # use the amd64 'linux-signed-generic' for uEFI
-            misc.chroot_exec(('apt-get', 'install', '--yes', \
-                'linux-signed-generic', '-q'))
+                config.KERNEL, '-q'))
+        else:  # use the kernel the user specified in the config.
+            if arch is not "amd64":  # then use the 32bit 'linux-image-generic'
+                misc.chroot_exec(('apt-get', 'install', '--yes', \
+                    'linux-image-generic', '-q'))
+            else:  # use the amd64 'linux-signed-generic' for uEFI
+                misc.chroot_exec(('apt-get', 'install', '--yes', \
+                    'linux-signed-generic', '-q'))
+
         misc.chroot_exec(('apt-get', 'clean'))
     else:
         message.sub_info('Updating initramfs')
@@ -255,6 +268,11 @@ def main():
     lpackages = misc.chroot_exec(('dpkg-query', '-W', \
         '--showformat=${Package} ${Version}\\n'), prepare=False, mount=False, \
         output=True)
+    if isinstance(lpackages, bytes):  # For some reason this is of type 'bytes'.
+        if int(sys.version_info[0]) >= 3:  # If we're running under python3
+            lpackages = str(lpackages, 'utf-8')
+        else:  # Otherwise just cast it to a str without the 'utf-8' option.
+            lpackages = str(lpackages)
     message.sub_debug('Packages', lpackages)
     misc.write_file(misc.join_paths(config.ISO_DIR, \
         'casper/filesystem.manifest'), lpackages)
