@@ -5,6 +5,7 @@ import os, re, shutil, shlex, subprocess, time, hashlib
 import lib.message as message
 CMD_DEBUG = False
 CHROOT_DEBUG = False
+COPY_DEBUG = False
 FILE_DEBUG = False
 MOUNT_DEBUG = False
 
@@ -61,7 +62,7 @@ def readlines_file(sfile):
     return content
 
 def write_file(sfile, content):
-    if FILE_DEBUG: message.sub_debug('Writing data to', sfile)
+    if FILE_DEBUG: message.sub_debug('Writing {0} data to'.format(type(content)), sfile)
     dirname = os.path.dirname(sfile)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -80,7 +81,7 @@ def write_file(sfile, content):
         wfile.close()
 
 def append_file(sfile, content):
-    if FILE_DEBUG: message.sub_debug('Appending data to', sfile)
+    if FILE_DEBUG: message.sub_debug('Appending {0} data to'.format(type(content)), sfile)
     dirname = os.path.dirname(sfile)
     if not os.path.isdir(dirname):
         os.makedirs(dirname)
@@ -90,7 +91,7 @@ def append_file(sfile, content):
     afile.close()
 
 def copy_file(source, destination):
-    if FILE_DEBUG: message.sub_debug('File {} copied to'.format(source), destination)
+    if COPY_DEBUG: message.sub_debug('File {} copied to'.format(source), destination)
     base = os.path.dirname(destination)
     if not os.path.isdir(base):
         os.makedirs(base)
