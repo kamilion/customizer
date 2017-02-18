@@ -10,6 +10,9 @@ data/customizer.desktop
 data/customizer.policy
 
 # Thanks to JetBrains for sponsoring further Customizer development!
+# But for now, disable storing .idea contents in the repo.
+.idea/*
+
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
