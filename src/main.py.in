@@ -1,4 +1,4 @@
-#!@PREFIX@/bin/python2.7
+#!@PREFIX@/bin/python@PYTHON_VERSION@
 
 try: # Python2 compat first
     import ConfigParser as configparser

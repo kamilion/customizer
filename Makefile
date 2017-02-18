@@ -54,6 +54,7 @@ check-pyqt5:
 
 core:
 	$(SED) -e 's|@VERSION@|$(VERSION)|' -e 's|@PREFIX@|$(PREFIX)|g' \
+		-e 's|@PYTHON_VERSION@|$(PYTHON_VERSION)|' \
 		src/main.py.in > src/main.py
 
 gui:
@@ -64,6 +65,7 @@ gui:
 	$(SED) 's|@PREFIX@|$(PREFIX)|' data/customizer.policy.in > \
 		data/customizer.policy
 	$(SED) -e 's|@VERSION@|$(VERSION)|' -e 's|@PREFIX@|$(PREFIX)|g' \
+		-e 's|@PYTHON_VERSION@|$(PYTHON_VERSION)|' \
 		src/gui.py.in > src/gui.py
 	$(PYUIC) src/gui.ui -o src/gui_ui.py
 ifneq ($(shell which $(LRELEASE)),)

@@ -104,9 +104,15 @@ def perform_git_install(use_pyqt5):
     if not IS_ROOT:
         root_warning()
     if use_pyqt5:
-        run_cmd = ("make", "PYQT=5")
+        if PYTHON3_OK:
+            run_cmd = ("make", "PYQT=5", "PYTHON=python3")
+        else:
+            run_cmd = ("make", "PYQT=5")
     else:
-        run_cmd = ("make")
+        if PYTHON3_OK:
+            run_cmd = ("make", "PYTHON=python3")
+        else:
+            run_cmd = ("make")
     try:
         code = subprocess.call(run_cmd)
     except OSError as errmsg:
@@ -223,7 +229,11 @@ def install_apt_list(package_names):
         except Exception as errmsg:
             print("Sorry, package installation failed [{0}]".format(errmsg))
     else:
-        print("Sorry, we won't be able to manage packages unless\n"
+        code = subprocess.call(("sudo", "apt", "install", package_names))
+        if code == 0:
+            print("\nCustomizer requirements have been installed from apt.")
+        else:
+            print("Sorry, we won't be able to manage packages unless\n"
               "the installer is run as root. (perhaps with 'sudo !!' )")
     cache.close()
 

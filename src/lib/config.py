@@ -10,7 +10,7 @@ import lib.message as message
 
 conf = ConfigParser.SafeConfigParser(
     {
-        'WORK_DIR': '/home',
+        'WORK_DIR': '/home/customizer',
         'LOCALES': 'C',
         'RESOLUTION': '800x600',
         'COMPRESSION': 'gzip',
@@ -18,6 +18,8 @@ conf = ConfigParser.SafeConfigParser(
         'ISO': '',
         'DEB': '',
         'HOOK': '',
+        'KERNEL': 'default',
+        'PURGE_KERNEL': True,
     }
 )
 
@@ -40,6 +42,8 @@ VRAM = '{}'.format(conf.get('preferences', 'VRAM'))
 ISO = '{}'.format(conf.get('saved', 'ISO'))
 DEB = '{}'.format(conf.get('saved', 'DEB'))
 HOOK = '{}'.format(conf.get('saved', 'HOOK'))
+KERNEL = '{}'.format(conf.get('saved', 'KERNEL', fallback='default'))
+PURGE_KERNEL = '{}'.format(conf.get('saved', 'PURGE_KERNEL', fallback=True))
 
 MOUNT_DIR = '/media'
 FILESYSTEM_DIR = os.path.join(WORK_DIR, 'FileSystem')
