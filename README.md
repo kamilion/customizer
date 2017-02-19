@@ -30,7 +30,8 @@ The original repository is kept as "old stable", which is subject to
 tentative updates of bug fixes and clean up. Recent releases require
 Python 2.7 and Qt 4, and support remastering up to Ubuntu 14.04.
 
-Future development has moved to the fork, which aims to migrate the
+Future development has moved to the [fork][kamilion/customizer],
+which aims to migrate the
 code to Python 3 and Qt 5. The fork is optimized for remastering
 64-bit ISO images and will support newer releases of Ubuntu.
 
