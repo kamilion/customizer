@@ -26,14 +26,12 @@ Customizer is stable and not under active development.
 
 For enquiries and feedback, refer to [contributing] guidelines.
 
-The original repository is kept as "old stable", which is subject to
-tentative updates of bug fixes and clean up. Recent releases require
-Python 2.7 and Qt 4, and support remastering up to Ubuntu 14.04.
+Recent releases require at least Python 2.7 and Qt 4, and support
+remastering from Ubuntu 12.04 up to Ubuntu 17.04.
 
-Future development has moved to the [fork][kamilion/customizer],
-which aims to migrate the
-code to Python 3 and Qt 5. The fork is optimized for remastering
-64-bit ISO images and will support newer releases of Ubuntu.
+This repository contains support for Python 3 and Qt 5.
+32-bit and 64-bit ISOs can be generated from 64-bit builders.
+32-bit ISOs can be generated from 32-bit builders.
 
 This repository
 ---------------
