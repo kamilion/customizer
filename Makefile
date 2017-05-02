@@ -46,11 +46,11 @@ show-status: check-pyqt4 check-pyqt5
 
 check-pyqt4:
 	@echo "Using python$(PYTHON_VERSION) to test for PyQT4:"
-	@$(PYTHON) -c 'import PyQt4' && echo 'PyQt4 has been found'
+	-@$(PYTHON) -c 'import PyQt4' && echo 'PyQt4 has been found'
 
 check-pyqt5:
 	@echo "Using python$(PYTHON_VERSION) to test for PyQT5:"
-	@$(PYTHON) -c 'import PyQt5' && echo 'PyQt5 has been found'
+	-@$(PYTHON) -c 'import PyQt5' && echo 'PyQt5 has been found'
 
 core:
 	$(SED) -e 's|@VERSION@|$(VERSION)|' -e 's|@PREFIX@|$(PREFIX)|g' \
