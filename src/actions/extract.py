@@ -22,7 +22,7 @@ def main():
     global mount_dir
     if not os.path.isfile(config.ISO):
         raise(message.exception('ISO does not exist', config.ISO))
-    elif not config.ISO.endswith('.iso'):
+    elif not u'{}'.format(config.ISO).endswith('.iso'):
         raise(message.exception('File is not ISO', config.ISO))
 
     common.clean_work_dirs()
