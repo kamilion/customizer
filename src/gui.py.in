@@ -63,6 +63,9 @@ def msg_warning(msg):
 def msg_critical(msg):
     QMessageBox.critical(MainWindow, app.tr('Critical'), u'{0}'.format(msg))
 
+def msg_question(msg):
+    return QMessageBox.question(MainWindow, app.tr('Question'), u'{0}'.format(msg))
+
 # limit instances to one
 lock = '/run/lock/customizer'
 running = False
@@ -87,6 +90,7 @@ if int(sys.version_info[0]) >= 3:
 class ThreadMailbox(QObject):
     # Note that because we use a string to specify the type of
     # the QString argument then this code will run under Python v2 and v3.
+    question_messagebox = pyqtSignal(['QString'])
     critical_messagebox = pyqtSignal(['QString'])
     warning_messagebox = pyqtSignal(['QString'])
     info_messagebox = pyqtSignal(['QString'])
@@ -189,6 +193,7 @@ def setup_gui():
         ui.rebuildButton.setEnabled(False)
         ui.cleanButton.setEnabled(False)
         ui.extraCustomizationBox.setEnabled(False)
+    main_thread_mailbox.question_messagebox.connect(msg_question)
     main_thread_mailbox.critical_messagebox.connect(msg_critical)
     main_thread_mailbox.warning_messagebox.connect(msg_warning)
     main_thread_mailbox.info_messagebox.connect(msg_info)
@@ -300,11 +305,12 @@ def run_rebuild():
         msg_critical(detail)
 
 def run_clean():
-    message.sub_debug('Starting Cleaning...')
-    try:
-        worker(clean.main)
-    except Exception as detail:
-        msg_critical(detail)
+    if msg_question(app.tr('Confirm cleaning?')) == QMessageBox.Yes:
+        message.sub_debug('Starting Cleaning...')
+        try:
+            worker(clean.main)
+        except Exception as detail:
+            msg_critical(detail)
 
 def edit_sources():
     message.sub_debug('Trying to edit sources...')
