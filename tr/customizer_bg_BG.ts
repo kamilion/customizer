@@ -238,58 +238,68 @@
         <translation>Критично</translation>
     </message>
     <message>
-        <location filename="gui.py" line="77"/>
+        <location filename="gui.py" line="80"/>
         <source>An instance of Customizer is already running.</source>
         <translation>Инстанция на Customizer вече е стартирана.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="84"/>
+        <location filename="gui.py" line="87"/>
         <source>You are attempting to run Customizer with Python 3.</source>
         <translation>Опитвате се да стартирате Customizer с Python 3.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="183"/>
+        <location filename="gui.py" line="187"/>
         <source>The filesystem is not valid or corrupted. Clean is recommended.</source>
         <translation>Файловата система не е валидна или е повредена. Изчистване е препоръчително.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="210"/>
+        <location filename="gui.py" line="215"/>
         <source>No supported terminal emulator detected.</source>
         <translation>Не е намерен терминал, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="273"/>
+        <location filename="gui.py" line="278"/>
         <source>Open</source>
         <translation>Отвори</translation>
     </message>
     <message>
-        <location filename="gui.py" line="283"/>
+        <location filename="gui.py" line="288"/>
         <source>ISO Files (*.iso);;All Files (*)</source>
         <translation>ISO Файлове (*.iso);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="319"/>
+        <location filename="gui.py" line="325"/>
         <source>No supported text editor detected.</source>
         <translation>Не е намерен текстов редактор, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="332"/>
+        <location filename="gui.py" line="338"/>
         <source>Deb Files (*.deb);;All Files (*)</source>
         <translation>Deb Файлове (*.deb);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="349"/>
+        <location filename="gui.py" line="355"/>
         <source>Shell Scripts (*.sh);;All Files (*)</source>
         <translation>Скриптове на Обвивката (*.sh);;Всички Файлове (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="445"/>
+        <location filename="gui.py" line="451"/>
         <source>No supported file manager detected.</source>
         <translation>Не е намерен файлов мениджър, който се поддържа.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="383"/>
+        <location filename="gui.py" line="389"/>
         <source>Live user can not be empty.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gui.py" line="67"/>
+        <source>Question</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gui.py" line="308"/>
+        <source>Confirm cleaning?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -238,59 +238,69 @@
         <translation>치명적</translation>
     </message>
     <message>
-        <location filename="gui.py" line="77"/>
+        <location filename="gui.py" line="80"/>
         <source>An instance of Customizer is already running.</source>
         <translation>커스터마이저의 한 예가 이미 실행중입니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="84"/>
+        <location filename="gui.py" line="87"/>
         <source>You are attempting to run Customizer with Python 3.</source>
         <translation>당신은 파이썬 3으로 커스터마이저를 실행하려고합니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="183"/>
+        <location filename="gui.py" line="187"/>
         <source>The filesystem is not valid or corrupted. Clean is recommended.</source>
         <translation>파일시스템이 잘못되거나 손상되었습니다. 청소를 하는 것이 좋습니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="210"/>
+        <location filename="gui.py" line="215"/>
         <source>No supported terminal emulator detected.</source>
         <translation>지원되는 터미널 에뮬레이터가 감지 되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="273"/>
+        <location filename="gui.py" line="278"/>
         <source>Open</source>
         <translation>열기</translation>
     </message>
     <message>
-        <location filename="gui.py" line="283"/>
+        <location filename="gui.py" line="288"/>
         <source>ISO Files (*.iso);;All Files (*)</source>
         <translation>ISO 파일 (*.iso);;모든 파일 (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="319"/>
+        <location filename="gui.py" line="325"/>
         <source>No supported text editor detected.</source>
         <translation>지원되는 텍스트 에디터가 감지 되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="332"/>
+        <location filename="gui.py" line="338"/>
         <source>Deb Files (*.deb);;All Files (*)</source>
         <translation>Deb 파일 (*.deb);;모든 파일 (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="349"/>
+        <location filename="gui.py" line="355"/>
         <source>Shell Scripts (*.sh);;All Files (*)</source>
         <translation>쉘 스크립트 (*.sh);;모든 파일 (*)</translation>
     </message>
     <message>
-        <location filename="gui.py" line="445"/>
+        <location filename="gui.py" line="451"/>
         <source>No supported file manager detected.</source>
         <translation>지원되는 파일 탐색기가 감지 되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="gui.py" line="383"/>
+        <location filename="gui.py" line="389"/>
         <source>Live user can not be empty.</source>
         <translation type="unfinished">라이브 유저는 비워 둘 수 없습니다 .</translation>
+    </message>
+    <message>
+        <location filename="gui.py" line="67"/>
+        <source>Question</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="gui.py" line="308"/>
+        <source>Confirm cleaning?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>
