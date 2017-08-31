@@ -290,17 +290,17 @@
     <message>
         <location filename="gui.py" line="389"/>
         <source>Live user can not be empty.</source>
-        <translation type="unfinished">라이브 유저는 비워 둘 수 없습니다 .</translation>
+        <translation>라이브 유저는 비워 둘 수 없습니다 .</translation>
     </message>
     <message>
         <location filename="gui.py" line="67"/>
         <source>Question</source>
-        <translation type="unfinished"></translation>
+        <translation>질문</translation>
     </message>
     <message>
         <location filename="gui.py" line="308"/>
         <source>Confirm cleaning?</source>
-        <translation type="unfinished"></translation>
+        <translation>청소 확인?</translation>
     </message>
 </context>
 </TS>
