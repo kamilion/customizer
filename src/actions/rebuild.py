@@ -148,7 +148,7 @@ def main():
             misc.chroot_exec(('apt-get', 'install', '--yes', \
                 config.KERNEL, '-q'))
         else:  # use the kernel the user specified in the config.
-            if arch is not "amd64":  # then use the 32bit 'linux-image-generic'
+            if arch != "amd64":  # then use the 32bit 'linux-image-generic'
                 misc.chroot_exec(('apt-get', 'install', '--yes', \
                     'linux-image-generic', '-q'))
             else:  # use the amd64 'linux-signed-generic' for uEFI
