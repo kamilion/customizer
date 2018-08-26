@@ -7,7 +7,7 @@ Vcs-Git: git://github.com/kamilion/customizer
 Vcs-browser: https://github.com/kamilion/customizer
 Standards-Version: 4.2.0
 X-Python-Version: >= 3.3
-Build-Depends: debhelper (>= 9~), g++, python-dev (>= 3.3~), pyqt5-dev-tools,
+Build-Depends: debhelper (>= 9~), g++, python3-dev (>= 3.3~), pyqt5-dev-tools,
  qttools5-dev-tools
 
 Package: customizer
