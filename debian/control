@@ -2,18 +2,18 @@ Source: customizer
 Section: x11
 Priority: optional
 Maintainer: Graham Cantin <kamilion@gmail.com>
-Homepage: https://github.com/clearkimura/Customizer
-Vcs-Git: git://github.com/clearkimura/Customizer
-Vcs-browser: https://github.com/clearkimura/Customizer
-Standards-Version: 4.1.5
-X-Python-Version: >= 2.7
-Build-Depends: debhelper (>= 9~), g++, python-dev (>= 2.7~), pyqt4-dev-tools,
- qt4-linguist-tools
+Homepage: https://github.com/kamilion/customizer
+Vcs-Git: git://github.com/kamilion/customizer
+Vcs-browser: https://github.com/kamilion/customizer
+Standards-Version: 4.2.0
+X-Python-Version: >= 3.3
+Build-Depends: debhelper (>= 9~), g++, python-dev (>= 3.3~), pyqt5-dev-tools,
+ qttools5-dev-tools
 
 Package: customizer
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends},
- libpython2.7, python-qt4,
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python3:Depends},
+ python3-pyqt5, syslinux, initramfs-tools,
  squashfs-tools (>= 4.2~), xorriso, x11-xserver-utils, xserver-xephyr,
  qemu-kvm, policykit-1, hicolor-icon-theme, isolinux
 Recommends: policykit-1-gnome | polkit-kde-1, libgtk2.0-bin | libgtk-3-bin

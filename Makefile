@@ -1,4 +1,4 @@
-VERSION = 4.1.5 ($(REVISION))
+VERSION = 4.2.0 ($(REVISION))
 REVISION = 
 ifeq ($(wildcard .git), .git)
 REVISION = $(shell $(GIT) rev-parse --short HEAD)
@@ -6,9 +6,9 @@ else
 REVISION = $(shell echo "Zip Release")
 endif
 # Set this to 5 to use PyQT5
-PYQT = 4
+PYQT = 5
 # Set this to python3 to use python3
-PYTHON = python2
+PYTHON = python3
 PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
 DESTDIR = 
 PREFIX = $(shell $(PYTHON)-config --prefix)

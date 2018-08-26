@@ -1,3 +1,10 @@
+customizer (4.2.0-0+20180825) unstable; urgency=medium
+
+  * Fix spectre/meltdown kernel mitigations
+  * Defaulting to QT5 and Python3 now that python2 is deprecated for 2020
+
+ -- Graham Cantin <kamilion@gmail.com>  Sat, 25 Aug 2018 18:17:36 -0800
+
 customizer (4.1.5-0+20170208) unstable; urgency=medium
 
   * Fix space indentation in this changelog

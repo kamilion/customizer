@@ -1,5 +1,5 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Source: https://github.com/clearkimura/Customizer
+Source: https://github.com/kamilion/customizer
 
 Files: *
 Copyright: 2010-2013 Ivailo Monev

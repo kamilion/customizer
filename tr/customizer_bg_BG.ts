@@ -244,8 +244,8 @@
     </message>
     <message>
         <location filename="gui.py" line="87"/>
-        <source>You are attempting to run Customizer with Python 3.</source>
-        <translation>Опитвате се да стартирате Customizer с Python 3.</translation>
+        <source>You are attempting to run Customizer with Python 2.</source>
+        <translation>Опитвате се да стартирате Customizer с Python 2.</translation>
     </message>
     <message>
         <location filename="gui.py" line="187"/>

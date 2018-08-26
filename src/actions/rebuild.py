@@ -212,20 +212,34 @@ def main():
         misc.copy_file(ipxe_efi, \
             misc.join_paths(config.ISO_DIR, 'casper/' + os.path.basename(ipxe_efi)))
 
+    kernel_type = re.search('initrd.img-*.*.*-*-(.*)', initrd).group(1)
+    message.sub_debug('Kernel Variant Type', kernel_type)
+
     message.sub_info('Extracting casper UUID')
     confdir = config.FILESYSTEM_DIR + '/conf'
     if os.path.isdir(confdir):
         shutil.rmtree(confdir)
     os.makedirs(confdir)
-    try:
-        misc.chroot_exec('zcat ' + initrd.replace(config.FILESYSTEM_DIR, '') + ' | cpio --quiet -id conf/uuid.conf', \
-            shell=True, cwd=config.FILESYSTEM_DIR)
-        kernel = re.search('initrd.img-*.*.*-*-(.*)', initrd).group(1)
-        message.sub_debug('Kernel', kernel)
-        misc.copy_file(confdir + '/uuid.conf', misc.join_paths(config.ISO_DIR, \
-            '.disk/casper-uuid-' + kernel))
-    finally:
-        shutil.rmtree(confdir)
+
+    if common.is_gz_file(initrd):
+        message.sub_debug('Kernel Compression', "gzip without early microcode")
+        try:
+            misc.chroot_exec('zcat ' + initrd.replace(config.FILESYSTEM_DIR, '') + ' | cpio --quiet -id conf/uuid.conf', \
+                shell=True, cwd=config.FILESYSTEM_DIR)
+            misc.copy_file(confdir + '/uuid.conf', misc.join_paths(config.ISO_DIR, \
+                '.disk/casper-uuid-' + kernel_type))
+        finally:
+            shutil.rmtree(confdir)
+
+    else:
+        message.sub_debug('Kernel Compression', "gzip with early microcode")
+        try:
+            misc.chroot_exec('unmkinitramfs ' + initrd.replace(config.FILESYSTEM_DIR, '') + ' conf/', \
+                shell=True, cwd=config.FILESYSTEM_DIR)
+            misc.copy_file(confdir + '/main/conf/uuid.conf', misc.join_paths(config.ISO_DIR, \
+                '.disk/casper-uuid-' + kernel_type))
+        finally:
+            shutil.rmtree(confdir)
 
     # Define some default compression parameters, including a 1MB blocksize for all compressors.
     compression_parameters = ('-b', '1048576', '-comp', config.COMPRESSION)

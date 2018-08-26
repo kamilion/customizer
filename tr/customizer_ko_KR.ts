@@ -244,7 +244,7 @@
     </message>
     <message>
         <location filename="gui.py" line="87"/>
-        <source>You are attempting to run Customizer with Python 3.</source>
+        <source>You are attempting to run Customizer with Python 2.</source>
         <translation>당신은 파이썬 3으로 커스터마이저를 실행하려고합니다.</translation>
     </message>
     <message>

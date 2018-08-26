@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 
-import os, re, shutil
+import os, re, shutil, binascii
 
 import lib.misc as misc
 import lib.config as config
@@ -70,3 +70,7 @@ def substitute(sfile, regex, string):
     content = misc.read_file(sfile)
     new_content = re.sub(regex, string, content)
     misc.write_file(sfile, new_content)
+
+def is_gz_file(filepath):
+    with open(filepath, 'rb') as test_f:
+        return binascii.hexlify(test_f.read(2)) == b'1f8b'
