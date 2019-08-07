@@ -21,6 +21,12 @@ def main():
     message.sub_debug('Distribution (DISTRIB_ID)', distrib)
     message.sub_debug('Release (DISTRIB_RELEASE)', release)
 
+    if isinstance(arch, bytes):  # For some reason this is of type 'bytes'.
+        if int(sys.version_info[0]) >= 3:  # If we're running under python3
+            arch = str(arch, 'utf-8')
+        else:  # Otherwise just cast it to a str without the 'utf-8' option.
+            arch = str(arch)
+    
     iso_file = '%s/%s-%s-%s.iso' % (config.WORK_DIR, distrib, arch, release)
     if not os.path.exists(iso_file):
         raise(message.exception('ISO image does not exist', iso_file))
