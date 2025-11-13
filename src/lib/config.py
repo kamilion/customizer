@@ -1,14 +1,19 @@
 #!/usr/bin/python2.7
 
 import os
-try:  # Importing python3 style first.
-    import configparser as ConfigParser
-except:  # Fall back to python2.
-    import ConfigParser
+try:  # Importing python2 style first.
+    import ConfigParser as configparser
+except:  # That probably failed, so try python3's.
+    import configparser
+
+if callable(configparser.RawConfigParser):
+    parser = configparser.RawConfigParser   # Python 3.12+
+else:
+    parser = configparser.SafeConfigParser  # Python 3.11 and below
 
 import lib.message as message
 
-conf = ConfigParser.SafeConfigParser(
+conf = parser(
     {
         'WORK_DIR': '/home/customizer',
         'LOCALES': 'C',
