@@ -9,7 +9,7 @@ endif
 PYQT = 5
 # Set this to python3 to use python3
 PYTHON = python3
-PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; print(sys.version[:3])")
+PYTHON_VERSION = $(shell $(PYTHON) -c "import sys; myver = sys.version[:4]; print(myver) if myver[3].isdigit() else print(sys.version[:3]);")
 DESTDIR = 
 PREFIX = $(shell $(PYTHON)-config --prefix)
 ELEVATOR = pkexec
