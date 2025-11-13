@@ -283,7 +283,7 @@ def obtain_filename(dir, extfilter):
     sfile = QFileDialog.getOpenFileName(MainWindow, app.tr('Open'), \
         dir, extfilter)
     message.sub_debug("File Dialog returned: {0} {1}".format(sfile, type(sfile)))
-    if QT_VER is not 5:
+    if QT_VER != 5:
         return sfile
     else:  # QFileDialog's return is a tuple in 5.x+
         message.sub_debug("File Dialog was QT5 formatted: {0} {1}".format(sfile[0], type(sfile[0])))
