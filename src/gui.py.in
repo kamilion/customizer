@@ -4,9 +4,14 @@
 # This is quick and dirty written GUI! #
 ############### END NOTE ###############
 
-import sys, os, atexit, subprocess, imp
-sys.path.append("@PREFIX@/share/customizer")
+import sys, os, atexit, subprocess
 
+if sys.modules.keys().__contains__('importlib'):
+    import importlib  # Python 3.12+ no longer has imp, but importlib still has reload().
+else:
+    import imp as importlib  # Older versions of python are still supported by customizer.
+
+sys.path.append("@PREFIX@/share/customizer")
 import gui_ui # This will tell us which pyuic version was used
 
 QT_VER = None
@@ -246,7 +251,7 @@ def change_value(sec, var, val):
     finally:
         if conf:
             conf.close()
-        imp.reload(config)
+        importlib.reload(config)
 
 def worker_started():
     ui.progressBar.setRange(0, 0)
